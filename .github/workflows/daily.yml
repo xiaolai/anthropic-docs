@@ -1,47 +1,86 @@
-name: CC Knowledge Update Check
+name: Daily multi-skill update
+
+# Daily fan-out over every skill in skills/*. Each matrix entry runs the
+# full pipeline for one skill: monitor → optional update → research →
+# verify+mend → safety gates → commit (or draft PR on gate failure).
+#
+# fail-fast: false so one bad skill doesn't kill the others.
+# max-parallel: 1 to control the Max-20x subscription quota — runs are
+# sequential. Bump to N once the quota math is understood.
 
 on:
   schedule:
     - cron: "0 8 * * *"  # Daily at 08:00 UTC
   workflow_dispatch:
+    inputs:
+      skill_filter:
+        description: "Optional regex to limit which skills run (e.g. 'claude-code')"
+        required: false
+        default: ""
 
-# Workflow-level permissions are minimum (read-only). The single job below
-# escalates to contents:write + pull-requests:write only for its own scope.
-# A future improvement is to split into a "fetch/analyse" job (read-only)
-# and a "commit/PR" job (write); the agent steps would run in the read-only
-# job and produce a patch artifact the commit job applies. Out of scope here.
 permissions:
   contents: read
 
 env:
   MAX_MEND_RETRIES: 2
   PIPELINE_LOG: /tmp/pipeline-log.json
-  # Per-file diff threshold for the safety gate. Above this %, the run is
-  # routed to a draft PR instead of pushed to main.
   DIFF_THRESHOLD_PCT: 20
-  # Pin the Claude Code CLI version installed globally for this run. The
-  # agent SDK in agent/package.json is pinned via agent/package-lock.json;
-  # this env var pins the CLI that the SDK shells out to. Bump when you
-  # have a tested target version; do not auto-track latest.
   CLAUDE_CODE_CLI_VERSION: "2.1.143"
 
 jobs:
-  daily-run:
-    if: github.repository == 'xiaolai/claude-code-documentation-knowledge-autoupdated'
+  # ---------------------------------------------------------------------
+  # Discover which skills exist on the current commit. Emits a matrix
+  # JSON the per-skill job consumes. Cheap (one `ls` + jq) — costs
+  # nothing on the LLM quota.
+  # ---------------------------------------------------------------------
+  discover-skills:
+    if: github.repository == 'xiaolai/anthropic-docs-skills-autoupdated'
     runs-on: ubuntu-latest
-    permissions:
-      contents: write       # commit and push pipeline output (commit step only)
-      pull-requests: write  # open draft PR if a safety gate trips
+    outputs:
+      matrix: ${{ steps.list.outputs.matrix }}
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 2  # need HEAD~1 for diff-size baseline
-          # Defense in depth: don't leave the GH token configured in
-          # `.git/config` after checkout. The job has contents:write so
-          # the credentials *exist*, but the LLM agent steps run in the
-          # same worktree with Bash — a prompt-injection bypass should not
-          # be able to `git push` via persisted creds. The final commit
-          # step re-configures the remote with an explicit token.
+          persist-credentials: false
+      - id: list
+        run: |
+          FILTER='${{ inputs.skill_filter }}'
+          # Each subdir under skills/ with a config.json is a skill payload.
+          SKILLS=$(find skills -mindepth 1 -maxdepth 1 -type d \
+                    -exec test -f '{}'/config.json \; -print \
+                    | sed 's|^skills/||' | sort -u)
+          if [[ -n "$FILTER" ]]; then
+            SKILLS=$(printf '%s\n' "$SKILLS" | grep -E "$FILTER" || true)
+          fi
+          MATRIX=$(printf '%s\n' "$SKILLS" | jq -R . | jq -s -c '{skill: .}')
+          echo "matrix=$MATRIX" >> "$GITHUB_OUTPUT"
+          echo "Discovered skills:"
+          printf '  %s\n' $SKILLS
+
+  # ---------------------------------------------------------------------
+  # Per-skill pipeline. The body mirrors the old single-skill workflow
+  # but reads $SKILL_NAME everywhere and writes per-skill commits / PRs.
+  # ---------------------------------------------------------------------
+  daily-run:
+    needs: discover-skills
+    if: needs.discover-skills.outputs.matrix != '' && needs.discover-skills.outputs.matrix != '{"skill":[""]}'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix: ${{ fromJson(needs.discover-skills.outputs.matrix) }}
+    env:
+      SKILL_NAME: ${{ matrix.skill }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          # Defense in depth: agent steps run in the same worktree with
+          # Bash; explicit commit-time creds prevent prompt-injection
+          # exploitation of persisted GH token.
           persist-credentials: false
       - uses: actions/setup-node@v4
         with:
@@ -49,32 +88,26 @@ jobs:
 
       - name: Initialize pipeline log
         run: |
-          echo '{"startedAt":"'"$(date -u +%Y-%m-%dT%H:%M:%SZ)"'","steps":[]}' > "$PIPELINE_LOG"
+          jq -n --arg skill "$SKILL_NAME" --arg started "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            '{skill: $skill, startedAt: $started, steps: []}' > "$PIPELINE_LOG"
 
       # ---------------------------------------------------------------
-      # 1. Monitor — zero API cost
+      # 1. Monitor — zero LLM cost
       # ---------------------------------------------------------------
-      - name: Run change monitor
+      - name: Run change monitor (${{ matrix.skill }})
         id: monitor
-        working-directory: agent
         env:
-          # monitor.sh calls `gh api repos/anthropics/claude-code/...`
-          # for the release and bug-issue scans. Without GH_TOKEN, gh runs
-          # unauthenticated and is rate-limited to 60 req/h — pagination of
-          # bug issues alone burns through that on busy days. The default
-          # github.token has read access to public repos, which is all the
-          # monitor needs.
           GH_TOKEN: ${{ github.token }}
         run: |
           START=$(date +%s)
-          bash monitor.sh && echo "changes=false" >> "$GITHUB_OUTPUT" || {
+          bash pipeline/agent/monitor.sh && echo "changes=false" >> "$GITHUB_OUTPUT" || {
             exit_code=$?
             if [ "$exit_code" -eq 1 ]; then
               echo "changes=true" >> "$GITHUB_OUTPUT"
             else
               ELAPSED=$(( $(date +%s) - START ))
               jq --arg s "monitor" --arg r "error" --arg d "${ELAPSED}s" \
-                --arg e "Monitor script failed with exit code $exit_code" \
+                --arg e "Monitor exited $exit_code" \
                 '.steps += [{"step":$s,"result":$r,"duration":$d,"error":$e}]' \
                 "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
               exit $exit_code
@@ -86,44 +119,32 @@ jobs:
           else
             CHANGES="false"
           fi
-          jq --arg s "monitor" --arg r "success" --arg d "${ELAPSED}s" \
-            --arg c "$CHANGES" \
+          jq --arg s "monitor" --arg r "success" --arg d "${ELAPSED}s" --arg c "$CHANGES" \
             '.steps += [{"step":$s,"result":$r,"duration":$d,"changesDetected":($c == "true")}]' \
             "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
 
       # ---------------------------------------------------------------
-      # 2. Setup — install Claude Code, agent deps, root verification deps
+      # 2. Setup
       # ---------------------------------------------------------------
       - name: Install Claude Code (pinned)
         run: npm install -g "@anthropic-ai/claude-code@${CLAUDE_CODE_CLI_VERSION}"
 
-      - name: Detect auth method (without leaking the token)
+      - name: Detect auth method
         id: auth
         env:
-          # Side-channel: only the boolean "do we have a token" is exported,
-          # not the token itself. Each agent step injects the real token via
-          # its own step-level env: block — no $GITHUB_ENV write.
           HAS_OAUTH: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN != '' }}
           HAS_API_KEY: ${{ secrets.ANTHROPIC_API_KEY != '' }}
         run: |
-          # METHOD is captured into a shell var so the same value lands in
-          # both the step output AND the pipeline-log jq call below. The
-          # previous version read `${{ steps.auth.outputs.method }}` from
-          # inside its own step, which evaluates BEFORE the step writes its
-          # output and so always recorded "unknown" in the log.
           METHOD="unknown"
           if [ "$HAS_OAUTH" = "true" ]; then
-            echo "Using OAuth token authentication"
             mkdir -p ~/.claude
             echo '{"hasCompletedOnboarding":true}' > ~/.claude.json
             METHOD="oauth"
           elif [ "$HAS_API_KEY" = "true" ]; then
-            echo "Using API key authentication"
             METHOD="api_key"
           else
-            echo "ERROR: No authentication configured."
-            echo "Set either CLAUDE_CODE_OAUTH_TOKEN or ANTHROPIC_API_KEY secret."
-            jq --arg s "auth" --arg r "error" --arg e "No authentication configured" \
+            echo "ERROR: No authentication configured." >&2
+            jq --arg s "auth" --arg r "error" --arg e "No authentication" \
               '.steps += [{"step":$s,"result":$r,"error":$e}]' \
               "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
             exit 1
@@ -133,25 +154,22 @@ jobs:
             '.steps += [{"step":$s,"result":$r,"method":$m}]' \
             "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
 
-      - name: Install agent dependencies (npm ci — lockfile enforced)
-        working-directory: agent
+      - name: Install pipeline/agent deps (npm ci)
+        working-directory: pipeline/agent
         run: npm ci
 
-      - name: Install root verification dependencies (npm ci — lockfile enforced)
+      - name: Install root verification deps (npm ci)
         run: npm ci
 
       # ---------------------------------------------------------------
-      # 3. Update agent — only when version changes detected
+      # 3. Update agent — only on version change
       # ---------------------------------------------------------------
       - name: Run update agent
         id: update
         if: steps.monitor.outputs.changes == 'true'
         continue-on-error: true
-        working-directory: agent
+        working-directory: pipeline/agent
         env:
-          # Scope the auth token to ONLY this step. Avoids leaking it via
-          # $GITHUB_ENV to every subsequent step (incl. verify scripts that
-          # don't need it).
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
@@ -159,7 +177,6 @@ jobs:
           npx tsx update-agent.ts 2>&1 | tee /tmp/update-agent.log
           EXIT_CODE=${PIPESTATUS[0]}
           ELAPSED=$(( $(date +%s) - START ))
-
           if [ "$EXIT_CODE" -eq 0 ]; then
             jq --arg s "update" --arg r "success" --arg d "${ELAPSED}s" \
               '.steps += [{"step":$s,"result":$r,"duration":$d}]' \
@@ -174,26 +191,21 @@ jobs:
           fi
 
       # ---------------------------------------------------------------
-      # 4. Research agent — runs daily
+      # 4. Research agent — runs every day
       # ---------------------------------------------------------------
       - name: Run research agent
         id: research
         continue-on-error: true
-        working-directory: agent
+        working-directory: pipeline/agent
         env:
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          # research-prompt.md instructs the agent to deep-read issue
-          # bodies + comments via `gh api`. Pass the workflow's read-only
-          # github.token so those calls authenticate and don't trip the
-          # 60 req/h unauth rate limit.
           GH_TOKEN: ${{ github.token }}
         run: |
           START=$(date +%s)
           npx tsx research-agent.ts 2>&1 | tee /tmp/research.log
           EXIT_CODE=${PIPESTATUS[0]}
           ELAPSED=$(( $(date +%s) - START ))
-
           if [ "$EXIT_CODE" -eq 0 ]; then
             jq --arg s "research" --arg r "success" --arg d "${ELAPSED}s" \
               '.steps += [{"step":$s,"result":$r,"duration":$d}]' \
@@ -208,28 +220,22 @@ jobs:
           fi
 
       # ---------------------------------------------------------------
-      # 5. Verify → Mend loop (only when version changed)
+      # 5. Verify+mend loop (only when version changed)
       # ---------------------------------------------------------------
       - name: Verify and mend loop
         id: verify
         if: steps.monitor.outputs.changes == 'true'
         continue-on-error: true
-        working-directory: agent
+        working-directory: pipeline/agent
         env:
-          # Only the mending-agent inner step needs the token; verify.sh
-          # itself is a deterministic bash check with no LLM call. Scoped
-          # here because they share the same workflow step.
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           START=$(date +%s)
           MEND_ATTEMPTS=0
-
           for attempt in $(seq 0 $MAX_MEND_RETRIES); do
             echo ""
             echo "=== Verification attempt $((attempt + 1)) of $((MAX_MEND_RETRIES + 1)) ==="
-            echo ""
-
             if bash verify.sh; then
               ELAPSED=$(( $(date +%s) - START ))
               jq --arg s "verify" --arg r "success" --arg d "${ELAPSED}s" \
@@ -238,7 +244,6 @@ jobs:
                 "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
               exit 0
             fi
-
             if [ "$attempt" -eq "$MAX_MEND_RETRIES" ]; then
               ELAPSED=$(( $(date +%s) - START ))
               FAILURES=""
@@ -252,16 +257,8 @@ jobs:
                 "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
               exit 1
             fi
-
-            echo ""
             echo "--- Running mending agent (attempt $((attempt + 1))) ---"
-            echo ""
             MEND_ATTEMPTS=$((MEND_ATTEMPTS + 1))
-            # Capture the mending agent's exit code via PIPESTATUS so a
-            # crash is visible — `| tee` would otherwise mask the failure
-            # behind a successful tee. If mending crashes hard, surface
-            # the exit code in the pipeline log; verify will fail again
-            # next iteration but at least we know mending didn't help.
             npx tsx mending-agent.ts 2>&1 | tee /tmp/mending-agent-$((attempt + 1)).log
             MEND_EXIT=${PIPESTATUS[0]}
             if [ "$MEND_EXIT" -ne 0 ]; then
@@ -273,81 +270,63 @@ jobs:
           done
 
       # ---------------------------------------------------------------
-      # 6. Content safety gates (always run after research, even if
-      #    verify was skipped because no version changed)
+      # 6. Safety gates — all per-skill via SKILL_NAME env
       # ---------------------------------------------------------------
       - name: Typecheck templates
         id: typecheck_templates
         if: always()
         continue-on-error: true
-        run: bash scripts/typecheck-templates.sh
+        run: bash pipeline/scripts/typecheck-templates.sh
 
       - name: Validate schema-bound examples
         id: validate_examples
         if: always()
         continue-on-error: true
-        run: bash scripts/validate-examples.sh
+        run: bash pipeline/scripts/validate-examples.sh
 
       - name: Check populated sections
         id: check_populated
         if: always()
         continue-on-error: true
-        run: bash scripts/check-populated.sh
+        run: bash pipeline/scripts/check-populated.sh
 
       - name: Check docs-snapshot drift vs upstream llms.txt
         id: check_docs_drift
         if: always()
         continue-on-error: true
-        run: bash scripts/check-docs-drift.sh
+        run: bash pipeline/scripts/check-docs-drift.sh
 
-      # Maintainer-time correctness checks. These don't fire from
-      # research-agent activity (the agent doesn't edit these surfaces),
-      # but if a maintainer broke any of them in a commit, the daily
-      # pipeline catches it before the content reaches main.
-      - name: Check sanitizer parity (3 bash files use identical regex)
+      - name: Check sanitizer parity
         id: check_sanitizer_parity
         if: always()
         continue-on-error: true
-        run: bash scripts/check-sanitizer-parity.sh
+        run: bash pipeline/scripts/check-sanitizer-parity.sh
 
-      - name: Check gate-name parity (workflow / TS / prompt agree)
+      - name: Check gate-name parity
         id: check_gate_parity
         if: always()
         continue-on-error: true
-        run: bash scripts/check-gate-parity.sh
+        run: bash pipeline/scripts/check-gate-parity.sh
 
       - name: Run agent test suite (sanitiser assertions)
         id: agent_tests
         if: always()
         continue-on-error: true
-        working-directory: agent
+        working-directory: pipeline/agent
         run: npm test
 
       # ---------------------------------------------------------------
-      # 7. Update state.json — MERGE fresh-state into the live state
-      #
-      # /tmp/fresh-state.json was built by monitor.sh BEFORE research ran.
-      # The research agent may have written to state.json since (new
-      # researchedIssues entries, lastRunWarnings, etc.). A wholesale `cp`
-      # would erase those writes. Instead we merge: monitor-owned fields
-      # from fresh-state overwrite state.json's snapshot of them, while
-      # research-agent-owned fields are preserved from the live state.
+      # 7. Update per-skill state.json — MERGE not overwrite
       # ---------------------------------------------------------------
-      - name: Update state.json (merge fresh monitor fields into live state)
+      - name: Update skills/${{ matrix.skill }}/state.json (merge)
         if: always()
-        working-directory: agent
         run: |
+          STATE="skills/$SKILL_NAME/state.json"
           if [ ! -f /tmp/fresh-state.json ]; then
-            echo "No /tmp/fresh-state.json — keeping current state.json unchanged."
+            echo "No /tmp/fresh-state.json — keeping $STATE unchanged."
             exit 0
           fi
-          # state.json may not exist on a brand-new run; treat as empty object.
-          if [ ! -f state.json ]; then
-            echo '{}' > state.json
-          fi
-          # First arg = live state (with research writes); second = fresh state.
-          # `*` is jq's deep-merge: keys from fresh overwrite the LHS where set.
-          # Then explicitly preserve research-agent-owned fields from the LHS.
+          if [ ! -f "$STATE" ]; then echo '{}' > "$STATE"; fi
           jq -s '
             .[0] as $live | .[1] as $fresh
             | ($live * {
@@ -362,36 +341,25 @@ jobs:
             | .researchedIssues = ($live.researchedIssues // {})
             | .lastRunWarnings  = ($live.lastRunWarnings // [])
             | .scaffoldComplete = ($live.scaffoldComplete // false)
-          ' state.json /tmp/fresh-state.json > /tmp/merged-state.json \
-            && mv /tmp/merged-state.json state.json
-          echo "state.json merged — researchedIssues=$(jq '.researchedIssues | length' state.json), lastRunWarnings=$(jq '.lastRunWarnings | length' state.json), scaffoldComplete=$(jq -r '.scaffoldComplete' state.json)"
+          ' "$STATE" /tmp/fresh-state.json > /tmp/merged-state.json \
+            && mv /tmp/merged-state.json "$STATE"
+          echo "merged $STATE — researchedIssues=$(jq '.researchedIssues | length' "$STATE"), lastRunWarnings=$(jq '.lastRunWarnings | length' "$STATE"), scaffoldComplete=$(jq -r '.scaffoldComplete' "$STATE")"
 
-      # ---------------------------------------------------------------
-      # 7b. Flip scaffoldComplete on first successful population
-      #
-      # Scaffold mode (state.scaffoldComplete == false) tells
-      # scripts/check-populated.sh to skip its stub-marker check.
-      # Once the research agent has populated every SKILL-*.md /
-      # rules/*.md section (zero residual `*Populated by the research
-      # agent*` markers), flip to true so the gate starts enforcing.
-      # ---------------------------------------------------------------
       - name: Flip scaffoldComplete on first successful population
         if: always() && steps.research.outcome == 'success'
-        working-directory: agent
         run: |
-          # Count residual stub markers in tracked SKILL / rules files.
+          STATE="skills/$SKILL_NAME/state.json"
           STUB_COUNT=$(grep -lE '\*Populated by the research agent\*' \
-            ../SKILL-*.md ../rules/*.md 2>/dev/null | wc -l | tr -d ' ')
-          CURRENT=$(jq -r '.scaffoldComplete // false' state.json)
+            skills/$SKILL_NAME/SKILL*.md skills/$SKILL_NAME/rules/*.md 2>/dev/null | wc -l | tr -d ' ')
+          CURRENT=$(jq -r '.scaffoldComplete // false' "$STATE")
           echo "Residual stub files: $STUB_COUNT   scaffoldComplete: $CURRENT"
           if [ "$STUB_COUNT" = "0" ] && [ "$CURRENT" = "false" ]; then
-            echo "First successful population detected — flipping scaffoldComplete to true."
-            jq '.scaffoldComplete = true' state.json > /tmp/sc.tmp && mv /tmp/sc.tmp state.json
+            jq '.scaffoldComplete = true' "$STATE" > /tmp/sc.tmp && mv /tmp/sc.tmp "$STATE"
+            echo "scaffoldComplete flipped to true"
           fi
 
       # ---------------------------------------------------------------
-      # 7c. Diff-size gate (run BEFORE finalize log so the report agent
-      #     sees its outcome in /tmp/pipeline-log.json).
+      # 7c. Diff-size gate before finalize-log so the report sees it
       # ---------------------------------------------------------------
       - name: Check diff size against HEAD
         id: check_diff_size
@@ -399,7 +367,7 @@ jobs:
         continue-on-error: true
         env:
           DIFF_THRESHOLD_PCT: ${{ env.DIFF_THRESHOLD_PCT }}
-        run: bash scripts/check-diff-size.sh
+        run: bash pipeline/scripts/check-diff-size.sh
 
       - name: Finalize pipeline log
         if: always()
@@ -433,14 +401,13 @@ jobs:
                 "checkDiffSize": $diffsize_outcome
               }
             }' "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
-
           cat "$PIPELINE_LOG" | jq .
 
       - name: Run report agent
         id: report
         if: always()
         continue-on-error: true
-        working-directory: agent
+        working-directory: pipeline/agent
         env:
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -449,45 +416,32 @@ jobs:
           npx tsx report-agent.ts 2>&1 | tee /tmp/report-agent.log
           EXIT_CODE=${PIPESTATUS[0]}
           ELAPSED=$(( $(date +%s) - START ))
-
           if [ "$EXIT_CODE" -eq 0 ]; then
             jq --arg s "report" --arg r "success" --arg d "${ELAPSED}s" \
               '.steps += [{"step":$s,"result":$r,"duration":$d}]' \
               "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
           else
-            # Capture report-agent failure so it surfaces in the final
-            # outcomes block + the "Check for failures" step below. Without
-            # this the workflow committed silently on a bad report-agent run.
             LAST_LINES=$(tail -20 /tmp/report-agent.log | jq -Rs '.')
             jq --arg s "report" --arg r "failed" --arg d "${ELAPSED}s" \
               --arg c "$EXIT_CODE" --argjson e "$LAST_LINES" \
               '.steps += [{"step":$s,"result":$r,"duration":$d,"exitCode":($c|tonumber),"lastOutput":$e}]' \
               "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
-            # CRITICAL: exit with the agent's exit code so GH Actions records
-            # this step as "failure". Without this exit, the step's last
-            # command is the jq pipeline above which exits 0, GH Actions
-            # records "success" despite continue-on-error, and
-            # `steps.report.outcome` reads "success" downstream — defeating
-            # the entire failure-detection path. continue-on-error: true
-            # at the step level prevents this nonzero exit from killing the
-            # job; it only flips the recorded outcome.
             exit "$EXIT_CODE"
           fi
 
-      - name: Update README auto-updated date
+      - name: Update per-skill README auto-updated date
         if: always()
         run: |
           NOW=$(date -u +%Y-%m-%d)
-          # Anchored whole-line replace so first-run also substitutes the
-          # `<YYYY-MM-DD>` placeholder (the previous `[0-9-]*` pattern
-          # only matched already-stamped dates and left the placeholder
-          # in place forever).
-          sed -i "s|^\*\*Last updated\*\*:.*|**Last updated**: $NOW|" README.md || true
+          README="skills/$SKILL_NAME/README.md"
+          if [ -f "$README" ]; then
+            sed -i "s|^\*\*Last updated\*\*:.*|**Last updated**: $NOW|" "$README" || true
+          fi
 
       # ---------------------------------------------------------------
-      # 8. Commit + push (or open draft PR if any gate failed)
+      # 8. Commit + push per-skill (or draft PR on gate failure)
       # ---------------------------------------------------------------
-      - name: Commit and push (or open draft PR)
+      - name: Commit and push (${{ matrix.skill }}) or open draft PR
         if: always()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -495,19 +449,17 @@ jobs:
           set -uo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          # Re-configure the remote with an explicit token here (checkout
-          # used persist-credentials: false). Done at commit-step time
-          # only — the agent steps above have no git push capability.
           git remote set-url origin \
             "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
 
-          git add -A .
+          # Stage only this skill's changes + per-skill state — never
+          # touch other skills' content from this matrix entry.
+          git add -A "skills/$SKILL_NAME" || true
           if git diff --cached --quiet; then
-            echo "No changes to commit."
+            echo "No changes to commit for $SKILL_NAME."
             exit 0
           fi
 
-          # Collect gate outcomes
           VALIDATE="${{ steps.validate_examples.outcome || 'skipped' }}"
           TYPECHECK="${{ steps.typecheck_templates.outcome || 'skipped' }}"
           POPULATED="${{ steps.check_populated.outcome || 'skipped' }}"
@@ -517,14 +469,15 @@ jobs:
           AGENT_TESTS="${{ steps.agent_tests.outcome || 'skipped' }}"
           DIFFSIZE="${{ steps.check_diff_size.outcome || 'skipped' }}"
           VERIFY="${{ steps.verify.outcome || 'skipped' }}"
-          # report-agent isn't a "gate" in the strict sense, but a crashed
-          # report means the daily report file + README activity table won't
-          # be updated — pushing that state silently to main is wrong. Route
-          # to draft PR for human review instead.
           REPORT="${{ steps.report.outcome || 'skipped' }}"
 
           GATES_FAILED=""
-          for pair in "validate_examples:$VALIDATE" "typecheck_templates:$TYPECHECK" "check_populated:$POPULATED" "check_docs_drift:$DOCSDRIFT" "check_sanitizer_parity:$SANITIZER_PARITY" "check_gate_parity:$GATE_PARITY" "agent_tests:$AGENT_TESTS" "check_diff_size:$DIFFSIZE" "verify:$VERIFY" "report:$REPORT"; do
+          for pair in \
+              "validate_examples:$VALIDATE" "typecheck_templates:$TYPECHECK" \
+              "check_populated:$POPULATED" "check_docs_drift:$DOCSDRIFT" \
+              "check_sanitizer_parity:$SANITIZER_PARITY" "check_gate_parity:$GATE_PARITY" \
+              "agent_tests:$AGENT_TESTS" "check_diff_size:$DIFFSIZE" \
+              "verify:$VERIFY" "report:$REPORT"; do
             name="${pair%%:*}"
             outcome="${pair##*:}"
             if [ "$outcome" = "failure" ]; then
@@ -533,70 +486,50 @@ jobs:
           done
 
           TODAY=$(date -u +%Y-%m-%d)
-          REPORT="/tmp/change-report.json"
+          REPORT_FILE="/tmp/change-report.json"
 
-          # Build commit message
           {
             if [ -n "$GATES_FAILED" ]; then
-              echo "auto: pending review (${TODAY}) — gates failed:${GATES_FAILED}"
+              echo "auto[$SKILL_NAME]: pending review (${TODAY}) — gates failed:${GATES_FAILED}"
               echo ""
-              echo "One or more safety gates flagged this run. Review the diff"
-              echo "before merging. Failed gates:${GATES_FAILED}"
-            elif [ -f "$REPORT" ] && jq -e '.changes[] | select(.type == "npm_version")' "$REPORT" > /dev/null 2>&1; then
-              OLD_VER=$(jq -r '.oldVersion' "$REPORT")
-              NEW_VER=$(jq -r '.newVersion // "update"' "$REPORT")
-              echo "update: CC v${OLD_VER} → v${NEW_VER} (${TODAY})"
+              echo "Skill: $SKILL_NAME"
+              echo "Failed gates:${GATES_FAILED}"
+            elif [ -f "$REPORT_FILE" ] && jq -e '.changes[] | select(.type == "npm_version")' "$REPORT_FILE" > /dev/null 2>&1; then
+              OLD_VER=$(jq -r '.oldVersion' "$REPORT_FILE")
+              NEW_VER=$(jq -r '.newVersion // "update"' "$REPORT_FILE")
+              echo "auto[$SKILL_NAME]: v${OLD_VER} → v${NEW_VER} (${TODAY})"
             else
-              echo "daily: research + report (${TODAY})"
+              echo "auto[$SKILL_NAME]: research + report (${TODAY})"
             fi
           } > /tmp/commit-message.txt
 
           if [ -n "$GATES_FAILED" ]; then
-            # Include run_id + attempt so a second failed run on the same
-            # day doesn't collide with the first run's branch (which would
-            # break the `git checkout -b` or the `git push -u` step).
-            BRANCH="auto/${TODAY}-pending-review-${{ github.run_id }}-${{ github.run_attempt }}"
+            BRANCH="auto/${SKILL_NAME}/${TODAY}-pending-review-${{ github.run_id }}-${{ github.run_attempt }}"
             echo "Routing to draft PR on branch: $BRANCH"
             git checkout -b "$BRANCH"
             git commit -F /tmp/commit-message.txt
             git push -u origin "$BRANCH"
 
             PR_BODY=$(printf '%s\n' \
-              "Auto-generated by the daily pipeline. **One or more safety gates flagged this run.**" \
+              "Auto-generated by the daily pipeline for skill **$SKILL_NAME**." \
               "" \
-              "Failed gates:${GATES_FAILED}" \
+              "**Failed gates:**${GATES_FAILED}" \
               "" \
-              "Review the diff carefully before merging. Common reasons for routing here:" \
+              "Review the diff before merging. Common reasons gates fire:" \
               "" \
-              "- **validate_examples**: a fenced JSON block in a SKILL-*.md no longer validates against its schema." \
-              "- **typecheck_templates**: a template under \`templates/\` has invalid syntax." \
+              "- **validate_examples**: a fenced JSON block no longer validates against its schema." \
+              "- **typecheck_templates**: a template under skills/$SKILL_NAME/templates/ has invalid syntax." \
               "- **check_populated**: in post-scaffold mode, a stub marker still exists in a tracked file." \
-              "- **check_docs_drift**: upstream llms.txt index hash has changed since the last \`docs-snapshot/\` refresh. Run \`bash scripts/refresh-docs-snapshot.sh\` locally, review the diff, and commit." \
-              "- **check_sanitizer_parity**: the 3 bash \`defang_for_llm\` implementations have drifted. Update the divergent file(s) so all 3 use identical regex patterns." \
-              "- **check_gate_parity**: the safety-gate name list in workflow YAML / report-agent.ts / report-prompt.md no longer matches the canonical EXPECTED set. Update the divergent source(s)." \
-              "- **agent_tests**: \`npm test\` in \`agent/\` failed. The sanitiser is load-bearing security code; a failed assertion means runtime defenses may be broken." \
+              "- **check_docs_drift**: upstream llms.txt index hash changed since the last docs-snapshot/ refresh." \
+              "- **check_sanitizer_parity**: the 3 bash defang implementations have drifted." \
+              "- **check_gate_parity**: gate-name lists in workflow/TS/prompt no longer match the canonical set." \
+              "- **agent_tests**: pipeline/agent npm test failed." \
               "- **check_diff_size**: a tracked file changed >${DIFF_THRESHOLD_PCT}% — possible runaway-LLM rewrite." \
               "- **verify**: version-string propagation or required-file presence failed." \
-              "- **report**: the report-agent crashed. The daily report and README activity table for this date are missing/stale." \
-              "" \
-              "If the changes look correct, mark this PR ready and merge. If not, close it and let the next pipeline run try again.")
-            # Do NOT swallow `gh pr create` failure with `|| true`: the
-            # draft PR IS the review path for flagged runs; if creation
-            # fails (auth issue, branch already has an open PR, network),
-            # the commit lives on a branch nobody sees. Record the
-            # failure in the pipeline log so the final "Check for
-            # failures" step exits non-zero — the commit is still safe
-            # (it's on the pending-review branch, not main).
-            #
-            # NOTE on `$?` capture: a previous attempt used
-            # `if ! gh pr create ...; then PR_EXIT=$?; ...`. That pattern
-            # is broken — `$?` inside the `then` branch reports the exit
-            # of `!`, not of `gh pr create`. Capture the exit code
-            # directly after the command instead. set -uo pipefail at
-            # the top of this run block does NOT enable -e, so a non-zero
-            # exit here does not kill the script before we read $?.
+              "- **report**: the report-agent crashed.")
+
             gh pr create --draft \
-              --title "auto: pending review (${TODAY}) — $(echo "$GATES_FAILED" | xargs)" \
+              --title "auto[$SKILL_NAME]: pending review (${TODAY}) — $(echo "$GATES_FAILED" | xargs)" \
               --body "$PR_BODY" \
               --base main \
               --head "$BRANCH"
@@ -619,22 +552,8 @@ jobs:
           UPDATE="${{ steps.update.outcome || 'skipped' }}"
           RESEARCH="${{ steps.research.outcome || 'skipped' }}"
           REPORT="${{ steps.report.outcome || 'skipped' }}"
-          VERIFY="${{ steps.verify.outcome || 'skipped' }}"
-          VALIDATE="${{ steps.validate_examples.outcome || 'skipped' }}"
-          TYPECHECK="${{ steps.typecheck_templates.outcome || 'skipped' }}"
-          POPULATED="${{ steps.check_populated.outcome || 'skipped' }}"
-          DOCSDRIFT="${{ steps.check_docs_drift.outcome || 'skipped' }}"
-          DIFFSIZE="${{ steps.check_diff_size.outcome || 'skipped' }}"
-
-          echo "Outcomes:"
-          echo "  update=$UPDATE  research=$RESEARCH  report=$REPORT  verify=$VERIFY"
-          echo "  validate=$VALIDATE  typecheck=$TYPECHECK  populated=$POPULATED"
-          echo "  docsdrift=$DOCSDRIFT  diffsize=$DIFFSIZE"
-
-          # Hard failure on any LLM-agent crash (update / research / report).
-          # Gate failures route to draft PR (handled in the commit step) and
-          # do NOT fail the job — they're a review request, not an error.
+          echo "Skill $SKILL_NAME outcomes: update=$UPDATE research=$RESEARCH report=$REPORT"
           if [ "$UPDATE" = "failure" ] || [ "$RESEARCH" = "failure" ] || [ "$REPORT" = "failure" ]; then
-            echo "Pipeline had agent crashes — failing the job."
+            echo "Skill $SKILL_NAME had agent crashes — failing this matrix entry."
             exit 1
           fi

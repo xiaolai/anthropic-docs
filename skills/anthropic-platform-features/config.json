@@ -1,0 +1,32 @@
+{
+  "name": "anthropic-platform-features",
+  "displayName": "Anthropic Platform features — agents-and-tools, build-with-claude, manage-claude, managed-agents",
+  "description": "Platform-side features beyond the raw API: Agent Skills format spec, MCP connector, tool use (computer use, code execution, bash, define-tools), build-with-claude features (extended thinking, batch, citations, Bedrock/Vertex, embeddings, fast mode, context editing), manage-claude ops (WIF, billing, identity), and the Managed Agents product surface.",
+  "upstream": {
+    "docsIndexUrl": "https://platform.claude.com/llms.txt",
+    "docsPathFilter": "(agents-and-tools|build-with-claude|manage-claude|managed-agents)/",
+    "npmPackages": [],
+    "pypiPackages": [],
+    "githubRepos": [],
+    "bugTrackerRepo": null
+  },
+  "router": "SKILL.md",
+  "surfaces": [
+    "SKILL-agents-and-tools.md",
+    "SKILL-build-with-claude.md",
+    "SKILL-manage-claude.md",
+    "SKILL-managed-agents.md"
+  ],
+  "rules": [],
+  "dispatch": {
+    "agents-and-tools/agent-skills/": "SKILL-agents-and-tools.md",
+    "agents-and-tools/mcp-connector.md": "SKILL-agents-and-tools.md",
+    "agents-and-tools/remote-mcp-servers.md": "SKILL-agents-and-tools.md",
+    "agents-and-tools/tool-use/": "SKILL-agents-and-tools.md",
+    "build-with-claude/": "SKILL-build-with-claude.md",
+    "manage-claude/": "SKILL-manage-claude.md",
+    "managed-agents/": "SKILL-managed-agents.md"
+  },
+  "schemas": {},
+  "knownIssuesSurface": null
+}

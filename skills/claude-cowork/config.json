@@ -1,0 +1,25 @@
+{
+  "name": "claude-cowork",
+  "displayName": "Claude Cowork — multi-cloud enterprise + Office agents",
+  "description": "Cowork on 3P (Claude for Work multi-cloud: Bedrock, Microsoft Foundry, LLM gateways, SSO, telemetry, M365 connector) + Office agents (Claude in Excel, Slack-style office integrations).",
+  "upstream": {
+    "docsIndexUrl": "https://claude.com/docs/llms.txt",
+    "docsPathFilter": "(cowork|office-agents)/",
+    "npmPackages": [],
+    "pypiPackages": [],
+    "githubRepos": [],
+    "bugTrackerRepo": null
+  },
+  "router": "SKILL.md",
+  "surfaces": [
+    "SKILL-cowork.md",
+    "SKILL-office-agents.md"
+  ],
+  "rules": [],
+  "dispatch": {
+    "cowork/": "SKILL-cowork.md",
+    "office-agents/": "SKILL-office-agents.md"
+  },
+  "schemas": {},
+  "knownIssuesSurface": null
+}

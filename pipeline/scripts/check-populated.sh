@@ -15,14 +15,27 @@
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-STATE_FILE="$ROOT/agent/state.json"
+SKILL_NAME="${SKILL_NAME:-claude-code}"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+ROOT="$REPO_ROOT/skills/$SKILL_NAME"
+STATE_FILE="$ROOT/state.json"
+CONFIG_FILE="$ROOT/config.json"
+
+if [[ ! -d "$ROOT" ]]; then
+  echo "ERROR: SKILL_NAME=$SKILL_NAME but $ROOT does not exist" >&2
+  exit 2
+fi
+if [[ ! -f "$CONFIG_FILE" ]]; then
+  echo "ERROR: config.json missing at $CONFIG_FILE" >&2
+  exit 2
+fi
 
 # Marker patterns the research agent uses for unfilled sections
 MARKERS=(
   "*Populated by the research agent*"
   "*Populated by the research agent.*"
   "*Populated by the report agent*"
+  "*Auto-populated by the daily pipeline.*"
 )
 
 SCAFFOLD_COMPLETE="false"
@@ -31,32 +44,26 @@ if [[ -f "$STATE_FILE" ]]; then
 fi
 
 if [[ "${FORCE_POPULATED_CHECK:-0}" != "1" && "$SCAFFOLD_COMPLETE" != "true" ]]; then
-  echo "SCAFFOLD mode (state.scaffoldComplete = $SCAFFOLD_COMPLETE)."
+  echo "SCAFFOLD mode (state.scaffoldComplete = $SCAFFOLD_COMPLETE) for skill '$SKILL_NAME'."
   echo "Stub markers are expected. Skipping populated-section gate."
   echo "(Set FORCE_POPULATED_CHECK=1 to override.)"
   exit 0
 fi
 
-echo "POST-SCAFFOLD mode. Checking for residual stub markers ..."
+echo "POST-SCAFFOLD mode. Checking for residual stub markers in skill '$SKILL_NAME' ..."
 echo ""
 
 cd "$ROOT"
 
-# Files that should be fully populated after the first real research run
-TARGETS=(
-  SKILL-settings.md
-  SKILL-hooks.md
-  SKILL-slash-commands.md
-  SKILL-mcp.md
-  SKILL-plugins.md
-  SKILL-cli.md
-  SKILL-known-issues.md
-  rules/settings.md
-  rules/mcp.md
-  rules/plugins.md
-  rules/hooks.md
-  rules/skills-agents-commands.md
-)
+# Targets come from the skill's config.json — surfaces + rules.
+# Use while-read (bash 3.2-safe, no mapfile).
+TARGETS=()
+while IFS= read -r line; do
+  [[ -n "$line" ]] && TARGETS+=("$line")
+done < <(jq -r '.surfaces[]?' "$CONFIG_FILE")
+while IFS= read -r line; do
+  [[ -n "$line" ]] && TARGETS+=("$line")
+done < <(jq -r '.rules[]?' "$CONFIG_FILE")
 
 hits=0
 hits_report=""

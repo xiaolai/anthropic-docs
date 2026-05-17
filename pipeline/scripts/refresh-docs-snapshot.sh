@@ -81,8 +81,28 @@ INDEX_BODY=$(curl -sfL "${CURL_OPTS[@]}" "$DOCS_INDEX_URL") || {
 INDEX_SHA=$(printf '%s' "$INDEX_BODY" | hash256)
 echo "  index sha256: ${INDEX_SHA:0:16}…"
 
-# Extract the unique sorted URL list
-URLS=$(printf '%s' "$INDEX_BODY" | grep -oE 'https://code\.claude\.com/docs/[^)]+\.md' | sort -u)
+# Extract the unique sorted URL list. Host-generic so this script handles
+# code.claude.com, platform.claude.com, claude.com, modelcontextprotocol.io,
+# etc. The host is derived from $DOCS_INDEX_URL above (DOCS_HOST).
+DOCS_HOST_ESC="${DOCS_HOST//./\\.}"
+URLS=$(printf '%s' "$INDEX_BODY" | grep -oE "https://${DOCS_HOST_ESC}/[^)]+\.md" | sort -u)
+
+# Apply per-skill docsPathFilter from config.json if set.
+# `docsPathFilter` is a POSIX ERE matched against the URL.
+# Examples:
+#   "agent-sdk/"                          → only fetch pages with that path segment
+#   "^(?!.*agent-sdk/).*"                 → exclude agent-sdk (PCRE — not supported by grep -E!)
+#                                            → use sed/awk for negative lookahead
+DOCS_PATH_FILTER=$(jq -r '.upstream.docsPathFilter // empty' "$SKILL_CONFIG")
+if [[ -n "$DOCS_PATH_FILTER" ]]; then
+  if [[ "$DOCS_PATH_FILTER" == *"(?!"* ]] || [[ "$DOCS_PATH_FILTER" == *"(?="* ]]; then
+    # PCRE-style negative/positive lookahead — fall back to perl.
+    URLS=$(printf '%s\n' "$URLS" | perl -ne "print if /$DOCS_PATH_FILTER/")
+  else
+    URLS=$(printf '%s\n' "$URLS" | grep -E "$DOCS_PATH_FILTER" || true)
+  fi
+  echo "  applied docsPathFilter: $DOCS_PATH_FILTER"
+fi
 # Count URL lines. `grep -c` always prints a number (0 on no matches);
 # with `|| true` we tolerate the non-zero exit grep returns when count
 # is 0. The previous `|| echo "0"` form produced "0\n0" in the no-match

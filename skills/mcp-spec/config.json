@@ -1,0 +1,39 @@
+{
+  "name": "mcp-spec",
+  "displayName": "Model Context Protocol (MCP) — spec + clients + servers",
+  "description": "The MCP open protocol spec — clients, servers, transport (stdio / http / sse), capabilities, tools, resources, prompts, sampling. Tracks modelcontextprotocol.io docs plus the spec / TypeScript SDK / Python SDK repos.",
+  "upstream": {
+    "docsIndexUrl": "https://modelcontextprotocol.io/llms.txt",
+    "docsPathFilter": "",
+    "npmPackages": ["@modelcontextprotocol/sdk"],
+    "pypiPackages": ["mcp"],
+    "githubRepos": [
+      "modelcontextprotocol/modelcontextprotocol",
+      "modelcontextprotocol/typescript-sdk",
+      "modelcontextprotocol/python-sdk"
+    ],
+    "bugTrackerRepo": "modelcontextprotocol/modelcontextprotocol"
+  },
+  "router": "SKILL.md",
+  "surfaces": [
+    "SKILL-clients.md",
+    "SKILL-servers.md",
+    "SKILL-transport.md",
+    "SKILL-protocol.md",
+    "SKILL-tools-resources-prompts.md"
+  ],
+  "rules": [],
+  "dispatch": {
+    "clients.md": "SKILL-clients.md",
+    "specification/": "SKILL-protocol.md",
+    "docs/": "SKILL-protocol.md",
+    "tutorials/": "SKILL-servers.md",
+    "community/": "SKILL-protocol.md"
+  },
+  "schemas": {},
+  "knownIssuesSurface": null,
+  "notes": [
+    "The MCP spec lives in 3 places: modelcontextprotocol.io (the docs site, ~116 pages), the modelcontextprotocol/modelcontextprotocol GitHub repo (the canonical spec), and the language-specific SDK repos. This skill primarily tracks the docs site; the SDK repos are tracked for version bumps + bug-issue surfacing.",
+    "dispatch table is best-effort — modelcontextprotocol.io's URL structure is less rigidly categorised than the Anthropic surfaces, so the research agent has more discretion on where to put a given page."
+  ]
+}

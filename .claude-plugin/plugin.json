@@ -1,7 +1,7 @@
 {
   "name": "anthropic-docs-skills-autoupdated",
-  "description": "Auto-updated multi-skill reference for the whole Anthropic doc ecosystem. Ships per-skill payloads (claude-code; planned: claude-agent-sdk, anthropic-api, anthropic-platform-features, claude-connectors, claude-cowork, mcp-spec) backed by a shared daily pipeline. Each skill mirrors its upstream docs and surfaces a curated reference at intent-match time. Last updated: pending first multi-skill pipeline run.",
-  "version": "0.2.0",
+  "description": "Auto-updated multi-skill reference for the whole Anthropic doc ecosystem. Ships 7 per-skill payloads (claude-code, claude-agent-sdk, anthropic-api, anthropic-platform-features, claude-connectors, claude-cowork, mcp-spec) backed by a shared daily pipeline. Each skill mirrors its upstream docs and surfaces a curated reference at intent-match time.",
+  "version": "1.0.0",
   "author": { "name": "xiaolai" },
   "license": "MIT",
   "homepage": "https://github.com/xiaolai/anthropic-docs-skills-autoupdated",

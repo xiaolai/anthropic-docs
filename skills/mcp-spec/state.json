@@ -1,0 +1,28 @@
+{
+  "registry": {
+    "package": "@modelcontextprotocol/sdk",
+    "version": "0.0.0",
+    "engines": {}
+  },
+  "github": {
+    "repo": "modelcontextprotocol/modelcontextprotocol",
+    "latestRelease": {
+      "tag": "",
+      "name": "",
+      "publishedAt": ""
+    }
+  },
+  "docs": {
+    "indexUrl": "https://modelcontextprotocol.io/llms.txt",
+    "indexSha256": "",
+    "pageCount": 0,
+    "knownPages": {}
+  },
+  "trackedIssues": {},
+  "lastScannedIssueNumber": 0,
+  "researchedIssues": {},
+  "lastAuditedVersion": "none",
+  "lastUpdated": "",
+  "scaffoldComplete": false,
+  "lastRunWarnings": []
+}

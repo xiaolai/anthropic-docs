@@ -40,6 +40,7 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 ROOT="$REPO_ROOT/skills/$SKILL_NAME"
 MANIFEST="$ROOT/docs-snapshot/MANIFEST.json"
 SNAPSHOT_DIR="$ROOT/docs-snapshot"
+STATE_FILE="$ROOT/state.json"
 # Index URL comes from the skill's config.json so each skill targets its
 # own upstream. CLI/env can override for local testing.
 SKILL_CONFIG="$ROOT/config.json"
@@ -48,6 +49,27 @@ if [[ -f "$SKILL_CONFIG" ]]; then
   DOCS_INDEX_URL="${DOCS_INDEX_URL:-$CONFIG_DOCS_URL}"
 fi
 DOCS_INDEX_URL="${DOCS_INDEX_URL:-https://code.claude.com/llms.txt}"
+
+# Scaffold-mode bypass: a newly-scaffolded skill has an empty MANIFEST that
+# cannot match the live index. check-populated.sh uses the same pattern.
+# Override with FORCE_DRIFT_CHECK=1 (e.g., for a deliberate manual probe).
+SCAFFOLD_COMPLETE="false"
+if [[ -f "$STATE_FILE" ]]; then
+  SCAFFOLD_COMPLETE=$(jq -r '.scaffoldComplete // false' "$STATE_FILE" 2>/dev/null || echo "false")
+fi
+if [[ "${FORCE_DRIFT_CHECK:-0}" != "1" && "$SCAFFOLD_COMPLETE" != "true" ]]; then
+  echo "SCAFFOLD mode (state.scaffoldComplete = $SCAFFOLD_COMPLETE)."
+  echo "Empty/stub MANIFEST.json cannot match upstream — skipping drift gate."
+  echo "(Set FORCE_DRIFT_CHECK=1 to override.)"
+  exit 0
+fi
+
+# Derive host pattern from DOCS_INDEX_URL so the page-count + URL-diff logic
+# works for any upstream host (code.claude.com, platform.claude.com,
+# claude.com/docs, modelcontextprotocol.io, ...).
+DOCS_HOST=$(printf '%s' "$DOCS_INDEX_URL" | sed -E 's#^(https?://[^/]+).*$#\1#')
+# Escape dots for grep -E.
+DOCS_HOST_ESC=$(printf '%s' "$DOCS_HOST" | sed -E 's#\.#\\.#g')
 
 # Parse --deep flag
 DEEP_MODE=false
@@ -115,7 +137,7 @@ LIVE_BODY=$(curl -sfL "${CURL_OPTS[@]}" "$DOCS_INDEX_URL" 2>/dev/null) || {
 }
 
 LIVE_INDEX_SHA=$(printf '%s' "$LIVE_BODY" | hash256)
-LIVE_PAGE_COUNT=$(printf '%s' "$LIVE_BODY" | grep -cE 'https://code\.claude\.com/docs/[^)]+\.md' || echo "0")
+LIVE_PAGE_COUNT=$(printf '%s' "$LIVE_BODY" | grep -cE "${DOCS_HOST_ESC}/docs/[^)]+\.md|${DOCS_HOST_ESC}/[^)]+\.md" || echo "0")
 
 echo "  index sha: ${LIVE_INDEX_SHA:0:16}…"
 echo "  pages:     $LIVE_PAGE_COUNT"
@@ -133,7 +155,7 @@ echo ""
 # Always print added/removed pages when there's a delta, even if going to
 # pass via deep mode, so a maintainer can see what's happening.
 SNAPSHOT_URLS=$(jq -r '.pages[].url' "$MANIFEST" | sort -u)
-LIVE_URLS=$(printf '%s' "$LIVE_BODY" | grep -oE 'https://code\.claude\.com/docs/[^)]+\.md' | sort -u)
+LIVE_URLS=$(printf '%s' "$LIVE_BODY" | grep -oE "${DOCS_HOST_ESC}/docs/[^)]+\.md|${DOCS_HOST_ESC}/[^)]+\.md" | sort -u)
 ADDED=$(comm -13 <(printf '%s\n' "$SNAPSHOT_URLS") <(printf '%s\n' "$LIVE_URLS") | head -20)
 REMOVED=$(comm -23 <(printf '%s\n' "$SNAPSHOT_URLS") <(printf '%s\n' "$LIVE_URLS") | head -20)
 if [[ -n "$ADDED" || -n "$REMOVED" ]]; then

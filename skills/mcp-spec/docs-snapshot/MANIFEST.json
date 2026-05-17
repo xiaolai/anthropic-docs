@@ -1,0 +1,9 @@
+{
+  "indexUrl": "https://modelcontextprotocol.io/llms.txt",
+  "indexSha256": "",
+  "indexBytes": 0,
+  "pageCount": 0,
+  "refreshedAt": "",
+  "pages": [],
+  "_note": "Stub manifest — populated by SKILL_NAME=mcp-spec bash pipeline/scripts/refresh-docs-snapshot.sh on first daily run."
+}

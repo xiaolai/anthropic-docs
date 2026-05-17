@@ -1,36 +1,51 @@
-name: Weekly Deep Docs-Drift Check
+name: Weekly Deep Docs-Drift Check (per skill)
 
-# Runs the EXPENSIVE per-page hash verification (~1 minute, 132 page
-# fetches). The daily pipeline uses fast mode (index-only) for speed;
-# this workflow catches content drift that doesn't change the index.
-#
-# Detection only — does NOT auto-refresh the snapshot. On a failure, a
-# maintainer runs `bash scripts/refresh-docs-snapshot.sh` locally and
-# opens a PR with the refreshed snapshot + CHANGELOG entry.
+# Runs the EXPENSIVE per-page hash verification weekly. Daily uses fast
+# mode (index-only); this catches content drift that doesn't change the
+# index. Matrix-iterates over every skill.
 
 on:
   schedule:
     - cron: "0 12 * * 1"   # Every Monday 12:00 UTC
-  workflow_dispatch:        # And on-demand
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  deep-drift:
-    if: github.repository == 'xiaolai/claude-code-documentation-knowledge-autoupdated'
+  discover-skills:
+    if: github.repository == 'xiaolai/anthropic-docs-skills-autoupdated'
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.list.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - id: list
+        run: |
+          SKILLS=$(find skills -mindepth 1 -maxdepth 1 -type d \
+                    -exec test -f '{}'/config.json \; -print \
+                    | sed 's|^skills/||' | sort -u)
+          MATRIX=$(printf '%s\n' "$SKILLS" | jq -R . | jq -s -c '{skill: .}')
+          echo "matrix=$MATRIX" >> "$GITHUB_OUTPUT"
+
+  deep-drift:
+    needs: discover-skills
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix: ${{ fromJson(needs.discover-skills.outputs.matrix) }}
+    env:
+      SKILL_NAME: ${{ matrix.skill }}
     steps:
       - uses: actions/checkout@v4
 
-      - name: Run deep drift check
-        run: bash scripts/check-docs-drift.sh --deep
+      - name: Run deep drift check (${{ matrix.skill }})
+        run: bash pipeline/scripts/check-docs-drift.sh --deep
 
-      # On failure (exit 1 = per-page drift detected), GH Actions surfaces
-      # the workflow as failed in the maintainer's notifications. Auto-
-      # opening an issue would require broadening permissions to
-      # issues:write — kept as a follow-up rather than enabled by default.
       - name: Note on failure
         if: failure()
         run: |
-          echo "::warning::Weekly deep drift detected. Run 'bash scripts/refresh-docs-snapshot.sh' locally and open a PR with the refreshed snapshot + CHANGELOG entry."
+          echo "::warning::Weekly deep drift detected for $SKILL_NAME. Run 'SKILL_NAME=$SKILL_NAME bash pipeline/scripts/refresh-docs-snapshot.sh' locally and open a PR."

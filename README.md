@@ -1,26 +1,26 @@
 # anthropic-docs-skills-autoupdated
 
-**Status: mid-migration to multi-skill architecture (2026-05-17).** Per-skill content + history lives under `skills/<name>/`. This README describes the repo as a whole.
-
-A self-updating collection of Claude Code skills that mirror the official
-Anthropic documentation surfaces and surface them at intent-match time. The
+A self-updating collection of 7 Claude Code skills that mirror the official
+Anthropic documentation surfaces and present them at intent-match time. The
 pipeline lives once in `pipeline/`; each skill payload lives under
 `skills/<name>/` with its own `config.json` declaring upstream sources,
 dispatch tables, and schema mappings.
 
-## Skills currently shipping
+## Skills
 
-| Skill | Source | Status |
-|---|---|---|
-| `claude-code` | `code.claude.com/*` (ex agent-sdk) | ✅ shipping — see [`skills/claude-code/README.md`](skills/claude-code/README.md) and [`skills/claude-code/CHANGELOG.md`](skills/claude-code/CHANGELOG.md) for the full history |
-| `claude-agent-sdk` | `code.claude.com/agent-sdk/*` + npm + PyPI | 🚧 planned (migration from `claude-agent-sdk-skill-autoupdated`) |
-| `anthropic-api` | `platform.claude.com/api/*` | 🚧 planned |
-| `anthropic-platform-features` | `platform.claude.com/{agents-and-tools,build-with-claude,manage-claude,managed-agents}/*` | 🚧 planned |
-| `claude-connectors` | `claude.com/docs/{connectors,skills,plugins}/*` | 🚧 planned |
-| `claude-cowork` | `claude.com/docs/{cowork,office-agents}/*` | 🚧 planned |
-| `mcp-spec` | `modelcontextprotocol.io/*` | 🚧 planned |
+| Skill | Source | Surfaces | Status |
+|---|---|---|---|
+| `claude-code` | [`code.claude.com/docs`](https://code.claude.com/docs) (CLI itself) | 7 | ✅ populated |
+| `claude-agent-sdk` | [`code.claude.com/docs/en/agent-sdk`](https://code.claude.com/docs/en/agent-sdk) + npm + PyPI | 2 (TS / Python) | ✅ populated |
+| `anthropic-api` | [`platform.claude.com/docs/en/api`](https://platform.claude.com/docs/en/api) | 5 | 🌱 scaffold |
+| `anthropic-platform-features` | [`platform.claude.com/docs/en/{agents-and-tools,build-with-claude,manage-claude,managed-agents}`](https://platform.claude.com/docs) | 4 | 🌱 scaffold |
+| `claude-connectors` | [`claude.com/docs/en/{connectors,skills,plugins}`](https://claude.com/docs/en/connectors) | 5 | 🌱 scaffold |
+| `claude-cowork` | [`claude.com/docs/en/{cowork,office-agents}`](https://claude.com/docs/en/cowork) | 2 | 🌱 scaffold |
+| `mcp-spec` | [`modelcontextprotocol.io`](https://modelcontextprotocol.io) + 3 SDK repos | 5 | 🌱 scaffold |
 
-See [`dev-docs/multi-skill-migration.md`](dev-docs/multi-skill-migration.md) for the migration plan.
+**Legend:** ✅ populated = surface files already carry real content. 🌱 scaffold = `state.json.scaffoldComplete=false`, surfaces are stubs; the daily workflow's first successful run will populate them from upstream and flip the flag.
+
+See [`dev-docs/multi-skill-migration.md`](dev-docs/multi-skill-migration.md) for the full ecosystem plan + per-skill source mappings.
 
 ## Architecture
 

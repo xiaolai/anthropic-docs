@@ -1,0 +1,28 @@
+{
+  "registry": {
+    "package": "",
+    "version": "0.0.0",
+    "engines": {}
+  },
+  "github": {
+    "repo": "",
+    "latestRelease": {
+      "tag": "",
+      "name": "",
+      "publishedAt": ""
+    }
+  },
+  "docs": {
+    "indexUrl": "https://platform.claude.com/llms.txt",
+    "indexSha256": "",
+    "pageCount": 0,
+    "knownPages": {}
+  },
+  "trackedIssues": {},
+  "lastScannedIssueNumber": 0,
+  "researchedIssues": {},
+  "lastAuditedVersion": "none",
+  "lastUpdated": "",
+  "scaffoldComplete": false,
+  "lastRunWarnings": []
+}

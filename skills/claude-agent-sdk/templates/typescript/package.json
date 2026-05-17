@@ -1,0 +1,33 @@
+{
+  "name": "claude-agent-sdk-examples",
+  "version": "1.0.0",
+  "description": "Claude Agent SDK usage examples",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "basic-query": "tsx basic-query.ts",
+    "query-with-tools": "tsx query-with-tools.ts",
+    "custom-mcp-server": "tsx custom-mcp-server.ts",
+    "subagents": "tsx subagents-orchestration.ts",
+    "sessions": "tsx session-management.ts",
+    "permissions": "tsx permission-control.ts",
+    "settings": "tsx filesystem-settings.ts",
+    "errors": "tsx error-handling.ts",
+    "workflow": "tsx multi-agent-workflow.ts",
+    "structured-output": "tsx structured-output.ts",
+    "sandbox": "tsx sandbox-config.ts",
+    "hooks": "tsx hooks-example.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "^0.2.77",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

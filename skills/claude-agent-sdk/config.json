@@ -1,0 +1,52 @@
+{
+  "name": "claude-agent-sdk",
+  "displayName": "Claude Agent SDK (TypeScript + Python)",
+  "description": "The Claude Agent SDK — TypeScript (@anthropic-ai/claude-agent-sdk) + Python (claude-agent-sdk on PyPI). Covers query(), hooks, subagents, MCP, permissions, sandbox, structured outputs, sessions. Migrated from the standalone claude-agent-sdk-skill-autoupdated repo on 2026-05-17.",
+  "upstream": {
+    "docsIndexUrl": "https://code.claude.com/llms.txt",
+    "docsPathFilter": "agent-sdk/",
+    "npmPackages": ["@anthropic-ai/claude-agent-sdk"],
+    "pypiPackages": ["claude-agent-sdk"],
+    "githubRepos": [
+      "anthropics/claude-agent-sdk-typescript",
+      "anthropics/claude-agent-sdk-python"
+    ],
+    "bugTrackerRepo": "anthropics/claude-agent-sdk-typescript"
+  },
+  "router": "SKILL.md",
+  "surfaces": [
+    "SKILL-typescript.md",
+    "SKILL-python.md"
+  ],
+  "rules": [
+    "rules/claude-agent-sdk-ts.md",
+    "rules/claude-agent-sdk-py.md"
+  ],
+  "dispatch": {
+    "agent-sdk/typescript.md": "SKILL-typescript.md",
+    "agent-sdk/python.md": "SKILL-python.md",
+    "agent-sdk/agent-loop.md": "SKILL-typescript.md",
+    "agent-sdk/claude-code-features.md": "SKILL-typescript.md",
+    "agent-sdk/cost-tracking.md": "SKILL-typescript.md",
+    "agent-sdk/custom-tools.md": "SKILL-typescript.md",
+    "agent-sdk/hooks.md": "SKILL-typescript.md",
+    "agent-sdk/mcp.md": "SKILL-typescript.md",
+    "agent-sdk/overview.md": "SKILL-typescript.md",
+    "agent-sdk/permissions.md": "SKILL-typescript.md",
+    "agent-sdk/sessions.md": "SKILL-typescript.md",
+    "agent-sdk/sandbox.md": "SKILL-typescript.md",
+    "agent-sdk/streaming.md": "SKILL-typescript.md",
+    "agent-sdk/subagents.md": "SKILL-typescript.md",
+    "agent-sdk/structured-output.md": "SKILL-typescript.md",
+    "agent-sdk/system-prompts.md": "SKILL-typescript.md",
+    "agent-sdk/todo-tracking.md": "SKILL-typescript.md",
+    "agent-sdk/tracking-costs.md": "SKILL-typescript.md"
+  },
+  "schemas": {},
+  "knownIssuesSurface": null,
+  "notes": [
+    "Both SKILL-typescript.md and SKILL-python.md draw from the same code.claude.com/agent-sdk/* pages — the per-language split is on conceptual scope (idioms, types, packaging), not on source URLs.",
+    "The research agent should dispatch upstream changes to BOTH per-language surfaces when the change is language-agnostic (e.g., hooks event semantics), and to only the matching surface when language-specific (e.g., a Python-only API).",
+    "No JSON-schema-bound examples in this skill: agent-sdk content is mostly TS/Python code blocks, not JSON config. Empty schemas map disables PASS 1 of validate-examples but PASS 2 still runs."
+  ]
+}

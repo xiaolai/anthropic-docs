@@ -1,0 +1,42 @@
+{
+  "name": "claude-connectors",
+  "displayName": "Claude Connectors + Desktop extensions + MCP Apps Design",
+  "description": "MCP connectors (directory + custom), Claude Desktop MCPB packaging, MCP Apps for Claude Desktop (incl. visual + interaction design guidelines), integrations (GitHub / Google / Microsoft / Slack), Agent Skills format (user-facing), Plugins user-facing docs.",
+  "upstream": {
+    "docsIndexUrl": "https://claude.com/docs/llms.txt",
+    "docsPathFilter": "(connectors|skills|plugins)/",
+    "npmPackages": [],
+    "pypiPackages": [],
+    "githubRepos": [],
+    "bugTrackerRepo": null
+  },
+  "router": "SKILL.md",
+  "surfaces": [
+    "SKILL-connectors-overview.md",
+    "SKILL-connectors-building.md",
+    "SKILL-mcp-apps.md",
+    "SKILL-claude-skills.md",
+    "SKILL-claude-plugins.md"
+  ],
+  "rules": [],
+  "dispatch": {
+    "connectors/overview.md": "SKILL-connectors-overview.md",
+    "connectors/getting-started.md": "SKILL-connectors-overview.md",
+    "connectors/directory.md": "SKILL-connectors-overview.md",
+    "connectors/building/": "SKILL-connectors-building.md",
+    "connectors/building/mcpb.md": "SKILL-mcp-apps.md",
+    "connectors/building/mcp-apps/": "SKILL-mcp-apps.md",
+    "connectors/github/": "SKILL-connectors-overview.md",
+    "connectors/google/": "SKILL-connectors-overview.md",
+    "connectors/microsoft/": "SKILL-connectors-overview.md",
+    "connectors/slack/": "SKILL-connectors-overview.md",
+    "skills/": "SKILL-claude-skills.md",
+    "plugins/": "SKILL-claude-plugins.md"
+  },
+  "schemas": {},
+  "knownIssuesSurface": null,
+  "notes": [
+    "SKILL-mcp-apps.md is where Desktop MCPB packaging AND MCP Apps visual/interaction design guidelines live — the 'Claude Desktop' and 'Claude Design' surfaces.",
+    "SKILL-connectors-building.md covers the build-your-own-connector workflow (auth, submission, testing)."
+  ]
+}

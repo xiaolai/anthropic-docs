@@ -1,0 +1,38 @@
+{
+  "name": "anthropic-api",
+  "displayName": "Anthropic Messages API + Admin/Compliance/Beta/Models",
+  "description": "The Anthropic Messages API and adjacent surfaces (admin endpoints, compliance, beta features, models catalog) hosted under platform.claude.com/docs/en/api/. Excludes the auto-generated per-language SDK reference (covered better by IDE type defs).",
+  "upstream": {
+    "docsIndexUrl": "https://platform.claude.com/llms.txt",
+    "docsPathFilter": "api/(messages|admin|compliance|beta|models)/",
+    "npmPackages": ["@anthropic-ai/sdk"],
+    "pypiPackages": ["anthropic"],
+    "githubRepos": [
+      "anthropics/anthropic-sdk-typescript",
+      "anthropics/anthropic-sdk-python"
+    ],
+    "bugTrackerRepo": "anthropics/anthropic-sdk-typescript"
+  },
+  "router": "SKILL.md",
+  "surfaces": [
+    "SKILL-messages.md",
+    "SKILL-admin.md",
+    "SKILL-compliance.md",
+    "SKILL-beta.md",
+    "SKILL-models.md"
+  ],
+  "rules": [
+    "rules/messages-api.md"
+  ],
+  "dispatch": {
+    "api/messages/create.md": "SKILL-messages.md",
+    "api/messages/count_tokens.md": "SKILL-messages.md",
+    "api/messages/batches.md": "SKILL-messages.md",
+    "api/admin/": "SKILL-admin.md",
+    "api/compliance/": "SKILL-compliance.md",
+    "api/beta/": "SKILL-beta.md",
+    "api/models/": "SKILL-models.md"
+  },
+  "schemas": {},
+  "knownIssuesSurface": null
+}
