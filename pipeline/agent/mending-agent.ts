@@ -3,15 +3,15 @@ import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { defangAndWrap, defangJsonValue } from "./lib/sanitize.js";
+import { loadSkillContext, buildContextBlock, renderTemplate } from "./lib/skillContext.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const CHANGE_REPORT_PATH = process.env.CHANGE_REPORT ?? "/tmp/change-report.json";
 const VERIFY_REPORT_PATH = process.env.VERIFY_REPORT ?? "/tmp/verify-report.json";
 const SYSTEM_PROMPT_PATH = resolve(__dirname, "mending-prompt.md");
-// SKILL_NAME selects the skill payload. See update-agent.ts.
-const SKILL_NAME = process.env.SKILL_NAME ?? "claude-code";
-const SKILL_ROOT = resolve(__dirname, "..", "..", "skills", SKILL_NAME);
+const ctx = loadSkillContext();
+const { SKILL_NAME, SKILL_ROOT } = ctx;
 
 // Prevent "cannot be launched inside another Claude Code session" error
 const cleanEnv = { ...process.env };
@@ -32,7 +32,7 @@ function readRequired(path: string, label: string): string {
 
 const changeReport = readRequired(CHANGE_REPORT_PATH, "change report");
 const verifyReport = readRequired(VERIFY_REPORT_PATH, "verify report");
-const systemPrompt = readRequired(SYSTEM_PROMPT_PATH, "system prompt");
+const systemPrompt = renderTemplate(readRequired(SYSTEM_PROMPT_PATH, "system prompt"), ctx);
 
 const parsed = JSON.parse(verifyReport);
 const failCount = parsed.checksFailed ?? 0;
@@ -63,7 +63,7 @@ const { wrapped: wrappedVerify, nonce: verifyNonce } = defangAndWrap(
 );
 
 const userMessage = `
-You are working in the skill directory: ${SKILL_ROOT}
+${buildContextBlock(ctx)}
 
 The update agent ran but verification found ${failCount} failure(s).
 
@@ -110,7 +110,7 @@ Today's date is: ${new Date().toISOString().split("T")[0]}
 // Run the mending agent
 // ---------------------------------------------------------------------------
 
-console.log(`Mending Agent starting — ${failCount} failure(s) to fix ...`);
+console.log(`Mending Agent starting for skill '${SKILL_NAME}' (${ctx.DISPLAY_NAME}) — ${failCount} failure(s) to fix...`);
 console.log(`  Skill root: ${SKILL_ROOT}`);
 console.log();
 

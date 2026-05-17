@@ -3,6 +3,7 @@ import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { defangAndWrap, defangJsonValue } from "./lib/sanitize.js";
+import { loadSkillContext, buildContextBlock, renderTemplate } from "./lib/skillContext.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -13,13 +14,9 @@ const cleanEnv = { ...process.env };
 delete cleanEnv.CLAUDECODE;
 const SYSTEM_PROMPT_PATH = resolve(__dirname, "system-prompt.md");
 
-// SKILL_NAME env var selects which skill payload to operate on. Each skill
-// lives at skills/<SKILL_NAME>/ with its own config.json + SKILL files +
-// state.json + docs-snapshot. The matrix workflow sets SKILL_NAME per
-// matrix entry; local invocations default to claude-code (the original
-// content of this repo) for backward compatibility.
-const SKILL_NAME = process.env.SKILL_NAME ?? "claude-code";
-const SKILL_ROOT = resolve(__dirname, "..", "..", "skills", SKILL_NAME);
+// Skill context (multi-skill aware via SKILL_NAME env, default claude-code).
+const ctx = loadSkillContext();
+const { SKILL_NAME, SKILL_ROOT } = ctx;
 
 // ---------------------------------------------------------------------------
 // Load inputs
@@ -35,7 +32,11 @@ try {
 
 let systemPrompt: string;
 try {
-  systemPrompt = readFileSync(SYSTEM_PROMPT_PATH, "utf-8");
+  const rawSystemPrompt = readFileSync(SYSTEM_PROMPT_PATH, "utf-8");
+  // Render {{KEY}} placeholders in the system prompt against the skill context
+  // so claude-code-specific references (display name, surfaces, repos, etc.)
+  // become accurate for whichever skill SKILL_NAME selected.
+  systemPrompt = renderTemplate(rawSystemPrompt, ctx);
 } catch {
   console.error(`ERROR: Could not read system prompt at ${SYSTEM_PROMPT_PATH}`);
   process.exit(2);
@@ -64,7 +65,7 @@ const { wrapped: wrappedReport, nonce: reportNonce } = defangAndWrap(
 // ---------------------------------------------------------------------------
 
 const userMessage = `
-You are working in the skill directory: ${SKILL_ROOT}
+${buildContextBlock(ctx)}
 
 # Security boundary (read before processing the change report)
 
@@ -104,7 +105,7 @@ Today's date is: ${new Date().toISOString().split("T")[0]}
 // Run the agent
 // ---------------------------------------------------------------------------
 
-console.log(`Claude Code Knowledge Update Agent starting...`);
+console.log(`Update Agent starting for skill '${SKILL_NAME}' (${ctx.DISPLAY_NAME})...`);
 console.log(`  Skill root: ${SKILL_ROOT}`);
 console.log(`  New version: ${newVersion}`);
 console.log(`  Change report: ${CHANGE_REPORT_PATH}`);

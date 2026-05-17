@@ -147,9 +147,13 @@ manifest_entries="[]"
 
 while IFS= read -r url; do
   [[ -z "$url" ]] && continue
-  # Map upstream URL to a relative path under docs-snapshot/code.claude.com/.
-  # https://code.claude.com/docs/en/foo.md → en/foo.md
-  rel="${url#https://code.claude.com/docs/}"
+  # Map upstream URL → relative path under docs-snapshot/${DOCS_HOST}/.
+  # Host-generic: strip the scheme+host, then optionally a leading `docs/`
+  # segment so code.claude.com/docs/en/foo.md and platform.claude.com/docs/
+  # en/api/foo.md both land at en/.../foo.md, while
+  # modelcontextprotocol.io/specification/foo.md lands at specification/foo.md.
+  rel="${url#https://$DOCS_HOST/}"
+  rel="${rel#docs/}"
   target="$SNAPSHOT_DIR/$rel"
   mkdir -p "$(dirname "$target")"
 

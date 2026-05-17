@@ -3,14 +3,13 @@ import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { defangAndWrap, defangJsonValue } from "./lib/sanitize.js";
+import { loadSkillContext, buildContextBlock, renderTemplate } from "./lib/skillContext.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const SYSTEM_PROMPT_PATH = resolve(__dirname, "report-prompt.md");
-// SKILL_NAME selects the skill payload. See update-agent.ts.
-const SKILL_NAME = process.env.SKILL_NAME ?? "claude-code";
-const SKILL_ROOT = resolve(__dirname, "..", "..", "skills", SKILL_NAME);
-const STATE_PATH = resolve(SKILL_ROOT, "state.json");
+const ctx = loadSkillContext();
+const { SKILL_ROOT, STATE_PATH } = ctx;
 const COST_LOG_PATH = "/tmp/agent-costs.json";
 
 // Prevent "cannot be launched inside another Claude Code session" error
@@ -38,7 +37,7 @@ function readRequired(path: string, label: string): string {
   }
 }
 
-const systemPrompt = readRequired(SYSTEM_PROMPT_PATH, "system prompt");
+const systemPrompt = renderTemplate(readRequired(SYSTEM_PROMPT_PATH, "system prompt"), ctx);
 const stateJson = readOptional(STATE_PATH) ?? "{}";
 const changeReport = readOptional("/tmp/change-report.json");
 const verifyReport = readOptional("/tmp/verify-report.json");
@@ -94,9 +93,9 @@ const allNonces = [
 // ---------------------------------------------------------------------------
 
 let userMessage = `
-You are working in the skill directory: ${SKILL_ROOT}
-Today's date is: ${today}
-Write the report to: ${SKILL_ROOT}/reports/${today}.md
+${buildContextBlock(ctx)}
+
+Write the daily report to: ${SKILL_ROOT}/reports/${today}.md
 
 # Security boundary (read before processing the data below)
 

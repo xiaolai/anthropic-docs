@@ -59,6 +59,23 @@ if ! git rev-parse --verify "$BASE" >/dev/null 2>&1; then
   exit 0
 fi
 
+# Scaffold-finalize bypass: if state.scaffoldComplete just flipped from
+# false to true in this commit, this is the initial population pass —
+# replacing stubs with real content naturally exceeds the threshold by
+# 10×. Bypass the gate for this one commit. Future commits (where
+# scaffoldComplete was already true at BASE) run the gate normally.
+# Override with FORCE_DIFF_CHECK=1 to enforce regardless.
+if [[ -f "$REPO_ROOT/$SKILL_DIR/state.json" ]] && [[ "${FORCE_DIFF_CHECK:-0}" != "1" ]]; then
+  PRIOR_SCAFFOLD=$(git show "$BASE:$SKILL_DIR/state.json" 2>/dev/null | jq -r '.scaffoldComplete // false' 2>/dev/null || echo "false")
+  CURRENT_SCAFFOLD=$(jq -r '.scaffoldComplete // false' "$REPO_ROOT/$SKILL_DIR/state.json" 2>/dev/null || echo "false")
+  if [[ "$PRIOR_SCAFFOLD" == "false" && "$CURRENT_SCAFFOLD" == "true" ]]; then
+    echo "Scaffold-finalize commit for skill '$SKILL_NAME' (scaffoldComplete: false → true)."
+    echo "Replacing stub content with real content naturally exceeds the threshold."
+    echo "Diff-size gate bypassed for this commit. (Set FORCE_DIFF_CHECK=1 to override.)"
+    exit 0
+  fi
+fi
+
 echo "Diff-size gate: threshold ${THRESHOLD}% per file (base: $BASE)"
 echo ""
 

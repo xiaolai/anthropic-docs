@@ -2,16 +2,13 @@ import { query } from "@anthropic-ai/claude-agent-sdk";
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { loadSkillContext, buildContextBlock, renderTemplate } from "./lib/skillContext.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const SYSTEM_PROMPT_PATH = resolve(__dirname, "research-prompt.md");
-// SKILL_NAME selects the skill payload (see update-agent.ts for the
-// full explanation). Default claude-code preserves the original
-// single-skill behaviour for local invocations.
-const SKILL_NAME = process.env.SKILL_NAME ?? "claude-code";
-const SKILL_ROOT = resolve(__dirname, "..", "..", "skills", SKILL_NAME);
-const STATE_PATH = resolve(SKILL_ROOT, "state.json");
+const ctx = loadSkillContext();
+const { SKILL_NAME, SKILL_ROOT, STATE_PATH } = ctx;
 
 const cleanEnv = { ...process.env };
 delete cleanEnv.CLAUDECODE;
@@ -25,48 +22,46 @@ function readRequired(path: string, label: string): string {
   }
 }
 
-const systemPrompt = readRequired(SYSTEM_PROMPT_PATH, "research prompt");
-const stateJson = readRequired(STATE_PATH, "state.json");
-
-const state = JSON.parse(stateJson);
-const researchedIssues = state.researchedIssues ?? {};
-const alreadyResearched = Object.keys(researchedIssues);
-const lastAuditedVersion = state.lastAuditedVersion ?? "none";
-const ccVersion = state.registry?.version ?? "unknown";
-const docsIndexUrl = state.docs?.indexUrl ?? "https://code.claude.com/llms.txt";
+// Render {{KEY}} placeholders in the prompt against the skill context so
+// claude-code-specific text (display name, surfaces, repos) becomes
+// accurate for whichever skill SKILL_NAME selected.
+const rawPrompt = readRequired(SYSTEM_PROMPT_PATH, "research prompt");
+const systemPrompt = renderTemplate(rawPrompt, ctx);
+const alreadyResearched = ctx.RESEARCHED_ISSUE_NUMBERS;
 
 const userMessage = `
-You are working in the skill directory: ${SKILL_ROOT}
-The state file is at: ${STATE_PATH}
-The Claude Code docs index is at: ${docsIndexUrl}
-
-Current Claude Code version: ${ccVersion}
-Last audited version: ${lastAuditedVersion}
+${buildContextBlock(ctx)}
 
 Already-researched issue numbers (skip these): ${alreadyResearched.length > 0 ? alreadyResearched.join(", ") : "none yet"}
 
-Run Part A (Docs Surface Audit) first — fetch the docs index, compare
-against SKILL.md, and add or update any sections whose source pages
-have changed.
+Run Part A (Docs Surface Audit) first — fetch the docs index at
+${ctx.DOCS_INDEX_URL || "<no docs configured>"}, compare against the
+router (${ctx.ROUTER}) and the surface files listed above, and add or
+update any sections whose source pages have changed.
 
-Then run Part B (GitHub Issues Research) — research recent issues from
-anthropics/claude-code and add Known Issues entries to SKILL-known-issues.md
-or auto-correction rules to the appropriate rules/*.md file.
+${
+  ctx.BUG_TRACKER_REPO
+    ? `Then run Part B (GitHub Issues Research) — research recent issues from
+${ctx.BUG_TRACKER_REPO} and add Known Issues entries${
+        ctx.KNOWN_ISSUES_SURFACE
+          ? ` to ${ctx.KNOWN_ISSUES_SURFACE}`
+          : " to the known-issues surface if one exists"
+      } or auto-correction rules to the appropriate rules/*.md file.
 
-Finally run Part C (Final Checks) — verify consistency across the router
-SKILL.md, the 7 SKILL-*.md surface files (settings, hooks, slash-commands,
-mcp, plugins, cli, known-issues), the 5 rules/*.md files, README.md, and
-the latest docs.
+`
+    : `Skip Part B — this skill has no bug-tracker repo configured.
+
+`
+}Finally run Part C (Final Checks) — verify consistency across the router
+${ctx.ROUTER}, the ${ctx.SURFACES.length} surface files (${ctx.SURFACES.join(", ") || "none"}), the ${ctx.RULES.length} rules/*.md files (${ctx.RULES.join(", ") || "none"}), README.md, and the latest docs.
 
 Do NOT create git branches or commits.
-
-Today's date is: ${new Date().toISOString().split("T")[0]}
 `.trim();
 
-console.log("Claude Code Knowledge Research Agent starting ...");
+console.log(`Research Agent starting for skill '${SKILL_NAME}' (${ctx.DISPLAY_NAME})...`);
 console.log(`  Skill root: ${SKILL_ROOT}`);
-console.log(`  CC version: ${ccVersion}`);
-console.log(`  Last audited: ${lastAuditedVersion}`);
+console.log(`  Primary version: ${ctx.PRIMARY_VERSION}`);
+console.log(`  Last audited: ${ctx.LAST_AUDITED_VERSION}`);
 console.log(`  Already researched: ${alreadyResearched.length} issues`);
 console.log();
 
