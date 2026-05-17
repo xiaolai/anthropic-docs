@@ -46,7 +46,7 @@ Minimal valid `settings.json`:
 }
 ```
 
-Source: `code.claude.com/docs/en/settings.md`. The research agent expands this table on each docs change.
+Source: `code.claude.com/docs/en/settings.md`. The research agent expands this table on each daily run when upstream documents a new key.
 
 ## `permissions` block
 
@@ -76,4 +76,4 @@ Source: `code.claude.com/docs/en/settings.md`. The research agent expands this t
 
 ---
 
-*Source pages: `code.claude.com/docs/en/settings.md`. Last reviewed: <pipeline-stamp>.*
+*Source pages: `code.claude.com/docs/en/settings.md`.*

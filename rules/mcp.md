@@ -29,7 +29,3 @@ For non-stdio transports, set `"type": "http"` or `"type": "sse"` and supply a `
 ### `env` values must be strings
 
 `env` is an object mapping env-var names to **string** values. Numbers and booleans should be quoted: `"PORT": "3000"`, not `"PORT": 3000`.
-
----
-
-*Last reviewed: <pipeline-stamp>.*

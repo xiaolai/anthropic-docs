@@ -31,7 +31,3 @@ The top-level `name` field in `marketplace.json` is the marketplace identifier, 
 ### `version` must be valid SemVer
 
 Use `MAJOR.MINOR.PATCH` with optional pre-release / build metadata. `1.0`, `v1.0.0`, or `latest` are not valid SemVer and will be rejected by the plugin loader.
-
----
-
-*Last reviewed: <pipeline-stamp>.*

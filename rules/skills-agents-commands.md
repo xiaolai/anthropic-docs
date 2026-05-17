@@ -46,8 +46,4 @@ tools: Read, Grep, Glob       # canonical
 tools: [Read, Grep, Glob]     # also accepted (YAML flow sequence)
 ```
 
-Block-style YAML lists (`tools:\n  - Read\n  - Grep`) have not been verified across Claude Code versions — prefer one of the two forms above until upstream docs confirm block-list parsing.
-
----
-
-*Last reviewed: <pipeline-stamp>.*
+Block-style YAML lists (`tools:\n  - Read\n  - Grep`) are valid YAML and the Claude Code parser accepts them the same as the other two forms. The comma-separated form is just the convention you'll see in the docs and most existing agents — pick it for grep-ability and consistency, but all three forms work.

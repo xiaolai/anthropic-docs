@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "author": { "name": "xiaolai" },
   "license": "MIT",
+  "homepage": "https://github.com/xiaolai/claude-code-documentation-knowledge-autoupdated",
   "repository": "https://github.com/xiaolai/claude-code-documentation-knowledge-autoupdated",
   "keywords": ["claude-code", "settings", "hooks", "mcp", "plugins", "reference", "auto-updated"]
 }

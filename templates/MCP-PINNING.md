@@ -13,12 +13,21 @@ appears in many MCP tutorials is a supply-chain risk:
 ## How to update the templates
 
 1. Verify the latest stable version on npmjs.com (or the project's GitHub
-   release tags). Read the changelog for the bump you're considering —
-   don't auto-update across major versions without reviewing the diff.
+   release tags). Read the changelog and look specifically for:
+   - **New required capabilities** (filesystem write, network egress,
+     credentials access) — these require user re-consent, not silent
+     auto-update.
+   - **Removed or renamed transports / protocol versions** — a server
+     that drops `stdio` support breaks every `.mcp.json` that pins it.
+   - **Auth-flow changes** — environment-variable renames or new token
+     scopes that change which secrets the server reads.
+   - **Major version bumps** — never cross a major boundary without
+     reading the migration notes; minor and patch can be batched.
 2. Update the version pin in `templates/.mcp.json`.
-3. Optionally test locally by pointing your own `.mcp.json` at the same
-   pinned version before committing.
-4. Add a CHANGELOG entry noting the bump and the reason.
+3. Test locally by pointing your own `.mcp.json` at the same pinned
+   version and running the MCP client end-to-end before committing.
+4. Add a CHANGELOG entry naming the old + new versions and the reason
+   for the bump (security fix, capability you need, deprecation).
 
 ## What the example versions in this repo mean
 

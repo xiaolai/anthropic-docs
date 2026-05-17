@@ -40,7 +40,7 @@ Minimal example — one stdio server (with an exact version pin, recommended):
 }
 ```
 
-The `command` field implies stdio transport (the default). Add `"type": "http"` or `"type": "sse"` plus a `url` field for remote transports. See § *Transport: `http`* and § *Transport: `sse`* below.
+The `command` field implies stdio transport (the default). For remote transports, add `"type": "http"` or `"type": "sse"` plus a `url` field whose value is the transport endpoint. See § *Transport: `http`* and § *Transport: `sse`* below for full per-transport schemas, including auth headers and capability declarations.
 
 **Pin your MCP server versions.** The bare `npx -y @scope/server` pattern (no version pin) resolves to the latest version on every startup — a supply-chain compromise of any future release runs immediately with whatever capabilities the server requests. MCP servers commonly request filesystem or network capabilities, so this is a real blast radius. See [`templates/MCP-PINNING.md`](templates/MCP-PINNING.md) for the rationale and the canonical pattern.
 
@@ -79,4 +79,4 @@ Source: `code.claude.com/docs/en/mcp.md`.
 
 ---
 
-*Source pages: `code.claude.com/docs/en/mcp.md`. Last reviewed: <pipeline-stamp>.*
+*Source pages: `code.claude.com/docs/en/mcp.md`.*

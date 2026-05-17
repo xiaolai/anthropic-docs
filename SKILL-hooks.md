@@ -44,8 +44,8 @@ Claude Code writes a single JSON object to your hook's stdin. Common top-level f
 |---|---|---|---|
 | `hook_event_name` | string | yes | One of: `PreToolUse`, `PostToolUse`, `Stop`, `SubagentStop`, `Notification`, `UserPromptSubmit`, `PreCompact`, `SessionStart`, `SessionEnd` |
 | `session_id` | string | yes | Stable id for the current Claude Code session |
-| `transcript_path` | string | yes (absent only when the session runs without persistent transcript, e.g. some headless / SDK contexts) | Path to the rolling conversation transcript |
-| `cwd` | string | yes (absent only when the session is launched without a working directory, e.g. some SDK contexts) | Working directory the session was launched from |
+| `transcript_path` | string | yes (absent only when the session runs without persistent transcript, e.g. headless and SDK contexts that run without a persistent transcript file) | Path to the rolling conversation transcript |
+| `cwd` | string | yes (absent only when the session is launched without a working directory, e.g. SDK contexts where the caller passes no cwd) | Working directory the session was launched from |
 | `tool_name` | string | PreToolUse / PostToolUse only | e.g. `Bash`, `Read`, `Edit` |
 | `tool_input` | object | PreToolUse / PostToolUse only | The arguments the tool is about to receive (or was just called with) |
 | `tool_response` | any | PostToolUse only | What the tool returned |
@@ -68,7 +68,7 @@ Example payload for a `PreToolUse` event on a Bash call:
 }
 ```
 
-Source: `code.claude.com/docs/en/hooks-guide.md`. The research agent fills in per-event variations as docs change.
+Source: `code.claude.com/docs/en/hooks-guide.md`. The research agent fills in per-event variations on each daily run.
 
 ## Hook output shape
 
@@ -91,4 +91,4 @@ Source: `code.claude.com/docs/en/hooks-guide.md`. The research agent fills in pe
 
 ---
 
-*Source pages: `code.claude.com/docs/en/hooks.md`, `hooks-guide.md`. Last reviewed: <pipeline-stamp>.*
+*Source pages: `code.claude.com/docs/en/hooks.md`, `hooks-guide.md`.*

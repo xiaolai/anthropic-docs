@@ -89,4 +89,4 @@ Source: `code.claude.com/docs/en/plugins.md`.
 
 ---
 
-*Source pages: `code.claude.com/docs/en/plugins.md`. Last reviewed: <pipeline-stamp>.*
+*Source pages: `code.claude.com/docs/en/plugins.md`.*

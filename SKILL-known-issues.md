@@ -59,4 +59,4 @@ Each entry uses this structure:
 
 ---
 
-*Source: `anthropics/claude-code` issue tracker (`label:bug`). Last reviewed: <pipeline-stamp>.*
+*Source: `anthropics/claude-code` issue tracker (`label:bug`).*

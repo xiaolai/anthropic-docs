@@ -72,4 +72,4 @@ Source: `code.claude.com/docs/en/settings.md` (environment section). The researc
 
 ---
 
-*Source pages: `code.claude.com/docs/en/cli-reference.md`, `settings.md` (env section), `permissions.md`. Last reviewed: <pipeline-stamp>.*
+*Source pages: `code.claude.com/docs/en/cli-reference.md`, `settings.md` (env section), `permissions.md`.*

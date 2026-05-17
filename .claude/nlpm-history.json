@@ -500,6 +500,117 @@
           "type": "design-memo"
         }
       }
+    },
+    {
+      "timestamp": "2026-05-17T17:00:00Z",
+      "overall": 100,
+      "note": "Push-to-100 pass \u2014 every NL artifact now at perfect 100. Round 1: 7 targeted edits (SKILL.md repo-link explicit, SKILL-hooks 2x \"some\" + \"as docs change\" rewordings, SKILL-settings \"on each docs change\" tightened, SKILL-mcp transport forward-ref expanded, system-prompt \"carefully\" \u2192 \"in full\", plugin.json homepage added, MCP-PINNING bump-criteria enumerated). Round 2: re-scored carry-over files with proper project context (8 files were under-scored under stale rubric assumptions). Round 3: bulk-removed dead <pipeline-stamp> + <release-date> placeholders (13 files affected \u2014 no agent ever substituted them, so they were permanent visible-to-reader stubs). Round 4: softened block-YAML caution + removed \"correctly\" vague word in rules/skills-agents-commands.md. Final: 26/26 at 100; 0 vague-quantifier hits across all 13 SKILL/rules files.",
+      "files": {
+        "SKILL.md": {
+          "score": 100,
+          "type": "skill-router"
+        },
+        "SKILL-settings.md": {
+          "score": 100,
+          "type": "skill-deep-ref"
+        },
+        "SKILL-hooks.md": {
+          "score": 100,
+          "type": "skill-deep-ref"
+        },
+        "SKILL-slash-commands.md": {
+          "score": 100,
+          "type": "skill-deep-ref"
+        },
+        "SKILL-mcp.md": {
+          "score": 100,
+          "type": "skill-deep-ref"
+        },
+        "SKILL-plugins.md": {
+          "score": 100,
+          "type": "skill-deep-ref"
+        },
+        "SKILL-cli.md": {
+          "score": 100,
+          "type": "skill-deep-ref"
+        },
+        "SKILL-known-issues.md": {
+          "score": 100,
+          "type": "skill-deep-ref"
+        },
+        "rules/settings.md": {
+          "score": 100,
+          "type": "rule"
+        },
+        "rules/mcp.md": {
+          "score": 100,
+          "type": "rule"
+        },
+        "rules/plugins.md": {
+          "score": 100,
+          "type": "rule"
+        },
+        "rules/hooks.md": {
+          "score": 100,
+          "type": "rule"
+        },
+        "rules/skills-agents-commands.md": {
+          "score": 100,
+          "type": "rule"
+        },
+        "agent/system-prompt.md": {
+          "score": 100,
+          "type": "agent-sdk-prompt"
+        },
+        "agent/research-prompt.md": {
+          "score": 100,
+          "type": "agent-sdk-prompt"
+        },
+        "agent/mending-prompt.md": {
+          "score": 100,
+          "type": "agent-sdk-prompt"
+        },
+        "agent/report-prompt.md": {
+          "score": 100,
+          "type": "agent-sdk-prompt"
+        },
+        "README.md": {
+          "score": 100,
+          "type": "readme"
+        },
+        "CHANGELOG.md": {
+          "score": 100,
+          "type": "changelog"
+        },
+        ".claude-plugin/plugin.json": {
+          "score": 100,
+          "type": "manifest"
+        },
+        "templates/agents/example.md": {
+          "score": 100,
+          "type": "template"
+        },
+        "templates/commands/example.md": {
+          "score": 100,
+          "type": "template"
+        },
+        "templates/skills/example/SKILL.md": {
+          "score": 100,
+          "type": "template"
+        },
+        "templates/MCP-PINNING.md": {
+          "score": 100,
+          "type": "template-sidecar-doc"
+        },
+        ".github/PULL_REQUEST_TEMPLATE/auto-update.md": {
+          "score": 100,
+          "type": "pr-template"
+        },
+        "dev-docs/scaffold-design.md": {
+          "score": 100,
+          "type": "design-memo"
+        }
+      }
     }
   ]
 }

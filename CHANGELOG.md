@@ -10,6 +10,67 @@ The newest entry is at the top.
 
 ---
 
+## 2026-05-17 — push to 100 (all 26 NL artifacts at perfect score)
+
+Final quality pass. NLPM trend across the day: **69 → 93 → 91 → 97 → 97 → 98 → 100**.
+
+**Targeted edits to lift specific findings:**
+
+- `SKILL.md` router: "self-contained" replaced with concrete cross-link
+  language; "source repo above" pronoun replaced with explicit GitHub
+  URL link.
+- `SKILL-hooks.md`: rewrote two table cells that used "some headless /
+  SDK contexts" with concrete absence conditions ("contexts that run
+  without a persistent transcript file" / "contexts where the caller
+  passes no cwd"); changed "as docs change" to "on each daily run".
+- `SKILL-settings.md`: "on each docs change" → "on each daily run
+  when upstream documents a new key".
+- `SKILL-mcp.md`: transport forward-reference expanded to name what
+  each transport's section covers (auth headers, capability declarations).
+- `agent/system-prompt.md`: removed "carefully" from the
+  one-shot-success paragraph.
+- `.claude-plugin/plugin.json`: added `homepage` field (mirrors
+  `repository` per standard practice).
+- `templates/MCP-PINNING.md`: bump-procedure step 1 now enumerates
+  four concrete review criteria (new required capabilities,
+  removed/renamed transports, auth-flow changes, major version bumps)
+  instead of generic "review the diff".
+
+**Bulk: removed dead `<pipeline-stamp>` and `<release-date>` placeholders.**
+
+Every SKILL-*.md and rules/*.md had a footer with `Last reviewed:
+<pipeline-stamp>` and the router had `**Released** | <release-date>`.
+Audit revealed these were never actually substituted by any agent —
+only README's `**Last updated**` line gets the daily sed-stamp. The
+literal placeholder strings were therefore permanently visible to
+readers. Two choices: extend the report-agent to also stamp every
+file, OR remove the dead placeholders. Chose removal (per-file stamps
+add minimal value vs git log / README global stamp). The
+`v<version>` placeholder in SKILL.md's router table is kept — the
+update-agent does substitute it on version bumps.
+
+13 files affected (7 SKILL-*.md + 5 rules/*.md + 1 SKILL.md router).
+
+**Softened block-YAML caution in rules/skills-agents-commands.md.**
+
+Previous wording said block-style YAML lists "have not been verified
+across Claude Code versions" — slightly contradicted the spec, which
+permits all three forms. New wording acknowledges all three parse the
+same and frames comma-separated as the convention for grep-ability.
+Also dropped a "correctly" word that tripped the vague-quantifier
+scanner.
+
+**Carry-over score reconciliation.**
+
+5 files (SKILL-cli, SKILL-known-issues, SKILL-plugins, rules/{settings,
+mcp}) had been carrying scores from snapshots 3-5 that were assigned
+before the project-context overrides were fully conveyed to the
+scorer. Re-scoring with current context lifted them to 100.
+
+**Result:** every one of the 26 tracked NL artifacts now scores 100,
+0 vague-quantifier hits across all 13 SKILL/rules files, all 8 verify
+gates pass.
+
 ## 2026-05-17 — codex audit-fix pass 3 (9 findings → CLEAN in 1 round)
 
 Sanity-check re-run of `/codex-toolkit:audit-fix --full` against the

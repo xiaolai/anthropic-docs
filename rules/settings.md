@@ -31,7 +31,3 @@ Hook event names use PascalCase: `PreToolUse`, `PostToolUse`, `Stop`, `SubagentS
 ### `enabledPlugins` keys use `<plugin>@<marketplace>` format
 
 The key is the qualified plugin id, not the bare plugin name. Example: `"my-plugin@my-marketplace": true`. The bare-name form `"my-plugin": true` may silently fail to enable.
-
----
-
-*Last reviewed: <pipeline-stamp>.*

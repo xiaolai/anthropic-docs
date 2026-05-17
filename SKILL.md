@@ -26,8 +26,6 @@ user-invocable: true
 | Field | Value |
 |---|---|
 | **Claude Code version** | v<version> |
-| **Released** | <release-date> |
-| **Last reviewed** | <pipeline-stamp> |
 | **Source docs** | [code.claude.com/docs](https://code.claude.com/docs/en/overview.md) |
 | **GitHub** | [anthropics/claude-code](https://github.com/anthropics/claude-code) |
 | **npm** | [`@anthropic-ai/claude-code`](https://www.npmjs.com/package/@anthropic-ai/claude-code) |
@@ -39,7 +37,9 @@ user-invocable: true
 ## Dispatch table
 
 Read the surface file(s) matching the user's question. Each surface
-file is self-contained — you do not need to read all of them.
+file holds its complete reference for that one topic and cross-links
+(via markdown links) to siblings when a fact spans surfaces — so you
+only need to Read the matching file(s), not all of them.
 
 | Surface file | Read when the user asks about… |
 |---|---|
@@ -73,5 +73,6 @@ Path-scoped correction rules live in `rules/`:
 ---
 
 *This skill is auto-updated daily by a maintainer-run pipeline. If you
-spot a bug in this content, file an issue at the source repo above —
+spot a bug in this content, file an issue at
+[xiaolai/claude-code-documentation-knowledge-autoupdated](https://github.com/xiaolai/claude-code-documentation-knowledge-autoupdated) —
 SKILL.md fixes flow back through the next research run, not via PRs.*

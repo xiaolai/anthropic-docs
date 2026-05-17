@@ -78,4 +78,4 @@ Source: `code.claude.com/docs/en/slash-commands.md`.
 
 ---
 
-*Source pages: `code.claude.com/docs/en/slash-commands.md`. Last reviewed: <pipeline-stamp>.*
+*Source pages: `code.claude.com/docs/en/slash-commands.md`.*

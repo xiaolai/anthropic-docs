@@ -30,7 +30,3 @@ To **block** a tool call, the PreToolUse hook must exit with code **2**. Any oth
 ### Read stdin once
 
 The hook payload arrives on stdin. Reading it twice (or piping stdin through multiple commands) drops bytes — capture once with `PAYLOAD=$(cat)` and then jq-extract from `"$PAYLOAD"`.
-
----
-
-*Last reviewed: <pipeline-stamp>.*
