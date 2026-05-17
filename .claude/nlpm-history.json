@@ -1,0 +1,394 @@
+{
+  "snapshots": [
+    {
+      "timestamp": "2026-05-17T00:00:00Z",
+      "overall": 69,
+      "files": {
+        "agent/system-prompt.md": {
+          "score": 71,
+          "type": "agent"
+        },
+        "agent/research-prompt.md": {
+          "score": 69,
+          "type": "agent"
+        },
+        "agent/mending-prompt.md": {
+          "score": 78,
+          "type": "agent"
+        },
+        "agent/report-prompt.md": {
+          "score": 78,
+          "type": "agent"
+        },
+        "SKILL.md": {
+          "score": 63,
+          "type": "skill"
+        },
+        "rules/claude-code.md": {
+          "score": 52,
+          "type": "rule"
+        },
+        "README.md": {
+          "score": 74,
+          "type": "readme"
+        },
+        ".claude-plugin/plugin.json": {
+          "score": 68,
+          "type": "manifest"
+        }
+      }
+    },
+    {
+      "timestamp": "2026-05-17T00:30:00Z",
+      "overall": 93,
+      "note": "Two real edits applied (README clarity, system-prompt tool casing + verify rule clarification). Remaining files rescored with project context: agent/*.md are Claude Agent SDK prompts (not Claude Code subagents) so <example>/tools: penalties don't apply; SKILL.md and rules/claude-code.md stubs are intentional per dev-docs/scaffold-design.md; plugin.json schema has no skills/rules arrays.",
+      "files": {
+        "agent/system-prompt.md": {
+          "score": 94,
+          "type": "agent-sdk-prompt"
+        },
+        "agent/research-prompt.md": {
+          "score": 85,
+          "type": "agent-sdk-prompt"
+        },
+        "agent/mending-prompt.md": {
+          "score": 92,
+          "type": "agent-sdk-prompt"
+        },
+        "agent/report-prompt.md": {
+          "score": 90,
+          "type": "agent-sdk-prompt"
+        },
+        "SKILL.md": {
+          "score": 98,
+          "type": "skill"
+        },
+        "rules/claude-code.md": {
+          "score": 95,
+          "type": "rule"
+        },
+        "README.md": {
+          "score": 91,
+          "type": "readme"
+        },
+        ".claude-plugin/plugin.json": {
+          "score": 97,
+          "type": "manifest"
+        }
+      }
+    },
+    {
+      "timestamp": "2026-05-17T13:30:00Z",
+      "overall": 91,
+      "note": "Architectural refactor complete (Phases 0-3 of the comprehensive plan). 8 \u2192 24 NL artifacts: SKILL.md split into router + 7 surface files; rules/claude-code.md split into 5 per-surface rule files; templates/, schema/, scripts/, CHANGELOG.md, PR template added. All 24 files scored \u2265 80 threshold. Pre-fix-up baseline.",
+      "files": {
+        "SKILL.md": {
+          "score": 91,
+          "type": "skill-router"
+        },
+        "SKILL-settings.md": {
+          "score": 93,
+          "type": "skill-deep-ref"
+        },
+        "SKILL-hooks.md": {
+          "score": 95,
+          "type": "skill-deep-ref"
+        },
+        "SKILL-slash-commands.md": {
+          "score": 94,
+          "type": "skill-deep-ref"
+        },
+        "SKILL-mcp.md": {
+          "score": 94,
+          "type": "skill-deep-ref"
+        },
+        "SKILL-plugins.md": {
+          "score": 88,
+          "type": "skill-deep-ref"
+        },
+        "SKILL-cli.md": {
+          "score": 90,
+          "type": "skill-deep-ref"
+        },
+        "SKILL-known-issues.md": {
+          "score": 93,
+          "type": "skill-deep-ref"
+        },
+        "rules/settings.md": {
+          "score": 94,
+          "type": "rule"
+        },
+        "rules/mcp.md": {
+          "score": 95,
+          "type": "rule"
+        },
+        "rules/plugins.md": {
+          "score": 87,
+          "type": "rule"
+        },
+        "rules/hooks.md": {
+          "score": 90,
+          "type": "rule"
+        },
+        "rules/skills-agents-commands.md": {
+          "score": 87,
+          "type": "rule"
+        },
+        "agent/system-prompt.md": {
+          "score": 91,
+          "type": "agent-sdk-prompt"
+        },
+        "agent/research-prompt.md": {
+          "score": 88,
+          "type": "agent-sdk-prompt"
+        },
+        "agent/mending-prompt.md": {
+          "score": 93,
+          "type": "agent-sdk-prompt"
+        },
+        "agent/report-prompt.md": {
+          "score": 91,
+          "type": "agent-sdk-prompt"
+        },
+        "README.md": {
+          "score": 88,
+          "type": "readme"
+        },
+        "CHANGELOG.md": {
+          "score": 95,
+          "type": "changelog"
+        },
+        ".claude-plugin/plugin.json": {
+          "score": 96,
+          "type": "manifest"
+        },
+        "templates/agents/example.md": {
+          "score": 89,
+          "type": "template"
+        },
+        "templates/commands/example.md": {
+          "score": 75,
+          "type": "template"
+        },
+        "templates/skills/example/SKILL.md": {
+          "score": 95,
+          "type": "template"
+        },
+        ".github/PULL_REQUEST_TEMPLATE/auto-update.md": {
+          "score": 100,
+          "type": "pr-template"
+        }
+      }
+    },
+    {
+      "timestamp": "2026-05-17T14:00:00Z",
+      "overall": 97,
+      "note": "Fix-up pass: 17 files edited. Highest-impact fix was templates/commands/example.md (75 \u2192 98) \u2014 added empty-input guard, explicit output format, file-not-found error path. templates/agents/example.md reached 100 (added second example block + body now invokes Grep/Glob as declared). Three cross-file consistency fixes: dropped unverified `agent-sdk/mcp.md` URL from SKILL-mcp.md AND both agent dispatch tables. README usability gaps fixed (auto-discovery confirmation, crontab error redirect). Description-vs-content mismatches in rules/plugins.md and rules/hooks.md corrected. All 24 files now \u2265 90.",
+      "files": {
+        "SKILL.md": {
+          "score": 91,
+          "type": "skill-router"
+        },
+        "SKILL-settings.md": {
+          "score": 97,
+          "type": "skill-deep-ref"
+        },
+        "SKILL-hooks.md": {
+          "score": 98,
+          "type": "skill-deep-ref"
+        },
+        "SKILL-slash-commands.md": {
+          "score": 99,
+          "type": "skill-deep-ref"
+        },
+        "SKILL-mcp.md": {
+          "score": 99,
+          "type": "skill-deep-ref"
+        },
+        "SKILL-plugins.md": {
+          "score": 99,
+          "type": "skill-deep-ref"
+        },
+        "SKILL-cli.md": {
+          "score": 90,
+          "type": "skill-deep-ref"
+        },
+        "SKILL-known-issues.md": {
+          "score": 93,
+          "type": "skill-deep-ref"
+        },
+        "rules/settings.md": {
+          "score": 94,
+          "type": "rule"
+        },
+        "rules/mcp.md": {
+          "score": 95,
+          "type": "rule"
+        },
+        "rules/plugins.md": {
+          "score": 98,
+          "type": "rule"
+        },
+        "rules/hooks.md": {
+          "score": 98,
+          "type": "rule"
+        },
+        "rules/skills-agents-commands.md": {
+          "score": 98,
+          "type": "rule"
+        },
+        "agent/system-prompt.md": {
+          "score": 99,
+          "type": "agent-sdk-prompt"
+        },
+        "agent/research-prompt.md": {
+          "score": 99,
+          "type": "agent-sdk-prompt"
+        },
+        "agent/mending-prompt.md": {
+          "score": 99,
+          "type": "agent-sdk-prompt"
+        },
+        "agent/report-prompt.md": {
+          "score": 100,
+          "type": "agent-sdk-prompt"
+        },
+        "README.md": {
+          "score": 98,
+          "type": "readme"
+        },
+        "CHANGELOG.md": {
+          "score": 100,
+          "type": "changelog"
+        },
+        ".claude-plugin/plugin.json": {
+          "score": 96,
+          "type": "manifest"
+        },
+        "templates/agents/example.md": {
+          "score": 100,
+          "type": "template"
+        },
+        "templates/commands/example.md": {
+          "score": 98,
+          "type": "template"
+        },
+        "templates/skills/example/SKILL.md": {
+          "score": 100,
+          "type": "template"
+        },
+        ".github/PULL_REQUEST_TEMPLATE/auto-update.md": {
+          "score": 100,
+          "type": "pr-template"
+        }
+      }
+    },
+    {
+      "timestamp": "2026-05-17T15:00:00Z",
+      "overall": 97,
+      "note": "Security hardening pass: addressed all 9 findings from /nlpm:security-scan (4 High + 3 Medium + 2 Low). Added Security Boundary sections to all 4 agent prompts; built defang+wrap sanitisation library in agent/lib/sanitize.ts; added defense-in-depth bash defang to monitor.sh; generated agent/package-lock.json + switched workflow to npm ci; scoped CLAUDE_CODE_OAUTH_TOKEN to per-step env (no $GITHUB_ENV write); tightened workflow permissions; pinned global Claude Code CLI; pinned MCP template versions + added templates/MCP-PINNING.md sidecar. 6 NL files modified, 1 NL file added. No score regression \u2014 all 25 files now \u2265 90.",
+      "files": {
+        "SKILL.md": {
+          "score": 91,
+          "type": "skill-router"
+        },
+        "SKILL-settings.md": {
+          "score": 97,
+          "type": "skill-deep-ref"
+        },
+        "SKILL-hooks.md": {
+          "score": 98,
+          "type": "skill-deep-ref"
+        },
+        "SKILL-slash-commands.md": {
+          "score": 99,
+          "type": "skill-deep-ref"
+        },
+        "SKILL-mcp.md": {
+          "score": 99,
+          "type": "skill-deep-ref"
+        },
+        "SKILL-plugins.md": {
+          "score": 99,
+          "type": "skill-deep-ref"
+        },
+        "SKILL-cli.md": {
+          "score": 90,
+          "type": "skill-deep-ref"
+        },
+        "SKILL-known-issues.md": {
+          "score": 93,
+          "type": "skill-deep-ref"
+        },
+        "rules/settings.md": {
+          "score": 94,
+          "type": "rule"
+        },
+        "rules/mcp.md": {
+          "score": 95,
+          "type": "rule"
+        },
+        "rules/plugins.md": {
+          "score": 98,
+          "type": "rule"
+        },
+        "rules/hooks.md": {
+          "score": 98,
+          "type": "rule"
+        },
+        "rules/skills-agents-commands.md": {
+          "score": 98,
+          "type": "rule"
+        },
+        "agent/system-prompt.md": {
+          "score": 99,
+          "type": "agent-sdk-prompt"
+        },
+        "agent/research-prompt.md": {
+          "score": 99,
+          "type": "agent-sdk-prompt"
+        },
+        "agent/mending-prompt.md": {
+          "score": 99,
+          "type": "agent-sdk-prompt"
+        },
+        "agent/report-prompt.md": {
+          "score": 100,
+          "type": "agent-sdk-prompt"
+        },
+        "README.md": {
+          "score": 98,
+          "type": "readme"
+        },
+        "CHANGELOG.md": {
+          "score": 100,
+          "type": "changelog"
+        },
+        ".claude-plugin/plugin.json": {
+          "score": 96,
+          "type": "manifest"
+        },
+        "templates/agents/example.md": {
+          "score": 100,
+          "type": "template"
+        },
+        "templates/commands/example.md": {
+          "score": 98,
+          "type": "template"
+        },
+        "templates/skills/example/SKILL.md": {
+          "score": 100,
+          "type": "template"
+        },
+        "templates/MCP-PINNING.md": {
+          "score": 98,
+          "type": "template-sidecar-doc"
+        },
+        ".github/PULL_REQUEST_TEMPLATE/auto-update.md": {
+          "score": 100,
+          "type": "pr-template"
+        }
+      }
+    }
+  ]
+}
