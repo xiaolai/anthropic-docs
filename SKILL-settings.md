@@ -51,7 +51,7 @@ Source: `code.claude.com/docs/en/settings.md`. The research agent expands this t
 ## `permissions` block
 
 > *Populated by the research agent.*
-> Source: `code.claude.com/docs/en/iam.md` (permission modes),
+> Source: `code.claude.com/docs/en/permission-modes.md` and `permissions.md`,
 > `code.claude.com/docs/en/settings.md#permissions`.
 
 ## `env` injection

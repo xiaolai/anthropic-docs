@@ -64,10 +64,13 @@ hits_report=""
 for f in "${TARGETS[@]}"; do
   if [[ ! -f "$f" ]]; then continue; fi
   for pat in "${MARKERS[@]}"; do
+    # -H forces the filename in grep output (default for multi-file greps;
+    # explicit here because grep treats single-file greps differently).
+    # Output format: "<file>:<line>:<content>" — actionable in CI logs.
     while IFS= read -r line; do
       hits=$((hits + 1))
       hits_report+="  $line"$'\n'
-    done < <(grep -nF "$pat" "$f" 2>/dev/null || true)
+    done < <(grep -nHF "$pat" "$f" 2>/dev/null || true)
   done
 done
 

@@ -55,7 +55,7 @@ When a docs page changes, update the matching surface file. Use this dispatch ma
 | Upstream `code.claude.com/docs/en/...` page | Target surface file |
 |---|---|
 | `settings.md` | `SKILL-settings.md` (also `SKILL-cli.md` env-vars section) |
-| `hooks.md`, `hooks-reference.md` | `SKILL-hooks.md` |
+| `hooks.md`, `hooks-guide.md` | `SKILL-hooks.md` |
 | `slash-commands.md` | `SKILL-slash-commands.md` |
 | `mcp.md` | `SKILL-mcp.md` |
 | `plugins.md`, `plugin-marketplaces.md` | `SKILL-plugins.md` |

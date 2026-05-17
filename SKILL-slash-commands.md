@@ -40,11 +40,13 @@ Minimal command (`~/.claude/commands/wc.md`):
 ---
 description: Count words in the given file.
 argument-hint: "<file path>"
-allowed-tools: Read, Bash(wc:*)
+allowed-tools: Read
 ---
 
-Count the words in $ARGUMENTS. The file size is `!wc -c $ARGUMENTS`.
+Count the words in $ARGUMENTS. Read the file and report `<path>: <N> words`.
 ```
+
+**Avoid putting `$ARGUMENTS` into a `!`-prefixed shell line.** The `!` prefix invokes a shell, and `$ARGUMENTS` is unsanitised caller input — `foo.txt; rm -rf ~` parses as three commands. The `allowed-tools` matcher constrains which tool the model can invoke; it does not escape arguments. Prefer `Read` (this example) over `!`-shell when the input touches `$ARGUMENTS`. The fuller risk analysis is in [`templates/commands/example.md`](templates/commands/example.md) under "Safety note".
 
 Source: `code.claude.com/docs/en/slash-commands.md`.
 

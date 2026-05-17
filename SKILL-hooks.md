@@ -21,7 +21,7 @@ source: https://code.claude.com/docs/en/hooks.md
 
 > *Populated by the research agent.*
 > Source: `code.claude.com/docs/en/hooks.md`,
-> `code.claude.com/docs/en/hooks-reference.md`.
+> `code.claude.com/docs/en/hooks-guide.md`.
 
 ## Configuration: where hooks live
 
@@ -68,7 +68,7 @@ Example payload for a `PreToolUse` event on a Bash call:
 }
 ```
 
-Source: `code.claude.com/docs/en/hooks-reference.md`. The research agent fills in per-event variations as docs change.
+Source: `code.claude.com/docs/en/hooks-guide.md`. The research agent fills in per-event variations as docs change.
 
 ## Hook output shape
 
@@ -91,4 +91,4 @@ Source: `code.claude.com/docs/en/hooks-reference.md`. The research agent fills i
 
 ---
 
-*Source pages: `code.claude.com/docs/en/hooks.md`, `hooks-reference.md`. Last reviewed: <pipeline-stamp>.*
+*Source pages: `code.claude.com/docs/en/hooks.md`, `hooks-guide.md`. Last reviewed: <pipeline-stamp>.*

@@ -193,7 +193,19 @@ echo "Phase 2 result: checked $checked   drifted $mismatched   fetch-failed $fet
 echo ""
 
 if (( fetch_failed > 0 )); then
-  echo "WARN: $fetch_failed page(s) could not be re-fetched (network or removed upstream)." >&2
+  # A fetch failure means we DON'T KNOW whether that page drifted. Treating
+  # the run as "PASS" because the pages we did check matched would falsely
+  # claim full coverage. Treat fetch failures as setup/network failures
+  # (exit 2) unless explicitly opted out of via SKIP_IF_NO_NETWORK=1, the
+  # same convention as Phase 1's index fetch.
+  if [[ "${SKIP_IF_NO_NETWORK:-0}" == "1" ]]; then
+    echo "WARN: $fetch_failed page(s) could not be re-fetched; SKIP_IF_NO_NETWORK=1 — tolerating." >&2
+  else
+    echo "FAIL: $fetch_failed page(s) could not be re-fetched (network or removed upstream)." >&2
+    echo "      Deep mode cannot confirm 'all pages match snapshot' when some pages were skipped." >&2
+    echo "      Re-run after fixing the network, or set SKIP_IF_NO_NETWORK=1 to tolerate." >&2
+    exit 2
+  fi
 fi
 
 # Deep mode: fail if index drifted OR any page content drifted.

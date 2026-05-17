@@ -237,7 +237,19 @@ jobs:
             echo "--- Running mending agent (attempt $((attempt + 1))) ---"
             echo ""
             MEND_ATTEMPTS=$((MEND_ATTEMPTS + 1))
+            # Capture the mending agent's exit code via PIPESTATUS so a
+            # crash is visible — `| tee` would otherwise mask the failure
+            # behind a successful tee. If mending crashes hard, surface
+            # the exit code in the pipeline log; verify will fail again
+            # next iteration but at least we know mending didn't help.
             npx tsx mending-agent.ts 2>&1 | tee /tmp/mending-agent-$((attempt + 1)).log
+            MEND_EXIT=${PIPESTATUS[0]}
+            if [ "$MEND_EXIT" -ne 0 ]; then
+              echo "WARN: mending agent exited $MEND_EXIT on attempt $((attempt + 1))"
+              jq --arg s "mending" --arg a "$((attempt + 1))" --arg c "$MEND_EXIT" \
+                '.steps += [{"step":$s,"attempt":($a|tonumber),"result":"failed","exitCode":($c|tonumber)}]' \
+                "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
+            fi
           done
 
       # ---------------------------------------------------------------
@@ -479,7 +491,10 @@ jobs:
           } > /tmp/commit-message.txt
 
           if [ -n "$GATES_FAILED" ]; then
-            BRANCH="auto/${TODAY}-pending-review"
+            # Include run_id + attempt so a second failed run on the same
+            # day doesn't collide with the first run's branch (which would
+            # break the `git checkout -b` or the `git push -u` step).
+            BRANCH="auto/${TODAY}-pending-review-${{ github.run_id }}-${{ github.run_attempt }}"
             echo "Routing to draft PR on branch: $BRANCH"
             git checkout -b "$BRANCH"
             git commit -F /tmp/commit-message.txt

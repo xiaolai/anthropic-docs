@@ -94,7 +94,9 @@ for f in "${TARGETS[@]}"; do
   # Integer percent (× 100 to avoid floats)
   pct=$(( (changed * 100) / prior_lines ))
 
-  if (( pct >= THRESHOLD )); then
+  # Strict `>` matches the README/scripts docs ("changes >20% in one run").
+  # A file changed exactly THRESHOLD% does NOT trip the gate.
+  if (( pct > THRESHOLD )); then
     echo "  OVER   $f — ${pct}% changed (added=$added deleted=$deleted of $prior_lines lines)"
     report+="  $f: ${pct}% changed"$'\n'
     over_threshold=$((over_threshold + 1))

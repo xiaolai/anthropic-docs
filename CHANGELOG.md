@@ -10,6 +10,70 @@ The newest entry is at the top.
 
 ---
 
+## 2026-05-17 — codex audit-fix pass 3 (9 findings → CLEAN in 1 round)
+
+Sanity-check re-run of `/codex-toolkit:audit-fix --full` against the
+post-pass-2 commit. Codex surfaced 9 new findings (0 Critical, 2 High,
+4 Medium, 3 Low) — angles the pass-2 audit didn't cover. All FIXED on
+the first verification round (codex verdict: CLEAN).
+
+**HIGH:**
+
+- **Slash-command shell-injection footgun** (`templates/commands/example.md`,
+  `SKILL-slash-commands.md`): the example used `!wc -c $ARGUMENTS` —
+  `!`-prefix invokes a shell, and `$ARGUMENTS` is unsanitised caller
+  input. A copied command becomes shell injection if input contains
+  `;` or `&&`. The `allowed-tools: Bash(wc:*)` matcher constrains
+  which tool the model may invoke but does NOT escape arguments.
+  Removed `Bash(wc:*)` and the shell line; reverted to a `Read`-only
+  pattern that counts in-language. Added a "Safety note: do NOT do
+  this" section explaining the risk.
+
+- **`refresh-docs-snapshot.sh` zero-page guard double-output**: the
+  guard line was `URL_COUNT=$(... | grep -c . || echo "0")`. When grep
+  matched zero (exit 1), the `|| echo "0"` fired producing `"0\n0"`,
+  which broke the `(( URL_COUNT == 0 ))` arithmetic guard. Replaced
+  with `|| true` + `${URL_COUNT:-0}` defensive default. Inline comment
+  documents the bug.
+
+**MEDIUM:**
+
+- **`--deep` mode passed with fetch failures** (`scripts/check-docs-drift.sh`):
+  per-page mode treated `fetch_failed > 0` as a warning then could
+  still print PASS if checked pages matched — falsely claiming full
+  coverage. Now exits 2 (setup/network failure per script contract)
+  unless `SKIP_IF_NO_NETWORK=1` opts out.
+
+- **Draft-PR branch collision on same-day re-run** (workflow): branch
+  name was `auto/${TODAY}-pending-review`. Second failed run same day
+  collided. Now includes `${{ github.run_id }}-${{ github.run_attempt }}`.
+
+- **`hooks-reference.md` doesn't exist upstream**: SKILL-hooks.md and
+  agent/system-prompt.md referenced this non-existent page. The
+  docs-snapshot cross-check should have caught this had the schema
+  cross-check pass been over source URLs too. Replaced all 3
+  references with `hooks-guide.md` (verified present in MANIFEST).
+
+- **`iam.md` doesn't exist upstream** (`SKILL-settings.md:54`): same
+  class as above. Replaced with `permission-modes.md` and
+  `permissions.md` (both present in MANIFEST).
+
+**LOW:**
+
+- **Off-by-one in diff-size gate** (`scripts/check-diff-size.sh`): code
+  said `pct >= THRESHOLD`, docs said `>20%`. A file changed exactly 20%
+  tripped the gate against intent. Changed to strict `>`.
+
+- **Mending step `PIPESTATUS` not captured** (workflow): `npx tsx
+  mending-agent.ts 2>&1 | tee` masked agent crashes behind a successful
+  tee. Now reads `MEND_EXIT=${PIPESTATUS[0]}` and logs non-zero exits
+  to the pipeline log.
+
+- **`check-populated.sh` failure output dropped filenames**: `grep -nF`
+  on single files omits the filename, so CI output showed `<line>:<content>`
+  with no file context. Switched to `grep -nHF` so output is
+  `<file>:<line>:<content>` — actionable.
+
 ## 2026-05-17 — codex audit-fix pass 2 (22 findings → CLEAN over 3 rounds)
 
 Ran `/codex-toolkit:audit-fix --full` (9-dimension audit) and closed every

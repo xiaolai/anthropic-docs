@@ -71,7 +71,13 @@ echo "  index sha256: ${INDEX_SHA:0:16}…"
 
 # Extract the unique sorted URL list
 URLS=$(printf '%s' "$INDEX_BODY" | grep -oE 'https://code\.claude\.com/docs/[^)]+\.md' | sort -u)
-URL_COUNT=$(printf '%s\n' "$URLS" | grep -c . || echo "0")
+# Count URL lines. `grep -c` always prints a number (0 on no matches);
+# with `|| true` we tolerate the non-zero exit grep returns when count
+# is 0. The previous `|| echo "0"` form produced "0\n0" in the no-match
+# case (grep's own "0" + echo's "0"), which broke the arithmetic guard
+# below — caught by audit-fix-3, finding H2.
+URL_COUNT=$(printf '%s\n' "$URLS" | grep -c . || true)
+URL_COUNT="${URL_COUNT:-0}"
 echo "  pages to fetch: $URL_COUNT"
 echo ""
 
