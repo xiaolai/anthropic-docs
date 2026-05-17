@@ -389,6 +389,117 @@
           "type": "pr-template"
         }
       }
+    },
+    {
+      "timestamp": "2026-05-17T16:00:00Z",
+      "overall": 98,
+      "note": "Codex audit-fix pass closed 13 NL audit findings (4 High + 6 Med + 3 Low). 4 NL files touched: report-prompt full Security Boundary parity, research-prompt stale ref fix, README architecture bullets + maintainer section, dev-docs postscript. 1 new file scored (dev-docs/scaffold-design.md @ 98). Workflow + report-agent.ts + monitor.sh + typecheck-templates.sh also fixed but are not NL artifacts. All 26 NL files now \u2265 90. [Update: 2 final low-finding fixes applied \u2014 README crontab now uses idiomatic \"|| true\" guard; dev-docs stale rows now carry \"superseded \u2014 see \u00a7 Post-scaffold evolution\" cross-refs. Both files now at 100.]",
+      "files": {
+        "SKILL.md": {
+          "score": 91,
+          "type": "skill-router"
+        },
+        "SKILL-settings.md": {
+          "score": 97,
+          "type": "skill-deep-ref"
+        },
+        "SKILL-hooks.md": {
+          "score": 98,
+          "type": "skill-deep-ref"
+        },
+        "SKILL-slash-commands.md": {
+          "score": 99,
+          "type": "skill-deep-ref"
+        },
+        "SKILL-mcp.md": {
+          "score": 99,
+          "type": "skill-deep-ref"
+        },
+        "SKILL-plugins.md": {
+          "score": 99,
+          "type": "skill-deep-ref"
+        },
+        "SKILL-cli.md": {
+          "score": 90,
+          "type": "skill-deep-ref"
+        },
+        "SKILL-known-issues.md": {
+          "score": 93,
+          "type": "skill-deep-ref"
+        },
+        "rules/settings.md": {
+          "score": 94,
+          "type": "rule"
+        },
+        "rules/mcp.md": {
+          "score": 95,
+          "type": "rule"
+        },
+        "rules/plugins.md": {
+          "score": 98,
+          "type": "rule"
+        },
+        "rules/hooks.md": {
+          "score": 98,
+          "type": "rule"
+        },
+        "rules/skills-agents-commands.md": {
+          "score": 98,
+          "type": "rule"
+        },
+        "agent/system-prompt.md": {
+          "score": 99,
+          "type": "agent-sdk-prompt"
+        },
+        "agent/mending-prompt.md": {
+          "score": 99,
+          "type": "agent-sdk-prompt"
+        },
+        "CHANGELOG.md": {
+          "score": 100,
+          "type": "changelog"
+        },
+        ".claude-plugin/plugin.json": {
+          "score": 96,
+          "type": "manifest"
+        },
+        "templates/agents/example.md": {
+          "score": 100,
+          "type": "template"
+        },
+        "templates/commands/example.md": {
+          "score": 98,
+          "type": "template"
+        },
+        "templates/skills/example/SKILL.md": {
+          "score": 100,
+          "type": "template"
+        },
+        "templates/MCP-PINNING.md": {
+          "score": 98,
+          "type": "template-sidecar-doc"
+        },
+        ".github/PULL_REQUEST_TEMPLATE/auto-update.md": {
+          "score": 100,
+          "type": "pr-template"
+        },
+        "agent/research-prompt.md": {
+          "score": 100,
+          "type": "agent-sdk-prompt"
+        },
+        "agent/report-prompt.md": {
+          "score": 100,
+          "type": "agent-sdk-prompt"
+        },
+        "README.md": {
+          "score": 100,
+          "type": "readme"
+        },
+        "dev-docs/scaffold-design.md": {
+          "score": 100,
+          "type": "design-memo"
+        }
+      }
     }
   ]
 }

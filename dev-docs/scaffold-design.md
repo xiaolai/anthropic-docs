@@ -102,8 +102,8 @@ flowchart LR
 
 | Path | Why it's there |
 |---|---|
-| `SKILL.md` | The single LLM-facing reference. Sections are pre-named so descriptions are stable for intent-matching; bodies are stubs to be filled by the research agent on first run. |
-| `rules/claude-code.md` | Path-scoped auto-correction rules. Fires when the user edits `.claude/settings*.json`, `.mcp.json`, plugin manifests, hooks, skills, agents, commands. Starts empty; populates as research agent finds real user mistakes. |
+| `SKILL.md` | The single LLM-facing reference. Sections are pre-named so descriptions are stable for intent-matching; bodies are stubs to be filled by the research agent on first run. **(superseded — see § Post-scaffold evolution; the single SKILL was split into a router + 7 surface files)** |
+| `rules/claude-code.md` | Path-scoped auto-correction rules. Fires when the user edits `.claude/settings*.json`, `.mcp.json`, plugin manifests, hooks, skills, agents, commands. Starts empty; populates as research agent finds real user mistakes. **(superseded — see § Post-scaffold evolution; split into five `rules/*.md` files)** |
 | `README.md` | Human-facing repo description. Self-updating header (`Last updated`) and activity table (last 7 days). |
 | `.claude-plugin/plugin.json` | Plugin manifest. Description carries the "Last updated" stamp so search engines / installers see freshness. |
 | `agent/*` | The pipeline. Never edited by the agents themselves; the prompts explicitly forbid touching this directory. |
@@ -112,7 +112,9 @@ flowchart LR
 ## Stub strategy
 
 `SKILL.md` and `rules/claude-code.md` ship as section skeletons, not
-finished prose. Three reasons:
+finished prose (**superseded — see § Post-scaffold evolution; the
+strategy still holds per-file in the multi-file layout**). Three
+reasons:
 
 1. **Truth maintenance.** Writing the content statically means it's
    wrong the day after the next docs update. Letting the research
@@ -158,6 +160,73 @@ with the pipeline.
   `WebFetch` is available to the agent's `query()` call. Confirmed
   in `allowedTools`. If the Anthropic Agent SDK starts gating
   WebFetch behind a permission flag, the prompt will need updating.
+
+## Post-scaffold evolution
+
+The original scaffold above describes the single-file design that shipped
+on 2026-05-17. Same-day refactor + security passes substantially changed
+the architecture. The authoritative current state lives in `CHANGELOG.md`;
+this section is a quick bridge from the original design notes to today.
+
+### What changed since the original scaffold
+
+1. **SKILL.md split into router + 7 surface files** (`SKILL-settings.md`,
+   `SKILL-hooks.md`, `SKILL-slash-commands.md`, `SKILL-mcp.md`,
+   `SKILL-plugins.md`, `SKILL-cli.md`, `SKILL-known-issues.md`).
+   Rationale: the predecessor's experience (1797 + 1541 lines across
+   two language-specific SKILL files for a single SDK) made it clear
+   that Claude Code's broader surface area would balloon a single
+   `SKILL.md` past usable scope. The split was made before first
+   pipeline run to avoid retrofitting a 4-8k-line monolith later.
+   Router stays ≤100 lines (intent-match latency); surfaces grow
+   independently. The "## Stub strategy" rationale above still applies
+   per-surface.
+
+2. **`rules/claude-code.md` split into 5 per-surface rule files**
+   (`rules/{settings,mcp,plugins,hooks,skills-agents-commands}.md`).
+   Each file has a focused `appliesTo` glob set. The single-file
+   approach in the original scaffold would have grown unwieldy and
+   triggered the file too often.
+
+3. **Verification toolchain added**: `schema/*.schema.json` (4 schemas),
+   `scripts/{validate-examples,typecheck-templates,check-populated,check-diff-size}.sh`,
+   and 8 illustrative templates under `templates/`. Catches the failure
+   mode that mattered most after the architectural decision was made:
+   silent drift between SKILL content and the schemas the content
+   describes.
+
+4. **Pipeline safety gates** wired into the workflow: each gate runs
+   between research and commit. Any gate failure routes the run to a
+   draft PR on `auto/<date>-pending-review` instead of pushing main.
+   Removes the predecessor's blind-trust-the-agent assumption.
+
+5. **Security hardening** (9 audit findings closed):
+   `agent/lib/sanitize.ts` defang+wrap layer; Security Boundary
+   sections in all 4 agent prompts; per-step token injection in CI
+   (no more `$GITHUB_ENV` leak); `npm ci` with committed lockfiles;
+   pinned global CLI; pinned MCP template versions. See the
+   `2026-05-17 — security hardening` CHANGELOG entry for the full list.
+
+6. **State.json gains `scaffoldComplete` + `lastRunWarnings` fields**.
+   `scaffoldComplete` controls whether `check-populated.sh` enforces
+   the "no stub markers" rule; the workflow flips it from `false` to
+   `true` on the first successful research run that leaves zero
+   `*Populated by the research agent*` markers.
+   `lastRunWarnings` is the audit log for any prompt-injection
+   attempts a Security Boundary section detected.
+
+### What stayed the same (the original design wins)
+
+- Three small standalone repos vs one with shared internals (the
+  reasoning in the original "Provenance" section still holds; the
+  refactor amplified it by adding per-surface SKILL files, which
+  would have been even worse to coordinate across repos).
+- Stub-first SKILL strategy: the per-surface SKILL-*.md files ship as
+  scaffolds with one seeded section each, marked
+  `<!-- seed: replace on first real research pass -->`. Research
+  agent fills the rest on first run.
+- Cost model: still `$0` direct cost via OAuth subscription. The
+  added validation scripts use no LLM tokens; gates are deterministic.
 
 ## Ship checklist (not yet executed)
 

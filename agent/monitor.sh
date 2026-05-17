@@ -198,7 +198,13 @@ done < <(echo "$bug_issues" | jq -c '.[]?')
 # 6. Drift check — SKILL.md must match state.json version
 # ---------------------------------------------------------------------------
 
-skill_version=$(grep -oE 'claude-code@[0-9.]+' "${SCRIPT_DIR}/../SKILL.md" 2>/dev/null | head -1 | cut -d@ -f2 || echo "")
+# Read the router SKILL.md's "Claude Code version" row from its top table.
+# Format example (line 28 of SKILL.md): | **Claude Code version** | v2.1.143 |
+# The unfilled scaffold placeholder is `v<version>` — match that distinctly.
+skill_version=$(grep -E '^\| \*\*Claude Code version\*\*' "${SCRIPT_DIR}/../SKILL.md" 2>/dev/null \
+  | head -1 \
+  | sed -E 's/.*v([0-9]+\.[0-9]+\.[0-9]+).*/\1/' \
+  | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' || echo "")
 if [[ -n "$skill_version" && "$skill_version" != "$new_version" ]]; then
   echo "  DRIFT: SKILL.md says $skill_version but npm says $new_version — forcing update"
 fi
@@ -274,6 +280,17 @@ known_pages_json=$(printf '%s' "$new_page_urls" | jq -R -s '
   | add // {}
 ')
 
+# Preserve research-agent-owned fields from the current state so the
+# post-research merge step in the workflow has everything it needs:
+#   researchedIssues  — owned by research agent (Part B)
+#   lastRunWarnings   — owned by any agent recording an injection attempt
+#   scaffoldComplete  — flipped to true on first successful population
+# These will be merged into the fresh state in the workflow's "update
+# state.json" step (jq merge, not wholesale cp).
+preserve_ri=$(jq '.researchedIssues // {}' "$STATE_FILE")
+preserve_warnings=$(jq '.lastRunWarnings // []' "$STATE_FILE")
+preserve_scaffold=$(jq '.scaffoldComplete // false' "$STATE_FILE")
+
 jq -n \
   --arg ver "$new_version" \
   --argjson eng "$new_engines" \
@@ -285,7 +302,9 @@ jq -n \
   --argjson dpages "$known_pages_json" \
   --argjson ti "$(jq '.trackedIssues // {}' "$STATE_FILE")" \
   --arg ls "$new_last_scanned" \
-  --argjson ri "$(jq '.researchedIssues // {}' "$STATE_FILE")" \
+  --argjson ri "$preserve_ri" \
+  --argjson warnings "$preserve_warnings" \
+  --argjson scaffold "$preserve_scaffold" \
   '{
     registry: { package: "@anthropic-ai/claude-code", version: $ver, engines: $eng },
     github: { repo: "anthropics/claude-code", latestRelease: { tag: $rtag, name: $rname, publishedAt: $rpublished } },
@@ -294,7 +313,9 @@ jq -n \
     lastScannedIssueNumber: ($ls | tonumber),
     researchedIssues: $ri,
     lastAuditedVersion: $ver,
-    lastUpdated: (now | todate)
+    lastUpdated: (now | todate),
+    scaffoldComplete: $scaffold,
+    lastRunWarnings: $warnings
   }' > "$FRESH_STATE"
 
 # Update issue states in fresh state

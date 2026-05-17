@@ -1,7 +1,16 @@
 #!/usr/bin/env bash
-# validate-examples.sh — Extract every fenced JSON block from each SKILL-*.md
-# whose surface has an associated JSONSchema, and validate it against that
-# schema using ajv. Exit 0 if all blocks pass, exit 1 on any failure.
+# validate-examples.sh — Two-pass validator for SKILL-*.md content:
+#
+# PASS 1 (failing): Extract every fenced JSON block from each SKILL-*.md
+# whose surface has an associated JSONSchema and validate it against that
+# schema using ajv. Fails the build on any schema violation.
+#
+# PASS 2 (informational): For each schema, check whether the top-level
+# property keys it declares appear in the committed docs snapshot
+# (docs-snapshot/code.claude.com/). Surfaces schemas that have drifted
+# from upstream. Informational only — does not fail the build, because
+# the snapshot may legitimately lag upstream by a refresh cycle.
+# Run scripts/check-docs-drift.sh as the strict gate for snapshot freshness.
 #
 # Mapping (surface file → schema file):
 #   SKILL-settings.md   → schema/settings.schema.json
@@ -10,8 +19,9 @@
 #   SKILL-hooks.md      → schema/hook-input.schema.json
 #
 # SKILL-slash-commands.md, SKILL-cli.md, SKILL-known-issues.md are skipped
-# (no associated schema). To enforce a schema on those, add a mapping below
-# AND ensure the file's ```json blocks are of that schema's type.
+# in pass 1 (no associated schema). To enforce a schema on those, add a
+# mapping below AND ensure the file's ```json blocks are of that schema's
+# type.
 
 set -uo pipefail
 
@@ -39,8 +49,38 @@ const MAP = {
   "SKILL-hooks.md":    "schema/hook-input.schema.json",
 };
 
+const SNAPSHOT_DIR = path.join(ROOT, "docs-snapshot", "code.claude.com");
+const SNAPSHOT_AVAILABLE = fs.existsSync(SNAPSHOT_DIR);
+
+// Load every snapshot file into memory once — total is a few MB, cheap.
+function loadSnapshotCorpus() {
+  if (!SNAPSHOT_AVAILABLE) return "";
+  const parts = [];
+  function walk(dir) {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const p = path.join(dir, entry.name);
+      if (entry.isDirectory()) walk(p);
+      else if (entry.isFile() && entry.name.endsWith(".md")) {
+        parts.push(fs.readFileSync(p, "utf8"));
+      }
+    }
+  }
+  walk(SNAPSHOT_DIR);
+  return parts.join("\n\n");
+}
+
+const snapshotCorpus = loadSnapshotCorpus();
+
 const ajv = new Ajv({ allErrors: true, strict: false });
 addFormats(ajv);
+
+// ---------------------------------------------------------------------------
+// PASS 1: schema-bound example validation (failing)
+// ---------------------------------------------------------------------------
+
+console.log("=".repeat(60));
+console.log(" PASS 1: schema-bound example validation");
+console.log("=".repeat(60));
 
 let total = 0;
 let failed = 0;
@@ -110,9 +150,71 @@ for (const [src, schemaPath] of Object.entries(MAP)) {
 }
 
 console.log("");
-console.log("=".repeat(50));
-console.log(`Total blocks: ${total}   Passed: ${total - failed}   Failed: ${failed}   Files skipped: ${skipped}`);
-console.log("=".repeat(50));
+console.log("PASS 1 result: " + (total - failed) + "/" + total + " blocks valid (" + skipped + " files skipped)");
+
+// ---------------------------------------------------------------------------
+// PASS 2: schema-coverage cross-check against snapshot (informational)
+// ---------------------------------------------------------------------------
+
+console.log("");
+console.log("=".repeat(60));
+console.log(" PASS 2: schema-coverage in docs-snapshot/ (informational)");
+console.log("=".repeat(60));
+
+if (!SNAPSHOT_AVAILABLE) {
+  console.log("NOTE no docs-snapshot/code.claude.com/ — run scripts/refresh-docs-snapshot.sh first to enable cross-checks.");
+} else {
+  // For each schema, walk its top-level "properties" map, grep the snapshot
+  // for each key. We use a word-boundary match on the literal key. False
+  // positives are acceptable (e.g., "model" appears everywhere) — this is
+  // a "did upstream ever mention this key" smell check, not a strict gate.
+  let totalKeys = 0;
+  let unmatched = 0;
+
+  for (const [src, schemaPath] of Object.entries(MAP)) {
+    const schemaAbs = path.join(ROOT, schemaPath);
+    if (!fs.existsSync(schemaAbs)) continue;
+
+    let schema;
+    try {
+      schema = JSON.parse(fs.readFileSync(schemaAbs, "utf8"));
+    } catch {
+      continue;
+    }
+    const props = (schema.properties && typeof schema.properties === "object") ? schema.properties : {};
+    const keys = Object.keys(props);
+    if (keys.length === 0) {
+      console.log("NOTE " + schemaPath + " declares 0 top-level properties; no cross-check possible.");
+      continue;
+    }
+
+    const missing = [];
+    for (const key of keys) {
+      totalKeys++;
+      // Word-boundary match on the literal key. Anchored by either backtick
+      // (markdown code-span), JSON-style quote, or YAML colon.
+      const re = new RegExp("(?:`|\")" + key.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\\\$&") + "(?:`|\"|:)");
+      if (!re.test(snapshotCorpus)) {
+        missing.push(key);
+        unmatched++;
+      }
+    }
+
+    if (missing.length === 0) {
+      console.log("OK   " + schemaPath + " — all " + keys.length + " top-level keys appear in snapshot");
+    } else {
+      console.log("WARN " + schemaPath + " — " + missing.length + "/" + keys.length + " keys not found in snapshot: " + missing.join(", "));
+    }
+  }
+
+  console.log("");
+  console.log("PASS 2 result: " + (totalKeys - unmatched) + "/" + totalKeys + " schema keys found in snapshot (" + unmatched + " unmatched — informational only)");
+}
+
+console.log("");
+console.log("=".repeat(60));
+console.log(" Overall: PASS 1 " + (failed > 0 ? "FAIL" : "OK") + "   PASS 2 informational");
+console.log("=".repeat(60));
 
 process.exit(failed > 0 ? 1 : 0);
 '

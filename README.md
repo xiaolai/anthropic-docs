@@ -16,15 +16,23 @@ names, flags, env vars) flow in.
 
 - Tracks the npm version of `@anthropic-ai/claude-code` and every
   GitHub release at `anthropics/claude-code`.
-- Diffs `code.claude.com/llms.txt` (the docs index) daily; when a
-  page changes, the research agent fetches it and updates the
-  corresponding section of `SKILL.md`.
+- Diffs `code.claude.com/llms.txt` (the docs index) daily; when a page
+  changes, the research agent fetches it and updates the matching
+  surface file (`SKILL-settings.md`, `SKILL-hooks.md`, `SKILL-mcp.md`,
+  etc.). The router `SKILL.md` dispatches Claude to the right surface
+  at intent-match time, keeping per-conversation context small.
 - Scans bug-labeled issues at `anthropics/claude-code`. Substantive
-  user-impacting bugs become `## Known Issues` entries in SKILL.md;
-  common user mistakes with auto-correctable patterns become rules
-  in `rules/claude-code.md`.
-- Runs a deterministic `verify.sh` after every update; failures
-  trigger a self-mending agent with up to 2 retries.
+  user-impacting bugs become `KI <N>` entries in
+  `SKILL-known-issues.md`; common user mistakes with auto-correctable
+  patterns become rules in the matching `rules/*.md` file (one per
+  surface: settings / mcp / plugins / hooks / skills-agents-commands).
+- Runs deterministic safety gates after every research pass
+  (`validate-examples`, `typecheck-templates`, `check-populated`,
+  `check-diff-size` — see `scripts/`); any gate failure routes the run
+  to a draft PR on `auto/<date>-pending-review` instead of pushing to
+  `main`.
+- Self-heals on `verify.sh` failure via a mending agent with up to
+  2 retries.
 
 ## Installation
 
@@ -48,7 +56,10 @@ sync any time after). The redirect captures pull failures to a log
 instead of swallowing them silently:
 
 ```bash
-(crontab -l 2>/dev/null; \
+# `|| true` on the inner `crontab -l` ensures a fresh user with no
+# existing crontab doesn't fail this pipeline (idiomatic "preserve
+# existing entries OR start fresh").
+(crontab -l 2>/dev/null || true; \
  echo "30 9 * * * cd ~/.claude/skills/claude-code-documentation-knowledge-autoupdated && git pull -q >> ~/.claude/skill-pull.log 2>&1") | crontab -
 ```
 
@@ -149,6 +160,55 @@ and `git pull`.
 | Date | Result | Notes |
 |------|--------|-------|
 | — | — | — |
+
+## For maintainers
+
+### `nlpm` plugin for quality + security tooling
+
+This repo's `.claude/settings.json` enables `nlpm@xiaolai` so the
+maintenance commands (`/nlpm:score`, `/nlpm:trend`, `/nlpm:security-scan`,
+`/nlpm:check`) work out of the box when you clone the repo for
+development. The plugin lives in the `xiaolai/claude-plugin-marketplace`
+marketplace. To install:
+
+```bash
+claude plugin marketplace add xiaolai/claude-plugin-marketplace
+claude plugin install nlpm@xiaolai --scope project
+```
+
+(End users who only consume the skill via `~/.claude/skills/` don't need
+the plugin — the maintenance commands are for editing the skill, not
+using it.)
+
+### Refreshing the upstream docs snapshot
+
+`docs-snapshot/code.claude.com/` is a committed, version-pinned mirror of
+the official Claude Code docs that lives in this repo. Schemas under
+`schema/` and the seeded examples in `SKILL-*.md` are validated against
+this snapshot via `scripts/validate-examples.sh` (Pass 2). The pipeline
+gate `scripts/check-docs-drift.sh` fires when upstream `llms.txt` changes
+and a maintainer must refresh:
+
+```bash
+# Run a manual refresh. Re-fetches all 132 pages from code.claude.com,
+# sanitises via the same defang pipeline that monitor.sh uses, and
+# rewrites docs-snapshot/MANIFEST.json with new sha256s + timestamp.
+bash scripts/refresh-docs-snapshot.sh
+
+# Review what changed before committing.
+git diff docs-snapshot/
+
+# Verify gates still pass.
+bash scripts/validate-examples.sh
+bash scripts/check-docs-drift.sh
+
+# Commit with a CHANGELOG entry naming the new snapshot pin
+# (date + new index sha256 prefix).
+```
+
+The snapshot is intentionally manual (not auto-refreshed by CI). Auto-
+refreshing would defeat the version-pinned baseline — a human should see
+the diff before our local truth shifts under us.
 
 ## Links
 

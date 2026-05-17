@@ -57,12 +57,23 @@ while IFS= read -r -d '' f; do
 done < <(find "$TEMPLATES" -type f -name "*.sh" -print0)
 
 # Markdown files (must have YAML frontmatter, UNLESS the filename matches
-# an ALL-CAPS doc pattern like README.md / CHANGELOG.md / MCP-PINNING.md —
-# those are sidecar docs explaining the templates, not templates themselves).
+# a known sidecar-doc name explicitly listed below). The previous regex
+# `^[A-Z][A-Z0-9_-]*$` over-exempted teaching templates like SKILL.md.
+SIDECAR_DOCS=("README" "CHANGELOG" "LICENSE" "NOTICE" "CONTRIBUTING" "MCP-PINNING")
+is_sidecar() {
+  local name="$1"
+  for s in "${SIDECAR_DOCS[@]}"; do
+    if [[ "$name" == "$s" ]]; then
+      return 0
+    fi
+  done
+  return 1
+}
+
 while IFS= read -r -d '' f; do
   rel="${f#$ROOT/}"
   base="$(basename "$f" .md)"
-  if [[ "$base" =~ ^[A-Z][A-Z0-9_-]*$ ]]; then
+  if is_sidecar "$base"; then
     check_pass "$rel (sidecar doc — frontmatter not required)"
     continue
   fi

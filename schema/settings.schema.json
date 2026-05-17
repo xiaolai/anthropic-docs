@@ -38,21 +38,37 @@
       "additionalProperties": { "type": "boolean" },
       "description": "Map of '<plugin>@<marketplace>' to enable/disable flag."
     },
-    "theme": {
-      "type": "string",
-      "description": "UI theme name."
-    },
     "editorMode": {
       "type": "string",
-      "enum": ["normal", "vim", "emacs"]
+      "enum": ["normal", "vim"],
+      "description": "Key binding mode for the input prompt. Upstream docs (settings.md) list only 'normal' and 'vim'; other values like 'emacs' are NOT accepted."
     },
     "apiKeyHelper": {
       "type": "string",
-      "description": "Path to a script that prints an API key on stdout."
+      "description": "Custom script to be executed in /bin/sh to generate an auth value. Sent as X-Api-Key and Authorization: Bearer headers."
     },
-    "disableTelemetry": { "type": "boolean" },
-    "cleanupPeriodDays": { "type": "integer", "minimum": 0 },
-    "includeCoAuthoredBy": { "type": "boolean" },
-    "forceLoginMethod": { "type": "string" }
+    "cleanupPeriodDays": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Session files older than this period are deleted at startup (default: 30). Setting to 0 is rejected with a validation error."
+    },
+    "includeCoAuthoredBy": {
+      "type": "boolean",
+      "description": "DEPRECATED — use `attribution` instead. Whether to include the co-authored-by Claude byline in git commits/PRs (default: true)."
+    },
+    "attribution": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Customize attribution for git commits and pull requests. Replaces deprecated includeCoAuthoredBy.",
+      "properties": {
+        "commit": { "type": "string" },
+        "pr": { "type": "string" }
+      }
+    },
+    "forceLoginMethod": {
+      "type": "string",
+      "enum": ["claudeai", "console"],
+      "description": "Restrict login to Claude.ai accounts ('claudeai') or Claude Console / API-usage-billing accounts ('console')."
+    }
   }
 }

@@ -3,6 +3,9 @@ __pycache__/
 .DS_Store
 /tmp/
 
+# Claude Code local-only settings (per-machine, never shared)
+.claude/settings.local.json
+
 # package-lock.json files MUST be committed — npm ci in the workflow
 # enforces them as a supply-chain defence (security audit Finding #4).
 # Do NOT add package-lock.json to this gitignore.

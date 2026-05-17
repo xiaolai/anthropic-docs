@@ -255,16 +255,89 @@ jobs:
         continue-on-error: true
         run: bash scripts/check-populated.sh
 
+      - name: Check docs-snapshot drift vs upstream llms.txt
+        id: check_docs_drift
+        if: always()
+        continue-on-error: true
+        run: bash scripts/check-docs-drift.sh
+
       # ---------------------------------------------------------------
-      # 7. Always: update state, finalize log, report
+      # 7. Update state.json — MERGE fresh-state into the live state
+      #
+      # /tmp/fresh-state.json was built by monitor.sh BEFORE research ran.
+      # The research agent may have written to state.json since (new
+      # researchedIssues entries, lastRunWarnings, etc.). A wholesale `cp`
+      # would erase those writes. Instead we merge: monitor-owned fields
+      # from fresh-state overwrite state.json's snapshot of them, while
+      # research-agent-owned fields are preserved from the live state.
       # ---------------------------------------------------------------
-      - name: Update state.json
-        if: always() && steps.monitor.outputs.changes == 'true'
+      - name: Update state.json (merge fresh monitor fields into live state)
+        if: always()
         working-directory: agent
         run: |
-          if [ -f /tmp/fresh-state.json ]; then
-            cp /tmp/fresh-state.json state.json
+          if [ ! -f /tmp/fresh-state.json ]; then
+            echo "No /tmp/fresh-state.json — keeping current state.json unchanged."
+            exit 0
           fi
+          # state.json may not exist on a brand-new run; treat as empty object.
+          if [ ! -f state.json ]; then
+            echo '{}' > state.json
+          fi
+          # First arg = live state (with research writes); second = fresh state.
+          # `*` is jq's deep-merge: keys from fresh overwrite the LHS where set.
+          # Then explicitly preserve research-agent-owned fields from the LHS.
+          jq -s '
+            .[0] as $live | .[1] as $fresh
+            | ($live * {
+                registry: $fresh.registry,
+                github: $fresh.github,
+                docs: $fresh.docs,
+                trackedIssues: $fresh.trackedIssues,
+                lastScannedIssueNumber: $fresh.lastScannedIssueNumber,
+                lastAuditedVersion: $fresh.lastAuditedVersion,
+                lastUpdated: $fresh.lastUpdated
+              })
+            | .researchedIssues = ($live.researchedIssues // {})
+            | .lastRunWarnings  = ($live.lastRunWarnings // [])
+            | .scaffoldComplete = ($live.scaffoldComplete // false)
+          ' state.json /tmp/fresh-state.json > /tmp/merged-state.json \
+            && mv /tmp/merged-state.json state.json
+          echo "state.json merged — researchedIssues=$(jq '.researchedIssues | length' state.json), lastRunWarnings=$(jq '.lastRunWarnings | length' state.json), scaffoldComplete=$(jq -r '.scaffoldComplete' state.json)"
+
+      # ---------------------------------------------------------------
+      # 7b. Flip scaffoldComplete on first successful population
+      #
+      # Scaffold mode (state.scaffoldComplete == false) tells
+      # scripts/check-populated.sh to skip its stub-marker check.
+      # Once the research agent has populated every SKILL-*.md /
+      # rules/*.md section (zero residual `*Populated by the research
+      # agent*` markers), flip to true so the gate starts enforcing.
+      # ---------------------------------------------------------------
+      - name: Flip scaffoldComplete on first successful population
+        if: always() && steps.research.outcome == 'success'
+        working-directory: agent
+        run: |
+          # Count residual stub markers in tracked SKILL / rules files.
+          STUB_COUNT=$(grep -lE '\*Populated by the research agent\*' \
+            ../SKILL-*.md ../rules/*.md 2>/dev/null | wc -l | tr -d ' ')
+          CURRENT=$(jq -r '.scaffoldComplete // false' state.json)
+          echo "Residual stub files: $STUB_COUNT   scaffoldComplete: $CURRENT"
+          if [ "$STUB_COUNT" = "0" ] && [ "$CURRENT" = "false" ]; then
+            echo "First successful population detected — flipping scaffoldComplete to true."
+            jq '.scaffoldComplete = true' state.json > /tmp/sc.tmp && mv /tmp/sc.tmp state.json
+          fi
+
+      # ---------------------------------------------------------------
+      # 7c. Diff-size gate (run BEFORE finalize log so the report agent
+      #     sees its outcome in /tmp/pipeline-log.json).
+      # ---------------------------------------------------------------
+      - name: Check diff size against HEAD
+        id: check_diff_size
+        if: always()
+        continue-on-error: true
+        env:
+          DIFF_THRESHOLD_PCT: ${{ env.DIFF_THRESHOLD_PCT }}
+        run: bash scripts/check-diff-size.sh
 
       - name: Finalize pipeline log
         if: always()
@@ -276,6 +349,8 @@ jobs:
             --arg typecheck_outcome "${{ steps.typecheck_templates.outcome || 'skipped' }}" \
             --arg validate_outcome "${{ steps.validate_examples.outcome || 'skipped' }}" \
             --arg populated_outcome "${{ steps.check_populated.outcome || 'skipped' }}" \
+            --arg docsdrift_outcome "${{ steps.check_docs_drift.outcome || 'skipped' }}" \
+            --arg diffsize_outcome "${{ steps.check_diff_size.outcome || 'skipped' }}" \
             --arg finished "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
             '. + {
               "finishedAt": $finished,
@@ -285,7 +360,9 @@ jobs:
                 "verify": $verify_outcome,
                 "typecheckTemplates": $typecheck_outcome,
                 "validateExamples": $validate_outcome,
-                "checkPopulated": $populated_outcome
+                "checkPopulated": $populated_outcome,
+                "checkDocsDrift": $docsdrift_outcome,
+                "checkDiffSize": $diffsize_outcome
               }
             }' "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
 
@@ -317,18 +394,7 @@ jobs:
           sed -i "s/\*\*Last updated\*\*: [0-9-]*/\*\*Last updated\*\*: $NOW/" README.md || true
 
       # ---------------------------------------------------------------
-      # 8. Diff-size gate (run LAST, against the about-to-be-committed state)
-      # ---------------------------------------------------------------
-      - name: Check diff size against HEAD
-        id: check_diff_size
-        if: always()
-        continue-on-error: true
-        env:
-          DIFF_THRESHOLD_PCT: ${{ env.DIFF_THRESHOLD_PCT }}
-        run: bash scripts/check-diff-size.sh
-
-      # ---------------------------------------------------------------
-      # 9. Commit + push (or open draft PR if any gate failed)
+      # 8. Commit + push (or open draft PR if any gate failed)
       # ---------------------------------------------------------------
       - name: Commit and push (or open draft PR)
         if: always()
@@ -349,11 +415,12 @@ jobs:
           VALIDATE="${{ steps.validate_examples.outcome || 'skipped' }}"
           TYPECHECK="${{ steps.typecheck_templates.outcome || 'skipped' }}"
           POPULATED="${{ steps.check_populated.outcome || 'skipped' }}"
+          DOCSDRIFT="${{ steps.check_docs_drift.outcome || 'skipped' }}"
           DIFFSIZE="${{ steps.check_diff_size.outcome || 'skipped' }}"
           VERIFY="${{ steps.verify.outcome || 'skipped' }}"
 
           GATES_FAILED=""
-          for pair in "validate_examples:$VALIDATE" "typecheck_templates:$TYPECHECK" "check_populated:$POPULATED" "check_diff_size:$DIFFSIZE" "verify:$VERIFY"; do
+          for pair in "validate_examples:$VALIDATE" "typecheck_templates:$TYPECHECK" "check_populated:$POPULATED" "check_docs_drift:$DOCSDRIFT" "check_diff_size:$DIFFSIZE" "verify:$VERIFY"; do
             name="${pair%%:*}"
             outcome="${pair##*:}"
             if [ "$outcome" = "failure" ]; then
@@ -397,6 +464,7 @@ jobs:
               "- **validate_examples**: a fenced JSON block in a SKILL-*.md no longer validates against its schema." \
               "- **typecheck_templates**: a template under \`templates/\` has invalid syntax." \
               "- **check_populated**: in post-scaffold mode, a stub marker still exists in a tracked file." \
+              "- **check_docs_drift**: upstream llms.txt index hash has changed since the last \`docs-snapshot/\` refresh. Run \`bash scripts/refresh-docs-snapshot.sh\` locally, review the diff, and commit." \
               "- **check_diff_size**: a tracked file changed >${DIFF_THRESHOLD_PCT}% — possible runaway-LLM rewrite." \
               "- **verify**: version-string propagation or required-file presence failed." \
               "" \

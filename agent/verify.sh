@@ -66,6 +66,7 @@ REQUIRED_FILES=(
   "README.md"
   ".claude-plugin/plugin.json"
   "agent/state.json"
+  "docs-snapshot/MANIFEST.json"
 )
 
 # ---------------------------------------------------------------------------

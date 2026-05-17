@@ -46,10 +46,13 @@ against SKILL.md, and add or update any sections whose source pages
 have changed.
 
 Then run Part B (GitHub Issues Research) — research recent issues from
-anthropics/claude-code and add Known Issues or auto-correction rules.
+anthropics/claude-code and add Known Issues entries to SKILL-known-issues.md
+or auto-correction rules to the appropriate rules/*.md file.
 
-Finally run Part C (Final Checks) — verify consistency between
-SKILL.md, rules/claude-code.md, README.md, and the latest docs.
+Finally run Part C (Final Checks) — verify consistency across the router
+SKILL.md, the 7 SKILL-*.md surface files (settings, hooks, slash-commands,
+mcp, plugins, cli, known-issues), the 5 rules/*.md files, README.md, and
+the latest docs.
 
 Do NOT create git branches or commits.
 
