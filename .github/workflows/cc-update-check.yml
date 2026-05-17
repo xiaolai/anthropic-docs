@@ -36,6 +36,13 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 2  # need HEAD~1 for diff-size baseline
+          # Defense in depth: don't leave the GH token configured in
+          # `.git/config` after checkout. The job has contents:write so
+          # the credentials *exist*, but the LLM agent steps run in the
+          # same worktree with Bash — a prompt-injection bypass should not
+          # be able to `git push` via persisted creds. The final commit
+          # step re-configures the remote with an explicit token.
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
@@ -50,6 +57,14 @@ jobs:
       - name: Run change monitor
         id: monitor
         working-directory: agent
+        env:
+          # monitor.sh calls `gh api repos/anthropics/claude-code/...`
+          # for the release and bug-issue scans. Without GH_TOKEN, gh runs
+          # unauthenticated and is rate-limited to 60 req/h — pagination of
+          # bug issues alone burns through that on busy days. The default
+          # github.token has read access to public repos, which is all the
+          # monitor needs.
+          GH_TOKEN: ${{ github.token }}
         run: |
           START=$(date +%s)
           bash monitor.sh && echo "changes=false" >> "$GITHUB_OUTPUT" || {
@@ -168,6 +183,11 @@ jobs:
         env:
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          # research-prompt.md instructs the agent to deep-read issue
+          # bodies + comments via `gh api`. Pass the workflow's read-only
+          # github.token so those calls authenticate and don't trip the
+          # 60 req/h unauth rate limit.
+          GH_TOKEN: ${{ github.token }}
         run: |
           START=$(date +%s)
           npx tsx research-agent.ts 2>&1 | tee /tmp/research.log
@@ -280,6 +300,29 @@ jobs:
         continue-on-error: true
         run: bash scripts/check-docs-drift.sh
 
+      # Maintainer-time correctness checks. These don't fire from
+      # research-agent activity (the agent doesn't edit these surfaces),
+      # but if a maintainer broke any of them in a commit, the daily
+      # pipeline catches it before the content reaches main.
+      - name: Check sanitizer parity (3 bash files use identical regex)
+        id: check_sanitizer_parity
+        if: always()
+        continue-on-error: true
+        run: bash scripts/check-sanitizer-parity.sh
+
+      - name: Check gate-name parity (workflow / TS / prompt agree)
+        id: check_gate_parity
+        if: always()
+        continue-on-error: true
+        run: bash scripts/check-gate-parity.sh
+
+      - name: Run agent test suite (sanitiser assertions)
+        id: agent_tests
+        if: always()
+        continue-on-error: true
+        working-directory: agent
+        run: npm test
+
       # ---------------------------------------------------------------
       # 7. Update state.json — MERGE fresh-state into the live state
       #
@@ -369,6 +412,9 @@ jobs:
             --arg validate_outcome "${{ steps.validate_examples.outcome || 'skipped' }}" \
             --arg populated_outcome "${{ steps.check_populated.outcome || 'skipped' }}" \
             --arg docsdrift_outcome "${{ steps.check_docs_drift.outcome || 'skipped' }}" \
+            --arg sanitizer_parity_outcome "${{ steps.check_sanitizer_parity.outcome || 'skipped' }}" \
+            --arg gate_parity_outcome "${{ steps.check_gate_parity.outcome || 'skipped' }}" \
+            --arg agent_tests_outcome "${{ steps.agent_tests.outcome || 'skipped' }}" \
             --arg diffsize_outcome "${{ steps.check_diff_size.outcome || 'skipped' }}" \
             --arg finished "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
             '. + {
@@ -381,6 +427,9 @@ jobs:
                 "validateExamples": $validate_outcome,
                 "checkPopulated": $populated_outcome,
                 "checkDocsDrift": $docsdrift_outcome,
+                "checkSanitizerParity": $sanitizer_parity_outcome,
+                "checkGateParity": $gate_parity_outcome,
+                "agentTests": $agent_tests_outcome,
                 "checkDiffSize": $diffsize_outcome
               }
             }' "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
@@ -429,7 +478,11 @@ jobs:
         if: always()
         run: |
           NOW=$(date -u +%Y-%m-%d)
-          sed -i "s/\*\*Last updated\*\*: [0-9-]*/\*\*Last updated\*\*: $NOW/" README.md || true
+          # Anchored whole-line replace so first-run also substitutes the
+          # `<YYYY-MM-DD>` placeholder (the previous `[0-9-]*` pattern
+          # only matched already-stamped dates and left the placeholder
+          # in place forever).
+          sed -i "s|^\*\*Last updated\*\*:.*|**Last updated**: $NOW|" README.md || true
 
       # ---------------------------------------------------------------
       # 8. Commit + push (or open draft PR if any gate failed)
@@ -442,6 +495,11 @@ jobs:
           set -uo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Re-configure the remote with an explicit token here (checkout
+          # used persist-credentials: false). Done at commit-step time
+          # only — the agent steps above have no git push capability.
+          git remote set-url origin \
+            "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
 
           git add -A .
           if git diff --cached --quiet; then
@@ -454,6 +512,9 @@ jobs:
           TYPECHECK="${{ steps.typecheck_templates.outcome || 'skipped' }}"
           POPULATED="${{ steps.check_populated.outcome || 'skipped' }}"
           DOCSDRIFT="${{ steps.check_docs_drift.outcome || 'skipped' }}"
+          SANITIZER_PARITY="${{ steps.check_sanitizer_parity.outcome || 'skipped' }}"
+          GATE_PARITY="${{ steps.check_gate_parity.outcome || 'skipped' }}"
+          AGENT_TESTS="${{ steps.agent_tests.outcome || 'skipped' }}"
           DIFFSIZE="${{ steps.check_diff_size.outcome || 'skipped' }}"
           VERIFY="${{ steps.verify.outcome || 'skipped' }}"
           # report-agent isn't a "gate" in the strict sense, but a crashed
@@ -463,7 +524,7 @@ jobs:
           REPORT="${{ steps.report.outcome || 'skipped' }}"
 
           GATES_FAILED=""
-          for pair in "validate_examples:$VALIDATE" "typecheck_templates:$TYPECHECK" "check_populated:$POPULATED" "check_docs_drift:$DOCSDRIFT" "check_diff_size:$DIFFSIZE" "verify:$VERIFY" "report:$REPORT"; do
+          for pair in "validate_examples:$VALIDATE" "typecheck_templates:$TYPECHECK" "check_populated:$POPULATED" "check_docs_drift:$DOCSDRIFT" "check_sanitizer_parity:$SANITIZER_PARITY" "check_gate_parity:$GATE_PARITY" "agent_tests:$AGENT_TESTS" "check_diff_size:$DIFFSIZE" "verify:$VERIFY" "report:$REPORT"; do
             name="${pair%%:*}"
             outcome="${pair##*:}"
             if [ "$outcome" = "failure" ]; then
@@ -511,16 +572,42 @@ jobs:
               "- **typecheck_templates**: a template under \`templates/\` has invalid syntax." \
               "- **check_populated**: in post-scaffold mode, a stub marker still exists in a tracked file." \
               "- **check_docs_drift**: upstream llms.txt index hash has changed since the last \`docs-snapshot/\` refresh. Run \`bash scripts/refresh-docs-snapshot.sh\` locally, review the diff, and commit." \
+              "- **check_sanitizer_parity**: the 3 bash \`defang_for_llm\` implementations have drifted. Update the divergent file(s) so all 3 use identical regex patterns." \
+              "- **check_gate_parity**: the safety-gate name list in workflow YAML / report-agent.ts / report-prompt.md no longer matches the canonical EXPECTED set. Update the divergent source(s)." \
+              "- **agent_tests**: \`npm test\` in \`agent/\` failed. The sanitiser is load-bearing security code; a failed assertion means runtime defenses may be broken." \
               "- **check_diff_size**: a tracked file changed >${DIFF_THRESHOLD_PCT}% — possible runaway-LLM rewrite." \
               "- **verify**: version-string propagation or required-file presence failed." \
               "- **report**: the report-agent crashed. The daily report and README activity table for this date are missing/stale." \
               "" \
               "If the changes look correct, mark this PR ready and merge. If not, close it and let the next pipeline run try again.")
+            # Do NOT swallow `gh pr create` failure with `|| true`: the
+            # draft PR IS the review path for flagged runs; if creation
+            # fails (auth issue, branch already has an open PR, network),
+            # the commit lives on a branch nobody sees. Record the
+            # failure in the pipeline log so the final "Check for
+            # failures" step exits non-zero — the commit is still safe
+            # (it's on the pending-review branch, not main).
+            #
+            # NOTE on `$?` capture: a previous attempt used
+            # `if ! gh pr create ...; then PR_EXIT=$?; ...`. That pattern
+            # is broken — `$?` inside the `then` branch reports the exit
+            # of `!`, not of `gh pr create`. Capture the exit code
+            # directly after the command instead. set -uo pipefail at
+            # the top of this run block does NOT enable -e, so a non-zero
+            # exit here does not kill the script before we read $?.
             gh pr create --draft \
               --title "auto: pending review (${TODAY}) — $(echo "$GATES_FAILED" | xargs)" \
               --body "$PR_BODY" \
               --base main \
-              --head "$BRANCH" || true
+              --head "$BRANCH"
+            PR_EXIT=$?
+            if [ "$PR_EXIT" -ne 0 ]; then
+              echo "ERROR: gh pr create failed with exit $PR_EXIT" >&2
+              jq --arg s "pr-create" --arg r "failed" --arg c "$PR_EXIT" --arg b "$BRANCH" \
+                '.steps += [{"step":$s,"result":$r,"exitCode":($c|tonumber),"branch":$b}]' \
+                "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
+              exit "$PR_EXIT"
+            fi
           else
             git commit -F /tmp/commit-message.txt
             git push

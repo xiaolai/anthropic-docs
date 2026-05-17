@@ -149,7 +149,12 @@ docs_body=$(curl -sfL "${CURL_OPTS[@]}" "$DOCS_INDEX_URL") || {
 }
 
 new_docs_hash=$(printf '%s' "$docs_body" | hash256)
-new_page_count=$(printf '%s' "$docs_body" | grep -cE '^- \[.*\]\(https://code\.claude\.com/docs/' || echo "0")
+# `grep -c || true` tolerates the non-zero exit grep returns on 0 matches
+# (it still prints "0" to stdout). The previous `|| echo "0"` form
+# produced "0\n0" in the no-match case — same bug class as the one
+# fixed in scripts/refresh-docs-snapshot.sh.
+new_page_count=$(printf '%s' "$docs_body" | grep -cE '^- \[.*\]\(https://code\.claude\.com/docs/' || true)
+new_page_count="${new_page_count:-0}"
 # Capture the URL list for diff (one URL per line, sorted)
 new_page_urls=$(printf '%s' "$docs_body" | grep -oE 'https://code\.claude\.com/docs/[^)]+\.md' | sort -u)
 

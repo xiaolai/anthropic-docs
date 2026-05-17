@@ -25,9 +25,12 @@ REPORT_PROMPT="$ROOT/agent/report-prompt.md"
 # must appear in all three; anything removed must be removed from all
 # three. Update this array when intentionally adding or removing a gate.
 EXPECTED=(
+  "agentTests"
   "checkDiffSize"
   "checkDocsDrift"
+  "checkGateParity"
   "checkPopulated"
+  "checkSanitizerParity"
   "typecheckTemplates"
   "validateExamples"
   "verify"

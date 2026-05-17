@@ -10,6 +10,76 @@ The newest entry is at the top.
 
 ---
 
+## 2026-05-17 — codex audit-fix pass 4 (8 findings → CLEAN in 2 rounds)
+
+Sanity-check audit re-run after the push-to-100 pass. Codex surfaced
+8 new findings (0 Critical, 2 High, 3 Medium, 3 Low) all concentrated
+in workflow infrastructure that earlier audits hadn't deeply inspected.
+Closed in 2 verification rounds (round 1 caught a real bash bug in my
+M6 fix where `$?` after `if ! cmd` captures the exit of `!`, not the
+underlying command — codex's catch).
+
+**HIGH:**
+
+- **Persisted git credentials available to agent steps.**
+  `actions/checkout` defaults to leaving the GH token in `.git/config`.
+  With `contents: write` on the job, any agent step running Bash had
+  push capability via persisted creds. Fix: `persist-credentials: false`
+  on checkout; commit step re-configures the remote with an explicit
+  token via `git remote set-url`. Defense in depth — agent prompts'
+  Security Boundary sections already forbid git ops; this removes
+  the underlying capability so a prompt-injection bypass cannot use it.
+
+- **monitor step had no `GH_TOKEN`.** `gh api` calls in `monitor.sh`
+  (releases, tracked-issue state, bug-issue pagination) ran
+  unauthenticated → rate-limited to 60 req/h. Fix: `GH_TOKEN: ${{
+  github.token }}` on the monitor step.
+
+**MEDIUM:**
+
+- **research step had no `GH_TOKEN`.** Same class as H2 but on the
+  research agent's deep-read of issue bodies + comments. Fix: same
+  pattern, added to the research-agent step env. The Claude Agent SDK
+  passes process env into agent context, so Bash `gh api` calls now
+  authenticate.
+
+- **`gh pr create ... || true` swallowed PR-creation failures.** If
+  the draft-PR creation failed (auth, branch already has open PR,
+  network), the commit lived on a branch nobody saw — silent failure
+  of the documented review-path guarantee. Two rounds to fix properly:
+  first attempt used `if ! gh pr create; then PR_EXIT=$?` which is
+  broken (captures `!`'s exit, not the command's); second attempt
+  captures `PR_EXIT=$?` immediately after the command. Block is now
+  `gh pr create` → `PR_EXIT=$?` → `if [ ne 0 ]: log + exit`.
+
+- **Workflow ran 5 gates but `verify:all` had 8.** The 3 maintainer-
+  parity checks (sanitizer-parity, gate-parity, agent-tests) were
+  defined locally but never enforced in CI. A maintainer who broke
+  any of them could push to main. Fix: added 3 new workflow steps
+  with outcome tracking; included in `GATES_FAILED` routing in commit
+  step; documented in draft-PR body template; added to report-agent's
+  `gateNames` and report-prompt's run-mode table; updated
+  `scripts/check-gate-parity.sh` EXPECTED set to the new 9-gate
+  canonical list.
+
+**LOW:**
+
+- **README sed pattern didn't match `<YYYY-MM-DD>` placeholder.** The
+  `[0-9-]*` regex only matched already-stamped dates, leaving the
+  initial placeholder in place on first run. Fix: whole-line anchored
+  `s|^\*\*Last updated\*\*:.*|...|`.
+
+- **`agent/monitor.sh` `grep -c || echo "0"` double-output.** Same bug
+  class as the one fixed in `refresh-docs-snapshot.sh` two passes ago,
+  in a different file. Fix: `|| true` + `${var:-0}` default.
+
+- **`report-prompt.md` Inputs list incomplete.** Listed 6 of the 12
+  pipeline-log outcomes. Fix: expanded to name all 12.
+
+Workflow now has 26 steps (was 23 in pass 3). All 9 gates wired
+end-to-end across workflow / report-agent / report-prompt / parity
+check. `npm run verify:all` still exits 0.
+
 ## 2026-05-17 — push to 100 (all 26 NL artifacts at perfect score)
 
 Final quality pass. NLPM trend across the day: **69 → 93 → 91 → 97 → 97 → 98 → 100**.

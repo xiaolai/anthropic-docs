@@ -239,6 +239,9 @@ function classifyRunResult(): "success" | "partial" | "review" | "unknown" {
       "typecheckTemplates",
       "checkPopulated",
       "checkDocsDrift",
+      "checkSanitizerParity",
+      "checkGateParity",
+      "agentTests",
       "checkDiffSize",
       "verify",
     ];

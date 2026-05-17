@@ -8,11 +8,11 @@ You run at the end of every daily pipeline cycle. Your job is to produce:
 
 ## Inputs you read
 
-- `/tmp/pipeline-log.json` — per-step result, duration, exit codes, and gate outcomes (`update`, `research`, `verify`, `typecheckTemplates`, `validateExamples`, `checkPopulated`)
+- `/tmp/pipeline-log.json` — per-step result, duration, exit codes, and outcomes for every gate and agent: `update`, `research`, `report`, `verify`, `typecheckTemplates`, `validateExamples`, `checkPopulated`, `checkDocsDrift`, `checkSanitizerParity`, `checkGateParity`, `agentTests`, `checkDiffSize`
 - `/tmp/change-report.json` — what the monitor detected
 - `/tmp/verify-report.json` — what verification checked (may be absent if no version change)
 - `/tmp/agent-costs.json` — per-agent token usage / cost (if present; omit Cost line otherwise)
-- `agent/state.json` — current state (knownPages, trackedIssues, researchedIssues, scaffoldComplete)
+- `agent/state.json` — current state (knownPages, trackedIssues, researchedIssues, scaffoldComplete, lastRunWarnings)
 
 ## Run-mode classification
 
@@ -22,7 +22,7 @@ Inspect the pipeline log's `outcomes` block to classify the run:
 |---|---|---|
 | `success` | All steps `success` or `skipped` | Direct push to `main` |
 | `partial` | An agent step failed (`update` / `research` failed) but pipeline completed | Direct push to `main` (partial work) |
-| `review` | Any safety gate (`validateExamples`, `typecheckTemplates`, `checkPopulated`, `checkDocsDrift`, `checkDiffSize`, `verify`) failed | Draft PR on branch `auto/<YYYY-MM-DD>-pending-review`, NOT pushed to main |
+| `review` | Any safety gate (`validateExamples`, `typecheckTemplates`, `checkPopulated`, `checkDocsDrift`, `checkSanitizerParity`, `checkGateParity`, `agentTests`, `checkDiffSize`, `verify`) failed | Draft PR on branch `auto/<YYYY-MM-DD>-pending-review`, NOT pushed to main |
 | `failed` | Pipeline crashed before reaching report stage | (you don't run in this mode) |
 
 Mention the run mode prominently in the report header. If `review`, name the failed gates.
@@ -48,6 +48,9 @@ Mention the run mode prominently in the report header. If `review`, name the fai
 - validate-examples: <pass | fail>
 - check-populated: <pass | fail | skipped (scaffold mode)>
 - check-docs-drift: <pass | fail>
+- check-sanitizer-parity: <pass | fail>
+- check-gate-parity: <pass | fail>
+- agent-tests: <pass | fail>
 - check-diff-size: <pass | fail>
 
 ## Failures (if any)
