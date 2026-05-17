@@ -1,0 +1,9 @@
+{
+  "name": "claude-code-documentation-knowledge",
+  "description": "Auto-updated reference for Claude Code (the CLI). Covers settings.json schema, hook events, slash commands, MCP config, plugins, env vars, CLI flags, permission modes, and a known-issues catalog. Last updated: pending first pipeline run.",
+  "version": "0.1.0",
+  "author": { "name": "xiaolai" },
+  "license": "MIT",
+  "repository": "https://github.com/xiaolai/claude-code-documentation-knowledge-autoupdated",
+  "keywords": ["claude-code", "settings", "hooks", "mcp", "plugins", "reference", "auto-updated"]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "claude-code-documentation-knowledge-autoupdated",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Verification toolchain for the claude-code-documentation-knowledge skill. The actual skill content lives in SKILL*.md / rules/*.md; this package.json only carries the devDeps for scripts/ verification.",
+  "scripts": {
+    "verify:examples": "bash scripts/validate-examples.sh",
+    "verify:templates": "bash scripts/typecheck-templates.sh",
+    "verify:populated": "bash scripts/check-populated.sh",
+    "verify:diff-size": "bash scripts/check-diff-size.sh",
+    "verify:all": "npm run verify:examples && npm run verify:templates && npm run verify:populated"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1"
+  }
+}

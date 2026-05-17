@@ -1,0 +1,10 @@
+{
+  "name": "example-plugin",
+  "version": "0.1.0",
+  "description": "Example plugin manifest demonstrating the required and optional fields.",
+  "author": { "name": "Your Name", "email": "you@example.com" },
+  "homepage": "https://github.com/your-org/example-plugin",
+  "repository": "https://github.com/your-org/example-plugin",
+  "license": "MIT",
+  "keywords": ["claude-code", "example"]
+}

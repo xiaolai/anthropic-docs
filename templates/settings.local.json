@@ -1,0 +1,13 @@
+{
+  "model": "claude-opus-4-7",
+  "permissions": {
+    "allow": [
+      "Bash(npm:*)",
+      "Bash(pnpm:*)",
+      "Bash(node:*)"
+    ]
+  },
+  "env": {
+    "DEBUG": "true"
+  }
+}

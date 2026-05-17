@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/xiaolai/claude-code-documentation-knowledge-autoupdated/schema/settings.schema.json",
+  "title": "Claude Code settings.json",
+  "description": "Permissive schema for ~/.claude/settings.json, <project>/.claude/settings.json, and <project>/.claude/settings.local.json. Starts loose (additionalProperties: true) and tightens over time. The research agent updates this when new settings keys are documented upstream.",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "model": {
+      "type": "string",
+      "description": "Default model ID for Claude Code sessions (e.g., 'claude-sonnet-4-6', 'claude-opus-4-7')."
+    },
+    "permissions": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "allow": { "type": "array", "items": { "type": "string" } },
+        "deny": { "type": "array", "items": { "type": "string" } },
+        "ask": { "type": "array", "items": { "type": "string" } },
+        "defaultMode": {
+          "type": "string",
+          "enum": ["default", "acceptEdits", "plan", "bypassPermissions"]
+        }
+      }
+    },
+    "env": {
+      "type": "object",
+      "additionalProperties": { "type": "string" },
+      "description": "Environment variables injected into every tool call."
+    },
+    "hooks": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Hook configuration. Keys are event names (PreToolUse, PostToolUse, Stop, SubagentStop, Notification, UserPromptSubmit, PreCompact, SessionStart, SessionEnd, etc.)."
+    },
+    "enabledPlugins": {
+      "type": "object",
+      "additionalProperties": { "type": "boolean" },
+      "description": "Map of '<plugin>@<marketplace>' to enable/disable flag."
+    },
+    "theme": {
+      "type": "string",
+      "description": "UI theme name."
+    },
+    "editorMode": {
+      "type": "string",
+      "enum": ["normal", "vim", "emacs"]
+    },
+    "apiKeyHelper": {
+      "type": "string",
+      "description": "Path to a script that prints an API key on stdout."
+    },
+    "disableTelemetry": { "type": "boolean" },
+    "cleanupPeriodDays": { "type": "integer", "minimum": 0 },
+    "includeCoAuthoredBy": { "type": "boolean" },
+    "forceLoginMethod": { "type": "string" }
+  }
+}

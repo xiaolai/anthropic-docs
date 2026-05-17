@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/xiaolai/claude-code-documentation-knowledge-autoupdated/schema/hook-input.schema.json",
+  "title": "Claude Code hook input (JSON on stdin)",
+  "description": "Permissive schema for the JSON payload Claude Code writes to a hook's stdin. Hook event names map to slightly different shapes (e.g., PreToolUse carries tool_name + tool_input; UserPromptSubmit carries prompt; SessionStart carries source). This schema accepts any documented top-level field and is intentionally permissive on per-event shape until the docs stabilise.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["hook_event_name"],
+  "properties": {
+    "session_id": { "type": "string" },
+    "transcript_path": { "type": "string" },
+    "cwd": { "type": "string" },
+    "hook_event_name": {
+      "type": "string",
+      "enum": [
+        "PreToolUse",
+        "PostToolUse",
+        "Stop",
+        "SubagentStop",
+        "Notification",
+        "UserPromptSubmit",
+        "PreCompact",
+        "SessionStart",
+        "SessionEnd"
+      ]
+    },
+    "tool_name": { "type": "string" },
+    "tool_input": { "type": "object", "additionalProperties": true },
+    "tool_response": { "additionalProperties": true },
+    "prompt": { "type": "string" },
+    "source": { "type": "string" },
+    "matcher": { "type": "string" }
+  }
+}

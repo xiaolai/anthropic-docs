@@ -1,0 +1,14 @@
+node_modules/
+__pycache__/
+.DS_Store
+/tmp/
+
+# package-lock.json files MUST be committed — npm ci in the workflow
+# enforces them as a supply-chain defence (security audit Finding #4).
+# Do NOT add package-lock.json to this gitignore.
+
+# Local design notes & planning — never push to remote
+dev-docs/
+
+# nlpm generated artifacts
+.claude/nlpm-history.json

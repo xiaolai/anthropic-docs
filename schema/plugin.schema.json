@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/xiaolai/claude-code-documentation-knowledge-autoupdated/schema/plugin.schema.json",
+  "title": "Claude Code plugin manifest (.claude-plugin/plugin.json)",
+  "description": "Permissive schema for plugin.json. Required: name, version. Optional metadata: description, author, homepage, repository, license, keywords.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["name", "version"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Plugin identifier. Lowercase kebab-case recommended."
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[A-Za-z0-9.-]+)?(?:\\+[A-Za-z0-9.-]+)?$",
+      "description": "SemVer version string."
+    },
+    "description": { "type": "string" },
+    "author": {
+      "oneOf": [
+        { "type": "string" },
+        {
+          "type": "object",
+          "required": ["name"],
+          "additionalProperties": true,
+          "properties": {
+            "name": { "type": "string" },
+            "email": { "type": "string", "format": "email" },
+            "url": { "type": "string", "format": "uri" }
+          }
+        }
+      ]
+    },
+    "homepage": { "type": "string", "format": "uri" },
+    "repository": {
+      "oneOf": [
+        { "type": "string" },
+        {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "type": { "type": "string" },
+            "url": { "type": "string" }
+          }
+        }
+      ]
+    },
+    "license": { "type": "string" },
+    "keywords": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

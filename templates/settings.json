@@ -1,0 +1,37 @@
+{
+  "model": "claude-sonnet-4-6",
+  "permissions": {
+    "allow": [
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Read(*)",
+      "Edit(*)"
+    ],
+    "deny": [
+      "Bash(rm -rf:*)",
+      "WebFetch(*)"
+    ],
+    "ask": [
+      "Bash(git push:*)",
+      "Bash(npm install:*)"
+    ],
+    "defaultMode": "default"
+  },
+  "env": {
+    "EDITOR": "code --wait"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          { "type": "command", "command": ".claude/hooks/pre-tool-use.sh" }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {},
+  "includeCoAuthoredBy": false,
+  "cleanupPeriodDays": 30
+}
