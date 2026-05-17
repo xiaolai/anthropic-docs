@@ -1,17 +1,127 @@
-# Claude Office Agents
+---
+name: claude-office-agents
+description: |
+  Deep reference for Claude for M365 — the Claude-powered add-ins
+  that run inside Microsoft 365 apps (Excel, PowerPoint, Word,
+  Outlook). Covers per-app capabilities, work-across-apps shared
+  state, connectors and skills integration, dictation, third-party
+  platform deployment (Bedrock / Vertex / Foundry / gateway),
+  enterprise admin setup (OpenTelemetry audit, usage analytics,
+  spend tracking), and the one-time Microsoft Graph consent required
+  for Outlook.
+source: https://claude.com/docs/office-agents/overview.md
+---
 
-> **Auto-populated by the daily pipeline.** This file is a stub. After
-> the first successful `daily.yml` run for the `claude-cowork` skill,
-> it will be rewritten from the upstream docs at
-> [claude.com/docs/en/office-agents](https://claude.com/docs/en/office-agents).
+# Claude for M365 (Office Agents)
 
-Covers:
+> *Router lives in [`SKILL.md`](SKILL.md). This file is the deep
+> reference for everything under `claude.com/docs/office-agents/*`.*
 
-- Claude in Excel — capabilities, formulas, range operations.
-- Slack-style office integrations.
-- Office-agent capabilities & limits.
-- Deployment & rollout for office productivity surfaces.
+## What it is
 
-## Status
+Claude for M365 is a set of Claude-powered add-ins inside Microsoft
+365 apps. Chat with Claude about the file or email you have open;
+ask it to read or edit content; move work between Excel, PowerPoint,
+Word, and Outlook without leaving the app.
 
-- Stub created during scaffold. Next daily run populates from upstream.
+## Per-app surfaces
+
+| App        | Capabilities                                                                         | Source page |
+|------------|--------------------------------------------------------------------------------------|-------------|
+| **Excel**      | Read/write cells, formulas, formatting, pivot tables, charts                     | [`excel.md`](docs-snapshot/claude.com/office-agents/excel.md) |
+| **PowerPoint** | Read, edit, generate slides using existing templates                             | [`powerpoint.md`](docs-snapshot/claude.com/office-agents/powerpoint.md) |
+| **Word**       | Draft, redline, review documents with tracked changes and comment-driven editing | [`word.md`](docs-snapshot/claude.com/office-agents/word.md) |
+| **Outlook**    | Inbox triage, voice-matched reply drafts, thread summaries, meeting-time finding | [`outlook.md`](docs-snapshot/claude.com/office-agents/outlook.md) |
+
+## Work-across-apps shared state
+
+Claude for Excel, PowerPoint, Word, and Outlook share conversation
+state. Actions in one app are informed by what happened in others —
+e.g., findings from an Outlook inbox triage can be referenced when
+drafting a PowerPoint summary, without re-uploading or repeating
+context.
+
+See [`work-across-apps.md`](docs-snapshot/claude.com/office-agents/work-across-apps.md).
+
+## Outlook setup: Microsoft Graph consent
+
+Outlook requires a **one-time Microsoft Graph admin consent** before
+deployment. The consent flow grants the M365 add-in the Graph scopes
+it needs to triage inbox, summarize threads, and access calendar for
+meeting-time finding.
+
+See [`outlook.md` § Grant Microsoft Graph consent](docs-snapshot/claude.com/office-agents/outlook.md).
+
+## Connectors and Skills integration
+
+The M365 add-ins extend the same Connectors and Skills models used
+across Claude products:
+
+- **Connectors** — pull external context (e.g., a CRM, a wiki, a
+  ticket system) into the M365 conversation.
+- **Skills** — package reusable task recipes (e.g., "quarterly
+  pipeline review") that any user can invoke inside Excel /
+  PowerPoint / Word / Outlook.
+
+See [`connectors-and-skills.md`](docs-snapshot/claude.com/office-agents/connectors-and-skills.md).
+
+## Dictation
+
+Speak prompts instead of typing them. The dictation surface is
+available across all four M365 apps.
+
+See [`dictation.md`](docs-snapshot/claude.com/office-agents/dictation.md).
+
+## FSI plugins
+
+Pre-built plugins for financial-services workflows (modeling,
+disclosures, compliance reviews) ship as a dedicated plugin bundle.
+
+See [`fsi-plugins.md`](docs-snapshot/claude.com/office-agents/fsi-plugins.md).
+
+## Third-party platform deployment
+
+Claude for M365 can connect through Amazon Bedrock, Google Cloud
+Vertex AI, Azure AI Foundry, or an LLM gateway — the same providers
+supported by [Cowork on 3P](SKILL-cowork.md). This decouples M365
+deployment from Anthropic's API for organizations with the same
+residency / regulatory drivers.
+
+See [`third-party-platforms.md`](docs-snapshot/claude.com/office-agents/third-party-platforms.md).
+
+## Enterprise readiness
+
+Security architecture diagrams, OpenTelemetry audit setup, usage
+analytics, and spend-tracking conventions live in
+[`enterprise-readiness.md`](docs-snapshot/claude.com/office-agents/enterprise-readiness.md).
+
+Highlights:
+
+- Security architecture diagrams per app.
+- OpenTelemetry export for per-action audit trail (prompt, tool
+  calls, token counts).
+- Usage analytics surfaced both per-user and per-workspace.
+- Spend tracking by app, by user, by workspace.
+
+## Page index
+
+All 11 source pages mirrored under
+[`docs-snapshot/claude.com/office-agents/`](docs-snapshot/claude.com/office-agents/):
+
+| Page | Topic |
+|---|---|
+| `overview.md` | What's available, deployment overview |
+| `excel.md` | Claude for Excel |
+| `powerpoint.md` | Claude for PowerPoint |
+| `word.md` | Claude for Word |
+| `outlook.md` | Claude for Outlook (incl. Graph consent) |
+| `work-across-apps.md` | Shared conversation state across apps |
+| `connectors-and-skills.md` | Connectors + Skills in M365 context |
+| `dictation.md` | Voice input |
+| `fsi-plugins.md` | Financial-services plugin bundle |
+| `third-party-platforms.md` | Bedrock / Vertex / Foundry / gateway |
+| `enterprise-readiness.md` | Security, audit, analytics, spend |
+
+---
+
+*Source pages: 11 under `claude.com/docs/office-agents/`.*

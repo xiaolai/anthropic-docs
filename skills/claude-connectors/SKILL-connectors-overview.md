@@ -1,18 +1,138 @@
+---
+name: claude-connectors-overview
+description: |
+  Deep reference for Claude Connectors — what they are, how the
+  directory works, and the four first-party integrations (Google,
+  GitHub, Microsoft 365, Slack). Covers connector lifecycle (enable,
+  authenticate, scope, revoke), the difference between directory
+  vs custom connectors, and platform availability (Claude.ai,
+  Desktop, Mobile, Code, Cowork).
+source: https://claude.com/docs/connectors/overview.md
+---
+
 # Claude Connectors — Overview & Directory
 
-> **Auto-populated by the daily pipeline.** This file is a stub. After
-> the first successful `daily.yml` run for the `claude-connectors`
-> skill, it will be rewritten from the upstream docs at
-> [claude.com/docs/en/connectors](https://claude.com/docs/en/connectors).
+> *Router lives in [`SKILL.md`](SKILL.md). For *building* a custom
+> connector, see [`SKILL-connectors-building.md`](SKILL-connectors-building.md).
+> For Desktop MCPB packaging or MCP Apps design, see
+> [`SKILL-mcp-apps.md`](SKILL-mcp-apps.md).*
 
-Covers:
+## What connectors are
 
-- What connectors are (user-facing MCP integrations in the Claude app).
-- Enabling a connector — OAuth flow, permissions prompt.
-- The directory of pre-built connectors.
-- First-party integrations — GitHub, Google Workspace, Microsoft 365, Slack.
-- Connector permissions & data flow (what the connector sees vs what stays local).
+Connectors extend Claude by connecting it to external tools and data
+via the [Model Context Protocol (MCP)](https://modelcontextprotocol.io)
+— an open standard from Anthropic for AI ↔ tool interop.
 
-## Status
+A connector can do two things:
 
-- Stub created during scaffold. Next daily run populates from upstream.
+1. **Provide tools + information** — give Claude access to external
+   data and the ability to take actions (search files, read emails,
+   create issues, query databases).
+2. **Surface UI components** — render interactive visual elements
+   directly in the conversation via [MCP Apps](SKILL-mcp-apps.md).
+
+## Connector types
+
+| Type | Purpose | Source page |
+|---|---|---|
+| **Prebuilt integrations** | First-party Anthropic-maintained — Google Workspace, GitHub, M365, Slack | [`getting-started.md`](docs-snapshot/claude.com/connectors/getting-started.md) |
+| **Remote MCP servers** | Cloud-hosted MCP servers reachable over HTTPS | [`custom/remote-mcp.md`](docs-snapshot/claude.com/connectors/custom/remote-mcp.md) |
+| **MCP Apps** | MCP servers that render UI in the conversation | [`building/mcp-apps/getting-started.md`](docs-snapshot/claude.com/connectors/building/mcp-apps/getting-started.md) |
+| **MCP Bundles (MCPB)** | Local MCP servers packaged as Desktop extensions (.mcpb) | [`custom/desktop-extensions.md`](docs-snapshot/claude.com/connectors/custom/desktop-extensions.md) |
+| **Self-serve local MCP** | Local servers distributed via npm/PyPI (not directory-listable) | [`overview.md`](docs-snapshot/claude.com/connectors/overview.md) |
+
+## Connectors Directory
+
+The [Connectors Directory](docs-snapshot/claude.com/connectors/directory.md)
+is the open catalog of Anthropic-vetted third-party MCP servers,
+available across all Claude products. Each entry has been reviewed
+for tool annotations, privacy policy, working examples, and test
+credentials (where applicable).
+
+To submit your own: see [`building/submission.md`](docs-snapshot/claude.com/connectors/building/submission.md).
+
+## First-party integrations
+
+### Google Workspace
+
+| Service | Source |
+|---|---|
+| Google Calendar | [`google/calendar.md`](docs-snapshot/claude.com/connectors/google/calendar.md) |
+| Google Drive | [`google/drive.md`](docs-snapshot/claude.com/connectors/google/drive.md) |
+| Gmail | [`google/gmail.md`](docs-snapshot/claude.com/connectors/google/gmail.md) |
+
+### GitHub
+
+| Surface | Source |
+|---|---|
+| GitHub repos integration | [`github/index.md`](docs-snapshot/claude.com/connectors/github/index.md) |
+
+### Microsoft 365
+
+| Surface | Source |
+|---|---|
+| M365 (Outlook, Teams, OneDrive, etc.) | [`microsoft/365.md`](docs-snapshot/claude.com/connectors/microsoft/365.md) |
+
+### Slack
+
+| Surface | Source |
+|---|---|
+| Slack workspace integration | [`slack/index.md`](docs-snapshot/claude.com/connectors/slack/index.md) |
+
+## Enabling a connector
+
+The user-facing setup flow for first-party integrations: see
+[`getting-started.md`](docs-snapshot/claude.com/connectors/getting-started.md).
+General steps:
+
+1. Open Claude → Settings → Connectors.
+2. Select an integration.
+3. Authenticate via the provider's OAuth flow.
+4. Review and approve the requested scopes.
+5. The connector becomes available in conversations; tools surface
+   as `mcp__<connector>__<tool>` when invoked.
+
+## Platform availability
+
+Prebuilt integrations and directory connectors work across all
+Claude products:
+
+| Platform | Support |
+|---|---|
+| **Claude.ai (web)** | Full remote MCP + MCP Apps |
+| **Claude Desktop** | Full MCP + local Desktop Extensions |
+| **Claude Mobile** | Remote MCP access |
+| **Claude Code (CLI)** | Remote MCP access + plugins |
+| **Claude Cowork** | Full MCP + plugin support |
+
+## Related: Plugins
+
+Plugins bundle MCP connectors, Skills, slash commands, and sub-agents
+into shareable capability packages. See
+[`SKILL-claude-plugins.md`](SKILL-claude-plugins.md).
+
+## Related: Skills
+
+User-facing Agent Skills layer reusable task recipes on top of
+connectors. See [`SKILL-claude-skills.md`](SKILL-claude-skills.md).
+
+## Page index
+
+All 12 source pages mirrored under
+[`docs-snapshot/claude.com/connectors/`](docs-snapshot/claude.com/connectors/):
+
+- `overview.md` — this surface's source
+- `getting-started.md` — user-facing setup flow
+- `directory.md` — directory catalog
+- `custom/remote-mcp.md` — remote MCP background
+- `custom/desktop-extensions.md` — MCPB background
+- `google/{calendar,drive,gmail}.md` — Google Workspace integrations
+- `github/index.md` — GitHub integration
+- `microsoft/365.md` — M365 integration
+- `slack/index.md` — Slack integration
+
+---
+
+*Source pages: 12 under `claude.com/docs/connectors/` (excluding the
+`building/` subtree which is covered by `SKILL-connectors-building.md`
+and `SKILL-mcp-apps.md`).*

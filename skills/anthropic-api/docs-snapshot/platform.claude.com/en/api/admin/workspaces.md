@@ -1,0 +1,1000 @@
+# Workspaces
+
+## Create
+
+**post** `/v1/organizations/workspaces`
+
+Create Workspace
+
+### Body Parameters
+
+- `name: string`
+
+  Name of the Workspace.
+
+- `data_residency: optional object { allowed_inference_geos, default_inference_geo, workspace_geo }`
+
+  Data residency configuration for the workspace. If omitted, defaults to workspace_geo=`"us"`, allowed_inference_geos=`"unrestricted"`, and default_inference_geo=`"global"`.
+
+  - `allowed_inference_geos: optional array of string or "unrestricted"`
+
+    Permitted inference geo values. Defaults to 'unrestricted' if omitted, which allows all geos. Use the string 'unrestricted' to allow all geos, or a list of specific geos.
+
+    - `UnionMember0 = array of string`
+
+    - `UnionMember1 = "unrestricted"`
+
+      - `"unrestricted"`
+
+  - `default_inference_geo: optional string`
+
+    Default inference geo applied when requests omit the parameter. Defaults to 'global' if omitted. Must be a member of allowed_inference_geos unless allowed_inference_geos is `"unrestricted"`.
+
+  - `workspace_geo: optional string`
+
+    Geographic region for workspace data storage. Immutable after creation. Defaults to 'us' if omitted.
+
+### Returns
+
+- `Workspace = object { id, archived_at, created_at, 4 more }`
+
+  - `id: string`
+
+    ID of the Workspace.
+
+  - `archived_at: string`
+
+    RFC 3339 datetime string indicating when the Workspace was archived, or `null` if the Workspace is not archived.
+
+  - `created_at: string`
+
+    RFC 3339 datetime string indicating when the Workspace was created.
+
+  - `data_residency: object { allowed_inference_geos, default_inference_geo, workspace_geo }`
+
+    Data residency configuration.
+
+    - `allowed_inference_geos: array of string or "unrestricted"`
+
+      Permitted inference geo values. 'unrestricted' means all geos are allowed.
+
+      - `UnionMember0 = array of string`
+
+      - `UnionMember1 = "unrestricted"`
+
+        - `"unrestricted"`
+
+    - `default_inference_geo: string`
+
+      Default inference geo applied when requests omit the parameter.
+
+    - `workspace_geo: string`
+
+      Geographic region for workspace data storage. Immutable after creation.
+
+  - `display_color: string`
+
+    Hex color code representing the Workspace in the Anthropic Console.
+
+  - `name: string`
+
+    Name of the Workspace.
+
+  - `type: "workspace"`
+
+    Object type.
+
+    For Workspaces, this is always `"workspace"`.
+
+    - `"workspace"`
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/workspaces \
+    -H 'Content-Type: application/json' \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY" \
+    -d '{
+          "name": "x"
+        }'
+```
+
+## Retrieve
+
+**get** `/v1/organizations/workspaces/{workspace_id}`
+
+Get Workspace
+
+### Path Parameters
+
+- `workspace_id: string`
+
+  ID of the Workspace.
+
+### Returns
+
+- `Workspace = object { id, archived_at, created_at, 4 more }`
+
+  - `id: string`
+
+    ID of the Workspace.
+
+  - `archived_at: string`
+
+    RFC 3339 datetime string indicating when the Workspace was archived, or `null` if the Workspace is not archived.
+
+  - `created_at: string`
+
+    RFC 3339 datetime string indicating when the Workspace was created.
+
+  - `data_residency: object { allowed_inference_geos, default_inference_geo, workspace_geo }`
+
+    Data residency configuration.
+
+    - `allowed_inference_geos: array of string or "unrestricted"`
+
+      Permitted inference geo values. 'unrestricted' means all geos are allowed.
+
+      - `UnionMember0 = array of string`
+
+      - `UnionMember1 = "unrestricted"`
+
+        - `"unrestricted"`
+
+    - `default_inference_geo: string`
+
+      Default inference geo applied when requests omit the parameter.
+
+    - `workspace_geo: string`
+
+      Geographic region for workspace data storage. Immutable after creation.
+
+  - `display_color: string`
+
+    Hex color code representing the Workspace in the Anthropic Console.
+
+  - `name: string`
+
+    Name of the Workspace.
+
+  - `type: "workspace"`
+
+    Object type.
+
+    For Workspaces, this is always `"workspace"`.
+
+    - `"workspace"`
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/workspaces/$WORKSPACE_ID \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY"
+```
+
+## List
+
+**get** `/v1/organizations/workspaces`
+
+List Workspaces
+
+### Query Parameters
+
+- `after_id: optional string`
+
+  ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately after this object.
+
+- `before_id: optional string`
+
+  ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately before this object.
+
+- `include_archived: optional boolean`
+
+  Whether to include Workspaces that have been archived in the response
+
+- `limit: optional number`
+
+  Number of items to return per page.
+
+  Defaults to `20`. Ranges from `1` to `1000`.
+
+### Returns
+
+- `data: array of Workspace`
+
+  - `id: string`
+
+    ID of the Workspace.
+
+  - `archived_at: string`
+
+    RFC 3339 datetime string indicating when the Workspace was archived, or `null` if the Workspace is not archived.
+
+  - `created_at: string`
+
+    RFC 3339 datetime string indicating when the Workspace was created.
+
+  - `data_residency: object { allowed_inference_geos, default_inference_geo, workspace_geo }`
+
+    Data residency configuration.
+
+    - `allowed_inference_geos: array of string or "unrestricted"`
+
+      Permitted inference geo values. 'unrestricted' means all geos are allowed.
+
+      - `UnionMember0 = array of string`
+
+      - `UnionMember1 = "unrestricted"`
+
+        - `"unrestricted"`
+
+    - `default_inference_geo: string`
+
+      Default inference geo applied when requests omit the parameter.
+
+    - `workspace_geo: string`
+
+      Geographic region for workspace data storage. Immutable after creation.
+
+  - `display_color: string`
+
+    Hex color code representing the Workspace in the Anthropic Console.
+
+  - `name: string`
+
+    Name of the Workspace.
+
+  - `type: "workspace"`
+
+    Object type.
+
+    For Workspaces, this is always `"workspace"`.
+
+    - `"workspace"`
+
+- `first_id: string`
+
+  First ID in the `data` list. Can be used as the `before_id` for the previous page.
+
+- `has_more: boolean`
+
+  Indicates if there are more results in the requested page direction.
+
+- `last_id: string`
+
+  Last ID in the `data` list. Can be used as the `after_id` for the next page.
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/workspaces \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY"
+```
+
+## Update
+
+**post** `/v1/organizations/workspaces/{workspace_id}`
+
+Update Workspace
+
+### Path Parameters
+
+- `workspace_id: string`
+
+### Body Parameters
+
+- `name: string`
+
+  Name of the Workspace.
+
+- `data_residency: optional object { allowed_inference_geos, default_inference_geo }`
+
+  Data residency configuration for the workspace.
+
+  - `allowed_inference_geos: optional array of string or "unrestricted"`
+
+    Permitted inference geo values. Use 'unrestricted' to allow all geos, or a list of specific geos.
+
+    - `UnionMember0 = array of string`
+
+    - `UnionMember1 = "unrestricted"`
+
+      - `"unrestricted"`
+
+  - `default_inference_geo: optional string`
+
+    Default inference geo applied when requests omit the parameter. Must be a member of allowed_inference_geos unless allowed_inference_geos is `"unrestricted"`.
+
+### Returns
+
+- `Workspace = object { id, archived_at, created_at, 4 more }`
+
+  - `id: string`
+
+    ID of the Workspace.
+
+  - `archived_at: string`
+
+    RFC 3339 datetime string indicating when the Workspace was archived, or `null` if the Workspace is not archived.
+
+  - `created_at: string`
+
+    RFC 3339 datetime string indicating when the Workspace was created.
+
+  - `data_residency: object { allowed_inference_geos, default_inference_geo, workspace_geo }`
+
+    Data residency configuration.
+
+    - `allowed_inference_geos: array of string or "unrestricted"`
+
+      Permitted inference geo values. 'unrestricted' means all geos are allowed.
+
+      - `UnionMember0 = array of string`
+
+      - `UnionMember1 = "unrestricted"`
+
+        - `"unrestricted"`
+
+    - `default_inference_geo: string`
+
+      Default inference geo applied when requests omit the parameter.
+
+    - `workspace_geo: string`
+
+      Geographic region for workspace data storage. Immutable after creation.
+
+  - `display_color: string`
+
+    Hex color code representing the Workspace in the Anthropic Console.
+
+  - `name: string`
+
+    Name of the Workspace.
+
+  - `type: "workspace"`
+
+    Object type.
+
+    For Workspaces, this is always `"workspace"`.
+
+    - `"workspace"`
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/workspaces/$WORKSPACE_ID \
+    -H 'Content-Type: application/json' \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY" \
+    -d '{
+          "name": "x"
+        }'
+```
+
+## Archive
+
+**post** `/v1/organizations/workspaces/{workspace_id}/archive`
+
+Archive Workspace
+
+### Path Parameters
+
+- `workspace_id: string`
+
+### Returns
+
+- `Workspace = object { id, archived_at, created_at, 4 more }`
+
+  - `id: string`
+
+    ID of the Workspace.
+
+  - `archived_at: string`
+
+    RFC 3339 datetime string indicating when the Workspace was archived, or `null` if the Workspace is not archived.
+
+  - `created_at: string`
+
+    RFC 3339 datetime string indicating when the Workspace was created.
+
+  - `data_residency: object { allowed_inference_geos, default_inference_geo, workspace_geo }`
+
+    Data residency configuration.
+
+    - `allowed_inference_geos: array of string or "unrestricted"`
+
+      Permitted inference geo values. 'unrestricted' means all geos are allowed.
+
+      - `UnionMember0 = array of string`
+
+      - `UnionMember1 = "unrestricted"`
+
+        - `"unrestricted"`
+
+    - `default_inference_geo: string`
+
+      Default inference geo applied when requests omit the parameter.
+
+    - `workspace_geo: string`
+
+      Geographic region for workspace data storage. Immutable after creation.
+
+  - `display_color: string`
+
+    Hex color code representing the Workspace in the Anthropic Console.
+
+  - `name: string`
+
+    Name of the Workspace.
+
+  - `type: "workspace"`
+
+    Object type.
+
+    For Workspaces, this is always `"workspace"`.
+
+    - `"workspace"`
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/workspaces/$WORKSPACE_ID/archive \
+    -X POST \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY"
+```
+
+# Members
+
+## Create
+
+**post** `/v1/organizations/workspaces/{workspace_id}/members`
+
+Create Workspace Member
+
+### Path Parameters
+
+- `workspace_id: string`
+
+  ID of the Workspace.
+
+### Body Parameters
+
+- `user_id: string`
+
+  ID of the User.
+
+- `workspace_role: "workspace_user" or "workspace_developer" or "workspace_restricted_developer" or "workspace_admin"`
+
+  Role of the new Workspace Member. Cannot be "workspace_billing".
+
+  - `"workspace_user"`
+
+  - `"workspace_developer"`
+
+  - `"workspace_restricted_developer"`
+
+  - `"workspace_admin"`
+
+### Returns
+
+- `WorkspaceMember = object { type, user_id, workspace_id, workspace_role }`
+
+  - `type: "workspace_member"`
+
+    Object type.
+
+    For Workspace Members, this is always `"workspace_member"`.
+
+    - `"workspace_member"`
+
+  - `user_id: string`
+
+    ID of the User.
+
+  - `workspace_id: string`
+
+    ID of the Workspace.
+
+  - `workspace_role: "workspace_user" or "workspace_developer" or "workspace_restricted_developer" or 2 more`
+
+    Role of the Workspace Member.
+
+    - `"workspace_user"`
+
+    - `"workspace_developer"`
+
+    - `"workspace_restricted_developer"`
+
+    - `"workspace_admin"`
+
+    - `"workspace_billing"`
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/workspaces/$WORKSPACE_ID/members \
+    -H 'Content-Type: application/json' \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY" \
+    -d '{
+          "user_id": "user_01WCz1FkmYMm4gnmykNKUu3Q",
+          "workspace_role": "workspace_user"
+        }'
+```
+
+## Retrieve
+
+**get** `/v1/organizations/workspaces/{workspace_id}/members/{user_id}`
+
+Get Workspace Member
+
+### Path Parameters
+
+- `workspace_id: string`
+
+  ID of the Workspace.
+
+- `user_id: string`
+
+  ID of the User.
+
+### Returns
+
+- `WorkspaceMember = object { type, user_id, workspace_id, workspace_role }`
+
+  - `type: "workspace_member"`
+
+    Object type.
+
+    For Workspace Members, this is always `"workspace_member"`.
+
+    - `"workspace_member"`
+
+  - `user_id: string`
+
+    ID of the User.
+
+  - `workspace_id: string`
+
+    ID of the Workspace.
+
+  - `workspace_role: "workspace_user" or "workspace_developer" or "workspace_restricted_developer" or 2 more`
+
+    Role of the Workspace Member.
+
+    - `"workspace_user"`
+
+    - `"workspace_developer"`
+
+    - `"workspace_restricted_developer"`
+
+    - `"workspace_admin"`
+
+    - `"workspace_billing"`
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/workspaces/$WORKSPACE_ID/members/$USER_ID \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY"
+```
+
+## List
+
+**get** `/v1/organizations/workspaces/{workspace_id}/members`
+
+List Workspace Members
+
+### Path Parameters
+
+- `workspace_id: string`
+
+  ID of the Workspace.
+
+### Query Parameters
+
+- `after_id: optional string`
+
+  ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately after this object.
+
+- `before_id: optional string`
+
+  ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately before this object.
+
+- `limit: optional number`
+
+  Number of items to return per page.
+
+  Defaults to `20`. Ranges from `1` to `1000`.
+
+### Returns
+
+- `data: array of WorkspaceMember`
+
+  - `type: "workspace_member"`
+
+    Object type.
+
+    For Workspace Members, this is always `"workspace_member"`.
+
+    - `"workspace_member"`
+
+  - `user_id: string`
+
+    ID of the User.
+
+  - `workspace_id: string`
+
+    ID of the Workspace.
+
+  - `workspace_role: "workspace_user" or "workspace_developer" or "workspace_restricted_developer" or 2 more`
+
+    Role of the Workspace Member.
+
+    - `"workspace_user"`
+
+    - `"workspace_developer"`
+
+    - `"workspace_restricted_developer"`
+
+    - `"workspace_admin"`
+
+    - `"workspace_billing"`
+
+- `first_id: string`
+
+  First ID in the `data` list. Can be used as the `before_id` for the previous page.
+
+- `has_more: boolean`
+
+  Indicates if there are more results in the requested page direction.
+
+- `last_id: string`
+
+  Last ID in the `data` list. Can be used as the `after_id` for the next page.
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/workspaces/$WORKSPACE_ID/members \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY"
+```
+
+## Update
+
+**post** `/v1/organizations/workspaces/{workspace_id}/members/{user_id}`
+
+Update Workspace Member
+
+### Path Parameters
+
+- `workspace_id: string`
+
+  ID of the Workspace.
+
+- `user_id: string`
+
+  ID of the User.
+
+### Body Parameters
+
+- `workspace_role: "workspace_user" or "workspace_developer" or "workspace_restricted_developer" or 2 more`
+
+  New workspace role for the User.
+
+  - `"workspace_user"`
+
+  - `"workspace_developer"`
+
+  - `"workspace_restricted_developer"`
+
+  - `"workspace_admin"`
+
+  - `"workspace_billing"`
+
+### Returns
+
+- `WorkspaceMember = object { type, user_id, workspace_id, workspace_role }`
+
+  - `type: "workspace_member"`
+
+    Object type.
+
+    For Workspace Members, this is always `"workspace_member"`.
+
+    - `"workspace_member"`
+
+  - `user_id: string`
+
+    ID of the User.
+
+  - `workspace_id: string`
+
+    ID of the Workspace.
+
+  - `workspace_role: "workspace_user" or "workspace_developer" or "workspace_restricted_developer" or 2 more`
+
+    Role of the Workspace Member.
+
+    - `"workspace_user"`
+
+    - `"workspace_developer"`
+
+    - `"workspace_restricted_developer"`
+
+    - `"workspace_admin"`
+
+    - `"workspace_billing"`
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/workspaces/$WORKSPACE_ID/members/$USER_ID \
+    -H 'Content-Type: application/json' \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY" \
+    -d '{
+          "workspace_role": "workspace_user"
+        }'
+```
+
+## Delete
+
+**delete** `/v1/organizations/workspaces/{workspace_id}/members/{user_id}`
+
+Delete Workspace Member
+
+### Path Parameters
+
+- `workspace_id: string`
+
+  ID of the Workspace.
+
+- `user_id: string`
+
+  ID of the User.
+
+### Returns
+
+- `type: "workspace_member_deleted"`
+
+  Deleted object type.
+
+  For Workspace Members, this is always `"workspace_member_deleted"`.
+
+  - `"workspace_member_deleted"`
+
+- `user_id: string`
+
+  ID of the User.
+
+- `workspace_id: string`
+
+  ID of the Workspace.
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/workspaces/$WORKSPACE_ID/members/$USER_ID \
+    -X DELETE \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY"
+```
+
+## Domain Types
+
+### Workspace Member
+
+- `WorkspaceMember = object { type, user_id, workspace_id, workspace_role }`
+
+  - `type: "workspace_member"`
+
+    Object type.
+
+    For Workspace Members, this is always `"workspace_member"`.
+
+    - `"workspace_member"`
+
+  - `user_id: string`
+
+    ID of the User.
+
+  - `workspace_id: string`
+
+    ID of the Workspace.
+
+  - `workspace_role: "workspace_user" or "workspace_developer" or "workspace_restricted_developer" or 2 more`
+
+    Role of the Workspace Member.
+
+    - `"workspace_user"`
+
+    - `"workspace_developer"`
+
+    - `"workspace_restricted_developer"`
+
+    - `"workspace_admin"`
+
+    - `"workspace_billing"`
+
+### Member Delete Response
+
+- `MemberDeleteResponse = object { type, user_id, workspace_id }`
+
+  - `type: "workspace_member_deleted"`
+
+    Deleted object type.
+
+    For Workspace Members, this is always `"workspace_member_deleted"`.
+
+    - `"workspace_member_deleted"`
+
+  - `user_id: string`
+
+    ID of the User.
+
+  - `workspace_id: string`
+
+    ID of the Workspace.
+
+# Rate Limits
+
+## List
+
+**get** `/v1/organizations/workspaces/{workspace_id}/rate_limits`
+
+List rate-limit overrides configured for a workspace.
+
+Returns only the groups and limiter types that have a workspace-level
+override. Groups without overrides inherit the organization limits and
+are not listed; use `GET /v1/organizations/rate_limits` to see those.
+
+### Path Parameters
+
+- `workspace_id: string`
+
+  The ID of the workspace.
+
+### Query Parameters
+
+- `group_type: optional "model_group" or "batch" or "token_count" or 3 more`
+
+  Filter by group type.
+
+  - `"model_group"`
+
+  - `"batch"`
+
+  - `"token_count"`
+
+  - `"files"`
+
+  - `"skills"`
+
+  - `"web_search"`
+
+- `page: optional string`
+
+  Opaque cursor from a previous response's `next_page`.
+
+### Returns
+
+- `data: array of object { group_type, limits, models, type }`
+
+  Rate-limit entries for the workspace, one per group that has at least one override.
+
+  - `group_type: "model_group" or "batch" or "token_count" or 3 more`
+
+    The kind of rate-limit group this entry represents. `model_group` entries apply to a family of models (listed in `models`); other values apply to an API-surface category and have `models` set to `null`.
+
+    - `"model_group"`
+
+    - `"batch"`
+
+    - `"token_count"`
+
+    - `"files"`
+
+    - `"skills"`
+
+    - `"web_search"`
+
+  - `limits: array of object { org_limit, type, value }`
+
+    The limiter values overridden for this group in this workspace. Limiter types without a workspace override are omitted and inherit the organization value.
+
+    - `org_limit: number`
+
+      The organization-level value for the same limiter type, for reference. `null` when the organization has no limit configured for this limiter type.
+
+    - `type: string`
+
+      The limiter type (for example, `requests_per_minute` or `input_tokens_per_minute`).
+
+    - `value: number`
+
+      The workspace-level override value for this limiter type.
+
+  - `models: array of string`
+
+    Model names this entry's limits apply to, including aliases. `null` when `group_type` is not `"model_group"`.
+
+  - `type: "workspace_rate_limit"`
+
+    Object type. Always `workspace_rate_limit` for workspace rate-limit entries.
+
+    - `"workspace_rate_limit"`
+
+- `next_page: string`
+
+  Token to provide in as `page` in the subsequent request to retrieve the next page of data.
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/workspaces/$WORKSPACE_ID/rate_limits \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY"
+```
+
+## Domain Types
+
+### Rate Limit List Response
+
+- `RateLimitListResponse = object { data, next_page }`
+
+  - `data: array of object { group_type, limits, models, type }`
+
+    Rate-limit entries for the workspace, one per group that has at least one override.
+
+    - `group_type: "model_group" or "batch" or "token_count" or 3 more`
+
+      The kind of rate-limit group this entry represents. `model_group` entries apply to a family of models (listed in `models`); other values apply to an API-surface category and have `models` set to `null`.
+
+      - `"model_group"`
+
+      - `"batch"`
+
+      - `"token_count"`
+
+      - `"files"`
+
+      - `"skills"`
+
+      - `"web_search"`
+
+    - `limits: array of object { org_limit, type, value }`
+
+      The limiter values overridden for this group in this workspace. Limiter types without a workspace override are omitted and inherit the organization value.
+
+      - `org_limit: number`
+
+        The organization-level value for the same limiter type, for reference. `null` when the organization has no limit configured for this limiter type.
+
+      - `type: string`
+
+        The limiter type (for example, `requests_per_minute` or `input_tokens_per_minute`).
+
+      - `value: number`
+
+        The workspace-level override value for this limiter type.
+
+    - `models: array of string`
+
+      Model names this entry's limits apply to, including aliases. `null` when `group_type` is not `"model_group"`.
+
+    - `type: "workspace_rate_limit"`
+
+      Object type. Always `workspace_rate_limit` for workspace rate-limit entries.
+
+      - `"workspace_rate_limit"`
+
+  - `next_page: string`
+
+    Token to provide in as `page` in the subsequent request to retrieve the next page of data.

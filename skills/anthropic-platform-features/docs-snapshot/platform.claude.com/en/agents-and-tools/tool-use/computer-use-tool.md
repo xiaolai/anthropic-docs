@@ -1,0 +1,1092 @@
+# Computer use tool
+
+---
+
+Claude can interact with computer environments through the computer use tool, which provides screenshot capabilities and mouse/keyboard control for autonomous desktop interaction. On [WebArena](https://webarena.dev/), a benchmark for autonomous web navigation across real websites, Claude achieves state-of-the-art results among single-agent systems, demonstrating strong ability to complete multi-step browser tasks end to end.
+
+<Note>
+Computer use is in beta and requires a [beta header](/docs/en/api/beta-headers):
+- `"computer-use-2025-11-24"` for Claude Opus 4.7, Claude Opus 4.6, Claude Sonnet 4.6, and Claude Opus 4.5
+- `"computer-use-2025-01-24"` for Claude Sonnet 4.5, Claude Haiku 4.5, Claude Opus 4.1, Claude Sonnet 4 ([deprecated](/docs/en/about-claude/model-deprecations)), and Claude Opus 4 ([deprecated](/docs/en/about-claude/model-deprecations))
+
+Reach out through the [feedback form](https://forms.gle/H6UFuXaaLywri9hz6) to share your feedback on this feature.
+</Note>
+
+<Note>
+This feature is eligible for [Zero Data Retention (ZDR)](/docs/en/build-with-claude/api-and-data-retention). When your organization has a ZDR arrangement, data sent through this feature is not stored after the API response is returned.
+</Note>
+
+## Overview
+
+Computer use is a beta feature that enables Claude to interact with desktop environments. This tool provides:
+
+- **Screenshot capture**: See what's currently displayed on screen
+- **Mouse control**: Click, drag, and move the cursor
+- **Keyboard input**: Type text and use keyboard shortcuts
+- **Desktop automation**: Interact with any application or interface
+
+While computer use can be augmented with other tools like bash and text editor for more comprehensive automation workflows, computer use specifically refers to the computer use tool's capability to see and control desktop environments.
+
+For model support, see the [Tool reference](/docs/en/agents-and-tools/tool-use/tool-reference).
+
+## Security considerations
+
+Computer use is a beta feature with unique risks distinct from standard API features. These risks are heightened when interacting with the internet.
+
+<Warning>
+To minimize risks, consider taking precautions such as:
+
+1. Using a dedicated virtual machine or container with minimal privileges to prevent direct system attacks or accidents.
+2. Avoiding giving the model access to sensitive data, such as account login information, to prevent information theft.
+3. Limiting internet access to an allowlist of domains to reduce exposure to malicious content.
+4. Asking a human to confirm decisions that may result in meaningful real-world consequences as well as any tasks requiring affirmative consent, such as accepting cookies, executing financial transactions, or agreeing to terms of service.
+</Warning>
+
+In some circumstances, Claude will follow commands found in content even if it conflicts with the user's instructions. For example, Claude instructions on webpages or contained in images may override instructions or cause Claude to make mistakes. Take precautions to isolate Claude from sensitive data and actions to avoid risks related to prompt injection.
+
+The model has been trained to resist these prompt injections, and an extra layer of defense has been added. If you use the computer use tools, classifiers will automatically run on your prompts to flag potential instances of prompt injections. When these classifiers identify potential prompt injections in screenshots, they will automatically steer the model to ask for user confirmation before proceeding with the next action. This extra protection won't be ideal for every use case (for example, use cases without a human in the loop), so if you'd like to opt out and turn it off, please [contact support](https://support.claude.com/en/).
+
+These precautions remain important even with the classifier defense layer in place.
+
+Inform end users of relevant risks and obtain their consent prior to enabling computer use in your own products.
+
+<Card
+  title="Computer use reference implementation"
+  icon="computer"
+  href="https://github.com/anthropics/anthropic-quickstarts/tree/main/computer-use-demo"
+>
+
+Get started quickly with the computer use reference implementation that includes a web interface, Docker container, example tool implementations, and an agent loop.
+
+</Card>
+
+## Quick start
+
+Here's how to get started with computer use:
+
+<CodeGroup>
+```bash cURL
+curl https://api.anthropic.com/v1/messages \
+  -H "content-type: application/json" \
+  -H "x-api-key: $ANTHROPIC_API_KEY" \
+  -H "anthropic-version: 2023-06-01" \
+  -H "anthropic-beta: computer-use-2025-11-24" \
+  -d '{
+    "model": "claude-opus-4-7",
+    "max_tokens": 1024,
+    "tools": [
+      {
+        "type": "computer_20251124",
+        "name": "computer",
+        "display_width_px": 1024,
+        "display_height_px": 768,
+        "display_number": 1
+      },
+      {
+        "type": "text_editor_20250728",
+        "name": "str_replace_based_edit_tool"
+      },
+      {
+        "type": "bash_20250124",
+        "name": "bash"
+      }
+    ],
+    "messages": [
+      {
+        "role": "user",
+        "content": "Save a picture of a cat to my desktop."
+      }
+    ]
+  }'
+```
+
+```bash CLI
+ant beta:messages create --beta computer-use-2025-11-24 <<'YAML'
+model: claude-opus-4-7
+max_tokens: 1024
+tools:
+  - type: computer_20251124
+    name: computer
+    display_width_px: 1024
+    display_height_px: 768
+    display_number: 1
+  - type: text_editor_20250728
+    name: str_replace_based_edit_tool
+  - type: bash_20250124
+    name: bash
+messages:
+  - role: user
+    content: Save a picture of a cat to my desktop.
+YAML
+```
+
+```python Python hidelines={1..2}
+import anthropic
+
+client = anthropic.Anthropic()
+
+response = client.beta.messages.create(
+    model="claude-opus-4-7",  # or another compatible model
+    max_tokens=1024,
+    tools=[
+        {
+            "type": "computer_20251124",
+            "name": "computer",
+            "display_width_px": 1024,
+            "display_height_px": 768,
+            "display_number": 1,
+        },
+        {"type": "text_editor_20250728", "name": "str_replace_based_edit_tool"},
+        {"type": "bash_20250124", "name": "bash"},
+    ],
+    messages=[{"role": "user", "content": "Save a picture of a cat to my desktop."}],
+    betas=["computer-use-2025-11-24"],
+)
+print(response)
+```
+
+```typescript TypeScript hidelines={1..2}
+import Anthropic from "@anthropic-ai/sdk";
+
+const client = new Anthropic();
+
+const response = await client.beta.messages.create({
+  model: "claude-opus-4-7",
+  max_tokens: 1024,
+  tools: [
+    {
+      type: "computer_20251124",
+      name: "computer",
+      display_width_px: 1024,
+      display_height_px: 768,
+      display_number: 1
+    },
+    {
+      type: "text_editor_20250728",
+      name: "str_replace_based_edit_tool"
+    },
+    {
+      type: "bash_20250124",
+      name: "bash"
+    }
+  ],
+  messages: [{ role: "user", content: "Save a picture of a cat to my desktop." }],
+  betas: ["computer-use-2025-11-24"]
+});
+
+console.log(response);
+```
+
+```csharp C#
+using Anthropic;
+using Anthropic.Models.Beta.Messages;
+using Messages = Anthropic.Models.Messages;
+
+var client = new AnthropicClient();
+
+var parameters = new MessageCreateParams
+{
+    Model = Messages::Model.ClaudeOpus4_7,
+    MaxTokens = 1024,
+    Tools = new BetaToolUnion[]
+    {
+        new BetaToolComputerUse20251124
+        {
+            DisplayWidthPx = 1024,
+            DisplayHeightPx = 768,
+            DisplayNumber = 1
+        },
+        new BetaToolTextEditor20250728(),
+        new BetaToolBash20250124()
+    },
+    Messages =
+    [
+        new BetaMessageParam
+        {
+            Role = Role.User,
+            Content = "Save a picture of a cat to my desktop."
+        }
+    ],
+    Betas = ["computer-use-2025-11-24"]
+};
+
+var response = await client.Beta.Messages.Create(parameters);
+Console.WriteLine(response);
+```
+
+```go Go nocheck hidelines={1..11,-1}
+package main
+
+import (
+	"context"
+	"fmt"
+	"log"
+
+	"github.com/anthropics/anthropic-sdk-go"
+)
+
+func main() {
+	client := anthropic.NewClient()
+
+	response, err := client.Beta.Messages.New(context.TODO(), anthropic.BetaMessageNewParams{
+		Model:     anthropic.ModelClaudeOpus4_7,
+		MaxTokens: 1024,
+		Tools: []anthropic.BetaToolUnionParam{
+			{OfComputerUseTool20251124: &anthropic.BetaToolComputerUse20251124Param{
+				DisplayWidthPx:  1024,
+				DisplayHeightPx: 768,
+				DisplayNumber:   anthropic.Int(1),
+			}},
+			{OfTextEditor20250728: &anthropic.BetaToolTextEditor20250728Param{}},
+			{OfBashTool20250124: &anthropic.BetaToolBash20250124Param{}},
+		},
+		Messages: []anthropic.BetaMessageParam{
+			anthropic.NewBetaUserMessage(anthropic.NewBetaTextBlock("Save a picture of a cat to my desktop.")),
+		},
+		Betas: []anthropic.AnthropicBeta{
+			anthropic.AnthropicBetaComputerUse2025_11_24,
+		},
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(response)
+}
+```
+
+```java Java hidelines={1..3,7..10,-2..}
+import com.anthropic.client.AnthropicClient;
+import com.anthropic.client.okhttp.AnthropicOkHttpClient;
+import com.anthropic.models.beta.messages.BetaMessage;
+import com.anthropic.models.beta.messages.BetaToolBash20250124;
+import com.anthropic.models.beta.messages.BetaToolComputerUse20251124;
+import com.anthropic.models.beta.messages.BetaToolTextEditor20250728;
+import com.anthropic.models.beta.messages.MessageCreateParams;
+
+public class ComputerUseExample {
+    public static void main(String[] args) {
+        AnthropicClient client = AnthropicOkHttpClient.fromEnv();
+
+        MessageCreateParams params = MessageCreateParams.builder()
+            .model("claude-opus-4-7")
+            .maxTokens(1024L)
+            .addTool(BetaToolComputerUse20251124.builder()
+                .displayWidthPx(1024L)
+                .displayHeightPx(768L)
+                .displayNumber(1L)
+                .build())
+            .addTool(BetaToolTextEditor20250728.builder().build())
+            .addTool(BetaToolBash20250124.builder().build())
+            .addUserMessage("Save a picture of a cat to my desktop.")
+            .addBeta("computer-use-2025-11-24")
+            .build();
+
+        BetaMessage response = client.beta().messages().create(params);
+        System.out.println(response);
+    }
+}
+```
+
+```php PHP hidelines={1..4}
+<?php
+
+use Anthropic\Client;
+
+$client = new Client(apiKey: getenv("ANTHROPIC_API_KEY"));
+
+$response = $client->beta->messages->create(
+    maxTokens: 1024,
+    messages: [
+        ['role' => 'user', 'content' => 'Save a picture of a cat to my desktop.'],
+    ],
+    model: 'claude-opus-4-7',
+    tools: [
+        [
+            'type' => 'computer_20251124',
+            'name' => 'computer',
+            'display_width_px' => 1024,
+            'display_height_px' => 768,
+            'display_number' => 1,
+        ],
+        [
+            'type' => 'text_editor_20250728',
+            'name' => 'str_replace_based_edit_tool',
+        ],
+        [
+            'type' => 'bash_20250124',
+            'name' => 'bash',
+        ],
+    ],
+    betas: ['computer-use-2025-11-24'],
+);
+
+echo $response;
+```
+
+```ruby Ruby hidelines={1..2}
+require "anthropic"
+
+client = Anthropic::Client.new
+
+response = client.beta.messages.create(
+  model: "claude-opus-4-7",
+  max_tokens: 1024,
+  tools: [
+    {
+      type: "computer_20251124",
+      name: "computer",
+      display_width_px: 1024,
+      display_height_px: 768,
+      display_number: 1
+    },
+    {
+      type: "text_editor_20250728",
+      name: "str_replace_based_edit_tool"
+    },
+    {
+      type: "bash_20250124",
+      name: "bash"
+    }
+  ],
+  messages: [
+    { role: "user", content: "Save a picture of a cat to my desktop." }
+  ],
+  betas: ["computer-use-2025-11-24"]
+)
+
+puts response
+```
+</CodeGroup>
+
+<Note>
+A beta header is only required for the computer use tool.
+
+The example above shows all three tools being used together, which requires the beta header because it includes the computer use tool.
+</Note>
+
+---
+
+## How computer use works
+
+<Steps>
+  <Step
+    title="Provide Claude with the computer use tool and a user prompt"
+    icon="tool"
+  >
+    - Add the computer use tool (and optionally other tools) to your API request.
+    - Include a user prompt that requires desktop interaction, for example, "Save a picture of a cat to my desktop."
+  </Step>
+  <Step title="Claude decides to use the computer use tool" icon="wrench">
+    - Claude assesses if the computer use tool can help with the user's query.
+    - If yes, Claude constructs a properly formatted tool use request.
+    - The API response has a `stop_reason` of `tool_use`, signaling Claude's intent.
+  </Step>
+  <Step
+    title="Extract tool input, evaluate the tool on a computer, and return results"
+    icon="computer"
+  >
+    - On your end, extract the tool name and input from Claude's request.
+    - Use the tool on a container or Virtual Machine.
+    - Continue the conversation with a new `user` message containing a `tool_result` content block.
+  </Step>
+  <Step
+    title="Claude continues calling computer use tools until it's completed the task"
+    icon="arrows-clockwise"
+  >
+    - Claude analyzes the tool results to determine if more tool use is needed or the task has been completed.
+    - If Claude decides it needs another tool, it responds with another `tool_use` `stop_reason` and you should return to step 3.
+    - Otherwise, it crafts a text response to the user.
+  </Step>
+</Steps>
+
+The repetition of steps 3 and 4 without user input is referred to as the "agent loop" (that is, Claude responding with a tool use request and your application responding to Claude with the results of evaluating that request).
+
+### The computing environment
+
+Computer use requires a sandboxed computing environment where Claude can safely interact with applications and the web. This environment includes:
+
+1. **Virtual display**: A virtual X11 display server (using Xvfb) that renders the desktop interface Claude will see through screenshots and control with mouse/keyboard actions.
+
+2. **Desktop environment**: A lightweight UI with window manager (Mutter) and panel (Tint2) running on Linux, which provides a consistent graphical interface for Claude to interact with.
+
+3. **Applications**: Pre-installed Linux applications like Firefox, LibreOffice, text editors, and file managers that Claude can use to complete tasks.
+
+4. **Tool implementations**: Integration code that translates Claude's abstract tool requests (like "move mouse" or "take screenshot") into actual operations in the virtual environment.
+
+5. **Agent loop**: A program that handles communication between Claude and the environment, sending Claude's actions to the environment and returning the results (screenshots, command outputs) back to Claude.
+
+When you use computer use, Claude doesn't directly connect to this environment. Instead, your application:
+
+1. Receives Claude's tool use requests
+2. Translates them into actions in your computing environment
+3. Captures the results (screenshots, command outputs, etc.)
+4. Returns these results to Claude
+
+For security and isolation, the reference implementation runs all of this inside a Docker container with appropriate port mappings for viewing and interacting with the environment.
+
+---
+
+## How to implement computer use
+
+### Start with the reference implementation
+
+A [reference implementation](https://github.com/anthropics/anthropic-quickstarts/tree/main/computer-use-demo) is available that includes everything you need to get started quickly with computer use:
+
+- A [containerized environment](https://github.com/anthropics/anthropic-quickstarts/blob/main/computer-use-demo/Dockerfile) suitable for computer use with Claude
+- Implementations of [the computer use tools](https://github.com/anthropics/anthropic-quickstarts/tree/main/computer-use-demo/computer_use_demo/tools)
+- An [agent loop](https://github.com/anthropics/anthropic-quickstarts/blob/main/computer-use-demo/computer_use_demo/loop.py) that interacts with the Claude API and executes the computer use tools
+- A web interface to interact with the container, agent loop, and tools.
+
+### Understanding the agentic loop
+
+The core of computer use is the "agent loop" - a cycle where Claude requests tool actions, your application executes them, and returns results to Claude. Here's a simplified example:
+
+```python hidelines={1}
+from anthropic import Anthropic
+
+
+async def sampling_loop(
+    *,
+    model: str,
+    messages: list[dict],
+    api_key: str,
+    max_tokens: int = 4096,
+    tool_version: str,
+    max_iterations: int = 10,  # Add iteration limit to prevent infinite loops
+):
+    """
+    A simple agent loop for Claude computer use interactions.
+
+    This function handles the back-and-forth between:
+    1. Sending user messages to Claude
+    2. Claude requesting to use tools
+    3. Your app executing those tools
+    4. Sending tool results back to Claude
+    """
+    # Set up tools and API parameters
+    client = Anthropic(api_key=api_key)
+    beta_flag = (
+        "computer-use-2025-11-24"
+        if "20251124" in tool_version
+        else "computer-use-2025-01-24"
+    )
+    # Configure tools - you should already have these initialized elsewhere
+    tools = [
+        {
+            "type": f"computer_{tool_version}",
+            "name": "computer",
+            "display_width_px": 1024,
+            "display_height_px": 768,
+        },
+        {"type": "text_editor_20250728", "name": "str_replace_based_edit_tool"},
+        {"type": "bash_20250124", "name": "bash"},
+    ]
+
+    # Main agent loop (with iteration limit to prevent runaway API costs)
+    iterations = 0
+    while True and iterations < max_iterations:
+        iterations += 1
+        # Call the Claude API
+        response = client.beta.messages.create(
+            model=model,
+            max_tokens=max_tokens,
+            messages=messages,
+            tools=tools,
+            betas=[beta_flag],
+        )
+
+        # Add Claude's response to the conversation history
+        response_content = response.content
+        messages.append({"role": "assistant", "content": response_content})
+
+        # Check if Claude used any tools
+        tool_results = []
+        for block in response_content:
+            if block.type == "tool_use":
+                # In a real app, you would execute the tool here
+                # For example: result = run_tool(block.name, block.input)
+                result = {"result": "Tool executed successfully"}
+
+                # Format the result for Claude
+                tool_results.append(
+                    {"type": "tool_result", "tool_use_id": block.id, "content": result}
+                )
+
+        # If no tools were used, Claude is done - return the final messages
+        if not tool_results:
+            return messages
+
+        # Add tool results to messages for the next iteration with Claude
+        messages.append({"role": "user", "content": tool_results})
+```
+
+The loop continues until either Claude responds without requesting any tools (task completion) or the maximum iteration limit is reached. This safeguard prevents potential infinite loops that could result in unexpected API costs.
+
+Try the reference implementation out before reading the rest of this documentation.
+
+### Optimize model performance with prompting
+
+Here are some tips on how to get the best quality outputs:
+
+1. Specify simple, well-defined tasks and provide explicit instructions for each step.
+2. Claude sometimes assumes outcomes of its actions without explicitly checking their results. To prevent this you can prompt Claude with `After each step, take a screenshot and carefully evaluate if you have achieved the right outcome. Explicitly show your thinking: "I have evaluated step X..." If not correct, try again. Only when you confirm a step was executed correctly should you move on to the next one.`
+3. Some UI elements (like dropdowns and scrollbars) might be tricky for Claude to manipulate using mouse movements. If you experience this, try prompting the model to use keyboard shortcuts.
+4. For repeatable tasks or UI interactions, include example screenshots and tool calls of successful outcomes in your prompt.
+5. If you need the model to log in, provide it with the username and password in your prompt inside xml tags like `<robot_credentials>`. Using computer use within applications that require login increases the risk of bad outcomes as a result of prompt injection. Review the [guide on mitigating prompt injections](/docs/en/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks) before providing the model with login credentials.
+
+<Tip>
+  If you repeatedly encounter a clear set of issues or know in advance the tasks
+  Claude will need to complete, use the system prompt to provide Claude with
+  explicit tips or instructions on how to do the tasks successfully.
+</Tip>
+
+<Tip>
+  For agents that span multiple sessions, run end-to-end verification at the
+  start of each session, not only after implementation. Browser-based checks
+  catch regressions from prior sessions that code-level review alone misses. See
+  [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents)
+  for details.
+</Tip>
+
+### System prompts
+
+When one of the Anthropic-schema tools is requested via the Claude API, a computer use-specific system prompt is generated. It's similar to the [tool use system prompt](/docs/en/agents-and-tools/tool-use/define-tools#tool-use-system-prompt) but starts with:
+
+> You have access to a set of functions you can use to answer the user's question. This includes access to a sandboxed computing environment. You do NOT currently have the ability to inspect files or interact with external resources, except by invoking the below functions.
+
+As with regular tool use, the user-provided `system_prompt` field is still respected and used in the construction of the combined system prompt.
+
+### Available actions
+
+The computer use tool supports these actions:
+
+**Basic actions (all versions)**
+- **screenshot** - Capture the current display
+- **left_click** - Click at coordinates `[x, y]`
+- **type** - Type text string
+- **key** - Press key or key combination (for example, "ctrl+s")
+- **mouse_move** - Move cursor to coordinates
+
+**Enhanced actions (`computer_20250124`)**
+Available on all models that support computer use:
+- **scroll** - Scroll in any direction with amount control
+- **left_click_drag** - Click and drag between coordinates
+- **right_click**, **middle_click** - Additional mouse buttons
+- **double_click**, **triple_click** - Multiple clicks
+- **left_mouse_down**, **left_mouse_up** - Fine-grained click control
+- **hold_key** - Hold down a key for a specified duration (in seconds)
+- **wait** - Pause between actions
+
+**Enhanced actions (`computer_20251124`)**
+Available in Claude Opus 4.7, Claude Opus 4.6, Claude Sonnet 4.6, and Claude Opus 4.5:
+- All actions from `computer_20250124`
+- **zoom** - View a specific region of the screen at full resolution. Requires `enable_zoom: true` in tool definition. Takes a `region` parameter with coordinates `[x1, y1, x2, y2]` defining top-left and bottom-right corners of the area to inspect.
+
+<section title="Example actions">
+
+Take a screenshot:
+
+```json
+{
+  "action": "screenshot"
+}
+```
+
+Click at position:
+
+```json
+{
+  "action": "left_click",
+  "coordinate": [500, 300]
+}
+```
+
+Type text:
+
+```json
+{
+  "action": "type",
+  "text": "Hello, world!"
+}
+```
+
+Scroll down:
+
+```json
+{
+  "action": "scroll",
+  "coordinate": [500, 400],
+  "scroll_direction": "down",
+  "scroll_amount": 3
+}
+```
+
+Zoom to view region in detail (Opus 4.7, Opus 4.6, Sonnet 4.6, Opus 4.5):
+
+```json
+{
+  "action": "zoom",
+  "region": [100, 200, 400, 350]
+}
+```
+
+</section>
+
+<section title="Modifier keys with click and scroll actions">
+
+To hold modifier keys (like Shift, Ctrl, or Alt) while performing click or scroll actions, use the `text` parameter on those actions. This is different from `hold_key`, which simply holds a key for a duration without performing other actions.
+
+Shift+click (e.g., for selecting a range of items):
+
+```json
+{
+  "action": "left_click",
+  "coordinate": [500, 300],
+  "text": "shift"
+}
+```
+
+Ctrl+click (e.g., for multi-select on Windows/Linux):
+
+```json
+{
+  "action": "left_click",
+  "coordinate": [500, 300],
+  "text": "ctrl"
+}
+```
+
+Cmd+click (e.g., for multi-select on macOS):
+
+```json
+{
+  "action": "left_click",
+  "coordinate": [500, 300],
+  "text": "super"
+}
+```
+
+Shift+scroll (e.g., for horizontal scrolling):
+
+```json
+{
+  "action": "scroll",
+  "coordinate": [500, 400],
+  "scroll_direction": "down",
+  "scroll_amount": 3,
+  "text": "shift"
+}
+```
+
+The `text` parameter in click/scroll actions accepts modifier keys like `shift`, `ctrl`, `alt`, and `super` (for the Command/Windows key).
+
+</section>
+
+### Tool parameters
+
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| `type` | Yes | Tool version (`computer_20251124` or `computer_20250124`) |
+| `name` | Yes | Must be "computer" |
+| `display_width_px` | Yes | Display width in pixels |
+| `display_height_px` | Yes | Display height in pixels |
+| `display_number` | No | Display number for X11 environments |
+| `enable_zoom` | No | Enable zoom action (`computer_20251124` only). Set to `true` to allow Claude to zoom into specific screen regions. Default: `false` |
+
+<Note>
+**Important:** The computer use tool must be explicitly executed by your application - Claude cannot execute it directly. You are responsible for implementing the screenshot capture, mouse movements, keyboard inputs, and other actions based on Claude's requests.
+</Note>
+
+### Combining with extended thinking
+
+For combining computer use with extended thinking, see [Extended thinking](/docs/en/build-with-claude/extended-thinking).
+
+### Augmenting computer use with other tools
+
+To add other tools alongside computer use, include them in the same `tools` array. The quick start above shows this pattern with the [bash tool](/docs/en/agents-and-tools/tool-use/bash-tool) and [text editor tool](/docs/en/agents-and-tools/tool-use/text-editor-tool). You can add your own [custom tool definitions](/docs/en/agents-and-tools/tool-use/define-tools) the same way.
+
+### Build a custom computer use environment
+
+The [reference implementation](https://github.com/anthropics/anthropic-quickstarts/tree/main/computer-use-demo) is meant to help you get started with computer use. It includes all of the components needed to have Claude use a computer. However, you can build your own environment for computer use to suit your needs. You'll need:
+
+- A virtualized or containerized environment suitable for computer use with Claude
+- An implementation of at least one of the Anthropic-schema computer use tools
+- An agent loop that interacts with the Claude API and executes the `tool_use` results using your tool implementations
+- An API or UI that allows user input to start the agent loop
+
+#### Implement the computer use tool
+
+The computer use tool is implemented as a schema-less tool. When using this tool, you don't need to provide an input schema as with other tools; the schema is built into Claude's model and can't be modified.
+
+<Steps>
+  <Step title="Set up your computing environment">
+    Create a virtual display or connect to an existing display that Claude will interact with. This typically involves setting up Xvfb (X Virtual Framebuffer) or similar technology.
+  </Step>
+  <Step title="Implement action handlers">
+    Create functions to handle each action type that Claude might request:
+    ```python hidelines={1..3}
+    def capture_screenshot(): ...
+    def click_at(x, y): ...
+    def type_text(text): ...
+    def handle_computer_action(action_type, params):
+        if action_type == "screenshot":
+            return capture_screenshot()
+        elif action_type == "left_click":
+            x, y = params["coordinate"]
+            return click_at(x, y)
+        elif action_type == "type":
+            return type_text(params["text"])
+        # ... handle other actions
+    ```
+  </Step>
+  <Step title="Process Claude's tool calls">
+    Extract and execute tool calls from Claude's responses:
+    ```python hidelines={1..11}
+    from types import SimpleNamespace as _SN
+
+    response = _SN(
+        content=[_SN(type="tool_use", input={"action": "screenshot"}, id="toolu_01")]
+    )
+
+
+    def handle_computer_action(a, p):
+        return "ok"
+
+
+    for content in response.content:
+        if content.type == "tool_use":
+            action = content.input["action"]
+            result = handle_computer_action(action, content.input)
+
+            # Return result to Claude
+            tool_result = {
+                "type": "tool_result",
+                "tool_use_id": content.id,
+                "content": result,
+            }
+    ```
+  </Step>
+  <Step title="Implement the agent loop">
+    Create a loop that continues until Claude completes the task:
+    ```python hidelines={1..18}
+    import anthropic
+
+    client = anthropic.Anthropic()
+    messages = [{"role": "user", "content": "Take a screenshot"}]
+    tools = [
+        {
+            "type": "computer_20251124",
+            "name": "computer",
+            "display_width_px": 1024,
+            "display_height_px": 768,
+        }
+    ]
+
+
+    def process_tool_calls(r):
+        return []
+
+
+    while True:
+        response = client.beta.messages.create(
+            model="claude-opus-4-7",
+            max_tokens=4096,
+            messages=messages,
+            tools=tools,
+            betas=["computer-use-2025-11-24"],
+        )
+
+        # Check if Claude used any tools
+        tool_results = process_tool_calls(response)
+
+        if not tool_results:
+            # No more tool use, task complete
+            break
+
+        # Continue conversation with tool results
+        messages.append({"role": "user", "content": tool_results})
+    ```
+  </Step>
+</Steps>
+
+#### Handle errors
+
+When implementing the computer use tool, various errors may occur. Here's how to handle them:
+
+<section title="Screenshot capture failure">
+
+If screenshot capture fails, return an appropriate error message:
+
+```json
+{
+  "role": "user",
+  "content": [
+    {
+      "type": "tool_result",
+      "tool_use_id": "toolu_01A09q90qw90lq917835lq9",
+      "content": "Error: Failed to capture screenshot. Display may be locked or unavailable.",
+      "is_error": true
+    }
+  ]
+}
+```
+
+</section>
+
+<section title="Invalid coordinates">
+
+If Claude provides coordinates outside the display bounds:
+
+```json
+{
+  "role": "user",
+  "content": [
+    {
+      "type": "tool_result",
+      "tool_use_id": "toolu_01A09q90qw90lq917835lq9",
+      "content": "Error: Coordinates (1200, 900) are outside display bounds (1024x768).",
+      "is_error": true
+    }
+  ]
+}
+```
+
+</section>
+
+<section title="Action execution failure">
+
+If an action fails to execute:
+
+```json
+{
+  "role": "user",
+  "content": [
+    {
+      "type": "tool_result",
+      "tool_use_id": "toolu_01A09q90qw90lq917835lq9",
+      "content": "Error: Failed to perform click action. The application may be unresponsive.",
+      "is_error": true
+    }
+  ]
+}
+```
+
+</section>
+
+#### Handle coordinate scaling for higher resolutions
+
+<Note>
+Claude Opus 4.7 supports up to 2576 pixels on the long edge, and its coordinates are 1\:1 with image pixels (no scale-factor conversion required). The 1568-pixel guidance below applies to earlier models.
+</Note>
+
+The API constrains images to a maximum of 1568 pixels on the longest edge and approximately 1.15 megapixels total (see [image resizing](/docs/en/build-with-claude/vision#evaluate-image-size) for details). For example, a 1512x982 screen gets downsampled to approximately 1330x864. Claude analyzes this smaller image and returns coordinates in that space, but your tool executes clicks in the original screen space.
+
+This can cause Claude's click coordinates to miss their targets unless you handle the coordinate transformation.
+
+To fix this, resize screenshots yourself and scale Claude's coordinates back up:
+
+<CodeGroup>
+```python Python hidelines={1..7}
+screen_width, screen_height = 1512, 982
+
+
+def capture_and_resize(w, h): ...
+def perform_click(x, y): ...
+
+
+import math
+
+
+def get_scale_factor(width, height):
+    """Calculate scale factor to meet API constraints."""
+    long_edge = max(width, height)
+    total_pixels = width * height
+
+    long_edge_scale = 1568 / long_edge
+    total_pixels_scale = math.sqrt(1_150_000 / total_pixels)
+
+    return min(1.0, long_edge_scale, total_pixels_scale)
+
+
+# When capturing screenshot
+scale = get_scale_factor(screen_width, screen_height)
+scaled_width = int(screen_width * scale)
+scaled_height = int(screen_height * scale)
+
+# Resize image to scaled dimensions before sending to Claude
+screenshot = capture_and_resize(scaled_width, scaled_height)
+
+
+# When handling Claude's coordinates, scale them back up
+def execute_click(x, y):
+    screen_x = x / scale
+    screen_y = y / scale
+    perform_click(screen_x, screen_y)
+```
+
+```typescript TypeScript hidelines={1..6}
+const screenWidth = 1512;
+const screenHeight = 982;
+function captureAndResize(w: number, h: number): string {
+  return "";
+}
+function performClick(x: number, y: number): void {}
+const MAX_LONG_EDGE = 1568;
+const MAX_PIXELS = 1_150_000;
+
+function getScaleFactor(width: number, height: number): number {
+  const longEdge = Math.max(width, height);
+  const totalPixels = width * height;
+
+  const longEdgeScale = MAX_LONG_EDGE / longEdge;
+  const totalPixelsScale = Math.sqrt(MAX_PIXELS / totalPixels);
+
+  return Math.min(1.0, longEdgeScale, totalPixelsScale);
+}
+
+// When capturing screenshot
+const scale = getScaleFactor(screenWidth, screenHeight);
+const scaledWidth = Math.floor(screenWidth * scale);
+const scaledHeight = Math.floor(screenHeight * scale);
+
+// Resize image to scaled dimensions before sending to Claude
+const screenshot = captureAndResize(scaledWidth, scaledHeight);
+
+// When handling Claude's coordinates, scale them back up
+function executeClick(x: number, y: number): void {
+  const screenX = x / scale;
+  const screenY = y / scale;
+  performClick(screenX, screenY);
+}
+```
+</CodeGroup>
+
+#### Follow implementation best practices
+
+<section title="Use appropriate display resolution">
+
+Set display dimensions that match your use case while staying within recommended limits:
+- For general desktop tasks: 1024x768 or 1280x720
+- For web applications: 1280x800 or 1366x768
+- Avoid resolutions above 1920x1080 to prevent performance issues
+
+</section>
+
+<section title="Implement proper screenshot handling">
+
+When returning screenshots to Claude:
+- Encode screenshots as base64 PNG or JPEG
+- Consider compressing large screenshots to improve performance
+- Include relevant metadata like timestamp or display state
+- If using higher resolutions, ensure coordinates are accurately scaled
+
+</section>
+
+<section title="Add action delays">
+
+Some applications need time to respond to actions:
+```python hidelines={1..4}
+import time
+
+
+def click_at(x, y): ...
+def click_and_wait(x, y, wait_time=0.5):
+    click_at(x, y)
+    time.sleep(wait_time)  # Allow UI to update
+```
+
+</section>
+
+<section title="Validate actions before execution">
+
+Check that requested actions are safe and valid:
+```python hidelines={1}
+display_width, display_height = 1024, 768
+
+
+def validate_action(action_type, params):
+    if action_type == "left_click":
+        x, y = params.get("coordinate", (0, 0))
+        if not (0 <= x < display_width and 0 <= y < display_height):
+            return False, "Coordinates out of bounds"
+    return True, None
+```
+
+</section>
+
+<section title="Log actions for debugging">
+
+Keep a log of all actions for troubleshooting:
+```python
+import logging
+
+
+def log_action(action_type, params, result):
+    logging.info(f"Action: {action_type}, Params: {params}, Result: {result}")
+```
+
+</section>
+
+---
+
+## Understand computer use limitations
+
+The computer use functionality is in beta. While Claude's capabilities are cutting edge, developers should be aware of its limitations:
+
+1. **Latency**: the current computer use latency for human-AI interactions may be too slow compared to regular human-directed computer actions. Focus on use cases where speed isn't critical (for example, background information gathering, automated software testing) in trusted environments.
+2. **Computer vision accuracy and reliability**: Claude may make mistakes or hallucinate when outputting specific coordinates while generating actions. Extended thinking can help you understand the model's reasoning and identify potential issues.
+3. **Tool selection accuracy and reliability**: Claude may make mistakes or hallucinate when selecting tools while generating actions or take unexpected actions to solve problems. Additionally, reliability may be lower when interacting with niche applications or multiple applications at once. Prompt the model carefully when requesting complex tasks.
+4. **Scrolling reliability**: The scroll action supports direction control (up, down, left, right) and a specified amount. In applications where scrolling doesn't take effect, keyboard alternatives such as Page Down can help.
+5. **Spreadsheet interaction**: Use the fine-grained mouse control actions (`left_mouse_down`, `left_mouse_up`) and modifier-key combinations to select individual cells. Complex spreadsheet operations may still require multiple attempts.
+6. **Account creation and content generation on social and communications platforms**: While Claude will visit websites, Claude's ability to create accounts or generate and share content or otherwise engage in human impersonation across social media websites and platforms is limited. This capability may be updated in the future.
+7. **Vulnerabilities**: Vulnerabilities like jailbreaking or prompt injection may persist across frontier AI systems, including the beta computer use API. In some circumstances, Claude will follow commands found in content, sometimes even in conflict with the user's instructions. For example, Claude instructions on webpages or contained in images may override instructions or cause Claude to make mistakes. Consider the following:
+   a. Limiting computer use to trusted environments such as virtual machines or containers with minimal privileges
+   b. Avoiding giving computer use access to sensitive accounts or data without strict oversight
+   c. Informing end users of relevant risks and obtaining their consent before enabling or requesting permissions necessary for computer use features in your applications
+8. **Inappropriate or illegal actions**: Per Anthropic's terms of service, you must not employ computer use to violate any laws or the Acceptable Use Policy.
+
+Always carefully review and verify Claude's computer use actions and logs. Do not use Claude for tasks requiring perfect precision or sensitive user information without human oversight.
+
+## Data retention
+
+Computer use is a client-side tool. All screenshots, mouse actions, keyboard inputs, and any files involved in a session are captured and stored in your environment, not by Anthropic. Anthropic processes the screenshot images and action requests in real time as part of the API call but does not retain them after the response is returned.
+
+Because your application controls where and how computer use data is stored, computer use is ZDR eligible. For ZDR eligibility across all features, see [API and data retention](/docs/en/manage-claude/api-and-data-retention).
+
+## Pricing
+
+Computer use follows the standard [tool use pricing](/docs/en/agents-and-tools/tool-use/overview#pricing). When using the computer use tool:
+
+**System prompt overhead**: The computer use beta adds 466-499 tokens to the system prompt
+
+**Computer use tool token usage**:
+| Model | Input tokens per tool definition |
+| ----- | -------------------------------- |
+| Claude 4.x models | 735 tokens |
+
+**Additional token consumption**:
+- Screenshot images (see [Vision pricing](/docs/en/build-with-claude/vision))
+- Tool execution results returned to Claude
+
+<Note>
+If you're also using bash or text editor tools alongside computer use, those tools have their own token costs as documented in their respective pages.
+</Note>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card
+    title="Reference implementation"
+    icon="github-logo"
+    href="https://github.com/anthropics/anthropic-quickstarts/tree/main/computer-use-demo"
+  >
+    Get started quickly with the complete Docker-based implementation
+  </Card>
+  <Card
+    title="Tool documentation"
+    icon="tool"
+    href="/docs/en/agents-and-tools/tool-use/overview"
+  >
+    Learn more about tool use and creating custom tools
+  </Card>
+</CardGroup>

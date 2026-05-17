@@ -1,23 +1,230 @@
-# MCP Apps for Claude Desktop — Packaging + Design
+---
+name: claude-mcp-apps
+description: |
+  Deep reference for MCP Apps for Claude Desktop + Claude.ai —
+  packaging via MCPB (.mcpb desktop extensions) and the visual +
+  interaction design guidelines for the in-conversation app surface.
+  Covers display modes (inline card, expanded view, sidebar),
+  transparent theming, instance supersession, external link
+  handling, cross-platform compatibility (Claude + ChatGPT), and
+  the MCPB CLI / manifest schema.
+source: https://claude.com/docs/connectors/building/mcp-apps/design-guidelines.md
+---
 
-> **Auto-populated by the daily pipeline.** This file is a stub. After
-> the first successful `daily.yml` run for the `claude-connectors`
-> skill, it will be rewritten from the upstream docs at
-> [claude.com/docs/en/connectors/building/mcpb](https://claude.com/docs/en/connectors/building/mcpb)
-> and [claude.com/docs/en/connectors/building/mcp-apps](https://claude.com/docs/en/connectors/building/mcp-apps).
+# MCP Apps — Packaging (MCPB) + Design
 
-Covers:
+> *Router lives in [`SKILL.md`](SKILL.md). For connector OAuth /
+> submission workflow, see [`SKILL-connectors-building.md`](SKILL-connectors-building.md).
+> This surface intentionally bundles MCPB packaging and MCP Apps
+> design — both Desktop-specific and consulted together.*
 
-- **MCPB packaging** — manifest, binary layout, install flow for Claude Desktop.
-- **MCP Apps for Claude Desktop** — app surface concepts (panes, cards, actions).
-- **Visual design guidelines** — typography, color, spacing, iconography.
-- **Interaction design guidelines** — affordances, state transitions, error states.
-- **Accessibility** — keyboard navigation, screen-reader semantics, color contrast.
-- **App lifecycle** — install, update, uninstall.
+## Part 1: MCPB (.mcpb) packaging for Claude Desktop
 
-## Status
+### What an MCPB is
 
-- Stub created during scaffold. Next daily run populates from upstream.
-- This surface intentionally combines packaging (MCPB) and design
-  (MCP Apps) because both are Desktop-specific and frequently consulted
-  together when building a Desktop app.
+An `.mcpb` file is a zip archive containing a local MCP server and
+a `manifest.json`. It enables single-click installation in Claude
+Desktop, similar to a browser extension.
+
+Characteristics:
+
+- Runs locally on the user's machine.
+- Communicates via **stdio** transport.
+- Bundles all dependencies.
+- Works offline.
+- No OAuth required.
+
+Reference: [`building/mcpb.md`](docs-snapshot/claude.com/connectors/building/mcpb.md).
+
+### MCPB vs remote: which to build
+
+Build MCPB when you need:
+
+- Access to systems behind a firewall (internal databases, JIRA,
+  Confluence, private wikis).
+- Direct filesystem access (code editing, Git operations).
+- Integration with locally installed tools (Docker, IDEs).
+- Zero-trust compliance inside corporate network boundaries.
+- Privacy-sensitive operations that should not leave the user's
+  machine.
+- Hardware integration or desktop app control.
+- One-click install with bundled Node.js, no dependencies to manage.
+- Organization-level admin controls (custom uploads, allowlists).
+
+Build a remote connector when you need:
+
+- Cloud services + public APIs with centralized infrastructure.
+- OAuth flows with server-side token management.
+- Distribution across web, mobile, and desktop.
+- Centralized updates pushed to all users.
+- Public-facing integrations used by multiple organizations.
+
+### Quickstart
+
+```bash
+# 1. Install the MCPB CLI
+npm install -g @anthropic-ai/mcpb
+
+# 2. Build a stdio MCP server using @modelcontextprotocol/sdk
+#    (see mcp-spec → SKILL-servers.md)
+
+# 3. Generate the manifest
+mcpb init
+
+# 4. Bundle
+mcpb pack
+
+# 5. Install in Claude Desktop — double-click the .mcpb file.
+```
+
+### Language choice
+
+**Node.js is strongly recommended.** Node ships with Claude Desktop
+on macOS and Windows — users need no separate runtime. Best
+compatibility, best MCP SDK support. Other languages work but
+require the user to install the runtime themselves.
+
+### Platform support
+
+Claude Desktop runs on macOS (`darwin`) and Windows (`win32`).
+Specify supported platforms in the `compatibility` section of
+`manifest.json`. Test on both even if you primarily develop on one.
+
+### manifest.json
+
+Required metadata: what the MCPB does, how to run it, which tools
+it provides, what configuration it needs. Full schema:
+[MCPB Manifest Spec](https://github.com/modelcontextprotocol/mcpb/blob/main/MANIFEST.md).
+
+Key fields:
+
+- `name`, `version`, `description` — discoverability.
+- `runtime` — Node version requirements (default: bundled runtime).
+- `compatibility` — supported OS list.
+- `entry` — path to your MCP server's entrypoint.
+- `tools` — declared tool list with annotations.
+- `icons` — icon paths, optionally per theme (light/dark) and size.
+- `user_config` — generates a settings UI in Claude Desktop.
+
+### Installation paths (user-facing)
+
+1. **Double-click** the `.mcpb` file.
+2. **Drag and drop** into the Claude Desktop window.
+3. **Settings → Extensions → Advanced settings → Install Extension…**
+
+All three open an installation UI for review + permission grant.
+
+### Submission to the Connectors Directory
+
+If your MCPB has broader value, submit to the directory:
+[`building/submission.md`](docs-snapshot/claude.com/connectors/building/submission.md).
+Requires mandatory tool annotations, privacy policy, working
+examples per tool, test credentials, and review per
+[`review-criteria.md`](docs-snapshot/claude.com/connectors/building/review-criteria.md).
+
+---
+
+## Part 2: MCP Apps design guidelines
+
+> Source: [`building/mcp-apps/design-guidelines.md`](docs-snapshot/claude.com/connectors/building/mcp-apps/design-guidelines.md).
+
+### Core principles
+
+MCP Apps are interactive interfaces inside Claude's conversation —
+**natural extensions of the conversation**, not separate apps that
+happen to appear alongside.
+
+- **Conversational** — fit naturally into dialogue.
+- **Contextual** — use conversation history to inform display.
+- **Integrated** — inherit styling and conventions from the host.
+- **Adaptive** — variable sizing, mobile viewports, accessibility.
+
+> See Anthropic's [Figma UI kit](https://www.figma.com/community/file/1597641111449594397/mcp-apps-for-claude)
+> for components.
+
+### Good vs bad candidates
+
+**Good MCP Apps:**
+
+- Data analysis, document review, project coordination.
+- Communication artifacts — message search results, threads, profiles.
+- Tasks with clear start/end — booking, ordering, scheduling.
+- Information users can act on immediately.
+
+**Avoid:**
+
+- Long-form / static content better viewed externally (>500px height).
+- Complex multi-step workflows beyond the display-mode scope.
+- Deep navigation (no drill-ins, breadcrumbs, multi-views).
+- Nested scrolling (inline cards should auto-fit content height).
+- Menus and popovers — dropdowns/context menus/popovers get clipped
+  by container boundaries or create z-index conflicts. Prefer visible
+  controls (segmented buttons, toggles, inline options).
+- Chat inputs or conversational UI — don't replicate Claude's features.
+
+### Display modes
+
+- **Inline card** — compact, embedded directly in conversation. Good
+  for summaries, confirmations, quick actions.
+- **Expanded view** — larger surface for richer interactions.
+- **Sidebar** — persistent context alongside the conversation.
+
+### Transparent theming
+
+Make your widget background transparent and style with Claude's
+style variables — blends seamlessly into the host UI across themes.
+
+Reference: [`mcp-apps/transparent-theming.md`](docs-snapshot/claude.com/connectors/building/mcp-apps/transparent-theming.md).
+
+### Instance supersession
+
+When a tool is called more than once in a conversation, keep only
+the newest copy of the widget active. Prevents stale widgets from
+piling up.
+
+Reference: [`mcp-apps/instance-supersession.md`](docs-snapshot/claude.com/connectors/building/mcp-apps/instance-supersession.md).
+
+### External links
+
+How Claude handles `ui/open-link` requests; how directory connectors
+can allowlist destinations to skip the confirmation modal.
+
+Reference: [`mcp-apps/external-links.md`](docs-snapshot/claude.com/connectors/building/mcp-apps/external-links.md).
+
+### Cross-platform compatibility (Claude + ChatGPT)
+
+Build MCP Apps that work with both Claude and ChatGPT using a
+single codebase. Worth the constraints if your audience spans both.
+
+Reference: [`mcp-apps/cross-compatibility.md`](docs-snapshot/claude.com/connectors/building/mcp-apps/cross-compatibility.md).
+
+### Getting started
+
+[`mcp-apps/getting-started.md`](docs-snapshot/claude.com/connectors/building/mcp-apps/getting-started.md)
+walks through testing MCP Apps in Claude.
+
+### Troubleshooting
+
+[`mcp-apps/troubleshooting.md`](docs-snapshot/claude.com/connectors/building/mcp-apps/troubleshooting.md)
+covers common rendering, theming, and link-handling issues.
+
+## Page index
+
+8 MCP-Apps + 1 MCPB source page under
+[`docs-snapshot/claude.com/connectors/building/`](docs-snapshot/claude.com/connectors/building/):
+
+| Page | Topic |
+|---|---|
+| `mcpb.md` | Build a Desktop extension with MCPB |
+| `mcp-apps/getting-started.md` | Test MCP Apps in Claude |
+| `mcp-apps/design-guidelines.md` | Visual + interaction design |
+| `mcp-apps/transparent-theming.md` | Theme integration |
+| `mcp-apps/instance-supersession.md` | Keep only the newest widget |
+| `mcp-apps/external-links.md` | ui/open-link handling, allowlists |
+| `mcp-apps/cross-compatibility.md` | Claude + ChatGPT in one codebase |
+| `mcp-apps/troubleshooting.md` | Debugging rendering issues |
+
+---
+
+*Source pages: 9 under `claude.com/docs/connectors/building/` (MCPB
++ mcp-apps/* subtree).*

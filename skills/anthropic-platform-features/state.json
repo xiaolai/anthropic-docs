@@ -14,15 +14,15 @@
   },
   "docs": {
     "indexUrl": "https://platform.claude.com/llms.txt",
-    "indexSha256": "",
-    "pageCount": 0,
+    "indexSha256": "c4c9c5d0ec624334a91f3c546a66ab251a0b368efc845e4b948c80b770177fea",
+    "pageCount": 105,
     "knownPages": {}
   },
   "trackedIssues": {},
   "lastScannedIssueNumber": 0,
   "researchedIssues": {},
   "lastAuditedVersion": "none",
-  "lastUpdated": "",
-  "scaffoldComplete": false,
+  "lastUpdated": "2026-05-18T00:00:00Z",
+  "scaffoldComplete": true,
   "lastRunWarnings": []
 }
