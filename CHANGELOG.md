@@ -10,6 +10,92 @@ The newest entry is at the top.
 
 ---
 
+## 2026-05-17 — codex audit-fix pass 2 (22 findings → CLEAN over 3 rounds)
+
+Ran `/codex-toolkit:audit-fix --full` (9-dimension audit) and closed every
+finding across three Claude→Codex verification rounds. Final codex
+verdict: **CLEAN** — 0 NOT FIXED, 0 PARTIAL, 0 REGRESSED across all
+22 findings (1 High, 10 Medium, 11 Low).
+
+**Highest-impact catches:**
+
+- **Sanitiser bug**: `agent/lib/sanitize.ts` line-leader regexes were not
+  global — only the FIRST `Important:` line per input was neutralised,
+  letting later ones through. Added `g` flag; converted the manual smoke
+  script into 14 assertion-based tests + wired into `npm test`.
+- **State-vs-prompt contradiction**: all 4 agent prompts said "log
+  injection attempts to `agent/state.json.lastRunWarnings`" but the
+  Constraints section forbade editing `agent/*`. Carved a narrow
+  append-only exception in all 4 prompts + the `report-agent.ts`
+  runtime user message.
+- **Workflow state-handling**: report-agent failures were
+  `continue-on-error: true` AND silently completed with exit 0 (the
+  last command in the bash branch was a successful jq pipeline) — so
+  `steps.report.outcome` read "success" even when the agent crashed.
+  Added `exit "$EXIT_CODE"` in the failure branch; included `report` in
+  the commit-step `GATES_FAILED` routing so a crashed report goes to
+  draft PR instead of pushing stale state to main.
+- **Bug-issue pagination skip**: `monitor.sh` capped at 30 issues per
+  run AND advanced the checkpoint to "highest seen" — so if >30 new
+  bugs arrived in a day, the older ones were permanently skipped.
+  Now paginates up to 10×100 issues and only advances the checkpoint
+  when pagination confirmed we reached known territory; otherwise
+  leaves the checkpoint alone for next-run re-fetch.
+- **Drift detection depth**: daily gate checks only the llms.txt
+  index hash; per-page content can change without the index changing.
+  Added `--deep` mode to `scripts/check-docs-drift.sh` (re-fetches
+  each manifest page and compares per-page hash) and a separate
+  `.github/workflows/weekly-deep-drift.yml` that runs the deep check
+  Mondays 12:00 UTC.
+
+**Maintainability safety nets (new):**
+
+- `scripts/check-sanitizer-parity.sh` — asserts the comment-strip and
+  tag-strip regex patterns are byte-identical across the 3 bash files
+  that maintain them (`agent/monitor.sh`, `scripts/refresh-docs-snapshot.sh`,
+  `scripts/check-docs-drift.sh`). Fails CI if one diverges.
+- `scripts/check-gate-parity.sh` — asserts the safety-gate name list
+  matches a canonical EXPECTED array across the 3 sources that maintain
+  it (workflow YAML `outcomes` keys, `report-agent.ts` `gateNames`,
+  `report-prompt.md` run-mode table). The codex audit caught a
+  `checkDocsDrift` mismatch — added to the workflow but missed in the
+  other two; this script prevents the next instance.
+- Both wired into `npm run verify:all`.
+
+**Smaller fixes:**
+
+- `agent/monitor.sh` release fallback: preserve previous release state
+  on `gh api` failure (was treating empty as a "real" change from old).
+- `agent/monitor.sh` drift-check pattern: regex matches the router's
+  `**Claude Code version**` table row format (was matching
+  `claude-code@N.N.N` which never appears).
+- Curl timeouts (`--connect-timeout 10 --max-time 60 --retry 2`) on
+  every fetch in `monitor.sh`, `refresh-docs-snapshot.sh`,
+  `check-docs-drift.sh`.
+- `check-docs-drift.sh` missing manifest now exits 2 (per documented
+  contract) with `SKIP_IF_NO_MANIFEST=1` bootstrap escape.
+- `refresh-docs-snapshot.sh` refuses zero-page extraction (likely
+  upstream format change) unless `ALLOW_EMPTY_SNAPSHOT=1`; prunes the
+  snapshot dir before re-fetching so stale pages don't linger.
+- `validate-examples.sh` PASS 2 now reads pages from
+  `MANIFEST.json` (not by walking the snapshot dir), so orphan files
+  don't pollute the schema cross-check.
+- Workflow auth step now captures the auth method into a shell variable
+  before logging — previously `${{ steps.auth.outputs.method }}` was
+  evaluated BEFORE the step wrote its output, so the log always recorded
+  "unknown".
+- `package.json` + `agent/package.json` switched from caret ranges to
+  exact-version pins; lockfiles regenerated; `verify:all` now includes
+  diff-size + docs-drift + sanitizer-parity + gate-parity + agent tests.
+- `LICENSE` file added (MIT) so the declaration in `plugin.json` /
+  README has matching content on disk.
+- README safety-gates table now lists all 5 gates (was missing docs-drift).
+- `dev-docs/scaffold-design.md` opening paragraph now names the
+  post-refactor architecture inline + carries an explicit pointer to
+  the Post-scaffold evolution section.
+- CHANGELOG line claiming the sanitiser was "unit-tested" reworded to
+  acknowledge it was a manual smoke script (now upgraded in this entry).
+
 ## 2026-05-17 — docs-snapshot baseline + schema cross-check
 
 Adds a committed, version-pinned local mirror of the upstream Claude Code
@@ -123,7 +209,7 @@ that would have caused real first-run failures.
 
 Addresses all 9 findings from the initial security scan (4 High, 3 Medium, 2 Low). The pipeline was previously vulnerable to a no-auth prompt-injection chain: an attacker posts a crafted public GitHub issue, the monitor captures the title, the research agent reads the full body via `gh api`, and the body's payload runs in the agent's `Bash`-allowed, `bypassPermissions` context. Closed by layered defence:
 
-- **Sanitisation library** (`agent/lib/sanitize.ts`): strips `<system>` / `<important>` / `<instructions>` tags, HTML comments, imperative line-leads, and triple-backtick fences from untrusted content; wraps results in nonce-tagged `<UNTRUSTED_EXTERNAL_CONTENT>` blocks before LLM ingestion. Unit-tested via `agent/lib/sanitize.test.ts`.
+- **Sanitisation library** (`agent/lib/sanitize.ts`): strips `<system>` / `<important>` / `<instructions>` tags, HTML comments, imperative line-leads, and triple-backtick fences from untrusted content; wraps results in nonce-tagged `<UNTRUSTED_EXTERNAL_CONTENT>` blocks before LLM ingestion. Manual smoke test shipped at `agent/lib/sanitize.test.ts` (converted to assertion-based tests + wired into `npm test` in the 2026-05-17 audit-fix-2 entry below).
 - **Wired into `update-agent.ts` and `mending-agent.ts`**: change-report content is defanged + wrapped before embedding in the user message. The user message preamble names the wrapping nonce so the LLM treats matching blocks as inert data.
 - **Defence-in-depth defang in `monitor.sh`**: GitHub release bodies and issue titles are sanitised (jq + Oniguruma regex) before landing in `/tmp/change-report.json`. Coarser pass than the TS layer; insurance against a TS regression.
 - **Security Boundary sections** added to all four agent prompts (`system-prompt.md`, `research-prompt.md`, `mending-prompt.md`, `report-prompt.md`): explicit refusal rules for git operations, secret access, exfiltration, CI changes, and tool-permission changes — regardless of what any external content instructs. Injection attempts logged to `state.json.lastRunWarnings`.

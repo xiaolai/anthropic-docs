@@ -55,12 +55,21 @@ hash256() {
 # developer, assistant, task, directive, prompt), and truncates to 8000
 # chars. Relies on jq's Oniguruma regex engine — jq is already a hard dep.
 defang_for_llm() {
+  # Note on the comment regex: `[\s\S]*?` is the standard "any char incl.
+  # newline, non-greedy" idiom. Previous `[^>]*` failed on comments
+  # containing `>` and on multi-line comments — both common in upstream
+  # release notes. jq's regex uses Oniguruma; `\s\S` works the same as
+  # in PCRE here.
   printf '%s' "$1" | jq -Rsj '
-    gsub("<!--[^>]*-->"; "")
+    gsub("<!--[\\s\\S]*?-->"; "")
     | gsub("(?i)<\\s*/?\\s*(system|instructions?|important|priority|override|admin|role|persona|developer|assistant|task|directive|prompt)[^>]*>"; "[stripped]")
     | if length > 8000 then .[0:8000] + "\n…[truncated by defang_for_llm]" else . end
   '
 }
+
+# Curl options applied to every fetch. Bounded so a stalled upstream does
+# not freeze the pipeline until the outer GH Actions job timeout (6h).
+CURL_OPTS=(--connect-timeout 10 --max-time 60 --retry 2 --retry-delay 3)
 
 if [[ ! -f "$STATE_FILE" ]]; then
   echo "ERROR: state.json not found at $STATE_FILE" >&2
@@ -101,9 +110,19 @@ echo "  npm latest: $new_version"
 # ---------------------------------------------------------------------------
 
 echo "Fetching latest release from $CC_REPO ..."
+release_fetch_ok=true
 release_json=$(gh api "repos/$CC_REPO/releases/latest" 2>/dev/null) || {
-  echo "WARN: Could not fetch latest release" >&2
-  release_json='{"tag_name":"","name":"","body":"","published_at":""}'
+  echo "WARN: Could not fetch latest release — preserving previous release state to avoid a false change-detected." >&2
+  release_fetch_ok=false
+  # Preserve current state so we don't compare against empty values
+  # downstream and emit a spurious "release changed from <old> to <empty>"
+  # change record.
+  release_json=$(jq -n \
+    --arg tag "$old_release_tag" \
+    --arg name "$(jq -r '.github.latestRelease.name // ""' "$STATE_FILE")" \
+    --arg body "" \
+    --arg pub "$(jq -r '.github.latestRelease.publishedAt // ""' "$STATE_FILE")" \
+    '{tag_name: $tag, name: $name, body: $body, published_at: $pub}')
 }
 
 new_release_tag=$(echo "$release_json" | jq -r '.tag_name // ""')
@@ -124,7 +143,7 @@ echo "  latest release: $new_release_tag (published $new_release_published)"
 # ---------------------------------------------------------------------------
 
 echo "Fetching docs index from $DOCS_INDEX_URL ..."
-docs_body=$(curl -sfL "$DOCS_INDEX_URL") || {
+docs_body=$(curl -sfL "${CURL_OPTS[@]}" "$DOCS_INDEX_URL") || {
   echo "ERROR: Could not fetch docs index" >&2
   exit 2
 }
@@ -164,19 +183,43 @@ done
 
 echo "Scanning for new bug issues above #$last_scanned ..."
 new_bugs="[]"
+# Default: keep new_last_scanned at the existing checkpoint. We only
+# advance it AFTER confirming we paginated all the way through to known
+# territory (hit_known=true). If pagination caps out without finding a
+# known boundary, we leave the checkpoint alone so next run re-fetches
+# the same window — better to re-process than to permanently skip.
 new_last_scanned="$last_scanned"
+max_seen_this_run="$last_scanned"
 
 # anthropics/claude-code is high-volume (11k+ open). Filter by label=bug,
-# state=open, sorted by created desc. Take up to 30 per run.
-bug_issues=$(gh api "repos/$CC_REPO/issues?labels=bug&state=open&sort=created&direction=desc&per_page=30" 2>/dev/null) || {
-  echo "WARN: Could not fetch bug issues" >&2
-  bug_issues="[]"
-}
+# state=open, sorted by created desc. Paginate at per_page=100 until we
+# either see an issue number <= last_scanned (everything below is already
+# known) or hit MAX_PAGES (safety cap = 10 pages = 1000 issues, well
+# above any realistic daily new-bug velocity).
+MAX_PAGES=10
+hit_known=false
+page=1
+while (( page <= MAX_PAGES )); do
+  bug_issues=$(gh api "repos/$CC_REPO/issues?labels=bug&state=open&sort=created&direction=desc&per_page=100&page=$page" 2>/dev/null) || {
+    echo "WARN: bug issues page $page fetch failed — stopping pagination" >&2
+    break
+  }
+  page_count=$(echo "$bug_issues" | jq 'length')
+  if (( page_count == 0 )); then break; fi
 
-while IFS= read -r row; do
-  [[ -z "$row" ]] && continue
-  issue_num=$(echo "$row" | jq -r '.number')
-  if (( issue_num > last_scanned )); then
+  # Use a tmp file rather than process substitution so the `read` loop's
+  # variable assignments survive the surrounding scope (they wouldn't in
+  # a `... | while read` subshell).
+  tmp_issues=$(mktemp)
+  echo "$bug_issues" | jq -c '.[]?' > "$tmp_issues"
+
+  while IFS= read -r row; do
+    [[ -z "$row" ]] && continue
+    issue_num=$(echo "$row" | jq -r '.number')
+    if (( issue_num <= last_scanned )); then
+      hit_known=true
+      continue
+    fi
     title=$(echo "$row" | jq -r '.title')
     # Defang the issue title before it flows to the LLM-facing change report.
     # Title is free-form text controlled by whoever opened the issue —
@@ -184,15 +227,31 @@ while IFS= read -r row; do
     # this whole layer. (See agent/lib/sanitize.ts for the load-bearing
     # defang at the TS layer.)
     title=$(defang_for_llm "$title")
-    echo "  NEW: #$issue_num (title sanitised; see /tmp/change-report.json for defanged form)"
+    echo "  NEW: #$issue_num (title sanitised)"
     new_bugs=$(echo "$new_bugs" | jq \
       --arg num "$issue_num" --arg title "$title" \
       '. + [{"issue": ($num | tonumber), "title": $title}]')
-    if (( issue_num > new_last_scanned )); then
-      new_last_scanned=$issue_num
+    if (( issue_num > max_seen_this_run )); then
+      max_seen_this_run=$issue_num
     fi
+  done < "$tmp_issues"
+  rm -f "$tmp_issues"
+
+  if [[ "$hit_known" == "true" ]]; then break; fi
+  page=$((page + 1))
+done
+
+# Only advance the checkpoint if we confirmed we reached known territory.
+# Otherwise leave it alone — next run will re-fetch from the same point
+# and process any bugs we missed this round.
+if [[ "$hit_known" == "true" ]]; then
+  new_last_scanned="$max_seen_this_run"
+else
+  if (( page > MAX_PAGES )); then
+    echo "WARN: hit MAX_PAGES=$MAX_PAGES bug-issue pages without seeing a known issue;" >&2
+    echo "      lastScannedIssueNumber NOT advanced this run (next run will re-fetch)" >&2
   fi
-done < <(echo "$bug_issues" | jq -c '.[]?')
+fi
 
 # ---------------------------------------------------------------------------
 # 6. Drift check — SKILL.md must match state.json version

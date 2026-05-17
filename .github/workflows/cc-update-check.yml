@@ -91,14 +91,20 @@ jobs:
           HAS_OAUTH: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN != '' }}
           HAS_API_KEY: ${{ secrets.ANTHROPIC_API_KEY != '' }}
         run: |
+          # METHOD is captured into a shell var so the same value lands in
+          # both the step output AND the pipeline-log jq call below. The
+          # previous version read `${{ steps.auth.outputs.method }}` from
+          # inside its own step, which evaluates BEFORE the step writes its
+          # output and so always recorded "unknown" in the log.
+          METHOD="unknown"
           if [ "$HAS_OAUTH" = "true" ]; then
             echo "Using OAuth token authentication"
             mkdir -p ~/.claude
             echo '{"hasCompletedOnboarding":true}' > ~/.claude.json
-            echo "method=oauth" >> "$GITHUB_OUTPUT"
+            METHOD="oauth"
           elif [ "$HAS_API_KEY" = "true" ]; then
             echo "Using API key authentication"
-            echo "method=api_key" >> "$GITHUB_OUTPUT"
+            METHOD="api_key"
           else
             echo "ERROR: No authentication configured."
             echo "Set either CLAUDE_CODE_OAUTH_TOKEN or ANTHROPIC_API_KEY secret."
@@ -107,7 +113,8 @@ jobs:
               "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
             exit 1
           fi
-          jq --arg s "auth" --arg r "success" --arg m "${{ steps.auth.outputs.method || 'unknown' }}" \
+          echo "method=$METHOD" >> "$GITHUB_OUTPUT"
+          jq --arg s "auth" --arg r "success" --arg m "$METHOD" \
             '.steps += [{"step":$s,"result":$r,"method":$m}]' \
             "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
 
@@ -369,6 +376,7 @@ jobs:
           cat "$PIPELINE_LOG" | jq .
 
       - name: Run report agent
+        id: report
         if: always()
         continue-on-error: true
         working-directory: agent
@@ -385,6 +393,24 @@ jobs:
             jq --arg s "report" --arg r "success" --arg d "${ELAPSED}s" \
               '.steps += [{"step":$s,"result":$r,"duration":$d}]' \
               "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
+          else
+            # Capture report-agent failure so it surfaces in the final
+            # outcomes block + the "Check for failures" step below. Without
+            # this the workflow committed silently on a bad report-agent run.
+            LAST_LINES=$(tail -20 /tmp/report-agent.log | jq -Rs '.')
+            jq --arg s "report" --arg r "failed" --arg d "${ELAPSED}s" \
+              --arg c "$EXIT_CODE" --argjson e "$LAST_LINES" \
+              '.steps += [{"step":$s,"result":$r,"duration":$d,"exitCode":($c|tonumber),"lastOutput":$e}]' \
+              "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
+            # CRITICAL: exit with the agent's exit code so GH Actions records
+            # this step as "failure". Without this exit, the step's last
+            # command is the jq pipeline above which exits 0, GH Actions
+            # records "success" despite continue-on-error, and
+            # `steps.report.outcome` reads "success" downstream — defeating
+            # the entire failure-detection path. continue-on-error: true
+            # at the step level prevents this nonzero exit from killing the
+            # job; it only flips the recorded outcome.
+            exit "$EXIT_CODE"
           fi
 
       - name: Update README auto-updated date
@@ -418,9 +444,14 @@ jobs:
           DOCSDRIFT="${{ steps.check_docs_drift.outcome || 'skipped' }}"
           DIFFSIZE="${{ steps.check_diff_size.outcome || 'skipped' }}"
           VERIFY="${{ steps.verify.outcome || 'skipped' }}"
+          # report-agent isn't a "gate" in the strict sense, but a crashed
+          # report means the daily report file + README activity table won't
+          # be updated — pushing that state silently to main is wrong. Route
+          # to draft PR for human review instead.
+          REPORT="${{ steps.report.outcome || 'skipped' }}"
 
           GATES_FAILED=""
-          for pair in "validate_examples:$VALIDATE" "typecheck_templates:$TYPECHECK" "check_populated:$POPULATED" "check_docs_drift:$DOCSDRIFT" "check_diff_size:$DIFFSIZE" "verify:$VERIFY"; do
+          for pair in "validate_examples:$VALIDATE" "typecheck_templates:$TYPECHECK" "check_populated:$POPULATED" "check_docs_drift:$DOCSDRIFT" "check_diff_size:$DIFFSIZE" "verify:$VERIFY" "report:$REPORT"; do
             name="${pair%%:*}"
             outcome="${pair##*:}"
             if [ "$outcome" = "failure" ]; then
@@ -467,6 +498,7 @@ jobs:
               "- **check_docs_drift**: upstream llms.txt index hash has changed since the last \`docs-snapshot/\` refresh. Run \`bash scripts/refresh-docs-snapshot.sh\` locally, review the diff, and commit." \
               "- **check_diff_size**: a tracked file changed >${DIFF_THRESHOLD_PCT}% — possible runaway-LLM rewrite." \
               "- **verify**: version-string propagation or required-file presence failed." \
+              "- **report**: the report-agent crashed. The daily report and README activity table for this date are missing/stale." \
               "" \
               "If the changes look correct, mark this PR ready and merge. If not, close it and let the next pipeline run try again.")
             gh pr create --draft \
@@ -484,18 +516,23 @@ jobs:
         run: |
           UPDATE="${{ steps.update.outcome || 'skipped' }}"
           RESEARCH="${{ steps.research.outcome || 'skipped' }}"
+          REPORT="${{ steps.report.outcome || 'skipped' }}"
           VERIFY="${{ steps.verify.outcome || 'skipped' }}"
           VALIDATE="${{ steps.validate_examples.outcome || 'skipped' }}"
           TYPECHECK="${{ steps.typecheck_templates.outcome || 'skipped' }}"
           POPULATED="${{ steps.check_populated.outcome || 'skipped' }}"
+          DOCSDRIFT="${{ steps.check_docs_drift.outcome || 'skipped' }}"
           DIFFSIZE="${{ steps.check_diff_size.outcome || 'skipped' }}"
 
           echo "Outcomes:"
-          echo "  update=$UPDATE  research=$RESEARCH  verify=$VERIFY"
-          echo "  validate=$VALIDATE  typecheck=$TYPECHECK  populated=$POPULATED  diffsize=$DIFFSIZE"
+          echo "  update=$UPDATE  research=$RESEARCH  report=$REPORT  verify=$VERIFY"
+          echo "  validate=$VALIDATE  typecheck=$TYPECHECK  populated=$POPULATED"
+          echo "  docsdrift=$DOCSDRIFT  diffsize=$DIFFSIZE"
 
-          # Hard failure only on agent crashes; gate failures route to draft PR (already handled).
-          if [ "$UPDATE" = "failure" ] || [ "$RESEARCH" = "failure" ]; then
+          # Hard failure on any LLM-agent crash (update / research / report).
+          # Gate failures route to draft PR (handled in the commit step) and
+          # do NOT fail the job — they're a review request, not an error.
+          if [ "$UPDATE" = "failure" ] || [ "$RESEARCH" = "failure" ] || [ "$REPORT" = "failure" ]; then
             echo "Pipeline had agent crashes — failing the job."
             exit 1
           fi

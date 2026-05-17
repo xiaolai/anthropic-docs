@@ -1,0 +1,36 @@
+name: Weekly Deep Docs-Drift Check
+
+# Runs the EXPENSIVE per-page hash verification (~1 minute, 132 page
+# fetches). The daily pipeline uses fast mode (index-only) for speed;
+# this workflow catches content drift that doesn't change the index.
+#
+# Detection only — does NOT auto-refresh the snapshot. On a failure, a
+# maintainer runs `bash scripts/refresh-docs-snapshot.sh` locally and
+# opens a PR with the refreshed snapshot + CHANGELOG entry.
+
+on:
+  schedule:
+    - cron: "0 12 * * 1"   # Every Monday 12:00 UTC
+  workflow_dispatch:        # And on-demand
+
+permissions:
+  contents: read
+
+jobs:
+  deep-drift:
+    if: github.repository == 'xiaolai/claude-code-documentation-knowledge-autoupdated'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run deep drift check
+        run: bash scripts/check-docs-drift.sh --deep
+
+      # On failure (exit 1 = per-page drift detected), GH Actions surfaces
+      # the workflow as failed in the maintainer's notifications. Auto-
+      # opening an issue would require broadening permissions to
+      # issues:write — kept as a follow-up rather than enabled by default.
+      - name: Note on failure
+        if: failure()
+        run: |
+          echo "::warning::Weekly deep drift detected. Run 'bash scripts/refresh-docs-snapshot.sh' locally and open a PR with the refreshed snapshot + CHANGELOG entry."

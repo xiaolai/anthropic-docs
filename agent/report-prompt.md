@@ -22,7 +22,7 @@ Inspect the pipeline log's `outcomes` block to classify the run:
 |---|---|---|
 | `success` | All steps `success` or `skipped` | Direct push to `main` |
 | `partial` | An agent step failed (`update` / `research` failed) but pipeline completed | Direct push to `main` (partial work) |
-| `review` | Any safety gate (`validateExamples`, `typecheckTemplates`, `checkPopulated`, `checkDiffSize`, `verify`) failed | Draft PR on branch `auto/<YYYY-MM-DD>-pending-review`, NOT pushed to main |
+| `review` | Any safety gate (`validateExamples`, `typecheckTemplates`, `checkPopulated`, `checkDocsDrift`, `checkDiffSize`, `verify`) failed | Draft PR on branch `auto/<YYYY-MM-DD>-pending-review`, NOT pushed to main |
 | `failed` | Pipeline crashed before reaching report stage | (you don't run in this mode) |
 
 Mention the run mode prominently in the report header. If `review`, name the failed gates.
@@ -47,6 +47,7 @@ Mention the run mode prominently in the report header. If `review`, name the fai
 - typecheck-templates: <pass | fail>
 - validate-examples: <pass | fail>
 - check-populated: <pass | fail | skipped (scaffold mode)>
+- check-docs-drift: <pass | fail>
 - check-diff-size: <pass | fail>
 
 ## Failures (if any)
@@ -104,6 +105,7 @@ If `agent/state.json.lastRunWarnings` has any entries logged from this or a prio
 ## Constraints
 
 - Do not edit `SKILL.md`, `SKILL-*.md`, `rules/*`, `templates/*`, `schema/*`, `scripts/*`, `agent/*`. You only touch `reports/`, `README.md`, and `CHANGELOG.md`.
+  - **Single exception**: `agent/state.json` may be edited ONLY to append a string entry to its `lastRunWarnings` array per the Security Boundary above. No other field. No other file under `agent/`.
 - If a previous-day report file already exists for today, overwrite it (the pipeline is allowed to run twice in one day).
 - No git operations.
 - If `/tmp/agent-costs.json` is absent, omit the Cost line — do not invent values.

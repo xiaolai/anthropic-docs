@@ -8,10 +8,14 @@
     "verify:templates": "bash scripts/typecheck-templates.sh",
     "verify:populated": "bash scripts/check-populated.sh",
     "verify:diff-size": "bash scripts/check-diff-size.sh",
-    "verify:all": "npm run verify:examples && npm run verify:templates && npm run verify:populated"
+    "verify:docs-drift": "bash scripts/check-docs-drift.sh",
+    "verify:sanitizer-parity": "bash scripts/check-sanitizer-parity.sh",
+    "verify:gate-parity": "bash scripts/check-gate-parity.sh",
+    "verify:agent-tests": "npm --prefix agent test",
+    "verify:all": "npm run verify:examples && npm run verify:templates && npm run verify:populated && npm run verify:diff-size && npm run verify:docs-drift && npm run verify:sanitizer-parity && npm run verify:gate-parity && npm run verify:agent-tests"
   },
   "devDependencies": {
-    "ajv": "^8.17.1",
-    "ajv-formats": "^3.0.1"
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1"
   }
 }

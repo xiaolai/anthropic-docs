@@ -28,9 +28,9 @@ names, flags, env vars) flow in.
   surface: settings / mcp / plugins / hooks / skills-agents-commands).
 - Runs deterministic safety gates after every research pass
   (`validate-examples`, `typecheck-templates`, `check-populated`,
-  `check-diff-size` — see `scripts/`); any gate failure routes the run
-  to a draft PR on `auto/<date>-pending-review` instead of pushing to
-  `main`.
+  `check-docs-drift`, `check-diff-size` — see `scripts/`); any gate
+  failure routes the run to a draft PR on `auto/<date>-pending-review`
+  instead of pushing to `main`.
 - Self-heals on `verify.sh` failure via a mending agent with up to
   2 retries.
 
@@ -115,13 +115,14 @@ reports/                          Daily run digests
 
 ### Safety gates
 
-After each daily run, four gates run before commit:
+After each daily run, five gates run before commit:
 
 | Gate | Catches |
 |---|---|
 | `typecheck-templates.sh` | Broken templates (invalid JSON, shell syntax error, missing frontmatter) |
-| `validate-examples.sh` | Fenced JSON examples in SKILL-*.md that don't match the schema mapped to that file |
+| `validate-examples.sh` | Fenced JSON examples in SKILL-*.md that don't match the schema mapped to that file. PASS 2 (informational) also cross-checks each schema's top-level property keys against the upstream docs snapshot. |
 | `check-populated.sh` | Stub markers (`*Populated by the research agent*`) lingering after scaffold mode ends |
+| `check-docs-drift.sh` | Upstream `code.claude.com/llms.txt` index hash has changed since the committed `docs-snapshot/` was refreshed. Fast mode (index-only) runs daily; `--deep` mode (per-page content hash) is manual / weekly. |
 | `check-diff-size.sh` | Any single tracked file rewritten by >20% in one run (catches runaway-LLM failures) |
 
 If any gate fails, the run is committed to `auto/<YYYY-MM-DD>-pending-review` and a draft PR is opened. The main branch never receives unreviewed content from a flagged run.

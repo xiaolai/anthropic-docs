@@ -26,11 +26,24 @@ DOCS_INDEX_URL="${DOCS_INDEX_URL:-https://code.claude.com/llms.txt}"
 # when serving as our "known good" baseline. See agent/lib/sanitize.ts
 # for the threat model.
 defang_for_llm() {
+  # `[\s\S]*?` handles multi-line HTML comments and comments containing `>`;
+  # the previous `[^>]*` failed on both. jq's Oniguruma engine understands
+  # `\s\S` the same as PCRE does. Must stay in lock-step with agent/monitor.sh
+  # and scripts/check-docs-drift.sh — see DUPLICATED_SANITIZER comment below.
   printf '%s' "$1" | jq -Rsj '
-    gsub("<!--[^>]*-->"; "")
+    gsub("<!--[\\s\\S]*?-->"; "")
     | gsub("(?i)<\\s*/?\\s*(system|instructions?|important|priority|override|admin|role|persona|developer|assistant|task|directive|prompt)[^>]*>"; "[stripped]")
   '
 }
+
+# DUPLICATED_SANITIZER: the same defang lives in agent/monitor.sh and in
+# scripts/check-docs-drift.sh's --deep phase. Keep all three in sync.
+# Long-term cleanup: move to a single shared source (e.g. `scripts/lib/defang.sh`)
+# and source it from each consumer. Tracked as a maintainability follow-up.
+
+# Bounded curl: avoid stalls hanging the outer GH Actions job. ~2 minutes
+# total budget across all 132 fetches is comfortable.
+CURL_OPTS=(--connect-timeout 10 --max-time 60 --retry 2 --retry-delay 3)
 
 # Cross-platform sha256
 hash256() {
@@ -48,10 +61,8 @@ for cmd in curl jq; do
   fi
 done
 
-mkdir -p "$SNAPSHOT_DIR"
-
 echo "Fetching docs index: $DOCS_INDEX_URL"
-INDEX_BODY=$(curl -sfL "$DOCS_INDEX_URL") || {
+INDEX_BODY=$(curl -sfL "${CURL_OPTS[@]}" "$DOCS_INDEX_URL") || {
   echo "ERROR: failed to fetch $DOCS_INDEX_URL" >&2
   exit 1
 }
@@ -63,6 +74,33 @@ URLS=$(printf '%s' "$INDEX_BODY" | grep -oE 'https://code\.claude\.com/docs/[^)]
 URL_COUNT=$(printf '%s\n' "$URLS" | grep -c . || echo "0")
 echo "  pages to fetch: $URL_COUNT"
 echo ""
+
+# Sanity check: an empty URL list almost always means upstream changed
+# llms.txt format (URLs no longer match our extraction regex), not that
+# upstream actually has zero pages. Refuse to write a zero-page manifest
+# unless explicitly overridden — that would silently invalidate every
+# downstream consumer (validate-examples PASS 2 cross-check, drift gate).
+if (( URL_COUNT == 0 )); then
+  if [[ "${ALLOW_EMPTY_SNAPSHOT:-0}" == "1" ]]; then
+    echo "WARN: zero pages extracted from llms.txt; ALLOW_EMPTY_SNAPSHOT=1 — proceeding." >&2
+  else
+    echo "ERROR: zero pages extracted from llms.txt. Either the upstream format" >&2
+    echo "       changed (update the URL regex above) or the fetch returned" >&2
+    echo "       empty content. Re-run with ALLOW_EMPTY_SNAPSHOT=1 only if you" >&2
+    echo "       genuinely want a zero-page snapshot." >&2
+    exit 1
+  fi
+fi
+
+# Prune stale pages: clear the snapshot dir before re-fetching so files
+# removed upstream don't linger. Without this, validate-examples PASS 2
+# (which walks every .md in the dir) would keep cross-checking against
+# dead pages, silently inflating its "key found in snapshot" hit-rate.
+if [[ -d "$SNAPSHOT_DIR" ]]; then
+  echo "Pruning stale snapshot dir before re-fetch…"
+  rm -rf "$SNAPSHOT_DIR"
+fi
+mkdir -p "$SNAPSHOT_DIR"
 
 # Fetch each page, sanitise, write to snapshot
 fetched=0
@@ -77,7 +115,7 @@ while IFS= read -r url; do
   target="$SNAPSHOT_DIR/$rel"
   mkdir -p "$(dirname "$target")"
 
-  body=$(curl -sfL "$url" 2>/dev/null) || {
+  body=$(curl -sfL "${CURL_OPTS[@]}" "$url" 2>/dev/null) || {
     echo "  FAIL $rel"
     failed=$((failed + 1))
     continue

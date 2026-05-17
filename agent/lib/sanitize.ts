@@ -29,10 +29,12 @@ const DANGEROUS_TAGS = [
 ];
 
 // Imperative line-leading markers that mimic system-prompt phrasing.
+// Flags MUST include `g` so .replace() neutralises EVERY occurrence in the
+// input (not just the first). The `m` flag anchors `^` to line starts.
 const DANGEROUS_LINE_LEADERS = [
-  /^\s*(important|system|instruction|note to assistant|attention|priority|override|admin|directive)\s*:\s*/im,
-  /^\s*(ignore|disregard|forget|override)\s+(all\s+|the\s+)?(prior|previous|above|earlier|preceding|prior\s+system)\s+(instructions?|prompts?|messages?|rules?)/im,
-  /^\s*you\s+(must|will|shall|are\s+(now|required|instructed))/im,
+  /^\s*(important|system|instruction|note to assistant|attention|priority|override|admin|directive)\s*:\s*/gim,
+  /^\s*(ignore|disregard|forget|override)\s+(all\s+|the\s+)?(prior|previous|above|earlier|preceding|prior\s+system)\s+(instructions?|prompts?|messages?|rules?)/gim,
+  /^\s*you\s+(must|will|shall|are\s+(now|required|instructed))/gim,
 ];
 
 const DEFAULT_MAX_LEN = 8000;
@@ -52,9 +54,10 @@ export function defangUntrustedContent(
 
   let s = raw ?? "";
 
-  // 1. Remove HTML / XML comments. Prompt-injection payloads sometimes hide
-  //    inside comments hoping a parser will strip them before display while
-  //    the LLM still reads them.
+  // 1. Remove HTML / XML comments, including multi-line ones. Prompt-injection
+  //    payloads sometimes hide inside comments hoping a parser will strip them
+  //    before display while the LLM still reads them. The `[\s\S]*?` pattern
+  //    is the standard "any char including newline, non-greedy" idiom.
   s = s.replace(/<!--[\s\S]*?-->/g, "");
 
   // 2. Strip dangerous tag pairs and standalone tags. We replace with the

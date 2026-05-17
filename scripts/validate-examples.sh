@@ -50,22 +50,35 @@ const MAP = {
 };
 
 const SNAPSHOT_DIR = path.join(ROOT, "docs-snapshot", "code.claude.com");
-const SNAPSHOT_AVAILABLE = fs.existsSync(SNAPSHOT_DIR);
+const MANIFEST_PATH = path.join(ROOT, "docs-snapshot", "MANIFEST.json");
+const SNAPSHOT_AVAILABLE = fs.existsSync(MANIFEST_PATH) && fs.existsSync(SNAPSHOT_DIR);
 
-// Load every snapshot file into memory once — total is a few MB, cheap.
+// Load only the pages listed in MANIFEST.json. Walking the snapshot dir
+// directly would pull in stale orphan files (pages removed upstream that
+// the refresh script forgot to prune) — those would inflate the
+// "key found in snapshot" hit rate with content that no longer exists
+// upstream, producing false negatives in the drift check.
 function loadSnapshotCorpus() {
   if (!SNAPSHOT_AVAILABLE) return "";
+  let manifest;
+  try {
+    manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, "utf8"));
+  } catch {
+    return "";
+  }
+  const pages = Array.isArray(manifest.pages) ? manifest.pages : [];
   const parts = [];
-  function walk(dir) {
-    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-      const p = path.join(dir, entry.name);
-      if (entry.isDirectory()) walk(p);
-      else if (entry.isFile() && entry.name.endsWith(".md")) {
-        parts.push(fs.readFileSync(p, "utf8"));
-      }
+  for (const entry of pages) {
+    if (!entry || typeof entry.path !== "string") continue;
+    const full = path.join(SNAPSHOT_DIR, entry.path);
+    try {
+      parts.push(fs.readFileSync(full, "utf8"));
+    } catch {
+      // Page listed in manifest but missing on disk — surface as a warning
+      // line in the corpus so a maintainer notices, but do not fail PASS 2.
+      parts.push(`[missing snapshot page: ${entry.path}]`);
     }
   }
-  walk(SNAPSHOT_DIR);
   return parts.join("\n\n");
 }
 

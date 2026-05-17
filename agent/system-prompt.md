@@ -39,7 +39,10 @@ The skill uses a **router + surface-files** architecture. Read the router first 
 
 ## Files you must NOT touch
 
-- `agent/*` — pipeline infrastructure (you are not your own maintainer)
+- `agent/*` — pipeline infrastructure (you are not your own maintainer).
+  **Single exception**: `agent/state.json` may be edited ONLY to append a
+  string entry to its `lastRunWarnings` array (Security-Boundary logging,
+  see below). No other field. No other file under `agent/`.
 - `.github/workflows/*` — CI configuration
 - `schema/*` — JSONSchemas used by `scripts/validate-examples.sh` (only update via deliberate maintainer change)
 - `scripts/*` — verification scripts

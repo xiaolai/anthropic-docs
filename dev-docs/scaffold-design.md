@@ -2,10 +2,19 @@
 
 **Status:** Scaffolded 2026-05-17, pre-push. First pipeline run not yet executed.
 
-This is the local design memo for the skill repo. It is gitignored
-(`dev-docs/` is excluded). The broader cross-skill plan that covers
-this skill plus the planned Anthropic-API and MCP-spec siblings lives
-in `~/github/xiaolai/myprojects/claudepot-app/dev-docs/anthropic-doc-skills-plan.md`.
+> **The architecture and decisions captured below describe the original
+> scaffold (single `SKILL.md`, single `rules/claude-code.md`). They have
+> been substantially superseded by same-day refactors. Read the
+> [`§ Post-scaffold evolution`](#post-scaffold-evolution) section near
+> the bottom first if you want current state; the rest of this document
+> preserves the original design rationale.**
+
+This is the local design memo for the skill repo. It was originally
+gitignored (`dev-docs/` was excluded) — that was reversed when
+committing the docs-snapshot work so the rationale is queryable from
+the repo proper. The broader cross-skill plan that covers this skill
+plus the planned Anthropic-API and MCP-spec siblings lives in
+`~/github/xiaolai/myprojects/claudepot-app/dev-docs/anthropic-doc-skills-plan.md`.
 
 ## Why this skill exists
 
@@ -15,8 +24,11 @@ plugin manifest change weekly (npm ships ~daily; docs at
 `code.claude.com` track the surface). A statically-curated reference
 skill drifts in days. This skill solves that with a daily pipeline
 that re-reads the upstream docs + scans `anthropics/claude-code`
-GitHub issues, then rewrites `SKILL.md` / `rules/claude-code.md` to
-match.
+GitHub issues, then rewrites the per-surface SKILL files
+(`SKILL-settings.md`, `SKILL-hooks.md`, …) and the matching per-
+surface `rules/*.md` to match. *(The original scaffold wrote to a
+single `SKILL.md` and single `rules/claude-code.md`; both were split
+in the multi-file refactor — see § Post-scaffold evolution.)*
 
 ## Provenance
 
