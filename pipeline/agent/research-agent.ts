@@ -6,8 +6,12 @@ import { fileURLToPath } from "node:url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const SYSTEM_PROMPT_PATH = resolve(__dirname, "research-prompt.md");
-const STATE_PATH = resolve(__dirname, "state.json");
-const SKILL_ROOT = resolve(__dirname, "..");
+// SKILL_NAME selects the skill payload (see update-agent.ts for the
+// full explanation). Default claude-code preserves the original
+// single-skill behaviour for local invocations.
+const SKILL_NAME = process.env.SKILL_NAME ?? "claude-code";
+const SKILL_ROOT = resolve(__dirname, "..", "..", "skills", SKILL_NAME);
+const STATE_PATH = resolve(SKILL_ROOT, "state.json");
 
 const cleanEnv = { ...process.env };
 delete cleanEnv.CLAUDECODE;

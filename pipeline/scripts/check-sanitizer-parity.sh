@@ -22,12 +22,16 @@
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+# Alias for the existing extract-from-ROOT logic below.
+ROOT="$REPO_ROOT"
 
+# Paths after the multi-skill refactor: all 3 bash defang sources moved
+# into pipeline/.
 SOURCES=(
-  "agent/monitor.sh"
-  "scripts/refresh-docs-snapshot.sh"
-  "scripts/check-docs-drift.sh"
+  "pipeline/agent/monitor.sh"
+  "pipeline/scripts/refresh-docs-snapshot.sh"
+  "pipeline/scripts/check-docs-drift.sh"
 )
 
 # Extract the comment-strip line ("<!--..." pattern) and the tag-strip

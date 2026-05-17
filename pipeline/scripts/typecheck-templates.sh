@@ -8,7 +8,10 @@
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+# Multi-skill: SKILL_NAME scopes to skills/<name>/templates/.
+SKILL_NAME="${SKILL_NAME:-claude-code}"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+ROOT="$REPO_ROOT/skills/$SKILL_NAME"
 TEMPLATES="$ROOT/templates"
 
 if [[ ! -d "$TEMPLATES" ]]; then

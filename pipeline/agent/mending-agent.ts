@@ -9,7 +9,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const CHANGE_REPORT_PATH = process.env.CHANGE_REPORT ?? "/tmp/change-report.json";
 const VERIFY_REPORT_PATH = process.env.VERIFY_REPORT ?? "/tmp/verify-report.json";
 const SYSTEM_PROMPT_PATH = resolve(__dirname, "mending-prompt.md");
-const SKILL_ROOT = resolve(__dirname, "..");
+// SKILL_NAME selects the skill payload. See update-agent.ts.
+const SKILL_NAME = process.env.SKILL_NAME ?? "claude-code";
+const SKILL_ROOT = resolve(__dirname, "..", "..", "skills", SKILL_NAME);
 
 // Prevent "cannot be launched inside another Claude Code session" error
 const cleanEnv = { ...process.env };

@@ -12,7 +12,14 @@ const CHANGE_REPORT_PATH = process.env.CHANGE_REPORT ?? "/tmp/change-report.json
 const cleanEnv = { ...process.env };
 delete cleanEnv.CLAUDECODE;
 const SYSTEM_PROMPT_PATH = resolve(__dirname, "system-prompt.md");
-const SKILL_ROOT = resolve(__dirname, "..");
+
+// SKILL_NAME env var selects which skill payload to operate on. Each skill
+// lives at skills/<SKILL_NAME>/ with its own config.json + SKILL files +
+// state.json + docs-snapshot. The matrix workflow sets SKILL_NAME per
+// matrix entry; local invocations default to claude-code (the original
+// content of this repo) for backward compatibility.
+const SKILL_NAME = process.env.SKILL_NAME ?? "claude-code";
+const SKILL_ROOT = resolve(__dirname, "..", "..", "skills", SKILL_NAME);
 
 // ---------------------------------------------------------------------------
 // Load inputs

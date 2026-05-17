@@ -1,0 +1,48 @@
+{
+  "name": "claude-code",
+  "displayName": "Claude Code CLI",
+  "description": "Claude Code CLI itself — settings, hooks, slash commands, MCP, plugins, env vars, CLI flags, permission modes, dir layout, known issues.",
+  "upstream": {
+    "docsIndexUrl": "https://code.claude.com/llms.txt",
+    "docsPathFilter": "^(?!.*agent-sdk/).*",
+    "npmPackages": ["@anthropic-ai/claude-code"],
+    "pypiPackages": [],
+    "githubRepos": ["anthropics/claude-code"],
+    "bugTrackerRepo": "anthropics/claude-code"
+  },
+  "router": "SKILL.md",
+  "surfaces": [
+    "SKILL-settings.md",
+    "SKILL-hooks.md",
+    "SKILL-slash-commands.md",
+    "SKILL-mcp.md",
+    "SKILL-plugins.md",
+    "SKILL-cli.md",
+    "SKILL-known-issues.md"
+  ],
+  "rules": [
+    "rules/settings.md",
+    "rules/mcp.md",
+    "rules/plugins.md",
+    "rules/hooks.md",
+    "rules/skills-agents-commands.md"
+  ],
+  "dispatch": {
+    "settings.md": "SKILL-settings.md",
+    "hooks.md": "SKILL-hooks.md",
+    "hooks-guide.md": "SKILL-hooks.md",
+    "slash-commands.md": "SKILL-slash-commands.md",
+    "mcp.md": "SKILL-mcp.md",
+    "plugins.md": "SKILL-plugins.md",
+    "cli-reference.md": "SKILL-cli.md",
+    "permissions.md": "SKILL-cli.md",
+    "permission-modes.md": "SKILL-cli.md"
+  },
+  "schemas": {
+    "SKILL-settings.md": "pipeline/schema/settings.schema.json",
+    "SKILL-mcp.md": "pipeline/schema/mcp.schema.json",
+    "SKILL-plugins.md": "pipeline/schema/plugin.schema.json",
+    "SKILL-hooks.md": "pipeline/schema/hook-input.schema.json"
+  },
+  "knownIssuesSurface": "SKILL-known-issues.md"
+}

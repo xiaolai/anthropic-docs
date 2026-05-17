@@ -26,14 +26,23 @@
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+# Multi-skill: SKILL_NAME selects which skills/<name>/ payload to validate.
+SKILL_NAME="${SKILL_NAME:-claude-code}"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+SKILL_ROOT="$REPO_ROOT/skills/$SKILL_NAME"
 
-if [[ ! -d "$ROOT/node_modules/ajv" ]]; then
+if [[ ! -d "$REPO_ROOT/node_modules/ajv" ]]; then
   echo "ERROR: ajv not installed. Run 'npm install' at the repo root first." >&2
   exit 2
 fi
+if [[ ! -d "$SKILL_ROOT" ]]; then
+  echo "ERROR: SKILL_NAME=$SKILL_NAME but $SKILL_ROOT does not exist" >&2
+  exit 2
+fi
 
-cd "$ROOT"
+# Make context available to the inline node script via env.
+export SKILL_NAME SKILL_ROOT REPO_ROOT
+cd "$REPO_ROOT"
 
 exec node -e '
 const fs = require("fs");
@@ -41,17 +50,26 @@ const path = require("path");
 const Ajv = require("ajv");
 const addFormats = require("ajv-formats");
 
-const ROOT = process.cwd();
-const MAP = {
-  "SKILL-settings.md": "schema/settings.schema.json",
-  "SKILL-mcp.md":      "schema/mcp.schema.json",
-  "SKILL-plugins.md":  "schema/plugin.schema.json",
-  "SKILL-hooks.md":    "schema/hook-input.schema.json",
-};
+const REPO_ROOT = process.env.REPO_ROOT || process.cwd();
+const SKILL_NAME = process.env.SKILL_NAME || "claude-code";
+const SKILL_ROOT = process.env.SKILL_ROOT || path.join(REPO_ROOT, "skills", SKILL_NAME);
 
-const SNAPSHOT_DIR = path.join(ROOT, "docs-snapshot", "code.claude.com");
-const MANIFEST_PATH = path.join(ROOT, "docs-snapshot", "MANIFEST.json");
-const SNAPSHOT_AVAILABLE = fs.existsSync(MANIFEST_PATH) && fs.existsSync(SNAPSHOT_DIR);
+// Load the skill MAP (schemas dict) from the skill config — single source
+// of truth. Map keys: SKILL-*.md filenames relative to SKILL_ROOT.
+// Map values: schema paths relative to REPO_ROOT.
+let MAP = {};
+try {
+  const config = JSON.parse(fs.readFileSync(path.join(SKILL_ROOT, "config.json"), "utf8"));
+  MAP = config.schemas || {};
+} catch (e) {
+  console.error("ERROR loading skill config: " + e.message);
+  process.exit(2);
+}
+
+// Snapshot lives per-skill: skills/<name>/docs-snapshot/<host>/...
+const SNAPSHOT_BASE = path.join(SKILL_ROOT, "docs-snapshot");
+const MANIFEST_PATH = path.join(SNAPSHOT_BASE, "MANIFEST.json");
+const SNAPSHOT_AVAILABLE = fs.existsSync(MANIFEST_PATH) && fs.existsSync(SNAPSHOT_BASE);
 
 // Load only the pages listed in MANIFEST.json. Walking the snapshot dir
 // directly would pull in stale orphan files (pages removed upstream that
@@ -70,7 +88,7 @@ function loadSnapshotCorpus() {
   const parts = [];
   for (const entry of pages) {
     if (!entry || typeof entry.path !== "string") continue;
-    const full = path.join(SNAPSHOT_DIR, entry.path);
+    const full = path.join(SNAPSHOT_BASE, entry.path);
     try {
       parts.push(fs.readFileSync(full, "utf8"));
     } catch {
@@ -100,8 +118,8 @@ let failed = 0;
 let skipped = 0;
 
 for (const [src, schemaPath] of Object.entries(MAP)) {
-  const srcAbs    = path.join(ROOT, src);
-  const schemaAbs = path.join(ROOT, schemaPath);
+  const srcAbs    = path.join(SKILL_ROOT, src);
+  const schemaAbs = path.join(REPO_ROOT, schemaPath);
 
   if (!fs.existsSync(srcAbs)) {
     console.log(`SKIP ${src} (file missing)`);
@@ -185,7 +203,7 @@ if (!SNAPSHOT_AVAILABLE) {
   let unmatched = 0;
 
   for (const [src, schemaPath] of Object.entries(MAP)) {
-    const schemaAbs = path.join(ROOT, schemaPath);
+    const schemaAbs = path.join(REPO_ROOT, schemaPath);
     if (!fs.existsSync(schemaAbs)) continue;
 
     let schema;

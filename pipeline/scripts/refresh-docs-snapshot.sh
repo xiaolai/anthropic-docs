@@ -15,10 +15,22 @@
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-SNAPSHOT_DIR="$ROOT/docs-snapshot/code.claude.com"
+# Multi-skill: SKILL_NAME scopes the refresh to skills/<name>/docs-snapshot/.
+SKILL_NAME="${SKILL_NAME:-claude-code}"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+ROOT="$REPO_ROOT/skills/$SKILL_NAME"
+SKILL_CONFIG="$ROOT/config.json"
+if [[ ! -f "$SKILL_CONFIG" ]]; then
+  echo "ERROR: missing $SKILL_CONFIG" >&2; exit 1
+fi
+# Index URL + docs hostname come from per-skill config so each skill
+# refreshes from its own upstream.
+CONFIG_DOCS_URL=$(jq -r '.upstream.docsIndexUrl' "$SKILL_CONFIG")
+DOCS_INDEX_URL="${DOCS_INDEX_URL:-$CONFIG_DOCS_URL}"
+# Snapshot host dir derived from the index URL's host.
+DOCS_HOST=$(printf '%s' "$DOCS_INDEX_URL" | awk -F[/:] '{print $4}')
+SNAPSHOT_DIR="$ROOT/docs-snapshot/$DOCS_HOST"
 MANIFEST="$ROOT/docs-snapshot/MANIFEST.json"
-DOCS_INDEX_URL="${DOCS_INDEX_URL:-https://code.claude.com/llms.txt}"
 
 # Defensive defang at fetch time. Same patterns as agent/monitor.sh —
 # strips HTML/XML comments and dangerous instruction-shaped tags. The

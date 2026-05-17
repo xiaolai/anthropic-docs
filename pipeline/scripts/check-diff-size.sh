@@ -15,29 +15,30 @@
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-cd "$ROOT"
+# Multi-skill: SKILL_NAME scopes diff to skills/<name>/. Default claude-code.
+SKILL_NAME="${SKILL_NAME:-claude-code}"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+cd "$REPO_ROOT"
 
 THRESHOLD="${DIFF_THRESHOLD_PCT:-20}"
 BASE="${DIFF_BASE:-HEAD}"
 
-# Tracked files this gate applies to (the high-churn content files)
-TARGETS=(
-  SKILL.md
-  SKILL-settings.md
-  SKILL-hooks.md
-  SKILL-slash-commands.md
-  SKILL-mcp.md
-  SKILL-plugins.md
-  SKILL-cli.md
-  SKILL-known-issues.md
-  rules/settings.md
-  rules/mcp.md
-  rules/plugins.md
-  rules/hooks.md
-  rules/skills-agents-commands.md
-  README.md
-)
+# Tracked files this gate applies to, built dynamically from the skill's
+# config.json so it scales as surfaces / rules are added/removed.
+SKILL_DIR="skills/$SKILL_NAME"
+SKILL_CONFIG="$REPO_ROOT/$SKILL_DIR/config.json"
+TARGETS=()
+if [[ -f "$SKILL_CONFIG" ]]; then
+  ROUTER=$(jq -r '.router // "SKILL.md"' "$SKILL_CONFIG")
+  TARGETS+=("$SKILL_DIR/$ROUTER")
+  while IFS= read -r s; do
+    [[ -n "$s" ]] && TARGETS+=("$SKILL_DIR/$s")
+  done < <(jq -r '.surfaces[]?' "$SKILL_CONFIG")
+  while IFS= read -r r; do
+    [[ -n "$r" ]] && TARGETS+=("$SKILL_DIR/$r")
+  done < <(jq -r '.rules[]?' "$SKILL_CONFIG")
+  TARGETS+=("$SKILL_DIR/README.md")
+fi
 
 # If git isn't initialised or HEAD doesn't exist, skip unless forced
 if ! git rev-parse --git-dir >/dev/null 2>&1; then

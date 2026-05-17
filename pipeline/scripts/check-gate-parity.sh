@@ -15,11 +15,17 @@
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
-WORKFLOW="$ROOT/.github/workflows/cc-update-check.yml"
-REPORT_TS="$ROOT/agent/report-agent.ts"
-REPORT_PROMPT="$ROOT/agent/report-prompt.md"
+# Paths after the multi-skill refactor: workflow at repo root .github/,
+# agents at pipeline/agent/.
+WORKFLOW="$REPO_ROOT/.github/workflows/daily.yml"
+# Fallback to the legacy single-skill workflow name during the transition.
+if [[ ! -f "$WORKFLOW" ]]; then
+  WORKFLOW="$REPO_ROOT/.github/workflows/cc-update-check.yml"
+fi
+REPORT_TS="$REPO_ROOT/pipeline/agent/report-agent.ts"
+REPORT_PROMPT="$REPO_ROOT/pipeline/agent/report-prompt.md"
 
 # Canonical set: what every source must list. Anything added to one place
 # must appear in all three; anything removed must be removed from all

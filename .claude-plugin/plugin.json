@@ -1,10 +1,10 @@
 {
-  "name": "claude-code-documentation-knowledge",
-  "description": "Auto-updated reference for Claude Code (the CLI). Covers settings.json schema, hook events, slash commands, MCP config, plugins, env vars, CLI flags, permission modes, and a known-issues catalog. Last updated: pending first pipeline run.",
-  "version": "0.1.0",
+  "name": "anthropic-docs-skills-autoupdated",
+  "description": "Auto-updated multi-skill reference for the whole Anthropic doc ecosystem. Ships per-skill payloads (claude-code; planned: claude-agent-sdk, anthropic-api, anthropic-platform-features, claude-connectors, claude-cowork, mcp-spec) backed by a shared daily pipeline. Each skill mirrors its upstream docs and surfaces a curated reference at intent-match time. Last updated: pending first multi-skill pipeline run.",
+  "version": "0.2.0",
   "author": { "name": "xiaolai" },
   "license": "MIT",
-  "homepage": "https://github.com/xiaolai/claude-code-documentation-knowledge-autoupdated",
-  "repository": "https://github.com/xiaolai/claude-code-documentation-knowledge-autoupdated",
-  "keywords": ["claude-code", "settings", "hooks", "mcp", "plugins", "reference", "auto-updated"]
+  "homepage": "https://github.com/xiaolai/anthropic-docs-skills-autoupdated",
+  "repository": "https://github.com/xiaolai/anthropic-docs-skills-autoupdated",
+  "keywords": ["anthropic", "claude", "claude-code", "agent-sdk", "mcp", "skills", "auto-updated"]
 }

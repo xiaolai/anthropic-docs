@@ -34,9 +34,19 @@
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+# Multi-skill: SKILL_NAME scopes to skills/<name>/docs-snapshot/.
+SKILL_NAME="${SKILL_NAME:-claude-code}"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+ROOT="$REPO_ROOT/skills/$SKILL_NAME"
 MANIFEST="$ROOT/docs-snapshot/MANIFEST.json"
-SNAPSHOT_DIR="$ROOT/docs-snapshot/code.claude.com"
+SNAPSHOT_DIR="$ROOT/docs-snapshot"
+# Index URL comes from the skill's config.json so each skill targets its
+# own upstream. CLI/env can override for local testing.
+SKILL_CONFIG="$ROOT/config.json"
+if [[ -f "$SKILL_CONFIG" ]]; then
+  CONFIG_DOCS_URL=$(jq -r '.upstream.docsIndexUrl // empty' "$SKILL_CONFIG")
+  DOCS_INDEX_URL="${DOCS_INDEX_URL:-$CONFIG_DOCS_URL}"
+fi
 DOCS_INDEX_URL="${DOCS_INDEX_URL:-https://code.claude.com/llms.txt}"
 
 # Parse --deep flag
