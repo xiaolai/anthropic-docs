@@ -10,6 +10,9 @@ The newest entry is at the top.
 
 ---
 
+## 2026-05-18
+*(pending review — see draft PR on `auto/2026-05-18-pending-review`)* Routine research audit at v2.1.143 — no version bump; validate-examples and check-populated gates failed, surface-file changes held for human review.
+
 ## 2026-05-17 — codex audit-fix pass 4 (8 findings → CLEAN in 2 rounds)
 
 Sanity-check audit re-run after the push-to-100 pass. Codex surfaced

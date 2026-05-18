@@ -47,3 +47,15 @@ tools: [Read, Grep, Glob]     # also accepted (YAML flow sequence)
 ```
 
 Block-style YAML lists (`tools:\n  - Read\n  - Grep`) are valid YAML and the Claude Code parser accepts them the same as the other two forms. The comma-separated form is just the convention you'll see in the docs and most existing agents — pick it for grep-ability and consistency, but all three forms work.
+
+### Never put `$ARGUMENTS` in a `!`-prefixed shell line
+
+`$ARGUMENTS` is unsanitized caller input. Putting it in an inline shell (`` !`command $ARGUMENTS` ``) is a shell-injection vector — a caller input like `foo.txt; rm -rf ~` runs as three shell commands. Use the `Read` tool or another built-in tool instead of `!`-shell when the argument is a file path or other user-controlled input.
+
+### `disable-model-invocation` vs `user-invocable`: two different gates
+
+`disable-model-invocation: true` prevents Claude from triggering the skill automatically — users can still invoke it with `/skill-name`. `user-invocable: false` hides the skill from the `/` menu — Claude can still auto-trigger it. To make a skill Claude-only (not user-invocable, not auto-triggered), combine both: `user-invocable: false` and `disable-model-invocation: true`.
+
+### `skillOverrides` in project settings affects all team members
+
+`skillOverrides` is read from `settings.json` (project scope), which is committed to git. Setting `"skill-name": "off"` in a project `.claude/settings.json` hides that skill for every collaborator on the repo. To override only for yourself, put `skillOverrides` in `.claude/settings.local.json` (gitignored). Requires v2.1.129+.

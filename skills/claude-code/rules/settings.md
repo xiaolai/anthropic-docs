@@ -31,3 +31,15 @@ Hook event names use PascalCase: `PreToolUse`, `PostToolUse`, `Stop`, `SubagentS
 ### `enabledPlugins` keys use `<plugin>@<marketplace>` format
 
 The key is the qualified plugin id, not the bare plugin name. Example: `"my-plugin@my-marketplace": true`. The bare-name form `"my-plugin": true` may silently fail to enable.
+
+### Global config keys belong in `~/.claude.json`, not `settings.json`
+
+Keys like `autoConnectIde`, `autoInstallIdeExtension`, `externalEditorContext`, and `teammateDefaultModel` are stored in `~/.claude.json`. Adding them to `settings.json` triggers a schema validation error. Check the "Global config settings" table in [`SKILL-settings.md`](../SKILL-settings.md) before adding unfamiliar keys.
+
+### Managed-only keys are silently ignored outside managed settings
+
+Keys like `allowManagedHooksOnly`, `allowManagedMcpServersOnly`, `allowManagedPermissionRulesOnly`, `channelsEnabled`, `claudeMd`, `allowedMcpServers`, and `deniedMcpServers` are only honored when set in `managed-settings.json` or delivered via MDM/server-managed settings. Setting them in `settings.json` (user or project scope) has no effect.
+
+### Hook event names in `settings.json` are now expanded — 29 total
+
+The full set includes: `SessionStart`, `Setup`, `UserPromptSubmit`, `UserPromptExpansion`, `PreToolUse`, `PermissionRequest`, `PermissionDenied`, `PostToolUse`, `PostToolUseFailure`, `PostToolBatch`, `Notification`, `SubagentStart`, `SubagentStop`, `TaskCreated`, `TaskCompleted`, `Stop`, `StopFailure`, `TeammateIdle`, `InstructionsLoaded`, `ConfigChange`, `CwdChanged`, `FileChanged`, `WorktreeCreate`, `WorktreeRemove`, `PreCompact`, `PostCompact`, `Elicitation`, `ElicitationResult`, `SessionEnd`. Any typo or unknown key is silently ignored.

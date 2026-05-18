@@ -30,3 +30,15 @@ To **block** a tool call, the PreToolUse hook must exit with code **2**. Any oth
 ### Read stdin once
 
 The hook payload arrives on stdin. Reading it twice (or piping stdin through multiple commands) drops bytes — capture once with `PAYLOAD=$(cat)` and then jq-extract from `"$PAYLOAD"`.
+
+### Hook types: `command` is not the only option
+
+There are five hook types: `command` (shell script), `http` (HTTP POST), `mcp_tool` (call an MCP tool), `prompt` (single-turn LLM evaluation), and `agent` (multi-turn LLM, experimental). Each requires different fields — `command`, `url`, `prompt`, etc. A `type` key of `"command"` is not required if you have a `command` field, but all other types require an explicit `type` key.
+
+### `matcher` vs `if` field: different filtering semantics
+
+`matcher` (at the hook group level) filters which events trigger the entire group — e.g., `"matcher": "Bash"` fires only for Bash tool calls. `if` (also at hook group level) uses permission rule syntax (`Bash(git *)`, `Edit(*.ts)`) and is more granular. Only use `if` with tool events: PreToolUse, PostToolUse, PostToolUseFailure, PermissionRequest, PermissionDenied. Using `if` on non-tool events silently fires on every invocation.
+
+### PreToolUse `permissionDecision: "allow"` does not bypass deny/ask rules
+
+Setting `permissionDecision: "allow"` in a PreToolUse hook output skips the interactive prompt, but explicit `deny` and `ask` rules in `settings.json` still apply afterwards. To fully approve a tool call, ensure no deny rule matches it.
