@@ -76,11 +76,15 @@ features that the peer advertised. Typical capabilities:
 - `prompts` — provides prompt templates.
 - `logging` — accepts client log messages.
 - `completions` — provides argument completion for prompts/resource URIs.
+- `tasks` — supports task-augmented requests (experimental; see [Tasks](#tasks-experimental) below).
+- `extensions` — opt-in to named protocol extensions (e.g. `io.modelcontextprotocol/ui`).
 
 **Client capabilities** (subset):
 - `sampling` — server may request the client to sample from the host LLM.
 - `roots` — server may request the list of filesystem roots, optionally with `listChanged`.
 - `elicitation` — server may request structured input from the user.
+- `tasks` — client supports task-augmented requests (experimental).
+- `extensions` — opt-in to named protocol extensions (e.g. `io.modelcontextprotocol/tasks`).
 
 ## Lifecycle
 
@@ -111,6 +115,60 @@ Standard JSON-RPC error codes plus MCP-specific extensions:
 MCP-defined error semantics live in the spec under
 [`specification/2025-11-25/basic/`](https://modelcontextprotocol.io/specification/2025-11-25/basic/).
 
+> **Draft SEP — resource not found:** [SEP-2164](https://modelcontextprotocol.io/seps/2164-resource-not-found-error.md)
+> proposes standardising the resource-not-found error code to **`-32602`**
+> (Invalid Params) across all SDKs. The current spec recommends `-32002`
+> but SDK implementations are inconsistent (TypeScript already uses `-32602`;
+> others use `-32002`, `-32603`, or `0`). Until SEP-2164 is accepted,
+> clients SHOULD handle both `-32602` and `-32002` as resource-not-found.
+
+## Tasks (experimental)
+
+Tasks are a core-spec utility (added in `2025-11-25`, experimental) for
+durable, polled execution of long-running operations.
+
+**Capability structure** (server declares which request types can be task-augmented):
+
+```json
+{
+  "capabilities": {
+    "tasks": {
+      "list": {},
+      "cancel": {},
+      "requests": { "tools": { "call": {} } }
+    }
+  }
+}
+```
+
+Client-side equivalents replace `tools.call` with
+`sampling.createMessage` and/or `elicitation.create`.
+
+**Task augmentation** — add a `task` field to any supported request's params:
+
+```json
+{ "task": { "ttl": 60000 } }
+```
+
+The receiver returns a `CreateTaskResult` immediately (with `taskId`, initial
+`status`, `ttl`, optional `pollInterval`). The requestor then polls:
+
+| Operation | Description |
+|---|---|
+| `tasks/get` | Poll current task status |
+| `tasks/result` | Block until terminal status, then return final result |
+| `tasks/list` | List tasks (paginated) |
+| `tasks/cancel` | Request cooperative cancellation |
+
+**Task states:** `working` → `input_required` ↔ `working` → `completed` / `failed` / `cancelled`
+
+All task-related messages include `_meta["io.modelcontextprotocol/related-task"] = { "taskId": "..." }`.
+
+Optional `notifications/tasks/status` notification when status changes. Requestors
+MUST NOT rely on receiving it — always poll via `tasks/get`.
+
+Source: [`specification/2025-11-25/basic/utilities/tasks.md`](https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/tasks.md).
+
 ## Protocol versioning
 
 Version string format: `YYYY-MM-DD` — the date of the last
@@ -135,6 +193,7 @@ Reference: [`learn/versioning.md`](https://modelcontextprotocol.io/docs/learn/ve
 | Path | Topic |
 |---|---|
 | [`specification/2025-11-25/basic/`](https://modelcontextprotocol.io/specification/2025-11-25/basic/) | Lifecycle, framing, transports, auth, utilities |
+| [`specification/2025-11-25/basic/utilities/tasks.md`](https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/tasks.md) | Tasks utility (experimental) |
 | [`specification/2025-11-25/client/`](https://modelcontextprotocol.io/specification/2025-11-25/client/) | Client features (sampling, roots, elicitation) |
 | [`specification/2025-11-25/server/`](https://modelcontextprotocol.io/specification/2025-11-25/server/) | Server features (tools, resources, prompts) |
 | [`specification/2025-11-25/architecture/`](https://modelcontextprotocol.io/specification/2025-11-25/architecture/) | Architectural overview |
@@ -147,6 +206,13 @@ Protocol evolution happens via SEPs — Specification Enhancement
 Proposals. The process is documented at
 [`community/sep-guidelines.md`](https://modelcontextprotocol.io/community/sep-guidelines.md).
 Active SEPs live under [`seps/`](https://modelcontextprotocol.io/seps/).
+
+### Recently added SEPs (as of 2026-05-18)
+
+| SEP | Title | Status |
+|---|---|---|
+| [SEP-2106](https://modelcontextprotocol.io/seps/2106-json-schema-2020-12.md) | Tools `inputSchema` & `outputSchema` conform to JSON Schema 2020-12 | Draft |
+| [SEP-2164](https://modelcontextprotocol.io/seps/2164-resource-not-found-error.md) | Standardize Resource Not Found Error Code | Draft |
 
 ---
 

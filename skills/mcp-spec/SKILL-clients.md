@@ -172,6 +172,20 @@ the registry of applications that support MCP. Notable entries:
 The list grows constantly — consult the source page for the
 current state.
 
+## Extension support matrix
+
+[`extensions/client-matrix.md`](https://modelcontextprotocol.io/extensions/client-matrix.md)
+tracks which clients support each official MCP extension. As of 2026-05-18:
+
+| Extension | Identifier | Clients with support |
+|---|---|---|
+| [MCP Apps](https://modelcontextprotocol.io/extensions/apps/overview.md) | `io.modelcontextprotocol/ui` | Claude (web), Claude Desktop, VS Code Copilot, Goose, Postman, MCPJam, ChatGPT, Cursor |
+| [OAuth Client Credentials](https://modelcontextprotocol.io/extensions/auth/oauth-client-credentials.md) | `io.modelcontextprotocol/oauth-client-credentials` | (see matrix page) |
+| [Enterprise-Managed Auth](https://modelcontextprotocol.io/extensions/auth/enterprise-managed-authorization.md) | `io.modelcontextprotocol/enterprise-managed-authorization` | (see matrix page) |
+
+Extension support is declared in the `extensions` field of the client's
+`initialize` capabilities — see [`SKILL-protocol.md`](SKILL-protocol.md#capability-negotiation).
+
 ## Local vs remote connection guides
 
 | Page | Topic |

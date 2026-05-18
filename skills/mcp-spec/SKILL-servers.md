@@ -150,9 +150,30 @@ gallery.
 
 ## Extensions
 
-[`extensions/`](https://modelcontextprotocol.io/extensions/)
-documents experimental protocol extensions — features under
-discussion that haven't made it into the core spec yet.
+MCP supports opt-in protocol extensions beyond the core spec. Official
+extensions use the `io.modelcontextprotocol/` prefix. Declare extension
+support in the `extensions` field of your `initialize` capabilities; only
+advertise extensions you actually handle. See
+[`extensions/overview.md`](https://modelcontextprotocol.io/extensions/overview.md)
+for the full list, extension identifiers, and the creation/SEP lifecycle.
+
+### MCP Apps (`io.modelcontextprotocol/ui`)
+
+Servers can return interactive HTML interfaces (charts, forms, dashboards)
+inline in the conversation. A tool declares `_meta.ui.resourceUri` pointing
+to a `ui://` resource; the client host renders the HTML in a sandboxed iframe.
+See [`extensions/apps/overview.md`](https://modelcontextprotocol.io/extensions/apps/overview.md)
+and the full spec at `https://apps.extensions.modelcontextprotocol.io`.
+
+### MCP Tasks (`io.modelcontextprotocol/tasks`)
+
+The Tasks extension (also a core-spec experimental utility since `2025-11-25`)
+lets servers return a durable `taskId` handle instead of blocking for
+long-running operations. Clients poll via `tasks/get` and retrieve the
+final result via `tasks/result`. Task states: `working`, `input_required`,
+`completed`, `failed`, `cancelled`. See
+[`extensions/tasks/overview.md`](https://modelcontextprotocol.io/extensions/tasks/overview.md)
+and the Tasks section in [`SKILL-protocol.md`](SKILL-protocol.md#tasks-experimental).
 
 ## SDK tiering
 

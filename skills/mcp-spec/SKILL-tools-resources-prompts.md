@@ -55,13 +55,28 @@ A tool is a callable function the server exposes to the host LLM.
 }
 ```
 
-- `inputSchema` — JSON Schema, used by the LLM and the client to
-  validate arguments.
+- `inputSchema` — JSON Schema describing the arguments object. Currently
+  constrained to `type: "object"` with only `properties` and `required`
+  allowed.
 - `outputSchema` — optional. When present, the response's
-  `structuredContent` should match it.
+  `structuredContent` should match it. Currently constrained to
+  `type: "object"`.
 - `annotations` — *non-binding* hints for clients (UI rendering,
   permission prompts). All Boolean fields default to safe-pessimistic
   values when absent.
+
+> **Draft SEP — JSON Schema 2020-12 for tool schemas:**
+> [SEP-2106](https://modelcontextprotocol.io/seps/2106-json-schema-2020-12.md)
+> proposes loosening these constraints so that:
+> - `inputSchema` retains `type: "object"` but allows any additional JSON
+>   Schema 2020-12 keywords (`anyOf`, `oneOf`, `allOf`, `$ref`, etc.).
+> - `outputSchema` accepts any valid JSON Schema (arrays, primitives,
+>   compositions — not just objects).
+> - `structuredContent` accepts any JSON value (arrays and primitives
+>   in addition to objects).
+>
+> Until SEP-2106 is accepted, servers should wrap non-object outputs in a
+> container object and also emit a `TextContent` fallback.
 
 ### Calling
 
@@ -120,6 +135,14 @@ to construct concrete URIs.
 ```
 
 Text resources use `text`; binary resources use `blob` (base64).
+
+If the requested resource does not exist, the server returns a JSON-RPC
+error. The current spec recommends code `-32002`; however SDK implementations
+are inconsistent — see the note on SEP-2164 in
+[`SKILL-protocol.md`](SKILL-protocol.md#error-codes). Clients SHOULD
+handle both `-32602` and `-32002` as resource-not-found until the
+standard is settled. Servers MUST NOT return an empty `contents` array
+for a non-existent resource (empty array is ambiguous with an empty file).
 
 ### Subscriptions
 
