@@ -31,7 +31,7 @@ Inline cards should auto-fit content height. Internal scroll containers
 get clipped by the host's container boundaries — content disappears
 without a scrollbar the user can grab.
 
-If you need pagination / virtualization, use the expanded view, not
+If you need pagination / virtualization, use the full screen display mode, not
 an inline card.
 
 ## Rule 3 — No dropdowns, context menus, popovers
@@ -43,7 +43,7 @@ Prefer:
 - **Segmented buttons** for 2-5 mutually exclusive options
 - **Toggles** for boolean state
 - **Inline options** rendered visibly in the card
-- **Expanded view** for any UI that needs popups
+- **Full screen** for any UI that needs popups
 
 ## Rule 4 — Don't render chat input or message lists
 
@@ -85,10 +85,36 @@ the user's confirmation modal and the directory's allowlist).
 <button onClick={() => mcpApp.openLink('https://external.com')}>Open</button>
 ```
 
-## Rule 8 — Test on mobile viewports
+## Rule 8 — Design for 320pt minimum width on mobile
 
-Claude Mobile renders MCP Apps too. A card that's only laid out for
-desktop widths breaks on mobile. Test at 360px width minimum.
+Claude Mobile renders MCP Apps in a native WebView (not a sandboxed iframe).
+Design for variable widths from **320pt minimum** (the docs previously said
+360px — 320pt is the current official minimum). Test at 320px viewport width.
+Honor `hostContext.safeAreaInsets` for notch / home-indicator clearance.
+
+Set touch targets to **minimum 44 × 44pt** per Apple HIG / Material guidelines.
+
+## Rule 9 — Declare external origins via `_meta.ui.csp`
+
+All external origins are blocked by default on mobile. If your MCP App fetches
+from external APIs or CDNs, declare them in the `ui://` resource metadata:
+
+```json
+{
+  "_meta": {
+    "ui": {
+      "csp": {
+        "connectDomains": ["https://api.example.com"],
+        "resourceDomains": ["https://cdn.example.com"],
+        "baseUriDomains": []
+      }
+    }
+  }
+}
+```
+
+`frameDomains` (third-party iframes) is currently restricted in Claude
+pending security review — do not rely on it.
 
 ---
 

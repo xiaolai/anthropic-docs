@@ -18,10 +18,32 @@ source: https://claude.com/docs/skills/overview.md
 
 ## What Skills are (user view)
 
-Skills are reusable task recipes — packaged instructions that teach
-Claude how to perform a specific workflow. Once installed, a user
-can invoke a skill in any conversation by referring to it; Claude
-loads the skill's instructions and follows them.
+Skills are directories containing instructions, scripts, and resources
+that Claude dynamically loads to handle specific tasks. Each skill has
+a `SKILL.md` file defining when it activates and what instructions to
+follow.
+
+Skills follow the [Agent Skills specification](https://agentskills.io/specification)
+— a platform-agnostic open standard so skills can work across any platform
+adopting it.
+
+**Availability:** Pro, Max, Team, and Enterprise plans. Code execution must
+be enabled.
+
+**Skill types:**
+
+| Type | Description |
+|---|---|
+| **Anthropic skills** | Pre-built for document creation (Excel, Word, PowerPoint, PDF); activate automatically |
+| **Partner skills** | From partners like Notion, Figma, Atlassian; designed for MCP connector integration |
+| **Organization-provisioned** | Deployed org-wide by Team/Enterprise admins |
+| **Custom skills** | You create for specialized workflows |
+
+**Progressive disclosure model** — skills use three-stage loading to manage
+context efficiently:
+1. Metadata loading: skill names + descriptions (~100 tokens each) at startup.
+2. Activation: when a task matches, full `SKILL.md` content is loaded.
+3. Resource loading: additional files (scripts, references) loaded on demand.
 
 Skills are the lightweight, scoped counterpart to plugins:
 
@@ -29,6 +51,33 @@ Skills are the lightweight, scoped counterpart to plugins:
   security issues using my org's checklist").
 - A **plugin** bundles multiple skills, connectors, slash commands,
   and sub-agents (e.g., "the entire DevOps team's standard toolkit").
+
+## Skill package format (`SKILL.md`)
+
+A skill is a directory named to match the skill's `name` field, containing:
+
+```
+brand-guidelines/
+├── SKILL.md          # required
+├── scripts/          # optional: executable code
+├── references/       # optional: additional docs
+└── assets/           # optional: templates, images, data
+```
+
+`SKILL.md` starts with YAML frontmatter:
+
+```yaml
+---
+name: brand-guidelines        # lowercase, hyphens; max 64 chars
+description: Apply Acme Corp brand guidelines to presentations.
+             # max 200 chars on claude.ai (spec allows 1024)
+---
+```
+
+Keep the main `SKILL.md` under 500 lines; move detailed reference material
+to separate files.
+
+Source: [`skills/how-to.md`](https://claude.com/docs/skills/how-to.md)
 
 ## Where users find skills
 

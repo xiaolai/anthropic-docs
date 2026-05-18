@@ -3,6 +3,10 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-18
+*(pending review — see branch auto/2026-05-18-pending-review)*
+- Research-only run: 6 doc pages updated — MCP Apps design guidelines (Inline Carousel, Full Screen rename, mobile, new API fields), MCPB icon size requirements, Skills/Plugins pages dropped from llms.txt index; `checkDiffSize` gate failed, awaiting human review.
+
 ## [0.1.0] — 2026-05-17
 
 ### Added

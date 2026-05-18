@@ -4,10 +4,11 @@ description: |
   Deep reference for MCP Apps for Claude Desktop + Claude.ai —
   packaging via MCPB (.mcpb desktop extensions) and the visual +
   interaction design guidelines for the in-conversation app surface.
-  Covers display modes (inline card, expanded view, sidebar),
+  Covers display modes (inline card, inline carousel, full screen, pip),
   transparent theming, instance supersession, external link
-  handling, cross-platform compatibility (Claude + ChatGPT), and
-  the MCPB CLI / manifest schema.
+  handling, cross-platform compatibility (Claude + ChatGPT), mobile
+  guidelines (hostContext, CSP, touch targets), and the MCPB CLI /
+  manifest schema.
 source: https://claude.com/docs/connectors/building/mcp-apps/design-guidelines.md
 ---
 
@@ -21,6 +22,9 @@ source: https://claude.com/docs/connectors/building/mcp-apps/design-guidelines.m
 ## Part 1: MCPB (.mcpb) packaging for Claude Desktop
 
 ### What an MCPB is
+
+> **MCPB is the secondary distribution path.** Remote MCP servers are
+> recommended for directory listing — see [what to build](https://claude.com/docs/connectors/building/what-to-build.md).
 
 An `.mcpb` file is a zip archive containing a local MCP server and
 a `manifest.json`. It enables single-click installation in Claude
@@ -104,6 +108,7 @@ Key fields:
 - `entry` — path to your MCP server's entrypoint.
 - `tools` — declared tool list with annotations.
 - `icons` — icon paths, optionally per theme (light/dark) and size.
+  Icon requirements: `512×512px` recommended (min `256×256px`), PNG format.
 - `user_config` — generates a settings UI in Claude Desktop.
 
 ### Installation paths (user-facing)
@@ -164,10 +169,22 @@ happen to appear alongside.
 
 ### Display modes
 
-- **Inline card** — compact, embedded directly in conversation. Good
-  for summaries, confirmations, quick actions.
-- **Expanded view** — larger surface for richer interactions.
-- **Sidebar** — persistent context alongside the conversation.
+Declare which modes your app supports via `appCapabilities.availableDisplayModes`
+in `ui/initialize`. The host responds with supported modes; your app can
+request a switch with `ui/request-display-mode`. Valid mode strings: `inline`,
+`fullscreen`, `pip`.
+
+| Mode | Description | Key constraints |
+|---|---|---|
+| **Inline card** | Compact, embedded directly in conversation | Max 500 px height; auto-fit, no nested scroll; max 2 actions; max 4-5 data points |
+| **Inline carousel** | Side-by-side browsable items (new) | 3-8 items; each card: image + title + metadata (max 3 lines) + 1 optional CTA |
+| **Full screen** | Immersive interface; conversation composer remains visible | No floating panels — use collapsible sidebars/tabs/pagination; app provides its own fullscreen button |
+| **PiP** | Picture-in-picture overlay | Declared via `pip` in `availableDisplayModes` |
+
+> **Note:** The previous "Expanded view" and "Sidebar" terminology is retired;
+> the current canonical names are **Inline card**, **Inline carousel**, **Full screen**, and **PiP**.
+
+Source: [`mcp-apps/design-guidelines.md`](https://claude.com/docs/connectors/building/mcp-apps/design-guidelines.md)
 
 ### Transparent theming
 
@@ -202,6 +219,50 @@ Reference: [`mcp-apps/cross-compatibility.md`](https://claude.com/docs/connector
 
 [`mcp-apps/getting-started.md`](https://claude.com/docs/connectors/building/mcp-apps/getting-started.md)
 walks through testing MCP Apps in Claude.
+
+### Mobile guidelines
+
+On mobile, Claude renders MCP Apps in a native WebView (WKWebView on iOS,
+WebView on Android) — **not** a sandboxed iframe. Current mobile-only
+constraints:
+
+- Inline display only (no fullscreen yet).
+- No camera / mic / location access.
+- Connectors must be added via web or desktop before they appear on mobile.
+
+**Host context for layout:**
+```json
+// hostContext.safeAreaInsets — honor to keep content clear of notches
+{ "top": 44, "right": 0, "bottom": 34, "left": 0 }
+```
+
+Set `_meta.ui.prefersBorder: false` on your `ui://` resource metadata to
+remove the outer card border on mobile.
+
+**Design targets:** 320pt minimum width; 44 × 44 pt minimum touch targets.
+
+**Content Security Policy** — all external origins are blocked by default.
+Declare allowed origins per `ui://` resource:
+
+```json
+{
+  "_meta": {
+    "ui": {
+      "csp": {
+        "connectDomains": ["https://api.example.com"],
+        "resourceDomains": ["https://cdn.example.com"],
+        "baseUriDomains": [],
+        "frameDomains": []
+      }
+    }
+  }
+}
+```
+
+`frameDomains` (embedding third-party iframes) is currently restricted pending
+security review.
+
+Source: [`mcp-apps/design-guidelines.md` — Mobile guidelines section](https://claude.com/docs/connectors/building/mcp-apps/design-guidelines.md)
 
 ### Troubleshooting
 
