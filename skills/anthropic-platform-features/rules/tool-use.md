@@ -138,6 +138,23 @@ pin to a specific snapshot (e.g., `claude-opus-4-7-20251030`).
 `{type: "tool", name: "<tool_name>"}`, or `{type: "none"}`. String
 forms (`"auto"`, `"any"`) are rejected — must be an object.
 
+## Rule 9 — Extended thinking restricts `tool_choice`
+
+When `thinking: { type: "enabled", ... }` is set, only
+`tool_choice: {"type": "auto"}` (default) and
+`tool_choice: {"type": "none"}` are supported. Using `"any"` or
+`"tool"` with extended thinking returns an error.
+
+```python
+# WRONG — rejected when thinking is enabled
+tool_choice={"type": "any"}                          # error
+tool_choice={"type": "tool", "name": "my_tool"}      # error
+
+# RIGHT — with extended thinking
+tool_choice={"type": "auto"}   # default, always safe
+tool_choice={"type": "none"}   # also valid
+```
+
 ---
 
 *Source: distilled from anthropic-sdk-typescript + anthropic-sdk-python

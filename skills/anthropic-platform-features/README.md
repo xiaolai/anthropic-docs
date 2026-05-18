@@ -41,5 +41,5 @@ SKILL_NAME=anthropic-platform-features npm run update
 
 | Date | Update | Research | Mending | Report | Total | Notes |
 |------|--------|----------|---------|--------|-------|-------|
-| 2026-05-18 | success | docs +1/-0 |
+| 2026-05-18 | success | research + report (no upstream change) |
 

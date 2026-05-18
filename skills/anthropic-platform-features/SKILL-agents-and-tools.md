@@ -120,7 +120,31 @@ Common mistakes (see [`rules/tool-use.md`](rules/tool-use.md)):
 - `required` array omitted → all params silently optional
 - `name` too long (max 64 chars) or with disallowed chars → 400
 
+### Optional tool definition properties
 
+Every tool in the `tools` array accepts these optional properties (they
+compose — you can combine any of them on the same tool). Source:
+[`tool-use/tool-reference.md`](https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-reference.md).
+
+| Property | Purpose | Available on |
+|---|---|---|
+| `cache_control` | Prompt-cache breakpoint at this tool definition | All tools |
+| `strict` | Grammar-constrained sampling — guarantees inputs match `input_schema` | All tools except `mcp_toolset` |
+| `defer_loading` | Exclude from initial system prompt; expand inline when tool search returns a `tool_reference` for it. Preserves prompt cache across tool additions. | All tools (MCP: see connector config) |
+| `allowed_callers` | Restrict callers: `"direct"` (default, model calls directly) or `"code_execution_20260120"` (callable only from code sandbox). Response's `tool_use` block gains a `caller` field. | All tools except `mcp_toolset` |
+| `input_examples` | Array of example input objects (must validate against `input_schema`) to help Claude call the tool correctly | User-defined + Anthropic-schema client tools; **not** server tools |
+| `eager_input_streaming` | Fine-grained per-input streaming (`true`) vs. standard buffered streaming (`false`) | User-defined tools only |
+
+### tool_choice compatibility notes
+
+- **Extended thinking + forced tool_choice:** `tool_choice: {"type": "any"}` and
+  `tool_choice: {"type": "tool", "name": "..."}` are **not supported** when extended
+  thinking is enabled. Only `"auto"` (default) and `"none"` are compatible. Using
+  an incompatible combination returns an error.
+- **Claude Mythos Preview:** forced tool use (`"any"` or `"tool"`) returns a 400.
+  Use `"auto"` or `"none"` and rely on prompting to steer tool selection.
+
+Source: [`tool-use/define-tools.md`](https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools.md).
 
 ### Conceptual foundation
 
