@@ -41,12 +41,77 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
 - **Cloud containers** are the execution sandbox for code-running
   agents. Limited CPU / memory / network egress. Configure per agent
   via the environments resource.
-- **Beta API surface.** All Managed-Agents endpoints currently live
-  under `/v1/...` with the `anthropic-beta` header. Pin the beta
-  string to a specific version; the shape may evolve.
+- **Beta API surface.** All Managed-Agents endpoints require
+  `anthropic-beta: managed-agents-2026-04-01`. The SDK sets this
+  header automatically; curl callers must pass it explicitly.
+  Pin the string to a specific version; the shape may evolve.
+- **Rate limits**: Create endpoints (agents, sessions, environments)
+  are limited to **300 requests/min**; read endpoints (retrieve,
+  list, stream) to **600 requests/min** per org.
 - **Webhooks for async results.** Long-running Dreams notify
   completion via webhook (configure per agent). Don't poll — the
   webhook is cheaper and faster.
+
+## Agent configuration schema
+
+Fields for `POST /v1/agents` (source:
+[`agent-setup.md`](https://platform.claude.com/docs/en/managed-agents/agent-setup.md)):
+
+| Field | Required | Description |
+|---|---|---|
+| `name` | ✓ | Human-readable agent name |
+| `model` | ✓ | Model ID string OR `{"id":"...", "speed":"fast"}` for fast mode |
+| `system` | | System prompt (behavior/persona) |
+| `tools` | | Array of tool specs; use `{"type":"agent_toolset_20260401"}` for the default toolset |
+| `mcp_servers` | | MCP server configurations |
+| `skills` | | Agent Skill package references |
+| `multiagent` | | Coordinator declaration for sub-agent delegation |
+| `description` | | Human description of the agent's purpose |
+| `metadata` | | Arbitrary key-value pairs |
+
+Response adds: `id`, `type`, `version`, `created_at`, `updated_at`, `archived_at`.
+Agents are versioned; updating creates a new version; pass `version` to pin.
+
+## Built-in toolset (`agent_toolset_20260401`)
+
+Source: [`tools.md`](https://platform.claude.com/docs/en/managed-agents/tools.md)
+
+| Tool name | What it does |
+|---|---|
+| `bash` | Execute shell commands |
+| `read` | Read a file from the container filesystem |
+| `write` | Write a file to the container filesystem |
+| `edit` | String-replacement edit of a file |
+| `glob` | File pattern matching |
+| `grep` | Regex text search |
+| `web_fetch` | Fetch content from a URL |
+| `web_search` | Search the web |
+
+Disable individual tools with `configs: [{"name": "web_fetch", "enabled": false}]` inside the toolset spec.
+
+## Session event types
+
+Source: [`events-and-streaming.md`](https://platform.claude.com/docs/en/managed-agents/events-and-streaming.md).
+Event type strings follow `{domain}.{action}`.
+
+**User events** (you → agent): `user.message`, `user.interrupt`,
+`user.custom_tool_result`, `user.tool_confirmation`, `user.define_outcome`
+
+**Agent events** (agent → you): `agent.message`, `agent.thinking`,
+`agent.tool_use`, `agent.tool_result`, `agent.mcp_tool_use`,
+`agent.mcp_tool_result`, `agent.custom_tool_use`,
+`agent.thread_context_compacted`, `agent.thread_message_received`,
+`agent.thread_message_sent`
+
+**Session events**: `session.status_running`, `session.status_idle`
+(includes `stop_reason`), `session.status_rescheduled`,
+`session.status_terminated`, `session.error`
+
+**Span events**: `span.model_request_start`, `span.model_request_end`
+(includes `model_usage` with token counts), `span.outcome_evaluation_start`,
+`span.outcome_evaluation_ongoing`, `span.outcome_evaluation_end`
+
+Every event carries a `processed_at` timestamp (null if queued).
 
 ## Foundation
 

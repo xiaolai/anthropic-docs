@@ -4,6 +4,7 @@ All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
 ## 2026-05-18
+*(pending review — see branch auto/2026-05-18-pending-review)* Research re-audit of 108 pages across all 4 surfaces — diff size exceeded gate threshold, held for manual review
 - Initial research run complete — 108 pages indexed across all 4 surfaces (agents-and-tools, build-with-claude, manage-claude, managed-agents), no upstream changes detected
 
 ## [0.1.0] — 2026-05-17

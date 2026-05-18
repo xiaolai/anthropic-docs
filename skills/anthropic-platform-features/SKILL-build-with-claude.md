@@ -34,6 +34,10 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
   (system prompt → tools → static context → user turn).
 - **Batches return within 24h** at 50% discount. Submit via
   `POST /v1/messages/batches`; poll for results. Not for interactive use.
+- **Fast mode** requires `anthropic-beta: fast-mode-2026-02-01` and the
+  `speed: "fast"` top-level parameter. Supported only on `claude-opus-4-7`
+  and `claude-opus-4-6`. Up to 2.5× OTPS improvement; premium pricing;
+  waitlist at https://claude.com/fast-mode.
 - **Vision input:** images can be base64-inline or URL-referenced.
   Max ~5 MB per image. Document blocks (PDFs) are handled separately
   via `type: "document"`.
@@ -81,7 +85,7 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
 | **Extended thinking** | [`extended-thinking.md`](https://platform.claude.com/docs/en/build-with-claude/extended-thinking.md) | `thinking` blocks with budget tokens — model "thinks out loud" before responding |
 | **Adaptive thinking** | [`adaptive-thinking.md`](https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking.md) | Model auto-decides when to think hard vs respond immediately |
 | **Effort** | [`effort.md`](https://platform.claude.com/docs/en/build-with-claude/effort.md) | Effort-level setting (lower = faster, higher = more thorough) |
-| **Fast mode** | [`fast-mode.md`](https://platform.claude.com/docs/en/build-with-claude/fast-mode.md) | Faster response variant available on Opus 4.6 and Opus 4.7 |
+| **Fast mode** | [`fast-mode.md`](https://platform.claude.com/docs/en/build-with-claude/fast-mode.md) | Up to 2.5×  higher output tokens/sec on Opus 4.6 + 4.7; set `speed: "fast"` and beta header `fast-mode-2026-02-01`; premium pricing; waitlist required |
 
 ## Throughput / cost patterns
 
