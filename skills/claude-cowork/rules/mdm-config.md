@@ -47,18 +47,26 @@ MDM profile should explicitly NOT set `inferenceProvider: foundry`.
 
 ## Rule 4 — Telemetry kill switches
 
-Three independent telemetry toggles:
+Four independent telemetry toggles (all default `false` = telemetry enabled):
 
-- `disableCrashReporting`: boolean, scrubs and disables crash reports
-- `disableProductAnalytics`: boolean, disables usage telemetry
-- `disableAutoUpdate`: boolean, disables auto-update checks
+- `disableEssentialTelemetry`: boolean — disables crash reports and error
+  telemetry. **Enabling this moves you to a manual support model** (your team
+  must collect and send logs to Anthropic directly).
+- `disableNonessentialTelemetry`: boolean — disables product-usage analytics.
+- `disableNonessentialServices`: boolean — disables connector favicons and the
+  artifact-preview iframe (cosmetic only; doesn't affect functionality).
+- `disableAutoUpdates`: boolean (note the trailing **s**) — disables update
+  checks and downloads.
 
-All three are off-by-default (telemetry enabled). For air-gapped or
-compliance-hardened deployments, set all three to `true`.
+For air-gapped or compliance-hardened deployments, set all four to `true`.
 
 Telemetry NEVER contains user prompts or completions, but if your
 audit posture requires zero Anthropic-bound network traffic, disable
-all three.
+all four. See [Telemetry and egress](https://claude.com/docs/cowork/3p/telemetry.md)
+for the exact hostnames blocked by each toggle.
+
+Source: [`3p/telemetry.md`](https://claude.com/docs/cowork/3p/telemetry.md),
+[`3p/configuration.md § Telemetry & updates`](https://claude.com/docs/cowork/3p/configuration.md).
 
 ## Rule 5 — Don't mix per-user and admin profiles
 
@@ -85,12 +93,66 @@ JSON file your org publishes. **Pin plugin versions** in that
 manifest; bare references resolve to "latest" and inherit any
 breaking change immediately.
 
-## Rule 8 — Spend caps are workspace-monthly, not per-request
+## Rule 8 — Usage caps are token-window-based, not USD-monthly
 
-`workspaceSpendCapUSD` caps monthly usage per workspace. When hit,
-requests return 429 `cap_exceeded` until the next billing month.
-Set to a value above your monthly forecast, with a buffer.
+There is no `workspaceSpendCapUSD` key. The enforcement primitive is tokens,
+not dollars. Two keys work together:
+
+- `inferenceMaxTokensPerWindow`: integer — total input + output tokens per
+  device per window. When hit, the app refuses new messages until the window
+  resets.
+- `inferenceTokenWindowHours`: integer (1–720) — length of the tumbling window
+  for the cap above.
+
+Caps are enforced locally on the device and persist across restarts. There is
+no server-side `cap_exceeded` response code — the app simply blocks locally.
+Size the window and cap to your organization's realistic session volume with a
+comfortable buffer.
+
+## Rule 9 — Set `deploymentOrganizationUuid` before fleet rollout
+
+`deploymentOrganizationUuid` is a UUID **you generate** that identifies your
+deployment in Anthropic telemetry. Without it, all telemetry from your fleet is
+tagged with the shared placeholder `00000000-0000-4000-8000-000000000001` —
+making it impossible for Anthropic support to locate your organization's crash
+reports when you file a support case.
+
+```xml
+<key>deploymentOrganizationUuid</key>
+<string>xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</string>
+```
+
+Generate one UUID per deployment (e.g. `uuidgen` on macOS, `[System.Guid]::NewGuid()` on Windows) and set it in the MDM profile before rollout. It does not need to match any Anthropic account ID — it just needs to be consistent across the fleet.
+
+## Rule 10 — JSON-string encoding for array and object keys
+
+The most common authoring mistake: writing array- or object-typed keys as
+native plist/registry structures. These keys **must** be JSON strings:
+
+- `inferenceModels` — JSON array of strings or model-descriptor objects
+- `inferenceGatewayOidc` — JSON object
+- `managedMcpServers` — JSON array of server objects
+- `coworkEgressAllowedHosts` — JSON array of hostnames/wildcards
+- `otlpHeaders` / `otlpResourceAttributes` — JSON objects
+
+In a `.mobileconfig`, use a single `<string>` containing `[...]` or `{...}` —
+**not** an `<array>`, `<dict>`, or dotted keys like
+`inferenceGatewayOidc.clientId`.
+
+```xml
+<!-- CORRECT -->
+<key>coworkEgressAllowedHosts</key>
+<string>["*.your-org.com","api.partner.com"]</string>
+
+<!-- WRONG — native plist array is silently ignored -->
+<key>coworkEgressAllowedHosts</key>
+<array>
+  <string>*.your-org.com</string>
+</array>
+```
+
+Source: [`3p/configuration.md § Value types`](https://claude.com/docs/cowork/3p/configuration.md).
 
 ---
 
-*Source: claude.com/docs/cowork/3p/configuration.md + feature-matrix.md.*
+*Source: claude.com/docs/cowork/3p/configuration.md + feature-matrix.md + telemetry.md.*

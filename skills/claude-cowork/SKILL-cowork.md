@@ -126,14 +126,17 @@ Every managed-configuration key lives in
 [`3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
 That page is the source of truth for:
 
-- Inference provider selection (`inferenceProvider`)
+- Inference provider selection (`inferenceProvider`; enum: `vertex`, `bedrock`, `foundry`, `gateway`)
 - Region pinning (`inferenceVertexRegion`, `inferenceBedrockRegion`)
-- Feature toggles (web search, local MCP, etc.)
-- Telemetry toggles
-- MCP server allowlist
+- Credential helper script (`inferenceCredentialHelper`) for short-lived tokens
+- Feature toggles (`disabledBuiltinTools`, `isClaudeCodeForDesktopEnabled`, web search, local MCP, etc.)
+- Telemetry toggles (`disableEssentialTelemetry`, `disableNonessentialTelemetry`, `disableNonessentialServices`, `disableAutoUpdates`)
+- MCP server allowlist (`managedMcpServers`, `isLocalDevMcpEnabled`)
+- Desktop extension controls (`isDesktopExtensionEnabled`, `isDesktopExtensionSignatureRequired`)
 - Plugin / skill / hook distribution settings
-- Per-user spend caps
-- Auto-update policy
+- Token-based usage caps (`inferenceMaxTokensPerWindow`, `inferenceTokenWindowHours`)
+- OpenTelemetry export (`otlpEndpoint`, `otlpProtocol`, `otlpHeaders`, `otlpResourceAttributes`)
+- Auto-update policy (`disableAutoUpdates`, `autoUpdaterEnforcementHours`)
 
 ## Data residency
 
