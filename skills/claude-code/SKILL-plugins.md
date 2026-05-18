@@ -50,33 +50,116 @@ Source: `code.claude.com/docs/en/plugins.md`.
 
 ## Marketplace manifest: `marketplace.json`
 
-> *Populated by the research agent.* The `name`, `owner`, and
-> `plugins` array structure.
+A marketplace aggregates plugins for discovery and installation. The `marketplace.json` lives at the marketplace repo root:
+
+```json
+{
+  "name": "my-marketplace",
+  "owner": "acme-corp",
+  "plugins": [
+    {
+      "source": "github",
+      "repo": "acme-corp/my-plugin"
+    }
+  ]
+}
+```
+
+Fields: `name` (required), `owner` (required), `plugins` (array of plugin source objects).
+
+Source: `code.claude.com/docs/en/plugin-marketplaces.md`.
 
 ## Marketplace source types
 
-> *Populated by the research agent.* Seven source types:
-> `github`, `git`, `url`, `npm`, `file`, `directory`, `hostPattern`.
+| Type | Example | Notes |
+|---|---|---|
+| `github` | `{"source": "github", "repo": "owner/repo"}` | Installs from a GitHub repo |
+| `git` | `{"source": "git", "url": "https://..."}` | Any git URL |
+| `url` | `{"source": "url", "url": "https://...plugin.zip"}` | Direct `.zip` download |
+| `npm` | `{"source": "npm", "package": "@scope/pkg"}` | npm package |
+| `file` | `{"source": "file", "path": "./local-plugin"}` | Local directory |
+| `directory` | `{"source": "directory", "path": "./plugins/"}` | Scan a directory for plugins |
+| `hostPattern` | `{"source": "hostPattern", "pattern": "*.example.com"}` | Match by URL hostname |
+
+Source: `code.claude.com/docs/en/plugin-marketplaces.md`.
 
 ## Install scopes
 
-> *Populated by the research agent.* `user` / `project` / `local` —
-> what each means and where the install is recorded.
+| Scope | Where recorded | Shared with team? |
+|---|---|---|
+| `user` | `~/.claude/settings.json` → `enabledPlugins` | No |
+| `project` | `.claude/settings.json` → `enabledPlugins` | Yes (git-committed) |
+| `local` | `.claude/settings.local.json` → `enabledPlugins` | No (gitignored) |
+
+`enabledPlugins` maps `"<name>@<marketplace>"` → boolean:
+```json
+{
+  "enabledPlugins": {
+    "code-review@claude-plugins-official": true,
+    "my-internal-tool@acme-marketplace": true
+  }
+}
+```
+
+Source: `code.claude.com/docs/en/plugins.md`.
 
 ## What plugins can ship
 
-> *Populated by the research agent.* Commands, agents, skills, hooks,
-> rules, MCP server configs.
+| Directory | Purpose |
+|---|---|
+| `skills/` | Skills as `<name>/SKILL.md` directories (namespaced as `/<plugin>:<skill>`) |
+| `commands/` | Skills as flat `.md` files (legacy; use `skills/` for new plugins) |
+| `agents/` | Custom agent definitions |
+| `hooks/hooks.json` | Event handlers (merged with user/project hooks when plugin is enabled) |
+| `.mcp.json` | MCP server configs (auto-started when plugin is enabled) |
+| `.lsp.json` | LSP server configs for code intelligence |
+| `monitors/monitors.json` | Background monitor commands |
+| `bin/` | Executables added to Bash tool's PATH |
+| `settings.json` | Default settings (only `agent` and `subagentStatusLine` keys are applied) |
+
+Skills, commands, agents, hooks, and rules are **auto-discovered** by convention path — they do NOT need to be listed in `plugin.json`.
+
+**Common mistake**: do not put `commands/`, `agents/`, `skills/`, or `hooks/` inside the `.claude-plugin/` directory. Only `plugin.json` lives inside `.claude-plugin/`. All other directories go at the plugin root.
+
+Source: `code.claude.com/docs/en/plugins.md`.
 
 ## Plugin discovery: convention paths
 
-> *Populated by the research agent.* How Claude Code finds
-> `commands/`, `agents/`, `skills/`, etc. inside a plugin.
+Claude Code discovers plugin components from these paths at the plugin root:
+
+- `skills/<name>/SKILL.md` → skill `/plugin-name:name`
+- `commands/<name>.md` → command `/plugin-name:name` (legacy)
+- `agents/<name>.md` → subagent named `name`
+- `hooks/hooks.json` → merged hook handlers
+- `.mcp.json` → MCP servers
+- `.lsp.json` → LSP servers
+- `monitors/monitors.json` → background monitors
+- `bin/` → added to Bash PATH
+
+Plugin skills are namespaced: a skill named `hello` in plugin `my-plugin` is invoked as `/my-plugin:hello`.
+
+Source: `code.claude.com/docs/en/plugins.md`.
 
 ## CLI commands
 
-> *Populated by the research agent.* `claude plugin install`,
-> `claude plugin list`, `claude plugin marketplace add`, etc.
+| Command | Description |
+|---|---|
+| `claude plugin install <name>@<marketplace>` | Install a plugin from a marketplace |
+| `claude plugin list` | List installed plugins |
+| `claude plugin update [name]` | Update plugins |
+| `claude plugin uninstall <name>@<marketplace>` | Uninstall a plugin |
+| `claude plugin marketplace add <url>` | Add a marketplace source |
+| `claude plugin marketplace list` | List configured marketplaces |
+| `claude plugin marketplace remove <name>` | Remove a marketplace |
+
+Within a session:
+- `/plugin install <name>@<marketplace>` — install interactively
+- `/plugin` — open the plugin manager
+- `/reload-plugins` — reload all active plugins without restarting
+
+For development: `--plugin-dir ./my-plugin` or `--plugin-dir ./my-plugin.zip` loads a local plugin for one session. `--plugin-url https://example.com/plugin.zip` fetches from a URL.
+
+Source: `code.claude.com/docs/en/plugins.md`, `code.claude.com/docs/en/plugins-reference.md`.
 
 ## Worked examples
 

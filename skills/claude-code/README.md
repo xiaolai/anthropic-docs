@@ -15,7 +15,7 @@ names, flags, env vars) flow in.
 
 <!-- The two stamps below are auto-filled by the pipeline. -->
 **Claude Code version**: v<version>
-**Last updated**: <YYYY-MM-DD>
+**Last updated**: 2026-05-18
 **Pipeline status**: see [`reports/`](reports/) for per-run records.
 
 ## What it does
@@ -162,11 +162,9 @@ and `git pull`.
 
 ## Recent activity
 
-*Populated by the report agent after the first pipeline run (daily 08:00 UTC). Until then, this table is empty by design.*
-
-| Date | Result | Notes |
-|------|--------|-------|
-| — | — | — |
+| Date | Update | Research | Mending | Report | Total | Notes |
+|------|--------|----------|---------|--------|-------|-------|
+| 2026-05-18 | $0 | $2.35 | $0 | — | **$2.35** | review — validateExamples failed, draft PR pending |
 
 ## For maintainers
 
