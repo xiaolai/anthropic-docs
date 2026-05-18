@@ -8,6 +8,8 @@ resources, prompts, sampling, roots, completion).
 
 Part of the [anthropic-docs](../../README.md) plugin.
 
+**Last updated**: 2026-05-18
+
 ## Surfaces
 
 | File | Topic |
@@ -25,6 +27,12 @@ Part of the [anthropic-docs](../../README.md) plugin.
 - **Spec repo**: [modelcontextprotocol/modelcontextprotocol](https://github.com/modelcontextprotocol/modelcontextprotocol)
 - **TypeScript SDK**: [`@modelcontextprotocol/sdk`](https://www.npmjs.com/package/@modelcontextprotocol/sdk)
 - **Python SDK**: [`mcp`](https://pypi.org/project/mcp/)
+
+## Recent activity
+
+| Date | Update | Research | Mending | Report | Total | Notes |
+|------|--------|----------|---------|--------|-------|-------|
+| 2026-05-18 | $0.52 | $0.65 | $0 | — | **$1.18** | success; docs index +2 pages (118 total); sdk npm 1.29.0 / pypi 1.27.1 |
 
 ## Update model
 
