@@ -100,11 +100,11 @@ When a beta is retired:
 
 ## Source pages
 
-107 pages under
+108 pages under
 [`https://platform.claude.com/docs/en/api/beta/`](https://platform.claude.com/docs/en/api/beta/)
 — see directory listing for the current per-endpoint set across
 the 11 beta resources.
 
 ---
 
-*Source pages: 107 under `platform.claude.com/docs/en/api/beta/`.*
+*Source pages: 108 under `platform.claude.com/docs/en/api/beta/`.*

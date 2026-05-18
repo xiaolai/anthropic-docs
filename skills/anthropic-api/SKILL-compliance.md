@@ -51,13 +51,15 @@ Endpoints under `/v1/organizations/compliance/...`. Each page in
 the snapshot documents one endpoint's parameters, response shape,
 and pagination.
 
-| Topic | Source dir |
-|---|---|
-| Compliance API section index | [`compliance.md`](https://platform.claude.com/docs/en/api/compliance.md) |
-| Activity feed | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
-| Content data (per-message records) | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
-| Org-level data | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
-| Errors | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
+| Resource area | Key operations | Source dir |
+|---|---|---|
+| **Activities** | `POST /compliance/activities/list` — query audit log | [`compliance/activities/`](https://platform.claude.com/docs/en/api/compliance/activities/) |
+| **Apps / Chats** | List chats, get messages, list/download files and generated files, delete chat | [`compliance/apps/`](https://platform.claude.com/docs/en/api/compliance/apps/) |
+| **Apps / Projects** | List projects, get/delete project, list attachments, manage documents | [`compliance/apps/projects/`](https://platform.claude.com/docs/en/api/compliance/apps/projects/) |
+| **Apps / Artifacts** | List and download artifact content | [`compliance/apps/artifacts/`](https://platform.claude.com/docs/en/api/compliance/apps/artifacts/) |
+| **Groups** | List groups, get group, list members | [`compliance/groups/`](https://platform.claude.com/docs/en/api/compliance/groups/) |
+| **Organizations** | List orgs, list org users | [`compliance/organizations/`](https://platform.claude.com/docs/en/api/compliance/organizations/) |
+| **Roles & Permissions** | List roles, get role, list role permissions | [`compliance/organizations/roles/`](https://platform.claude.com/docs/en/api/compliance/organizations/roles/) |
 
 The conceptual coverage of each (what to use it for, what fields
 mean, integration patterns) lives in the platform-features
@@ -72,4 +74,4 @@ for the wire shape.
 
 ---
 
-*Source pages: 37 under `platform.claude.com/docs/en/api/compliance/`.*
+*Source pages: 38 under `platform.claude.com/docs/en/api/compliance/`.*

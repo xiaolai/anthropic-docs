@@ -41,7 +41,7 @@ single queries or stateless multi-turn conversations.
 | `tool_choice` | `auto` / `any` / `tool` / `none` |
 | `metadata` | `{ user_id: "..." }` for abuse signaling |
 | `service_tier` | `auto` / `standard_only` |
-| `thinking` | `{ type: "enabled", budget_tokens: N }` for extended thinking |
+| `thinking` | Three types: `enabled` (+ `budget_tokens`, optional `display`), `adaptive` (optional `display`), `disabled` — see below |
 | `output_config` | Output configuration — see below |
 
 ### `output_config` parameter
@@ -54,6 +54,16 @@ An optional object that configures the model's output:
 | `format` | object | Structured output format: `{ type: "json_schema", schema: { ... } }`. Forces the model to return JSON matching the schema. |
 
 Source: [`messages/create.md`](https://platform.claude.com/docs/en/api/messages/create.md)
+
+### Extended thinking (`thinking` parameter)
+
+Three mutually exclusive forms:
+
+| Form | Shape | Notes |
+|---|---|---|
+| `enabled` | `{ type: "enabled", budget_tokens: N, display?: "summarized"\|"omitted" }` | Explicit thinking budget. `budget_tokens` ≥ 1024, < `max_tokens`. `display: "omitted"` redacts content but returns a signature for multi-turn continuity. Defaults to `"summarized"`. |
+| `adaptive` | `{ type: "adaptive", display?: "summarized"\|"omitted" }` | Model decides whether to think. Same `display` options as `enabled`. |
+| `disabled` | `{ type: "disabled" }` | Explicitly turns off thinking (useful to override a default). |
 
 > **Note:** `max_tokens: 0` is valid and pre-warms the prompt cache without generating any output tokens.
 
@@ -125,19 +135,24 @@ in the platform-features skill for caching strategy.
   "type": "message",
   "role": "assistant",
   "model": "claude-opus-4-7",
-  "content": [
-    { "type": "text", "text": "..." }
-  ],
+  "content": [{ "type": "text", "text": "..." }],
   "stop_reason": "end_turn",
   "stop_sequence": null,
+  "container": { "id": "cntr_...", "expires_at": "2025-..." },
   "usage": {
     "input_tokens": 25,
     "cache_creation_input_tokens": 0,
+    "cache_creation": { "ephemeral_5m_input_tokens": 0, "ephemeral_1h_input_tokens": 0 },
     "cache_read_input_tokens": 0,
-    "output_tokens": 100
+    "output_tokens": 100,
+    "server_tool_use": { "web_search_requests": 0, "web_fetch_requests": 0 },
+    "inference_geo": "us",
+    "service_tier": "standard"
   }
 }
 ```
+
+`container` is only present when a code-execution server tool ran. `usage.service_tier` reflects the actual tier used (`"standard"`, `"priority"`, or `"batch"`), distinct from the request's `service_tier` param (`"auto"` / `"standard_only"`).
 
 ### Stop reasons
 
