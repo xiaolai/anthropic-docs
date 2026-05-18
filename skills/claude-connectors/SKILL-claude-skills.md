@@ -30,6 +30,21 @@ Skills are the lightweight, scoped counterpart to plugins:
 - A **plugin** bundles multiple skills, connectors, slash commands,
   and sub-agents (e.g., "the entire DevOps team's standard toolkit").
 
+## Availability
+
+Skills require code execution to be enabled. Available on **Pro, Max,
+Team, and Enterprise** plans.
+Source: [`skills/overview.md`](https://claude.com/docs/skills/overview.md).
+
+## Skill types
+
+| Type | Description |
+|---|---|
+| **Anthropic skills** | Pre-built skills (e.g. document creation for Excel, Word, PowerPoint, PDF); activate automatically when relevant |
+| **Partner skills** | From partners (Notion, Figma, Atlassian, …); designed for seamless MCP connector integration |
+| **Organization-provisioned skills** | Deployed organization-wide by Team / Enterprise admins |
+| **Custom skills** | User-created for specialized workflows |
+
 ## Where users find skills
 
 Source pages under
@@ -43,20 +58,58 @@ cover the user-facing surface:
 - Per-conversation skill control (turn a skill on/off for a single
   conversation).
 
+## SKILL.md schema
+
+Every skill is a directory with a `SKILL.md` file. The directory name
+must match the `name` field.
+Source: [`skills/how-to.md`](https://claude.com/docs/skills/how-to.md).
+
+### Required frontmatter fields
+
+| Field | Constraints | Purpose |
+|---|---|---|
+| `name` | Max 64 chars; lowercase letters, numbers, hyphens only; must match directory name | Identifier — Claude uses it to resolve the skill |
+| `description` | **Max 200 chars on Claude.ai** (spec allows 1024) | Claude reads this to decide when to invoke the skill |
+
+### Optional frontmatter fields
+
+| Field | Example | Purpose |
+|---|---|---|
+| `dependencies` | `python>=3.8, pandas>=1.5.0` | Packages to install; Claude pulls from PyPI / npm at load time |
+
+### Directory structure
+
+```
+my-skill/
+├── SKILL.md            # required
+├── scripts/            # optional — Python / JS / Bash
+├── references/         # optional — extra docs Claude reads on demand
+└── assets/             # optional — templates, images, data files
+```
+
+Keep `SKILL.md` under 500 lines; move detailed reference material to `references/`.
+
+### Packaging to upload to Claude.ai
+
+ZIP with the skill directory **inside** (not files at root):
+
+```
+my-skill.zip
+└── my-skill/
+    └── SKILL.md
+```
+
+Validate before uploading: `skills-ref validate ./my-skill`
+([agentskills/agentskills repo](https://github.com/agentskills/agentskills/tree/main/skills-ref)).
+
 ## Activation model
 
-Two activation patterns:
+Claude loads a skill's `SKILL.md` when the `description` matches the
+task at hand. Progressive disclosure:
 
-1. **Always-on** — the skill auto-loads when its trigger matches the
-   conversation (e.g., a file path, a keyword, a tool call). Author
-   configures this via the skill's frontmatter `appliesTo`.
-2. **User-invoked** — the skill loads only when the user explicitly
-   refers to it by name.
-
-The Skills format spec (in
-[`anthropic-platform-features`](../anthropic-platform-features/SKILL-agents-and-tools.md))
-documents the activation field schema. This surface covers the
-user-facing semantics.
+1. **Metadata loading** — Claude reads `name` + `description` at startup (~100 tokens each).
+2. **Activation** — when a task matches the description, Claude loads the full `SKILL.md`.
+3. **Resource loading** — referenced files in `references/` / `scripts/` are loaded only when needed.
 
 ## Cross-product availability
 

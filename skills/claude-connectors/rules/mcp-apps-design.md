@@ -31,7 +31,7 @@ Inline cards should auto-fit content height. Internal scroll containers
 get clipped by the host's container boundaries — content disappears
 without a scrollbar the user can grab.
 
-If you need pagination / virtualization, use the expanded view, not
+If you need pagination / virtualization, use the full-screen mode, not
 an inline card.
 
 ## Rule 3 — No dropdowns, context menus, popovers
@@ -43,7 +43,7 @@ Prefer:
 - **Segmented buttons** for 2-5 mutually exclusive options
 - **Toggles** for boolean state
 - **Inline options** rendered visibly in the card
-- **Expanded view** for any UI that needs popups
+- **Full screen mode** for any UI that needs popups
 
 ## Rule 4 — Don't render chat input or message lists
 

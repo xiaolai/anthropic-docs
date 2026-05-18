@@ -4,7 +4,7 @@ description: |
   Deep reference for MCP Apps for Claude Desktop + Claude.ai —
   packaging via MCPB (.mcpb desktop extensions) and the visual +
   interaction design guidelines for the in-conversation app surface.
-  Covers display modes (inline card, expanded view, sidebar),
+  Covers display modes (inline card, inline carousel, full screen, pip),
   transparent theming, instance supersession, external link
   handling, cross-platform compatibility (Claude + ChatGPT), and
   the MCPB CLI / manifest schema.
@@ -164,10 +164,33 @@ happen to appear alongside.
 
 ### Display modes
 
-- **Inline card** — compact, embedded directly in conversation. Good
-  for summaries, confirmations, quick actions.
-- **Expanded view** — larger surface for richer interactions.
-- **Sidebar** — persistent context alongside the conversation.
+The docs distinguish three modes
+([source](https://claude.com/docs/connectors/building/mcp-apps/design-guidelines.md)):
+
+| Mode | Description | Key constraints |
+|---|---|---|
+| **Inline card** (`inline`) | Compact, embedded directly in conversation | Max 500px height, max 2 actions, max 4-5 data points; no nested scroll |
+| **Inline carousel** | Side-by-side browsable items (swipe/scroll horizontal) | Variant of inline; used for product listings, galleries, comparable sets |
+| **Full screen** (`fullscreen`) | Immersive interface; app provides its own fullscreen button; composer stays visible | No floating panels; use collapsible sidebars / tabs / pagination instead |
+| **PiP** (`pip`) | Picture-in-picture persistent widget | Declared via `appCapabilities.availableDisplayModes` |
+
+> **Note on mobile (2026-05):** Full screen is not yet available on mobile — apps render inline only. Mobile uses WKWebView (iOS) or WebView (Android), not a sandboxed iframe.
+
+### Display mode API
+
+Declare which modes your app supports via `appCapabilities.availableDisplayModes` in
+`ui/initialize`. Request a switch at runtime with `ui/request-display-mode`.
+
+New metadata fields on `ui://` resources:
+
+| Field | Type | Purpose |
+|---|---|---|
+| `_meta.ui.prefersBorder` | boolean | Set `false` to remove outer card border on mobile |
+| `_meta.ui.csp` | object | Content-Security-Policy per resource; declare external origins here |
+
+Host layout hints (mobile):
+
+- `hostContext.safeAreaInsets` — `{top, right, bottom, left}` in pixels; honor these to keep content clear of notches, home indicator, and composer overlay.
 
 ### Transparent theming
 

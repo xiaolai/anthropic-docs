@@ -37,6 +37,24 @@ commands that drive it.
 Plugins are NOT available on Claude.ai web or Mobile (as of this
 snapshot — check upstream for current state).
 
+## Plugin directory
+
+Anthropic maintains a community-driven **plugin directory** at
+[claude.com/plugins-for/cowork](https://claude.com/plugins-for/cowork).
+In Claude Code this directory is surfaced as the official
+`claude-plugins-official` marketplace and is automatically available to
+all users. It is separate from the
+[Connectors Directory](https://claude.com/docs/connectors/directory.md)
+(which covers MCP connectors).
+
+Anthropic has also open-sourced **11 reference plugins** (Productivity,
+Enterprise search, Sales, Finance, Data, Legal, Marketing, Customer
+support, Product management, Biology research, Plugin Create).
+
+For submission: [`plugins/submit.md`](https://claude.com/docs/plugins/submit.md).
+Submitted plugins receive basic automated review; an "Anthropic Verified"
+badge indicates additional quality + safety review.
+
 ## Plugin marketplaces
 
 A marketplace is a directory of installable plugins, identified by
