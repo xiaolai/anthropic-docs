@@ -40,10 +40,35 @@ upstream repo. For each:
 
 ## Entries
 
-> *No confirmed user-impacting bugs surfaced yet via the research
-> agent. (Several SDK-specific gotchas already live in the rules
-> files — those are auto-correctable patterns rather than catalogued
-> bugs.)*
+### KI 42 — Linux: musl binary preferred over glibc — "native binary not found" on pnpm/glibc hosts
+
+**Source**: [`anthropics/claude-agent-sdk-typescript#296`](https://github.com/anthropics/claude-agent-sdk-typescript/issues/296) (8 reactions, 8 comments) — **Open**
+
+**SDK version introduced**: v0.2.116
+
+**Symptom**: On Linux with pnpm (which installs all optional platform packages including the musl variant), `query()` fails immediately:
+```
+Claude Code native binary not found at .../claude-agent-sdk-linux-x64-musl/claude.
+```
+The file referenced actually exists and is readable. Running it directly produces `cannot execute: required file not found` because the musl dynamic loader (`/lib/ld-musl-*`) is absent on glibc systems (Ubuntu, Debian, RHEL, etc.).
+
+**Reproduction**:
+- Use pnpm on a glibc Linux host
+- Both `@anthropic-ai/claude-agent-sdk-linux-x64-musl` and `@anthropic-ai/claude-agent-sdk-linux-x64` get installed
+- Call `query()` with any options
+
+**Root cause**: `sdk.mjs` iterates Linux binary candidates in order `musl → glibc`. When pnpm installs both, `require.resolve()` succeeds for musl first and the SDK returns that path without checking if it actually executes on the current libc.
+
+**Workaround**: Set `pathToClaudeCodeExecutable` explicitly to the glibc variant:
+```typescript
+import { execFileSync } from 'child_process';
+// Use system-installed claude binary:
+const claudePath = execFileSync('which', ['claude'], { encoding: 'utf8' }).trim();
+const q = query({ prompt, options: { pathToClaudeCodeExecutable: claudePath } });
+```
+Or use npm/yarn instead of pnpm (they only install the platform-matching optional dep).
+
+**Status**: Open; proposed fix in [#305](https://github.com/anthropics/claude-agent-sdk-typescript/issues/305) (community fix, pending maintainer integration). See also [`SKILL-typescript.md` § Known Issues #42](SKILL-typescript.md#42-linux--musl-binary-preferred-over-glibc-causing-native-binary-not-found-with-pnpm).
 
 ---
 

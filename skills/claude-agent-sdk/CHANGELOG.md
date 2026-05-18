@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-05-18
+
+- SDK TS v0.0.0 → v0.3.143 (first tracked release; package newly registered in state.json)
+- Docs index hash updated (29 pages unchanged, content refreshed upstream)
+- state.json: recorded npm version 0.3.143, updated lastAuditedVersion and lastUpdated
+- *(pending review — see PR auto/2026-05-18-pending-review)* Research run: added KI #42 (Linux musl/glibc CLI binary selection bug); checkDiffSize gate failed, changes held in draft PR
+
 ## 2026-03-18
 
 - Research only, no version change (TS v0.2.77, Python v0.1.49 unchanged)

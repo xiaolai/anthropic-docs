@@ -33,7 +33,7 @@ user-invocable: true
 
 | | TypeScript | Python |
 |---|---|---|
-| **Version** | v0.3.143 | v0.2.82 |
+| **Version** | v0.3.143 | v0.1.49 |
 | **Package** | `@anthropic-ai/claude-agent-sdk` | `claude-agent-sdk` (PyPI) |
 | **Docs** | [TypeScript SDK](https://platform.claude.com/docs/en/agent-sdk/typescript) | [Python SDK](https://platform.claude.com/docs/en/agent-sdk/python) |
 | **Repo** | [claude-agent-sdk-typescript](https://github.com/anthropics/claude-agent-sdk-typescript) | [claude-agent-sdk-python](https://github.com/anthropics/claude-agent-sdk-python) |
