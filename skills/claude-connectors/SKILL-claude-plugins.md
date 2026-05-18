@@ -19,23 +19,44 @@ source: https://claude.com/docs/plugins/overview.md
 
 A plugin is a bundled package that combines:
 
-- **MCP connectors** — action-taking integrations with external services.
+- **MCP connectors** — action-taking integrations with external services (remote MCPs, local MCPs, MCPBs; configured in `.mcp.json`).
 - **Skills** — reusable task recipes.
 - **Slash commands** — user-invocable shortcut commands.
 - **Sub-agents** — specialized agents the plugin makes available.
+- **`SETUP.md` skill** (optional) — guides Claude through configuring and connecting MCP servers at install time.
 
-Once installed, all four are wired together — a single install
+Once installed, all components are wired together — a single install
 gives the user the connector + the skills that compose it + the
 commands that drive it.
 
+Source: [`plugins/overview.md`](https://claude.com/docs/plugins/overview.md),
+[`plugins/submit.md`](https://claude.com/docs/plugins/submit.md).
+
 ## Where plugins are available
 
-- **Claude Code (CLI)** — `/plugin` commands, plugin marketplaces.
-- **Claude Cowork** — full plugin support (see
-  [`claude-cowork → SKILL-cowork.md`](../claude-cowork/SKILL-cowork.md)).
+| Platform | Support |
+|---|---|
+| **Claude Code (CLI)** | Full — create, install, use plugins |
+| **Claude Cowork** | Full — research preview for all paid users; plugins currently saved locally (org-wide sharing coming) |
 
-Plugins are NOT available on Claude.ai web or Mobile (as of this
-snapshot — check upstream for current state).
+Plugins are not available on Claude.ai web or Mobile.
+
+## Plugin directory
+
+Anthropic maintains a public plugin directory at
+[`claude.com/plugins-for/cowork`](https://claude.com/plugins-for/cowork).
+Anthropic has open-sourced 11 plugins built and used internally:
+
+Productivity, Enterprise search, Sales, Finance, Data, Legal, Marketing,
+Customer support, Product management, Biology research, Plugin Create.
+
+### Community vs Anthropic Verified
+
+Plugins submitted by the community undergo basic automated review.
+Plugins with an **"Anthropic Verified"** badge have had additional
+quality and safety review by Anthropic. Prefer Verified plugins for
+production workflows; review any community plugin's source and
+permissions before installing.
 
 ## Plugin marketplaces
 
@@ -46,11 +67,10 @@ a URL pointing at a `marketplace.json` file. Users can:
 - Install plugins from a marketplace with one command.
 - Update / remove installed plugins.
 
-Anthropic operates a public plugin marketplace for the broader
-community. Organizations can run their own private marketplaces for
-internal-only plugins (common in Cowork on 3P deployments — see
-[`claude-cowork`](../claude-cowork/SKILL-cowork.md) for the "org-plugins
-directory" pattern).
+Organizations can run private marketplaces for internal plugins
+(common in Cowork on 3P deployments). See
+[Claude Code plugin-marketplaces docs](https://code.claude.com/docs/en/plugin-marketplaces)
+for setup.
 
 ## Installation scope
 
@@ -59,6 +79,22 @@ directory" pattern).
 | **User-global** | `~/.claude/plugins/` | Plugins you use across all projects |
 | **Project-local** | `<project>/.claude/plugins/` | Plugins specific to one codebase, committed to repo |
 | **Org-managed** | MDM-distributed | Cowork on 3P deployments |
+
+## Submitting to the directory
+
+1. Run `claude plugin validate` to check structure and formatting.
+2. Submit via one of the in-app forms (GitHub link or ZIP upload; repo must be public):
+   - Claude.ai: [`claude.ai/settings/plugins/submit`](https://claude.ai/settings/plugins/submit)
+   - Console: [`platform.claude.com/plugins/submit`](https://platform.claude.com/plugins/submit)
+3. After publishing, GitHub repo updates are picked up automatically — no re-submission needed.
+
+All submissions must comply with
+[Anthropic Software Directory Terms](https://support.claude.com/en/articles/13145338-anthropic-software-directory-terms)
+and [Policy](https://support.claude.com/en/articles/13145358-anthropic-software-directory-policy).
+
+> **Note:** The plugin directory is separate from and complementary to
+> the [Connectors Directory](https://claude.com/docs/connectors/directory.md)
+> (which lists MCP connectors only).
 
 ## Related surfaces
 
