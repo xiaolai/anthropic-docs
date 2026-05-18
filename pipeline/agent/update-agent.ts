@@ -4,6 +4,7 @@ import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { defangAndWrap, defangJsonValue } from "./lib/sanitize.js";
 import { loadSkillContext, buildContextBlock, renderTemplate } from "./lib/skillContext.js";
+import { resolveClaudeCodeExecutable } from "./lib/cliPath.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -122,6 +123,7 @@ for await (const message of query({
     maxBudgetUsd: 1.0,
     permissionMode: "bypassPermissions",
     allowDangerouslySkipPermissions: true,
+    pathToClaudeCodeExecutable: resolveClaudeCodeExecutable(),
     allowedTools: [
       "Read",
       "Write",

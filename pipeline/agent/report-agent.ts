@@ -4,6 +4,7 @@ import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { defangAndWrap, defangJsonValue } from "./lib/sanitize.js";
 import { loadSkillContext, buildContextBlock, renderTemplate } from "./lib/skillContext.js";
+import { resolveClaudeCodeExecutable } from "./lib/cliPath.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -164,6 +165,7 @@ for await (const message of query({
     maxBudgetUsd: 0.25,
     permissionMode: "bypassPermissions",
     allowDangerouslySkipPermissions: true,
+    pathToClaudeCodeExecutable: resolveClaudeCodeExecutable(),
     // Report agent only needs to read inputs and write/edit reports + README +
     // CHANGELOG. Bash is deliberately omitted — there is no legitimate reason
     // for the report agent to shell out (git is forbidden, no fetches needed,
