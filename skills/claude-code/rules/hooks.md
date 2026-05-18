@@ -23,9 +23,21 @@ For where hooks are wired in settings, see [`SKILL-settings.md`](../SKILL-settin
 
 Claude Code invokes a hook by executing the file directly. The script needs `chmod +x` and a shebang on the first line (`#!/usr/bin/env bash` for shell, `#!/usr/bin/env python3` for Python). Non-executable hooks silently fail to fire.
 
-### Use exit code 2 to block; non-zero ≠ block
+### Use JSON stdout output to block a tool call
 
-To **block** a tool call, the PreToolUse hook must exit with code **2**. Any other non-zero exit is logged as a hook error but does not block. Use stderr for the human-readable reason — Claude surfaces it back to the user.
+To **block** a `PreToolUse` tool call, write a `permissionDecision: "deny"` JSON object to stdout:
+
+```json
+{
+  "hookSpecificOutput": {
+    "hookEventName": "PreToolUse",
+    "permissionDecision": "deny",
+    "permissionDecisionReason": "Reason shown to Claude"
+  }
+}
+```
+
+Exit with code 0 after printing the block decision. Other exit codes: exit 0 with no output = allow/continue; non-zero exit = hook error (logged but non-blocking). For async hooks with `asyncRewake: true`, exit code 2 wakes Claude to handle a background failure — this is a separate mechanism from blocking.
 
 ### Read stdin once
 

@@ -31,3 +31,19 @@ Hook event names use PascalCase: `PreToolUse`, `PostToolUse`, `Stop`, `SubagentS
 ### `enabledPlugins` keys use `<plugin>@<marketplace>` format
 
 The key is the qualified plugin id, not the bare plugin name. Example: `"my-plugin@my-marketplace": true`. The bare-name form `"my-plugin": true` may silently fail to enable.
+
+### `sandbox` is a top-level key, not nested under `permissions`
+
+Sandbox config lives at the top level: `{ "sandbox": { "enabled": true, ... } }`. Nesting it under `permissions` silently fails.
+
+### `worktree` settings use dot notation
+
+Worktree settings are at the top level with dot notation: `"worktree.baseRef": "head"`. They are NOT nested under a `worktree` object in the JSON.
+
+### Managed-only settings are ignored outside managed delivery
+
+Settings like `allowedMcpServers`, `channelsEnabled`, `claudeMd`, `allowManagedHooksOnly`, and `strictKnownMarketplaces` are silently ignored when set in user, project, or local settings files. They only take effect in `managed-settings.json`, MDM profiles, or registry keys.
+
+### Windows managed settings legacy path is no longer supported
+
+As of v2.1.75, `C:\ProgramData\ClaudeCode\managed-settings.json` is no longer supported. Use `C:\Program Files\ClaudeCode\managed-settings.json` instead.
