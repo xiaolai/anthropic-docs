@@ -6,6 +6,13 @@ __pycache__/
 # Claude Code local-only settings (per-machine, never shared)
 .claude/settings.local.json
 
+# Local-only secrets (CLAUDE_CODE_OAUTH_TOKEN for one-off CI debugging,
+# etc.). NEVER commit. The authoritative copy lives in GitHub Actions
+# secrets at https://github.com/xiaolai/anthropic-docs/settings/secrets/actions
+.env
+.env.*
+!.env.example
+
 # package-lock.json files MUST be committed — npm ci in the workflow
 # enforces them as a supply-chain defence (security audit Finding #4).
 # Do NOT add package-lock.json to this gitignore.
