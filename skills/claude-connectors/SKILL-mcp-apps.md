@@ -164,10 +164,49 @@ happen to appear alongside.
 
 ### Display modes
 
-- **Inline card** — compact, embedded directly in conversation. Good
-  for summaries, confirmations, quick actions.
-- **Expanded view** — larger surface for richer interactions.
-- **Sidebar** — persistent context alongside the conversation.
+Source: [`mcp-apps/design-guidelines.md`](https://claude.com/docs/connectors/building/mcp-apps/design-guidelines.md).
+
+| Mode | Description | Constraints |
+|---|---|---|
+| **Inline card** | Compact, embedded directly in conversation | Max 500px height, max 2 actions, max 4-5 data points, no menus/popovers |
+| **Inline carousel** | Side-by-side browsable items (swipe/scroll horizontally) | 3–8 items; each card: image + title + metadata (max 3 lines) + optional CTA |
+| **Full screen** | Immersive interface for complex interactions; composer stays visible | No floating panels; use collapsible sidebars, tabs, pagination instead |
+
+Display modes a client supports are negotiated: declare `appCapabilities.availableDisplayModes`
+in `ui/initialize`; request a switch with `ui/request-display-mode`. Supported modes:
+`inline`, `fullscreen`, `pip`.
+
+### Mobile guidelines
+
+Source: design-guidelines.md Mobile section.
+
+- Claude renders MCP Apps on mobile in a native WebView (WKWebView on iOS, WebView on Android).
+- Mobile-only constraints: inline display only (no fullscreen yet), no camera/mic/location access.
+- Layout hints via `hostContext.safeAreaInsets` — `{top, right, bottom, left}` in pixels.
+- Remove outer card border on mobile: set `_meta.ui.prefersBorder: false` on your `ui://` resource metadata.
+- Design responsively from 320px up; inline apps max height 500px.
+- Touch targets: minimum 44×44pt.
+
+### Content Security Policy
+
+Declare external origins per `ui://` resource via `_meta.ui.csp`:
+
+```json
+{
+  "_meta": {
+    "ui": {
+      "csp": {
+        "connectDomains": ["https://api.example.com"],
+        "resourceDomains": ["https://cdn.example.com"],
+        "baseUriDomains": []
+      }
+    }
+  }
+}
+```
+
+By default all external origins are blocked. `frameDomains` (embedding
+third-party iframes) is currently restricted pending security review.
 
 ### Transparent theming
 

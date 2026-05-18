@@ -30,12 +30,37 @@ commands that drive it.
 
 ## Where plugins are available
 
-- **Claude Code (CLI)** — `/plugin` commands, plugin marketplaces.
-- **Claude Cowork** — full plugin support (see
-  [`claude-cowork → SKILL-cowork.md`](../claude-cowork/SKILL-cowork.md)).
+| Platform | Plugin support |
+|---|---|
+| **Claude Code** | Full plugin support — create, install, and use plugins |
+| **Claude Cowork** | Full plugin support — extends agentic multi-step workflows |
 
-Plugins are NOT available on Claude.ai web or Mobile (as of this
-snapshot — check upstream for current state).
+Plugins are NOT available on Claude.ai web or Mobile.
+
+Plugin support in Cowork is currently available as a **research preview**
+for all paid Claude users. Plugins are currently saved locally to the
+user's machine. Org-wide sharing and management are coming.
+
+Source: [`plugins/overview.md`](https://claude.com/docs/plugins/overview.md).
+
+## Plugin directory
+
+Anthropic has open-sourced 11 plugins built and used internally, available
+at [claude.com/plugins-for/cowork](https://claude.com/plugins-for/cowork):
+
+| Plugin | Purpose |
+|---|---|
+| Productivity | Tasks, calendars, daily workflows |
+| Enterprise search | Find info across company tools and docs |
+| Sales | Prospect research, deal prep |
+| Finance | Analyze financials, build models |
+| Data | Query, visualize, interpret datasets |
+| Legal | Document review, risk flagging |
+| Marketing | Content drafting, campaign planning |
+| Customer support | Triage, draft responses |
+| Product management | Specs, roadmaps |
+| Biology research | Literature search, experiment planning |
+| Plugin Create | Create and customize new plugins |
 
 ## Plugin marketplaces
 
@@ -46,11 +71,33 @@ a URL pointing at a `marketplace.json` file. Users can:
 - Install plugins from a marketplace with one command.
 - Update / remove installed plugins.
 
-Anthropic operates a public plugin marketplace for the broader
-community. Organizations can run their own private marketplaces for
-internal-only plugins (common in Cowork on 3P deployments — see
+Anthropic operates a public plugin marketplace at
+[claude.com/plugins-for/cowork](https://claude.com/plugins-for/cowork);
+in Claude Code it surfaces as the `claude-plugins-official` marketplace.
+Organizations can run their own private marketplaces for internal-only
+plugins (common in Cowork on 3P deployments — see
 [`claude-cowork`](../claude-cowork/SKILL-cowork.md) for the "org-plugins
 directory" pattern).
+
+## Submitting a plugin
+
+Run `claude plugin validate` before submitting. Submission forms:
+
+- **Claude.ai** — [claude.ai/settings/plugins/submit](https://claude.ai/settings/plugins/submit)
+- **Console** — [platform.claude.com/plugins/submit](https://platform.claude.com/plugins/submit)
+
+Requires public GitHub repo (closed-source plugins not accepted).
+After publication, updates pushed to the GitHub repo are automatically
+picked up — no re-submission needed.
+
+Source: [`plugins/submit.md`](https://claude.com/docs/plugins/submit.md).
+
+## SETUP.md skill for MCP setup
+
+Plugins can include a `SETUP.md` skill to guide Claude through
+configuring and connecting any MCP servers bundled in the plugin.
+This lets you define step-by-step setup instructions that Claude
+follows when a user installs or activates your plugin.
 
 ## Installation scope
 

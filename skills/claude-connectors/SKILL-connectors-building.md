@@ -59,6 +59,26 @@ The lazy pattern is recommended: surface as much value as possible
 before forcing the user through OAuth. Users who never invoke a
 protected tool never need to authenticate.
 
+### Supported authentication types
+
+Source: [`authentication.md`](https://claude.com/docs/connectors/building/authentication.md).
+
+| Type | Description | Availability |
+|---|---|---|
+| `oauth_dcr` | OAuth 2.0 with Dynamic Client Registration (RFC 7591) | Supported out of the box |
+| `oauth_cimd` | OAuth 2.0 with Client ID Metadata Document | Supported out of the box |
+| `oauth_anthropic_creds` | OAuth 2.0 with Anthropic-held client credentials | Contact `mcp-review@anthropic.com` |
+| `custom_connection` | Custom URL or credentials at connection time | Contact `mcp-review@anthropic.com` |
+| `none` | No authentication (authless server) | Supported |
+
+**Not supported:**
+- `static_bearer` (user-pasted bearer tokens) — not yet supported.
+- Credentials in query params (`?token=`, `?apiKey=`, `?userToken=`) — prohibited by the MCP authorization spec.
+
+**High-traffic recommendation:** Prefer CIMD or `oauth_anthropic_creds` over DCR. DCR registers a new client on every fresh connection, which can create very large numbers of registered clients on your authorization server. CIMD and Anthropic-held credentials skip the registration call.
+
+**CIMD requirements:** Your authorization server must advertise `"client_id_metadata_document_supported": true` AND `"none"` in `token_endpoint_auth_methods_supported` for Claude to select CIMD.
+
 ## Directory vs custom
 
 [`directory-vs-custom.md`](https://claude.com/docs/connectors/building/directory-vs-custom.md)

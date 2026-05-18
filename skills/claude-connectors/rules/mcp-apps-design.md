@@ -10,12 +10,16 @@ appliesTo:
 
 # MCP Apps Design Rules
 
-## Rule 1 — Inline cards max 500px height
+## Rule 1 — Inline cards max 500px height / max 2 actions
 
 Inline cards embedded directly in conversation should fit content
-under 500px tall. Beyond that, prefer the expanded-view display mode.
+under 500px tall. Beyond that, prefer the full-screen display mode.
 Cards that try to scroll internally compete with the conversation
 scroll and produce a bad UX.
+
+Additional inline card limits: max 2 actions (placed at the bottom),
+max 4-5 data points. For browsable sets of items, use an **inline
+carousel** (3–8 items, horizontal scroll) instead of stacking cards.
 
 ```tsx
 // WRONG — explicit large height
