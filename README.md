@@ -1,5 +1,7 @@
 # anthropic-docs
 
+[![Validated by NLPM](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/xiaolai/anthropic-docs/main/nlpm-badge.json)](https://github.com/xiaolai/anthropic-docs/blob/main/nlpm-badge.json)
+
 A self-updating **Claude Code plugin** bundling 8 skills that mirror the
 official Anthropic + MCP documentation surfaces (~624 pages across 4 doc
 portals) plus a rolling news/research digest, and present them to Claude at
