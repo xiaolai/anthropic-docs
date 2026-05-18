@@ -13,6 +13,8 @@ claude features (extended thinking, batches, citations, Bedrock,
 Vertex, embeddings, fast mode, context editing), manage-claude ops
 (WIF, billing, identity), and Managed Agents.
 
+**Last updated**: 2026-05-18
+
 Part of the [anthropic-docs](../../README.md) plugin.
 
 ## Surfaces
@@ -34,4 +36,10 @@ Part of the [anthropic-docs](../../README.md) plugin.
 ```bash
 SKILL_NAME=anthropic-platform-features npm run update
 ```
+
+## Recent activity
+
+| Date | Update | Research | Mending | Report | Total | Notes |
+|------|--------|----------|---------|--------|-------|-------|
+| 2026-05-18 | success | research + report (no upstream change) |
 

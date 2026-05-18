@@ -96,5 +96,5 @@ Aggregated usage analytics specifically for Claude Code:
 
 ---
 
-*Source pages: 18 under `platform.claude.com/docs/en/manage-claude/`
-(including the `wif-providers/` subtree).*
+*Source pages: 25 under `platform.claude.com/docs/en/manage-claude/`
+(18 top-level + 7 under `wif-providers/`: aws, azure, gcp, github-actions, kubernetes, okta, spiffe).*
