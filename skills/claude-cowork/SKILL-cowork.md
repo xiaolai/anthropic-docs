@@ -135,6 +135,34 @@ That page is the source of truth for:
 - Per-user spend caps
 - Auto-update policy
 
+## Code tab configuration
+
+The Code tab embeds the Claude Code engine inside Cowork on 3P — same
+engine as the standalone CLI, with a graphical session manager. It
+inherits the Cowork on 3P configuration automatically. Configuration
+keys reach Code sessions via two mechanisms:
+
+- **Always applied** (env vars / launch options, not overridable by
+  user or Claude Code managed settings): `inferenceProvider` and all
+  credential keys, `inferenceModels`, `disabledBuiltinTools`,
+  `managedMcpServers`, `otlpEndpoint`/`otlpProtocol`/`otlpHeaders`/
+  `otlpResourceAttributes`, `disableEssentialTelemetry`,
+  `disableNonessentialTelemetry`, `inferenceMaxTokensPerWindow`,
+  `inferenceTokenWindowHours`.
+- **Applied as managed policy** (participate in Claude Code's settings
+  precedence): `coworkEgressAllowedHosts`, `allowedWorkspaceFolders`,
+  `managedMcpServers`.
+
+If the device already has a Claude Code `managed-settings.json` or OS
+profile, Cowork's managed-policy keys are **ignored** by default. To
+layer Cowork's restrictions on top, set `parentSettingsBehavior:
+"merge"` in the Claude Code managed settings (requires Claude Code
+v2.1.133+, which ships with Cowork on 3P).
+
+To remove the Code tab entirely: `isClaudeCodeForDesktopEnabled: false`.
+
+Source: [`3p/code.md`](https://claude.com/docs/cowork/3p/code.md).
+
 ## Data residency
 
 When using Vertex AI or Bedrock, inference requests go directly from
