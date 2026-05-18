@@ -72,22 +72,35 @@ Placing one on the system role's string form is also wrong — convert
 }
 ```
 
-## Rule 4 — Extended thinking needs `budget_tokens` and counts against `max_tokens`
+## Rule 4 — Extended thinking: manual `budget_tokens` not supported on Opus 4.7
 
-`thinking: { type: "enabled", budget_tokens: N }`. `N` must be > 0 and
-**less than `max_tokens`** (thinking tokens are billed at input rates
-but consume the same output budget as the final response).
+**Claude Opus 4.7** does NOT accept `thinking: {type: "enabled", budget_tokens: N}` —
+it returns a 400 error. Use `thinking: {type: "adaptive"}` combined with the
+effort parameter instead:
 
-**WRONG (no budget):**
 ```python
-thinking={"type": "enabled"}     # 400 missing_required_field
+# Opus 4.7 — adaptive thinking (CORRECT)
+response = client.messages.create(
+    model="claude-opus-4-7",
+    thinking={"type": "adaptive"},
+    output_config={"effort": "xhigh"},
+    max_tokens=64000, ...
+)
+
+# Opus 4.7 — manual budget_tokens (WRONG — 400 error)
+response = client.messages.create(
+    model="claude-opus-4-7",
+    thinking={"type": "enabled", "budget_tokens": 4000},  # 400!
+)
 ```
 
-**WRONG (budget > max_tokens):**
-```python
-max_tokens=1000
-thinking={"type": "enabled", "budget_tokens": 4000}  # rejected
-```
+For **Opus 4.6 / Sonnet 4.6**: manual `budget_tokens` is deprecated but still
+functional. Prefer adaptive thinking + effort. The `budget_tokens` form will
+be removed in a future model release.
+
+For **all other models** (Claude 3.x, Haiku, etc.): manual extended thinking
+with `thinking: {type: "enabled", budget_tokens: N}` is still valid.
+`N` must be > 0 and **less than `max_tokens`**.
 
 ## Rule 5 — `tool_result` must carry the matching `tool_use_id`
 
@@ -131,6 +144,11 @@ Valid families today: `claude-opus-4-7`, `claude-sonnet-4-6`,
 `claude-haiku-4-5-20251001`. The platform rejects unknown IDs.
 Prefer family-only IDs unless reproducibility matters; dated IDs
 pin to a specific snapshot (e.g., `claude-opus-4-7-20251030`).
+
+**Claude Mythos Preview** (`anthropic/glasswing` — see
+[anthropic.com/glasswing](https://anthropic.com/glasswing)) is a
+separately-accessed model with adaptive thinking as default. Use its
+own model ID when the user requests Glasswing / Mythos access.
 
 ## Rule 8 — `tool_choice` enum
 

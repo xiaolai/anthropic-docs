@@ -41,9 +41,10 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
 - **Cloud containers** are the execution sandbox for code-running
   agents. Limited CPU / memory / network egress. Configure per agent
   via the environments resource.
-- **Beta API surface.** All Managed-Agents endpoints currently live
-  under `/v1/...` with the `anthropic-beta` header. Pin the beta
-  string to a specific version; the shape may evolve.
+- **Beta API surface.** All Managed-Agents endpoints live under
+  `/v1/...` with beta header `managed-agents-2026-04-01`. The SDK
+  sets this automatically; raw curl callers must include it.
+  Pin this string — the shape may evolve across beta versions.
 - **Webhooks for async results.** Long-running Dreams notify
   completion via webhook (configure per agent). Don't poll — the
   webhook is cheaper and faster.
@@ -55,7 +56,7 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
 | [`overview.md`](https://platform.claude.com/docs/en/managed-agents/overview.md) | What Managed Agents is, when to use it |
 | [`onboarding.md`](https://platform.claude.com/docs/en/managed-agents/onboarding.md) | First-time setup |
 | [`quickstart.md`](https://platform.claude.com/docs/en/managed-agents/quickstart.md) | First-agent walkthrough |
-| [`agent-setup.md`](https://platform.claude.com/docs/en/managed-agents/agent-setup.md) | Agent configuration |
+| [`agent-setup.md`](https://platform.claude.com/docs/en/managed-agents/agent-setup.md) | Agent configuration (fields: `name`, `model`, `system`, `tools`, `mcp_servers`, `skills`, `multiagent`, `description`, `metadata`). Built-in toolset type: `agent_toolset_20260401` |
 | [`define-outcomes.md`](https://platform.claude.com/docs/en/managed-agents/define-outcomes.md) | How to define what success means |
 
 ## Agent capabilities
