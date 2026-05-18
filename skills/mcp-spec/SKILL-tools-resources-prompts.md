@@ -55,13 +55,30 @@ A tool is a callable function the server exposes to the host LLM.
 }
 ```
 
-- `inputSchema` — JSON Schema, used by the LLM and the client to
-  validate arguments.
-- `outputSchema` — optional. When present, the response's
-  `structuredContent` should match it.
+- `inputSchema` — JSON Schema describing the tool's arguments. The current
+  spec requires `type: "object"` with only `properties` / `required`;
+  [SEP-2106](https://modelcontextprotocol.io/seps/2106-json-schema-2020-12.md)
+  (Draft) proposes retaining `type: "object"` while allowing any additional
+  JSON Schema 2020-12 keywords (`anyOf`, `oneOf`, `allOf`, `$ref`, `$defs`,
+  etc.).
+- `outputSchema` — optional. When present, the response's `structuredContent`
+  should conform to it. The current spec restricts this to `type: "object"`;
+  SEP-2106 (Draft) proposes accepting any valid JSON Schema (including arrays
+  and primitives) so that `structuredContent` can itself be an array or
+  primitive, not just an object.
 - `annotations` — *non-binding* hints for clients (UI rendering,
   permission prompts). All Boolean fields default to safe-pessimistic
   values when absent.
+- `execution.taskSupport` — declares whether this tool supports
+  [Tasks](SKILL-protocol.md#tasks-experimental--spec-2025-11-25):
+  `"optional"` (client may use tasks), `"required"` (client must use tasks),
+  or `"forbidden"` / absent (default, client must not use task augmentation).
+  Only relevant when `tasks.requests.tools.call` is in the server's capabilities.
+
+> **SEP-2106 status**: Draft as of 2026-05-18. The loosened schema types are
+> not yet in the Current spec (`2025-11-25`). Servers that return array or
+> primitive `structuredContent` today MUST also emit a `TextContent` block
+> with the serialized JSON so that older clients can fall back to it.
 
 ### Calling
 

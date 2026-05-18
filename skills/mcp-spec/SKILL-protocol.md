@@ -111,6 +111,64 @@ Standard JSON-RPC error codes plus MCP-specific extensions:
 MCP-defined error semantics live in the spec under
 [`specification/2025-11-25/basic/`](https://modelcontextprotocol.io/specification/2025-11-25/basic/).
 
+**Resource not found** — [SEP-2164](https://modelcontextprotocol.io/seps/2164-resource-not-found-error.md)
+(Draft) proposes standardising the error code for a missing resource on
+`-32602` (Invalid Params). The current spec recommends `-32002`, but SDK
+implementations vary (`-32602` in TypeScript, `0` in Python, `-32002` in C# /
+Rust / Java / Go / PHP, `-32603` in Kotlin). Until SEP-2164 is Final, clients
+SHOULD handle at least both `-32002` and `-32602` as resource-not-found
+indicators.
+
+## Tasks (experimental — spec 2025-11-25)
+
+Tasks extend normal request–response with a durable asynchronous model.
+Instead of blocking the connection, a receiver returns a `CreateTaskResult`
+immediately and the requestor polls for the result.
+
+Source: [`specification/2025-11-25/basic/utilities/tasks.md`](https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/tasks.md)
+(experimental; design may evolve in future protocol versions).
+
+### Capabilities
+
+Both sides declare a `tasks` capability. Server example:
+
+```json
+{
+  "capabilities": {
+    "tasks": {
+      "list": {},
+      "cancel": {},
+      "requests": { "tools": { "call": {} } }
+    }
+  }
+}
+```
+
+Client adds `requests.sampling.createMessage` and/or `requests.elicitation.create`.
+
+### Methods and notifications
+
+| Message | Direction | Purpose |
+|---|---|---|
+| `tasks/get` | requestor → receiver | Poll task status (use `pollInterval`) |
+| `tasks/result` | requestor → receiver | Retrieve result when terminal (blocking) |
+| `tasks/list` | requestor → receiver | List tasks (paginated) |
+| `tasks/cancel` | requestor → receiver | Request cooperative cancellation |
+| `notifications/tasks/status` | receiver → requestor | Optional status-change push |
+
+### Task statuses
+
+`working` · `input_required` · `completed` · `failed` · `cancelled`
+
+Terminal statuses are `completed`, `failed`, `cancelled`. Requestors MUST
+poll via `tasks/get` and MUST NOT rely solely on the optional notification.
+
+### Tool-level negotiation
+
+Individual tools declare task support via `execution.taskSupport` in the
+`tools/list` response (see [`SKILL-tools-resources-prompts.md`](SKILL-tools-resources-prompts.md)):
+`"optional"`, `"required"`, or `"forbidden"` (absent = forbidden).
+
 ## Protocol versioning
 
 Version string format: `YYYY-MM-DD` — the date of the last
@@ -147,6 +205,36 @@ Protocol evolution happens via SEPs — Specification Enhancement
 Proposals. The process is documented at
 [`community/sep-guidelines.md`](https://modelcontextprotocol.io/community/sep-guidelines.md).
 Active SEPs live under [`seps/`](https://modelcontextprotocol.io/seps/).
+
+### Feature lifecycle and deprecation (SEP-2596)
+
+[SEP-2596](https://modelcontextprotocol.io/seps/2596-spec-feature-lifecycle-and-deprecation.md)
+(Draft) introduces a formal three-state lifecycle for individual spec features,
+independent of the spec revision lifecycle:
+
+| State | Meaning |
+|---|---|
+| **Active** | Feature is in the Current revision with no planned removal. |
+| **Deprecated** | Feature remains in the spec but is scheduled for removal; migration path documented. |
+| **Removed** | Feature deleted from `draft`; absent from the next Current revision. |
+
+Key mechanics:
+- Deprecating a feature requires its own SEP.
+- The minimum deprecation window before a feature is *eligible* for removal is
+  **12 months** from the revision in which it first becomes Deprecated.
+- Removal itself is a Core Maintainer decision during release preparation; no
+  second SEP is required.
+- A formal `deprecated.mdx` registry will list all features in the Deprecated
+  state with their earliest removal dates.
+- Tier 1 SDKs (per SEP-1730) must mark the corresponding API surface deprecated
+  using the language's native mechanism once the deprecating revision is Current.
+- The term "soft-deprecated" is retired; existing uses are reclassified as
+  Deprecated under this policy.
+
+Under SEP-2596's transition clause, two already-informally-deprecated features
+are grandfathered in when the SEP reaches Final: the **HTTP+SSE transport** and
+the `includeContext: "thisServer"` / `"allServers"` values in
+`sampling/createMessage`.
 
 ---
 
