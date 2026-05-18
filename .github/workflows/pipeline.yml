@@ -220,7 +220,6 @@ jobs:
         working-directory: pipeline/agent
         env:
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           SKIP=$(jq -r '.pipelineOverrides.skipUpdateAgent // false' "../../skills/$SKILL_NAME/config.json" 2>/dev/null)
           if [[ "$SKIP" == "true" ]]; then
@@ -256,7 +255,6 @@ jobs:
         working-directory: pipeline/agent
         env:
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GH_TOKEN: ${{ github.token }}
         run: |
           SKIP=$(jq -r '.pipelineOverrides.skipResearchAgent // false' "../../skills/$SKILL_NAME/config.json" 2>/dev/null)
@@ -294,7 +292,6 @@ jobs:
         working-directory: pipeline/agent
         env:
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           START=$(date +%s)
           MEND_ATTEMPTS=0
@@ -487,7 +484,6 @@ jobs:
         working-directory: pipeline/agent
         env:
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           SKIP=$(jq -r '.pipelineOverrides.skipReportAgent // false' "../../skills/$SKILL_NAME/config.json" 2>/dev/null)
           if [[ "$SKIP" == "true" ]]; then
