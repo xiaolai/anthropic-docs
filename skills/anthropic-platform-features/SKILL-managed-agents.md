@@ -25,6 +25,14 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
   infrastructure). Decision: SDK for tight integration with your
   service; Managed Agents for fire-and-forget jobs and the Dreams
   long-running pattern.
+- **Also available on Claude Platform on AWS.** Managed Agents runs on
+  AWS-hosted Claude infrastructure with some differences in feature
+  availability and session behavior. See
+  [`claude-platform-on-aws.md`](https://platform.claude.com/docs/en/build-with-claude/claude-platform-on-aws.md).
+- **Endpoint rate limits (org-level):** Create endpoints (agents,
+  sessions, environments, etc.) — 300 RPM. Read endpoints (retrieve,
+  list, stream, etc.) — 600 RPM. Org-level spend limits and tier-based
+  rate limits also apply.
 - **Dreams = long-running.** A Dream is an agent execution that can
   run for hours or days, surviving across sessions. Use for research
   syntheses, batch processing, multi-step workflows that don't fit
