@@ -87,7 +87,40 @@ supported by [Cowork on 3P](SKILL-cowork.md). This decouples M365
 deployment from Anthropic's API for organizations with the same
 residency / regulatory drivers.
 
-See [`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md).
+### `claude-in-office` setup plugin
+
+The recommended way to configure 3P deployment is the **`claude-in-office`
+plugin**, which provisions cloud resources, generates the add-in manifest,
+and handles Azure admin consent in a single guided flow:
+
+```bash
+# Add the marketplace, install the plugin, then run the wizard from inside Claude
+claude plugin marketplace add anthropics/financial-services-plugins
+claude plugin install claude-in-office@financial-services-plugins
+/claude-in-office:setup
+```
+
+The wizard handles all four paths (LLM gateway, Bedrock direct, Vertex AI
+direct, Foundry direct). Bedrock and Vertex AI paths require Node.js.
+
+### Network allowlist (3P)
+
+Add-ins in 3P mode require these domains (in addition to your inference
+provider endpoints):
+
+| Domain | Purpose |
+|---|---|
+| `pivot.claude.ai` | Task pane UI, analytics, telemetry |
+| `claude.ai/api/` | Feature-flag evaluation |
+| `appsforoffice.microsoft.com` | Office.js runtime |
+| `login.microsoftonline.com` | Entra ID sign-in, token issuance |
+| `o1158394.ingest.us.sentry.io` | Crash reporting (optional) |
+| `graph.microsoft.com` | Outlook Graph API (if using Outlook) |
+
+Inference endpoints depend on path (gateway URL, Bedrock regional endpoint,
+Vertex AI regional endpoint, or Foundry resource). See
+[`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md)
+for the full table including 1P vs 3P domain split.
 
 ## Enterprise readiness
 

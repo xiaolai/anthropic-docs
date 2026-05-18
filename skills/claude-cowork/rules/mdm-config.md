@@ -91,6 +91,39 @@ breaking change immediately.
 requests return 429 `cap_exceeded` until the next billing month.
 Set to a value above your monthly forecast, with a buffer.
 
+## Rule 9 — Array- and object-typed keys must be JSON-encoded strings
+
+Keys like `inferenceModels`, `inferenceGatewayOidc`, `managedMcpServers`,
+`coworkEgressAllowedHosts`, and `otlpHeaders` store arrays or objects.
+In a `.mobileconfig`, write them as a **single `<string>` element containing
+a JSON literal** — not a native `<array>` or `<dict>`, and not separate
+dotted keys like `inferenceGatewayOidc.clientId`.
+
+```xml
+<!-- CORRECT -->
+<key>coworkEgressAllowedHosts</key>
+<string>["*.example.com","api.partner.com"]</string>
+
+<!-- WRONG — native plist array, will be silently ignored -->
+<key>coworkEgressAllowedHosts</key>
+<array>
+  <string>*.example.com</string>
+</array>
+```
+
+Same rule applies to Windows registry: write a `REG_SZ` value containing
+the JSON string, not separate `REG_MULTI_SZ` or child key structures.
+
+This is documented as the most common configuration mistake in the
+[Configuration reference](/cowork/3p/configuration).
+
+## Rule 10 — Set `deploymentOrganizationUuid` before fleet rollout
+
+Generate a UUID (`uuidgen` on macOS/Linux) and set `deploymentOrganizationUuid`
+in your MDM profile **before** rollout. Without it, telemetry is tagged
+with a shared placeholder UUID and Anthropic cannot isolate your
+organization's events when debugging support cases.
+
 ---
 
 *Source: claude.com/docs/cowork/3p/configuration.md + feature-matrix.md.*

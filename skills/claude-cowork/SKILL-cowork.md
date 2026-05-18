@@ -128,12 +128,26 @@ That page is the source of truth for:
 
 - Inference provider selection (`inferenceProvider`)
 - Region pinning (`inferenceVertexRegion`, `inferenceBedrockRegion`)
-- Feature toggles (web search, local MCP, etc.)
+- Deployment UUID (`deploymentOrganizationUuid`) — **set before rollout** so
+  Anthropic can isolate your org's telemetry in support cases
+- Model list (`inferenceModels`) with `supports1m` and `labelOverride` per entry
+- Credential helper (`inferenceCredentialHelper`, `inferenceCredentialHelperTtlSec`)
+  for short-lived credentials without static API keys
+- Feature toggles (web search, local MCP, Code tab, deep-link handler, etc.)
+- Disabled built-in tools (`disabledBuiltinTools`)
+- Egress allowlist (`coworkEgressAllowedHosts`) — governs Cowork tab sandbox
+  (not Code tab or server-side web search)
 - Telemetry toggles
-- MCP server allowlist
+- MCP server allowlist (`managedMcpServers`, `isLocalDevMcpEnabled`)
+- Desktop extension policy (`isDesktopExtensionEnabled`, `isDesktopExtensionSignatureRequired`)
 - Plugin / skill / hook distribution settings
 - Per-user spend caps
 - Auto-update policy
+
+> **JSON-string encoding** — array- and object-typed keys (e.g.
+> `inferenceModels`, `managedMcpServers`, `coworkEgressAllowedHosts`) must
+> be stored as a JSON string inside a single `<string>` element — not as
+> native plist `<array>` / `<dict>` structures. See [Rule 9 in `rules/mdm-config.md`](rules/mdm-config.md).
 
 ## Data residency
 
@@ -189,12 +203,21 @@ Google Workspace connector is not currently supported in 3P (planned).
 
 Full comparison: [`3p/feature-matrix.md`](https://claude.com/docs/cowork/3p/feature-matrix.md).
 
+Available in 3P that are sometimes assumed absent:
+
+- **Memory** — available; stored on device, not Anthropic infrastructure.
+  Users can review/delete/pause under **Settings → Cowork → Memory**.
+- **Scheduled tasks** — available.
+- **Org plugin marketplace** — org-plugins directory appears as an
+  organization marketplace. The **public** Anthropic marketplace is not
+  available.
+
 Salient gaps in 3P (versus full Claude Enterprise):
 
 - No Chat tab (Cowork + Code tabs only).
 - No Anthropic 1P connectors (except M365).
 - No Project / plugin sharing across orgs.
-- No public plugin marketplace.
+- No public plugin marketplace (org marketplace is available).
 - No mobile dispatch.
 - No voice mode.
 - No Claude in Chrome.
