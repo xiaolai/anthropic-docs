@@ -1,16 +1,16 @@
-# Claude Agent SDK — TypeScript Reference (v0.2.77)
+# Claude Agent SDK — TypeScript Reference (v0.3.143)
 
-**Package**: `@anthropic-ai/claude-agent-sdk@0.2.77`
-**Docs**: https://platform.claude.com/docs/en/agent-sdk/overview
+**Package**: `@anthropic-ai/claude-agent-sdk@0.3.143`
+**Docs**: https://code.claude.com/docs/en/agent-sdk/overview
 **Repo**: https://github.com/anthropics/claude-agent-sdk-typescript
-**Migration**: Renamed from `@anthropic-ai/claude-code`. See [migration guide](https://platform.claude.com/docs/en/agent-sdk/migration-guide).
+**Migration**: Renamed from `@anthropic-ai/claude-code`. See [migration guide](https://code.claude.com/docs/en/agent-sdk/migration-guide).
 
 ---
 
 ## Table of Contents
 
 - [Breaking Changes](#breaking-changes-v010)
-- [Core API](#core-api) — `query()`, `tool()`, `createSdkMcpServer()`, `listSessions()`, `getSessionMessages()`, `getSessionInfo()`, `renameSession()`, `forkSession()`, `tagSession()`
+- [Core API](#core-api) — `query()`, `startup()`, `tool()`, `createSdkMcpServer()`, `listSessions()`, `getSessionMessages()`, `getSessionInfo()`, `renameSession()`, `forkSession()`, `tagSession()`, `resolveSettings()`
 - [Options](#options) — Core, Tools & Permissions, Models & Output, Sessions, MCP & Agents, Advanced
 - [Query Object Methods](#query-object-methods)
 - [Message Types](#message-types) — All 23 SDKMessage types
@@ -21,17 +21,23 @@
 - [Structured Outputs](#structured-outputs)
 - [Sandbox](#sandbox)
 - [Sessions](#sessions)
-- [V2 Session API (Preview)](#v2-session-api-preview) — `unstable_v2_createSession`, `unstable_v2_prompt`
+- [V2 Session API (Removed)](#v2-session-api-preview) — removed in v0.3.142; use `query()` instead
 - [Debugging & Error Handling](#debugging--error-handling)
 - [Known Issues](#known-issues)
 - [Changelog Highlights](#changelog-highlights-v0212--v0272)
 
 ---
 
-## Breaking Changes (v0.1.0)
+## Breaking Changes
 
+**v0.3.142 (current):**
+1. **V2 session API removed** — `unstable_v2_createSession`, `unstable_v2_resumeSession`, `unstable_v2_prompt`, `SDKSession`, `SDKSessionOptions` are all removed. Use `query()` with `AsyncIterable<SDKUserMessage>` for multi-turn, or `options.resume` to continue a session.
+2. **MCP servers connect in background by default** — Sessions start immediately; slow servers report `status: "pending"` in `init` until ready. Set `MCP_CONNECTION_NONBLOCKING=0` to restore the old behavior of waiting up to 5s, or mark `alwaysLoad: true` on a server to require it in turn 1.
+3. **TodoWrite deprecated → Task tools** — SDK sessions now use `TaskCreate` / `TaskUpdate` / `TaskGet` / `TaskList` instead of `TodoWrite` (deprecated since v0.2.136).
+
+**v0.1.0:**
 1. **No default system prompt** — SDK uses minimal prompt. Use `systemPrompt: { type: 'preset', preset: 'claude_code' }` for old behavior.
-2. **No filesystem settings loaded** — `settingSources` defaults to `[]`. Add `settingSources: ['project']` to load CLAUDE.md.
+2. **No filesystem settings loaded** — `settingSources` defaults to CLI defaults (all sources). Add `settingSources: []` to disable or `['project']` to load only CLAUDE.md.
 3. **`ClaudeCodeOptions` renamed** — Now `ClaudeAgentOptions` (Python).
 
 ---
@@ -259,6 +265,43 @@ console.log(sessions[0].tag); // "needs-review"
 await tagSession(sessionId, null);
 ```
 
+### `startup()` (v0.2.83+)
+
+Pre-warms the CLI subprocess before a prompt is available. Returns a `WarmQuery` handle that accepts a prompt later with zero spawn latency.
+
+```typescript
+import { startup } from "@anthropic-ai/claude-agent-sdk";
+
+// Pay startup cost at app boot
+const warm = await startup({ options: { maxTurns: 3 }, initializeTimeoutMs: 60000 });
+
+// Later — no subprocess spawn cost
+for await (const msg of warm.query("What files are here?")) { ... }
+```
+
+```typescript
+interface WarmQuery extends AsyncDisposable {
+  query(prompt: string | AsyncIterable<SDKUserMessage>): Query; // can only be called once
+  close(): void;  // discard without sending a prompt
+}
+```
+
+### `resolveSettings()` (alpha, v0.2.118+)
+
+Reads and merges the effective Claude Code settings for a directory **without** spawning the CLI. Reads MDM sources (macOS plist, Windows HKLM/HKCU) for parity with CLI startup, but does not execute the admin-configured `policyHelper` subprocess.
+
+```typescript
+import { resolveSettings } from "@anthropic-ai/claude-agent-sdk";
+
+const { effective, provenance } = await resolveSettings({
+  cwd: "/path/to/project",
+  settingSources: ["user", "project", "local"]
+});
+console.log(`Model: ${effective.model}, set by: ${provenance.model?.source}`);
+```
+
+Parameters: `cwd?` (default `process.cwd()`), `settingSources?`, `managedSettings?`, `serverManagedSettings?`. Returns `{ effective: Settings, provenance: Partial<Record<keyof Settings, ProvenanceEntry>>, sources: Array<...> }`.
+
 ---
 
 ## Options
@@ -270,7 +313,12 @@ await tagSession(sessionId, null);
 | `model` | `string` | CLI default | Claude model to use |
 | `cwd` | `string` | `process.cwd()` | Working directory |
 | `systemPrompt` | `string \| { type: 'preset', preset: 'claude_code', append?: string }` | minimal | System prompt |
-| `settingSources` | `SettingSource[]` | `[]` | `'user' \| 'project' \| 'local'` |
+| `settingSources` | `SettingSource[]` | CLI defaults (all sources) | `'user' \| 'project' \| 'local'`; pass `[]` to disable user/project/local; managed policy always loads |
+| `skills` | `string[] \| 'all'` | — | Skill names to enable; `'all'` enables every discovered skill; enables the `Skill` tool automatically |
+| `outputStyle` | `string` | — | Name of an output style from `.claude/output-styles/` to activate for the session |
+| `includeHookEvents` | `boolean` | `false` | Include hook lifecycle events (`SDKHookStartedMessage` etc.) in message stream |
+| `sessionStore` | `SessionStore` | — | Mirror transcripts to external backend for host-portable session resume |
+| `managedSettings` | `Settings` | — | Policy-tier settings from embedding host (below IT managed tier; non-restrictive keys silently dropped) |
 | `env` | `Dict<string>` | `process.env` | Environment variables (set `CLAUDE_AGENT_SDK_CLIENT_APP` to identify your app in User-Agent, e.g. `'my-app/1.0.0'`) |
 | `abortController` | `AbortController` | — | Cancellation controller |
 
@@ -291,8 +339,8 @@ await tagSession(sessionId, null);
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `outputFormat` | `{ type: 'json_schema', schema: JSONSchema }` | — | Structured output schema |
-| `thinking` | `ThinkingConfig` | — | `{ type: 'enabled', budgetTokens?: number } \| { type: 'disabled' } \| { type: 'adaptive' }` |
-| `effort` | `'low' \| 'medium' \| 'high' \| 'max'` | — | Controls response effort level |
+| `thinking` | `ThinkingConfig` | `{ type: 'adaptive' }` for adaptive models | `{ type: 'enabled', budgetTokens?: number } \| { type: 'disabled' } \| { type: 'adaptive' }` |
+| `effort` | `'low' \| 'medium' \| 'high' \| 'xhigh' \| 'max'` | `'high'` | Controls response effort level; `'xhigh'` requires Claude Opus 4.7+ |
 | `maxThinkingTokens` | `number` | — | **Deprecated** — use `thinking` instead |
 | `fallbackModel` | `string` | — | Fallback model on failure |
 | `betas` | `SdkBeta[]` | `[]` | Beta features (e.g., `['context-1m-2025-08-07']`) |
@@ -431,33 +479,37 @@ The SDK emits 23 message types through the async generator:
 type SDKMessage =
   // Core messages
   | SDKAssistantMessage           // type: 'assistant' — agent responses
-  | SDKUserMessage                // type: 'user' — user input
+  | SDKUserMessage                // type: 'user' — user input (origin?: SDKMessageOrigin)
   | SDKUserMessageReplay          // type: 'user', isReplay: true — replayed messages on resume
-  | SDKResultMessage              // type: 'result' — final result
+  | SDKResultMessage              // type: 'result' — final result (origin?, deferred_tool_use?)
   | SDKSystemMessage              // type: 'system', subtype: 'init' — session init
   | SDKPartialAssistantMessage    // type: 'stream_event' (includePartialMessages)
   | SDKCompactBoundaryMessage     // type: 'system', subtype: 'compact_boundary'
   // Status & progress
   | SDKStatusMessage              // type: 'system', subtype: 'status' — status updates (e.g., 'compacting')
-  | SDKAPIRetryMessage            // type: 'system', subtype: 'api_retry' — transient API error being retried (v0.2.77)
   | SDKToolProgressMessage        // type: 'tool_progress' — tool execution progress with elapsed time
   | SDKToolUseSummaryMessage      // type: 'tool_use_summary' — summary of tool usage
   | SDKAuthStatusMessage          // type: 'auth_status' — authentication status
   | SDKLocalCommandOutputMessage  // type: 'system', subtype: 'local_command_output' — output from slash commands like /cost, /voice
-  // Hook messages
+  // Hook messages (only emitted when includeHookEvents: true)
   | SDKHookStartedMessage         // type: 'system', subtype: 'hook_started'
   | SDKHookProgressMessage        // type: 'system', subtype: 'hook_progress' — hook stdout/stderr
   | SDKHookResponseMessage        // type: 'system', subtype: 'hook_response' — hook outcome
+  // Plugin install progress (when CLAUDE_CODE_SYNC_PLUGIN_INSTALL set)
+  | SDKPluginInstallMessage       // type: 'system', subtype: 'plugin_install' — status: 'started'|'installed'|'failed'|'completed'
+  // Permission events
+  | SDKPermissionDeniedMessage    // type: 'system', subtype: 'permission_denied' — auto-deny without prompt (requires CLI v2.1.136+)
   // Task & persistence
   | SDKTaskStartedMessage         // type: 'system', subtype: 'task_started' — emitted when background task begins
   | SDKTaskProgressMessage        // type: 'system', subtype: 'task_progress' — periodic progress updates for running tasks
+  | SDKTaskUpdatedMessage         // type: 'system', subtype: 'task_updated' — background task state change
   | SDKTaskNotificationMessage    // type: 'system', subtype: 'task_notification' — background task events
   | SDKFilesPersistedEvent        // type: 'system', subtype: 'files_persisted'
-  // MCP Elicitation
-  | SDKElicitationCompleteMessage // type: 'system', subtype: 'elicitation_complete' — MCP elicitation finished
   // Rate limiting & suggestions
   | SDKRateLimitEvent             // type: 'rate_limit_event' — rate limit status for claude.ai subscriptions
   | SDKPromptSuggestionMessage    // type: 'prompt_suggestion' — predicted next user prompt (requires promptSuggestions: true)
+
+// Note: SDKAPIRetryMessage and SDKElicitationCompleteMessage were removed from the union in v0.3.x
 ```
 
 ### SDKAPIRetryMessage (v0.2.77)
@@ -571,6 +623,7 @@ Hooks use **callback matchers**: an optional regex `matcher` for tool names and 
 | `PreToolUse` | Before tool execution | Yes | Yes |
 | `PostToolUse` | After tool execution | Yes | Yes |
 | `PostToolUseFailure` | Tool execution failed | Yes | No |
+| `PostToolBatch` | After all tools in a parallel batch have executed | Yes | No |
 | `UserPromptSubmit` | User prompt received | Yes | Yes |
 | `Stop` | Agent stopping | Yes | Yes |
 | `SubagentStart` | Subagent spawned | Yes | No |
@@ -732,7 +785,8 @@ type PermissionMode =
   | 'acceptEdits'        // Auto-allow file edits, prompt for others
   | 'bypassPermissions'  // Skip all prompts (requires allowDangerouslySkipPermissions)
   | 'plan'               // Read-only planning mode — no writes/execution
-  | 'dontAsk';           // Don't prompt — deny if not pre-approved
+  | 'dontAsk'            // Don't prompt — deny if not pre-approved
+  | 'auto';              // Model classifier approves/denies each tool call
 ```
 
 **Note**: `allowedTools` is ignored when `permissionMode: 'bypassPermissions'` — Claude can use any tool.
@@ -852,10 +906,15 @@ type AgentDefinition = {
   prompt: string;             // System prompt
   tools?: string[];           // Allowed tools (inherits if omitted) — NOT enforced, see warning
   disallowedTools?: string[]; // Tools to block — NOT enforced, see warning
-  model?: 'sonnet' | 'opus' | 'haiku' | 'inherit';
+  model?: string;             // Model alias ('sonnet'/'opus'/'haiku'/'inherit') or full ID
   mcpServers?: AgentMcpServerSpec[];  // Per-agent MCP servers
   skills?: string[];          // Skill names to preload
+  initialPrompt?: string;     // Auto-submitted as first user turn when agent runs as main thread agent
   maxTurns?: number;          // Max turns for this subagent
+  background?: boolean;       // Run as non-blocking background task when invoked
+  memory?: 'user' | 'project' | 'local';  // Memory source for this agent
+  effort?: 'low' | 'medium' | 'high' | 'xhigh' | 'max' | number;  // Reasoning effort level
+  permissionMode?: PermissionMode;  // Permission mode override for this agent
   criticalSystemReminder_EXPERIMENTAL?: string;  // Critical reminder added to system prompt
 }
 ```
@@ -1034,17 +1093,11 @@ for await (const msg of query({
 
 ---
 
-## V2 Session API (Preview)
+## V2 Session API (Removed in v0.3.142)
 
-The V2 API simplifies multi-turn conversations by removing async generators. **Unstable** — APIs may change.
-
-```typescript
-import {
-  unstable_v2_createSession,
-  unstable_v2_resumeSession,
-  unstable_v2_prompt
-} from "@anthropic-ai/claude-agent-sdk";
-```
+> ⚠️ **Removed in v0.3.142.** The V2 session API (`unstable_v2_createSession`, `unstable_v2_resumeSession`, `unstable_v2_prompt`, `SDKSession`, `SDKSessionOptions`) was deprecated in v0.2.133 and fully removed in v0.3.142. Use the standard `query()` API instead.
+>
+> **Multi-turn migration**: Pass an `AsyncIterable<SDKUserMessage>` as `prompt` and use `options.resume` / `forkSession` to manage conversation state across turns.
 
 ### Create Session
 
@@ -1517,11 +1570,19 @@ sandbox: {
 
 ---
 
-## Changelog Highlights (v0.2.12 → v0.2.77)
+## Changelog Highlights (v0.2.77 → v0.3.143)
 
 | Version | Change |
 |---------|--------|
-| v0.2.77 | Added `SDKAPIRetryMessage` (`type: 'system', subtype: 'api_retry'`) — emitted when a transient API error is automatically retried; exposes attempt count, max retries, delay, and error status; fixed `SubagentStart`/`SubagentStop` hook `agent_type` always reporting `"general-purpose"` — now correctly reports the agent key from the `agents` map ([#226](https://github.com/anthropics/claude-agent-sdk-typescript/issues/226)); fixed missing `./sdk-tools` entry in `package.json` exports map ([#222](https://github.com/anthropics/claude-agent-sdk-typescript/issues/222)) |
+| v0.3.143 | `@anthropic-ai/sdk` and `@modelcontextprotocol/sdk` moved to `peerDependencies`; bundled runtime unaffected |
+| v0.3.142 | **Breaking**: V2 session API removed (`unstable_v2_*`); **Breaking**: MCP servers connect in background by default; **Breaking**: Task tools replace TodoWrite; surfaced `request_id`, `subagent_type`, `task_description` on message types |
+| v0.2.141 | `TaskCreate/Get/Update/List` input/output types exported from `sdk-tools` subpath |
+| v0.2.136 | Added `resolveSettings()` (alpha); deprecated `TodoWrite` tool |
+| v0.2.133 | Deprecated V2 session API and `'Skill'` in `allowedTools`; use `skills` option instead |
+| v0.2.126 | Added `origin` to result messages (`SDKMessageOrigin`) |
+| v0.2.121 | Added `updatedToolOutput` to `PostToolUseHookSpecificOutput` for all tools; deprecated `updatedMCPToolOutput` |
+| v0.2.118 | Added `managedSettings` option for embedders |
+| v0.2.77 | Added `SDKAPIRetryMessage`; fixed `SubagentStart`/`SubagentStop` `agent_type` reporting; fixed `./sdk-tools` exports map ([#222](https://github.com/anthropics/claude-agent-sdk-typescript/issues/222)) |
 | v0.2.71 | Fixed `Agent` tool returning `"Unknown tool: Agent"` in `query()` mode — subagent invocation via `tools: ['Agent']` + `agents` map now works ([#210](https://github.com/anthropics/claude-agent-sdk-typescript/issues/210)) |
 | v0.2.63 | Fixed `SDKRateLimitEvent` and `SDKPromptSuggestionMessage` missing from `sdk.d.ts` — `SDKMessage` now has full type safety ([#196](https://github.com/anthropics/claude-agent-sdk-typescript/issues/196), [#206](https://github.com/anthropics/claude-agent-sdk-typescript/issues/206)) |
 | v0.2.58 | Version bump |
@@ -1538,4 +1599,4 @@ sandbox: {
 
 ---
 
-**Last verified**: 2026-03-18 | **SDK version**: 0.2.77
+**Last verified**: 2026-05-18 | **SDK version**: 0.3.143

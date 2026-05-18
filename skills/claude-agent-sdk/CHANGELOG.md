@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-05-18
+
+*(pending review — see PR on branch `auto/2026-05-18-pending-review`)* Added KI #329 (native binary distribution ≥0.2.110 breaks Vercel/Lambda); research agent crashed mid-run, check-diff-size gate tripped
+
 ## 2026-03-18
 
 - Research only, no version change (TS v0.2.77, Python v0.1.49 unchanged)

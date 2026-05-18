@@ -12,6 +12,8 @@ Auto-updated reference skill for the **Claude Agent SDK** — Anthropic's librar
 
 Part of the [anthropic-docs](../../README.md) plugin.
 
+**Last updated**: 2026-05-18
+
 ## Surfaces
 
 | File | Topic |
@@ -62,3 +64,9 @@ SKILL_NAME=claude-agent-sdk bash pipeline/agent/monitor.sh           # detect ch
 SKILL_NAME=claude-agent-sdk npx tsx pipeline/agent/research-agent.ts # populate surfaces
 SKILL_NAME=claude-agent-sdk npm run verify:all                       # gate
 ```
+
+## Recent activity
+
+| Date | Update | Research | Mending | Report | Total | Notes |
+|------|--------|----------|---------|--------|-------|-------|
+| 2026-05-18 | review | research + report (no upstream change) |

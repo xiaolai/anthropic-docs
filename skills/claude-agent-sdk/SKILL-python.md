@@ -1,7 +1,7 @@
-# Claude Agent SDK — Python Reference (v0.1.49)
+# Claude Agent SDK — Python Reference (v0.2.82)
 
-**Package**: `claude-agent-sdk==0.1.49` (PyPI)
-**Docs**: https://platform.claude.com/docs/en/agent-sdk/python
+**Package**: `claude-agent-sdk==0.2.82` (PyPI)
+**Docs**: https://code.claude.com/docs/en/agent-sdk/python
 **Repo**: https://github.com/anthropics/claude-agent-sdk-python
 **Requires**: Python 3.10+
 **Migration**: Renamed from `claude-code-sdk`. `ClaudeCodeOptions` is now `ClaudeAgentOptions`.
@@ -29,8 +29,13 @@
 
 ---
 
-## Breaking Changes (v0.1.0)
+## Breaking Changes
 
+**v0.2.82 (current):**
+1. **MCP servers connect in background by default** — Sessions start immediately; slow servers report `status: "pending"` in `init`. Set `MCP_CONNECTION_NONBLOCKING=0` to restore old behavior.
+2. **TodoWrite deprecated → Task tools** — SDK sessions now use `TaskCreate` / `TaskUpdate` / `TaskGet` / `TaskList`. Tool consumers should accumulate by task ID rather than replacing a snapshot list.
+
+**v0.1.0:**
 1. **No default system prompt** — SDK uses minimal prompt. Use `system_prompt={"type": "preset", "preset": "claude_code"}` for old behavior. Add `"append": "extra text"` to extend the preset.
 2. **No filesystem settings loaded** — `setting_sources` defaults to `None`. Add `setting_sources=["project"]` to load CLAUDE.md.
 3. **`ClaudeCodeOptions` renamed** — Now `ClaudeAgentOptions`.
@@ -1786,6 +1791,10 @@ options = ClaudeAgentOptions(
 
 | Version | Change |
 |---------|--------|
+| v0.2.82 | **Breaking**: MCP background connection default; **Breaking**: Task tools replace TodoWrite; Added `EffortLevel` type export; fixed stderr callback isolation; fixed `CancelledError` in eager-flush done callback |
+| v0.1.81 | Updated bundled CLI to v2.1.139 |
+| v0.1.65 | Added `SessionStore.list_session_summaries()` and `import_session_to_store()` |
+| v0.1.60 | Added `list_subagents()`, `get_subagent_messages()`; W3C trace context propagation (`pip install claude-agent-sdk[otel]`) |
 | v0.1.49 | Added `skills`, `memory`, `mcpServers` to `AgentDefinition`; per-turn usage on `AssistantMessage`; `rename_session()`, `delete_session()`, `tag_session()`, typed `RateLimitEvent`; reverted Bedrock-breaking eager_input_streaming (PR #671). **Partial release** — only macOS ARM64 wheel published (see [#26](#26-v0149-pypi-release-incomplete-issue-687)) |
 | v0.1.48 | Introduced `eager_input_streaming` with `include_partial_messages=True` (breaks Bedrock/Vertex — see [#21](#21-include_partial_messagestrue-breaks-tool-input-streaming-on-bedrockvertex)) |
 | v0.1.44 | Fixed `rate_limit_event` crash in message parser — unknown CLI message types now skipped gracefully; bundled CLI updated to v2.1.59 |
@@ -1795,4 +1804,4 @@ options = ClaudeAgentOptions(
 
 ---
 
-**Last verified**: 2026-03-18 | **SDK version**: 0.1.48 (v0.1.49 partially released — macOS ARM64 only)
+**Last verified**: 2026-05-18 | **SDK version**: 0.2.82
