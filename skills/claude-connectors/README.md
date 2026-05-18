@@ -6,7 +6,7 @@ packaging), **MCP Apps for Claude Desktop** (with visual + interaction
 design guidelines), the directory of pre-built integrations, and the
 user-facing **Skills** and **Plugins** surfaces.
 
-Part of the [anthropic-docs-skills-autoupdated](../../README.md) plugin.
+Part of the [autoupdated-anthropic-documentation-knowledge](../../README.md) plugin.
 
 ## Surfaces
 

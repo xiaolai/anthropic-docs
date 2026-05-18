@@ -1,0 +1,27 @@
+{
+  "_comment": "Example tool definition for the Anthropic Messages API. Wire into a request as `tools: [<this object>]`. See rules/tool-use.md for correctness rules.",
+  "name": "search_files",
+  "description": "Search files in the user's project matching a query string. Returns an array of paths with snippets. Use when the user asks 'find', 'search for', 'where is X in the code'.",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string",
+        "description": "Search query — file name pattern or content substring."
+      },
+      "max_results": {
+        "type": "integer",
+        "description": "Maximum number of matches to return.",
+        "minimum": 1,
+        "maximum": 100,
+        "default": 20
+      },
+      "scope": {
+        "type": "string",
+        "description": "Limit search to this subdirectory.",
+        "default": "."
+      }
+    },
+    "required": ["query"]
+  }
+}

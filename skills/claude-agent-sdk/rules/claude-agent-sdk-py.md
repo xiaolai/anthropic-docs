@@ -1,13 +1,15 @@
 ---
-paths: "**/*agent*.py"
-description: Auto-corrections for Claude Agent SDK (Python) v0.1.49
+name: claude-agent-sdk-py
+description: Edit-time correctness rules for code using the claude-agent-sdk Python package. Catches the common mistakes documented in the upstream issue tracker: forgetting `async with ClaudeSDKClient(...)`, mismatched permission_mode strings, wrong MCP server config shape, and confusion with the older anthropic-sdk-python package.
+appliesTo:
+  - "**/*.py"
 ---
 
-# Claude Agent SDK Rules (Python)
+# Claude Agent SDK Rules — Python
 
 ## Package
+
 - Package: `claude-agent-sdk` (PyPI, NOT `anthropic-sdk-python`)
-- Latest: v0.1.49
 
 ## Common Mistakes
 

@@ -1,13 +1,17 @@
 ---
-paths: "**/*agent*.ts"
-description: Auto-corrections for Claude Agent SDK v0.2.77
+name: claude-agent-sdk-ts
+description: Edit-time correctness rules for code using @anthropic-ai/claude-agent-sdk in TypeScript. Catches the common mistakes documented in the upstream issue tracker: hooks-as-functions vs callbacks, mismatched permissionMode strings, wrong MCP server config shape, and unsupported tools in allowedTools.
+appliesTo:
+  - "**/*.ts"
+  - "**/*.tsx"
+  - "**/*.mts"
 ---
 
-# Claude Agent SDK Rules
+# Claude Agent SDK Rules — TypeScript
 
 ## Package
+
 - Package: `@anthropic-ai/claude-agent-sdk` (NOT `@anthropic-ai/claude-code`)
-- Latest: v0.2.77
 
 ## Common Mistakes
 

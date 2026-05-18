@@ -5,7 +5,7 @@ deployed multi-cloud (Amazon Bedrock, Microsoft Foundry, LLM gateways,
 enterprise SSO, telemetry, M365 connector, policy controls) and
 **Office agents** (Claude in Excel, Slack-style integrations).
 
-Part of the [anthropic-docs-skills-autoupdated](../../README.md) plugin.
+Part of the [autoupdated-anthropic-documentation-knowledge](../../README.md) plugin.
 
 ## Surfaces
 

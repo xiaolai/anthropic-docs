@@ -1,4 +1,4 @@
-# claude-code-documentation-knowledge-autoupdated — scaffold design
+# autoupdated-anthropic-documentation-knowledge — scaffold design
 
 **Status:** Scaffolded 2026-05-17, pre-push. First pipeline run not yet executed.
 
@@ -119,7 +119,7 @@ flowchart LR
 | `README.md` | Human-facing repo description. Self-updating header (`Last updated`) and activity table (last 7 days). |
 | `.claude-plugin/plugin.json` | Plugin manifest. Description carries the "Last updated" stamp so search engines / installers see freshness. |
 | `agent/*` | The pipeline. Never edited by the agents themselves; the prompts explicitly forbid touching this directory. |
-| `.github/workflows/cc-update-check.yml` | Daily cron at 08:00 UTC. Repo-gated by `if: github.repository == 'xiaolai/claude-code-documentation-knowledge-autoupdated'` to prevent forks accidentally running the pipeline. |
+| `.github/workflows/cc-update-check.yml` | Daily cron at 08:00 UTC. Repo-gated by `if: github.repository == 'xiaolai/autoupdated-anthropic-documentation-knowledge'` to prevent forks accidentally running the pipeline. |
 
 ## Stub strategy
 
@@ -243,9 +243,9 @@ this section is a quick bridge from the original design notes to today.
 ## Ship checklist (not yet executed)
 
 1. Create empty private repo:
-   `gh repo create xiaolai/claude-code-documentation-knowledge-autoupdated --private`
+   `gh repo create xiaolai/autoupdated-anthropic-documentation-knowledge --private`
 2. `cd` here, `git init && git add -A && git commit -m "initial scaffold"`
-3. `git remote add origin git@github.com:xiaolai/claude-code-documentation-knowledge-autoupdated.git`
+3. `git remote add origin git@github.com:xiaolai/autoupdated-anthropic-documentation-knowledge.git`
 4. `git branch -M main && git push -u origin main`
 5. Add `CLAUDE_CODE_OAUTH_TOKEN` repo secret (Settings → Secrets and
    variables → Actions). Use the least-active Max 20x account.

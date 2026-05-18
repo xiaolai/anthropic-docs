@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   discover-skills:
-    if: github.repository == 'xiaolai/anthropic-docs-skills-autoupdated'
+    if: github.repository == 'xiaolai/autoupdated-anthropic-documentation-knowledge'
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.list.outputs.matrix }}

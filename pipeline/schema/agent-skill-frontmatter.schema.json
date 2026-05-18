@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/xiaolai/autoupdated-anthropic-documentation-knowledge/schemas/agent-skill-frontmatter.schema.json",
+  "title": "Agent Skill (.skill package) SKILL.md frontmatter",
+  "description": "Schema for the YAML frontmatter block at the top of every .skill package's SKILL.md file. See https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices.md for the canonical reference.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["name", "description"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{0,63}$",
+      "maxLength": 64,
+      "description": "Skill identifier. Lowercase kebab-case only. Max 64 chars. Used by the skill matcher to dispatch."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 30,
+      "maxLength": 1024,
+      "description": "Activation trigger description. The skill matcher reads this to decide whether the skill is relevant. Should enumerate intent patterns ('Use when...') and negative-intent patterns ('Skip: ...'). Max 1024 chars (longer is truncated)."
+    },
+    "user-invocable": {
+      "type": "boolean",
+      "description": "Whether the user can invoke this skill explicitly by name (e.g. /skill-name). Defaults to false; only set true for skills meant for direct user invocation."
+    },
+    "allowedTools": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Optional tool allowlist for the skill. If absent, the skill inherits the host's tool permissions."
+    }
+  }
+}

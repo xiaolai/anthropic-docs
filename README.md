@@ -1,4 +1,4 @@
-# anthropic-docs-skills-autoupdated
+# autoupdated-anthropic-documentation-knowledge
 
 A self-updating collection of 7 Claude Code skills that mirror the official
 Anthropic + MCP documentation surfaces (~624 pages across 4 doc portals)
@@ -35,7 +35,7 @@ mistakes at edit time.
 ## Install
 
 ```bash
-/plugin install xiaolai/anthropic-docs-skills-autoupdated
+/plugin install xiaolai/autoupdated-anthropic-documentation-knowledge
 ```
 
 (or clone the repo and `/plugin install .` from your local copy)
@@ -63,7 +63,7 @@ This repo distributes the **synthesized SKILL surfaces** (our authorial work) pl
 ## Architecture
 
 ```
-anthropic-docs-skills-autoupdated/
+autoupdated-anthropic-documentation-knowledge/
 ├── pipeline/                  ← shared infrastructure
 │   ├── agent/                 ← TS agents + sanitiser + monitor.sh + verify.sh
 │   ├── scripts/               ← verification scripts
@@ -81,7 +81,7 @@ anthropic-docs-skills-autoupdated/
 │       └── CHANGELOG.md       ← per-skill history
 ├── .github/
 │   └── workflows/
-│       └── daily.yml          ← matrix-runs the pipeline across all skills
+│       └── pipeline.yml       ← matrix-runs the pipeline across all skills every 30 min
 ├── pipeline.config.json       ← (TBD) matrix-controlling top-level config
 ├── package.json + lockfile    ← devDeps for shared scripts
 ├── LICENSE
@@ -101,7 +101,7 @@ SKILL_NAME=claude-code bash pipeline/agent/monitor.sh
 SKILL_NAME=claude-code npx tsx pipeline/agent/research-agent.ts
 ```
 
-The CI workflow at `.github/workflows/daily.yml` matrix-iterates over `skills/*/` every 30 minutes (GitHub free-tier coalesces under load — typical end-to-end latency is sub-hour). Most runs are no-ops because `monitor.sh` exits cheaply when upstream hasn't changed.
+The CI workflow at `.github/workflows/pipeline.yml` matrix-iterates over `skills/*/` every 30 minutes (GitHub free-tier coalesces under load — typical end-to-end latency is sub-hour). Most runs are no-ops because `monitor.sh` exits cheaply when upstream hasn't changed.
 
 ## Local development — first-clone bootstrap
 

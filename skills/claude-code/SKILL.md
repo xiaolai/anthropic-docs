@@ -1,5 +1,5 @@
 ---
-name: claude-code-documentation-knowledge
+name: claude-code
 description: |
   Router skill for Claude Code (the CLI tool itself). Contains intent
   hints and a dispatch table that maps a user's question to the
@@ -15,9 +15,10 @@ description: |
   the ~/.claude/ directory layout, or asking "what does <feature> in
   Claude Code do".
 
-  Skip: questions about the Anthropic Messages API or SDK (use the
-  claude-api skill instead), questions about shell/git/programming
-  topics not specific to Claude Code internals.
+  Skip: questions about the Anthropic Messages API (use anthropic-api),
+  the Claude Agent SDK (use claude-agent-sdk), the MCP protocol spec
+  (use mcp-spec), or general shell / git / programming topics not
+  specific to Claude Code internals.
 user-invocable: true
 ---
 
@@ -74,5 +75,5 @@ Path-scoped correction rules live in `rules/`:
 
 *This skill is auto-updated daily by a maintainer-run pipeline. If you
 spot a bug in this content, file an issue at
-[xiaolai/claude-code-documentation-knowledge-autoupdated](https://github.com/xiaolai/claude-code-documentation-knowledge-autoupdated) —
+[xiaolai/autoupdated-anthropic-documentation-knowledge](https://github.com/xiaolai/autoupdated-anthropic-documentation-knowledge) —
 SKILL.md fixes flow back through the next research run, not via PRs.*

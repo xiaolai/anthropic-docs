@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/xiaolai/autoupdated-anthropic-documentation-knowledge/schemas/anthropic-tool.schema.json",
+  "title": "Anthropic Messages API tool definition",
+  "description": "Schema for a single entry in the `tools: []` array passed to POST /v1/messages. See https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools.md for the canonical reference.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["name", "description", "input_schema"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]{1,64}$",
+      "description": "Tool name. Letters, digits, hyphens, underscores; max 64 chars. The model sees this verbatim and uses it in `tool_use` blocks."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "description": "What the tool does, when to use it. The model reads this to decide whether to call the tool. Be specific about triggers."
+    },
+    "input_schema": {
+      "type": "object",
+      "required": ["type", "properties"],
+      "properties": {
+        "type": {
+          "const": "object",
+          "description": "Must be the literal string \"object\" — the Messages API rejects schemas without an explicit object type."
+        },
+        "properties": {
+          "type": "object",
+          "description": "Map of input field name → JSON Schema for that field."
+        },
+        "required": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Array of field names that must be present when the model calls the tool."
+        },
+        "additionalProperties": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true,
+      "description": "JSON Schema describing the tool's input. MUST have top-level type:object."
+    },
+    "cache_control": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": { "const": "ephemeral" },
+        "ttl": { "type": "string", "enum": ["5m", "1h"] }
+      },
+      "description": "Mark this tool definition as a prompt-cache breakpoint. Limit: 4 cache_control breakpoints per request, total."
+    }
+  }
+}

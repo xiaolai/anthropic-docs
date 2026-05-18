@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Example Cowork on 3P MDM profile for macOS (Jamf / Workspace ONE / generic).
+  See rules/mdm-config.md for correctness rules.
+
+  Deploy via your MDM as a Configuration Profile targeting the bundle
+  identifier com.anthropic.cowork. Per-user keys merge with admin keys;
+  admin keys win on conflict.
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <!-- INFERENCE PROVIDER — required for 3P mode -->
+  <key>inferenceProvider</key>
+  <string>bedrock</string>  <!-- enum: vertex | bedrock | foundry | gateway -->
+
+  <!-- REGION PIN — required for vertex/bedrock to honor data residency -->
+  <key>inferenceBedrockRegion</key>
+  <string>eu-west-1</string>
+
+  <!-- FEATURE TOGGLES — what users can/can't do -->
+  <key>enableLocalMcp</key>
+  <true/>
+  <key>enableWebSearch</key>
+  <false/>          <!-- disable web search for stricter data control -->
+  <key>enableM365Connector</key>
+  <true/>           <!-- requires Microsoft Graph admin consent — see /cowork/3p/connectors-m365 -->
+
+  <!-- TELEMETRY KILL SWITCHES — all three off-by-default; set for hardened deployments -->
+  <key>disableCrashReporting</key>
+  <false/>
+  <key>disableProductAnalytics</key>
+  <false/>
+  <key>disableAutoUpdate</key>
+  <false/>
+
+  <!-- MCP SERVER ALLOWLIST — only these can be loaded (omit to allow all org-installed) -->
+  <key>mcpServerAllowlist</key>
+  <array>
+    <string>https://mcp.internal.example.com/calendar</string>
+    <string>https://mcp.internal.example.com/wiki</string>
+  </array>
+
+  <!-- ORG PLUGINS DIRECTORY — URL to your org-internal marketplace.json -->
+  <key>orgPluginsDirectory</key>
+  <string>https://plugins.internal.example.com/marketplace.json</string>
+
+  <!-- SPEND CAPS — monthly USD per workspace (blanket only in 3P) -->
+  <key>workspaceSpendCapUSD</key>
+  <integer>5000</integer>
+
+  <!-- OPENTELEMETRY EXPORT — send session activity to your own collector -->
+  <key>otelEndpoint</key>
+  <string>https://otel.internal.example.com:4318</string>
+  <key>otelExportPromptsAndCompletions</key>
+  <false/>          <!-- keep prompt/completion content out of exports -->
+</dict>
+</plist>

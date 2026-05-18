@@ -1,0 +1,63 @@
+{
+  "_comment": "Example MCPB manifest for Claude Desktop. Place at the root of your .mcpb bundle. See rules/mcpb-manifest.md for correctness rules.",
+  "name": "my-mcpb",
+  "version": "1.0.0",
+  "description": "Example MCPB that exposes a file-search tool over a local directory.",
+  "author": {
+    "name": "Your Name",
+    "email": "you@example.com"
+  },
+  "homepage": "https://github.com/you/my-mcpb",
+  "license": "MIT",
+  "runtime": {
+    "name": "node",
+    "version": ">=18"
+  },
+  "compatibility": {
+    "platforms": ["darwin", "win32"]
+  },
+  "entry_point": "dist/server.js",
+  "icons": [
+    { "src": "icon.png", "size": "512x512", "theme": "auto" }
+  ],
+  "user_config": [
+    {
+      "key": "root_directory",
+      "type": "directory",
+      "label": "Root directory",
+      "description": "Folder to search. Tool calls scope to this directory only.",
+      "default": "~",
+      "required": true
+    },
+    {
+      "key": "max_results_default",
+      "type": "number",
+      "label": "Default max results",
+      "description": "Default max_results when a tool call doesn't specify.",
+      "default": 20,
+      "min": 1,
+      "max": 1000
+    }
+  ],
+  "tools": [
+    {
+      "name": "search_files",
+      "description": "Search files by name pattern under the configured root directory.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "pattern": { "type": "string" },
+          "max_results": { "type": "integer", "minimum": 1, "maximum": 1000 }
+        },
+        "required": ["pattern"]
+      },
+      "annotations": {
+        "title": "Search Files",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    }
+  ]
+}

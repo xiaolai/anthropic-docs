@@ -17,7 +17,10 @@
     "SKILL-manage-claude.md",
     "SKILL-managed-agents.md"
   ],
-  "rules": [],
+  "rules": [
+    "rules/tool-use.md",
+    "rules/agent-skills.md"
+  ],
   "dispatch": {
     "agents-and-tools/agent-skills/": "SKILL-agents-and-tools.md",
     "agents-and-tools/mcp-connector.md": "SKILL-agents-and-tools.md",
@@ -27,6 +30,8 @@
     "manage-claude/": "SKILL-manage-claude.md",
     "managed-agents/": "SKILL-managed-agents.md"
   },
-  "schemas": {},
+  "schemas": {
+    "SKILL-agents-and-tools.md": "pipeline/schema/anthropic-tool.schema.json"
+  },
   "knownIssuesSurface": null
 }

@@ -8,6 +8,50 @@ Newest entry on top.
 
 ---
 
+## 2026-05-18 — Repo rename + audit fixes (B1-B5, M1-M3, H1, H2, H5)
+
+**Repo renamed**: `anthropic-docs-skills-autoupdated` → `autoupdated-anthropic-documentation-knowledge`. Plus the predecessor refs to `claude-code-documentation-knowledge-autoupdated` that survived the previous rename. 35 files touched; 0 remaining stale refs.
+
+**Audit fixes** (from the comprehensive skills/rules/hooks audit):
+
+- **B1**: `skills/claude-agent-sdk/rules/*.md` had `paths:` instead of `appliesTo:` in frontmatter, plus missing `name:` fields. **412 lines of rules were silently inert** until this fix.
+- **B2**: `skills/claude-code/SKILL.md` referenced a non-existent `claude-api` skill — fixed to `anthropic-api`, plus expanded the Skip clause to reference the actual 4 sibling skills.
+- **B4**: `skills/claude-code/SKILL.md` frontmatter `name:` was `claude-code-documentation-knowledge` (mismatched its directory) — renamed to `claude-code` to match the other 6 skills.
+- **B5**: stripped stale `v0.2.77` / `v0.1.49` version stamps from `claude-agent-sdk` rule descriptions; updated SKILL.md version row to current `v0.3.143` / `v0.2.82`.
+- **H5**: rewrote `claude-agent-sdk` SKILL.md description from 45 words to ~180 with explicit Use-when / Skip clauses matching the other 6 skills' pattern.
+- **M1**: normalized README first-headings on `claude-code` and `claude-agent-sdk` to lowercase `# <skill-name>` matching the other 5.
+- **M2**: renamed `.github/workflows/daily.yml` → `pipeline.yml` (the file's title block already said "every 30 min"); updated check-gate-parity.sh to use the new path with fallbacks.
+
+**Value-gap closures**:
+
+- **H1** (5 skills had zero rules): authored 6 new rule files covering the most-common edit-time mistakes per skill:
+  - `anthropic-platform-features/rules/tool-use.md` — 8 rules for Messages API tool definitions, cache_control, extended thinking, tool_use/tool_result, model IDs, tool_choice
+  - `anthropic-platform-features/rules/agent-skills.md` — 6 rules for .skill package authoring
+  - `claude-connectors/rules/mcpb-manifest.md` — 8 rules for MCPB manifest.json
+  - `claude-connectors/rules/mcp-apps-design.md` — 8 rules for MCP App UI code
+  - `claude-cowork/rules/mdm-config.md` — 8 rules for Cowork-on-3P MDM profiles
+  - `mcp-spec/rules/mcp-server-impl.md` — 8 rules for MCP server implementations
+  All 6 files have correct `appliesTo` globs and `name + description` frontmatter; wired into each skill's `config.json.rules[]`.
+
+- **H2** (5 skills had zero templates): authored 6 new template files:
+  - `anthropic-platform-features/templates/tool-definition.json` — canonical tool definition
+  - `anthropic-platform-features/templates/skill/SKILL.md` — .skill package starter
+  - `claude-connectors/templates/mcpb-manifest.json` — full MCPB manifest example
+  - `claude-connectors/templates/mcp-app/index.tsx` — MCP App React widget example
+  - `claude-cowork/templates/cowork-3p-mdm.plist` — full macOS MDM profile
+  - `mcp-spec/templates/typescript-server.ts` + `python-server.py` — minimal stdio MCP servers in both SDKs
+
+- **M3** (anthropic-platform-features had empty `schemas: {}`): authored 2 new JSONSchemas in `pipeline/schema/`:
+  - `anthropic-tool.schema.json` — Anthropic Messages API tool definition shape
+  - `agent-skill-frontmatter.schema.json` — Agent Skill SKILL.md frontmatter
+  Wired the tool schema into `SKILL-agents-and-tools.md` via the dispatch; the surface now contains a validated fenced JSON example that `validate-examples.sh` PASS 1 enforces.
+
+**Coverage delta**: rules grew from 8 files / 650 lines to 14 files / ~1130 lines across 6 skills (only `claude-code` rules unchanged); templates grew from 36 to 42 across 4 skills.
+
+**All 7 skills still pass `verify:all` end-to-end.**
+
+---
+
 ## 2026-05-17 — Phases 2-5: ecosystem expansion (7 skills shipping)
 
 Big-bang completion of the multi-skill migration. The repo now ships **seven skills** in a single matrix-driven workflow.
@@ -44,7 +88,7 @@ Big-bang completion of the multi-skill migration. The repo now ships **seven ski
 
 ## 2026-05-17 — Phase 1: multi-skill platform foundation
 
-Renamed conceptual repo identity from `claude-code-documentation-knowledge-autoupdated` (single Claude Code skill) to `anthropic-docs-skills-autoupdated` (multi-skill platform). On-disk dir name unchanged for the maintainer's local convenience; logical identifier in plugin.json, README, and workflow matches the new name.
+Renamed conceptual repo identity from `autoupdated-anthropic-documentation-knowledge` (single Claude Code skill) to `autoupdated-anthropic-documentation-knowledge` (multi-skill platform). On-disk dir name unchanged for the maintainer's local convenience; logical identifier in plugin.json, README, and workflow matches the new name.
 
 **Architectural refactor:**
 - `agent/` → `pipeline/agent/` (shared TS agents + sanitiser + monitor + verify)

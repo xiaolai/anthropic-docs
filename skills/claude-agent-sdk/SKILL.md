@@ -1,14 +1,31 @@
 ---
 name: claude-agent-sdk
 description: |
-  Build autonomous AI agents with Claude Agent SDK.
-  TypeScript v0.2.77 | Python v0.1.49.
-  Covers: query(), hooks, subagents, MCP, permissions, sandbox,
-  structured outputs, and sessions.
+  Router skill for the Claude Agent SDK — Anthropic's libraries for
+  building autonomous AI agents that wrap the Claude Code CLI runtime.
+  Ships in TypeScript (`@anthropic-ai/claude-agent-sdk` on npm) and
+  Python (`claude-agent-sdk` on PyPI). Covers `query()` / `ClaudeSDKClient`,
+  hooks (PreToolUse / PostToolUse / Stop / etc.), subagents, MCP
+  servers (stdio / HTTP / SSE / SDK in-process), permission modes,
+  the sandbox (Docker / Kubernetes), structured outputs (JSON Schema
+  validation), and session capture / resume / fork.
 
-  Use when: building AI agents, configuring MCP servers, setting up
-  permissions/hooks, using structured outputs, troubleshooting SDK errors,
-  or working with subagents.
+  Use when the user asks about: importing `@anthropic-ai/claude-agent-sdk`
+  in TypeScript or `from claude_agent_sdk import ...` in Python, writing
+  an agent that uses `query()` or `ClaudeSDKClient`, registering hooks
+  via the SDK (`hooks: { PreToolUse: [...] }` / `hooks={"PreToolUse": [...]}`),
+  defining MCP servers in SDK options, configuring `permissionMode` /
+  `permission_mode`, building subagents with `AgentDefinition`, enabling
+  structured outputs, running agents in a Docker/K8s sandbox, capturing
+  and resuming sessions, or troubleshooting SDK-specific errors (the
+  SDK wraps Claude Code, so its errors differ from raw Messages API
+  errors).
+
+  Skip: questions about the Claude Code CLI itself such as `.claude/
+  settings.json` or `.mcp.json` files (use claude-code), the Anthropic
+  Messages API directly without the SDK (use anthropic-api), the MCP
+  protocol spec itself (use mcp-spec), or Anthropic's hosted Managed
+  Agents product (use anthropic-platform-features).
 user-invocable: true
 ---
 
@@ -16,7 +33,7 @@ user-invocable: true
 
 | | TypeScript | Python |
 |---|---|---|
-| **Version** | v0.2.77 | v0.1.49 |
+| **Version** | v0.3.143 | v0.2.82 |
 | **Package** | `@anthropic-ai/claude-agent-sdk` | `claude-agent-sdk` (PyPI) |
 | **Docs** | [TypeScript SDK](https://platform.claude.com/docs/en/agent-sdk/typescript) | [Python SDK](https://platform.claude.com/docs/en/agent-sdk/python) |
 | **Repo** | [claude-agent-sdk-typescript](https://github.com/anthropics/claude-agent-sdk-typescript) | [claude-agent-sdk-python](https://github.com/anthropics/claude-agent-sdk-python) |

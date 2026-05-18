@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://github.com/xiaolai/claude-code-documentation-knowledge-autoupdated/schema/plugin.schema.json",
+  "$id": "https://github.com/xiaolai/autoupdated-anthropic-documentation-knowledge/schema/plugin.schema.json",
   "title": "Claude Code plugin manifest (.claude-plugin/plugin.json)",
   "description": "Permissive schema for plugin.json. Required: name, version. Optional metadata: description, author, homepage, repository, license, keywords.",
   "type": "object",

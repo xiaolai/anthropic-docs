@@ -22,7 +22,9 @@
     "SKILL-protocol.md",
     "SKILL-tools-resources-prompts.md"
   ],
-  "rules": [],
+  "rules": [
+    "rules/mcp-server-impl.md"
+  ],
   "dispatch": {
     "clients.md": "SKILL-clients.md",
     "specification/": "SKILL-protocol.md",

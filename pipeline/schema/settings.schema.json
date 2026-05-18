@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://github.com/xiaolai/claude-code-documentation-knowledge-autoupdated/schema/settings.schema.json",
+  "$id": "https://github.com/xiaolai/autoupdated-anthropic-documentation-knowledge/schema/settings.schema.json",
   "title": "Claude Code settings.json",
   "description": "Permissive schema for ~/.claude/settings.json, <project>/.claude/settings.json, and <project>/.claude/settings.local.json. Starts loose (additionalProperties: true) and tightens over time. The research agent updates this when new settings keys are documented upstream.",
   "type": "object",

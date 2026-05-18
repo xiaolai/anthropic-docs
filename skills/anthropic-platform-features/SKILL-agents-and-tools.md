@@ -93,6 +93,35 @@ For deep MCP protocol details, see [`mcp-spec`](../mcp-spec/SKILL.md).
 The full tool-use surface lives under
 [`tool-use/`](https://platform.claude.com/docs/en/agents-and-tools/tool-use/).
 
+### Canonical tool-definition shape
+
+This is the validated reference shape for a tool entry passed to
+`POST /v1/messages` in the `tools: []` array. The schema at
+[`pipeline/schema/anthropic-tool.schema.json`](../../pipeline/schema/anthropic-tool.schema.json)
+enforces it via `validate-examples.sh`:
+
+```json
+{
+  "name": "search_files",
+  "description": "Search files in the user's project matching a query string. Returns an array of paths with snippets.",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "query": { "type": "string" },
+      "max_results": { "type": "integer", "minimum": 1, "maximum": 100 }
+    },
+    "required": ["query"]
+  }
+}
+```
+
+Common mistakes (see [`rules/tool-use.md`](rules/tool-use.md)):
+- `input_schema` missing `type: "object"` at the top level → 400
+- `required` array omitted → all params silently optional
+- `name` too long (max 64 chars) or with disallowed chars → 400
+
+
+
 ### Conceptual foundation
 
 | Page | Topic |

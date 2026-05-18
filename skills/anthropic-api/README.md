@@ -3,7 +3,7 @@
 Auto-updated reference skill for the **Anthropic Messages API** and
 adjacent surfaces (admin, compliance, beta, models).
 
-Part of the [anthropic-docs-skills-autoupdated](../../README.md) plugin.
+Part of the [autoupdated-anthropic-documentation-knowledge](../../README.md) plugin.
 
 ## Surfaces
 

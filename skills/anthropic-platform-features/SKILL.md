@@ -46,4 +46,4 @@ user-invocable: true
 ---
 
 *This skill is auto-updated daily by a maintainer-run pipeline. File
-issues at [xiaolai/claude-code-documentation-knowledge-autoupdated](https://github.com/xiaolai/claude-code-documentation-knowledge-autoupdated).*
+issues at [xiaolai/autoupdated-anthropic-documentation-knowledge](https://github.com/xiaolai/autoupdated-anthropic-documentation-knowledge).*

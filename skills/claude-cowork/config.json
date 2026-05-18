@@ -15,7 +15,9 @@
     "SKILL-cowork.md",
     "SKILL-office-agents.md"
   ],
-  "rules": [],
+  "rules": [
+    "rules/mdm-config.md"
+  ],
   "dispatch": {
     "cowork/": "SKILL-cowork.md",
     "office-agents/": "SKILL-office-agents.md"

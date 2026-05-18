@@ -1,4 +1,4 @@
-# claude-code-documentation-knowledge — auto-updated
+# claude-code
 
 An auto-updated Claude Code skill that tracks the official Claude
 Code documentation (`code.claude.com/docs/*`) and bug-labeled GitHub
@@ -37,8 +37,8 @@ names, flags, env vars) flow in.
 ## Installation
 
 ```bash
-git clone https://github.com/xiaolai/claude-code-documentation-knowledge-autoupdated \
-  ~/.claude/skills/claude-code-documentation-knowledge-autoupdated
+git clone https://github.com/xiaolai/autoupdated-anthropic-documentation-knowledge \
+  ~/.claude/skills/autoupdated-anthropic-documentation-knowledge
 ```
 
 Claude Code auto-discovers skills under `~/.claude/skills/`, so no
@@ -48,7 +48,7 @@ next Claude Code session.
 To pull the latest updates:
 
 ```bash
-cd ~/.claude/skills/claude-code-documentation-knowledge-autoupdated && git pull
+cd ~/.claude/skills/autoupdated-anthropic-documentation-knowledge && git pull
 ```
 
 Optional: auto-update daily (the pipeline commits at 08:00 UTC, so
@@ -60,7 +60,7 @@ instead of swallowing them silently:
 # existing crontab doesn't fail this pipeline (idiomatic "preserve
 # existing entries OR start fresh").
 (crontab -l 2>/dev/null || true; \
- echo "30 9 * * * cd ~/.claude/skills/claude-code-documentation-knowledge-autoupdated && git pull -q >> ~/.claude/skill-pull.log 2>&1") | crontab -
+ echo "30 9 * * * cd ~/.claude/skills/autoupdated-anthropic-documentation-knowledge && git pull -q >> ~/.claude/skill-pull.log 2>&1") | crontab -
 ```
 
 ## Architecture
@@ -220,5 +220,5 @@ the diff before our local truth shifts under us.
 
 ---
 
-**Repository**: https://github.com/xiaolai/claude-code-documentation-knowledge-autoupdated
+**Repository**: https://github.com/xiaolai/autoupdated-anthropic-documentation-knowledge
 **License**: MIT

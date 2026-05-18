@@ -57,4 +57,4 @@ actually pay off (typically system + tools + last large doc).
 ---
 
 *Auto-updated daily. If a rule conflicts with current API behavior,
-file an issue at [xiaolai/claude-code-documentation-knowledge-autoupdated](https://github.com/xiaolai/claude-code-documentation-knowledge-autoupdated).*
+file an issue at [xiaolai/autoupdated-anthropic-documentation-knowledge](https://github.com/xiaolai/autoupdated-anthropic-documentation-knowledge).*

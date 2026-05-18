@@ -1,4 +1,4 @@
-# Migration to `anthropic-docs-skills-autoupdated` — full plan + progress
+# Migration to `autoupdated-anthropic-documentation-knowledge` — full plan + progress
 
 **Status:** Phase 1 complete (working state, commit ready). Phases 2–5 pending.
 **Session checkpoint:** 2026-05-17, all 8 verify:all gates green under new layout.
@@ -27,7 +27,7 @@ Excluded (deliberately):
 ## Current directory state (after Phase 1)
 
 ```
-anthropic-docs-skills-autoupdated/    ← logical name; local dir still claude-code-documentation-knowledge-autoupdated
+autoupdated-anthropic-documentation-knowledge/    ← logical name; local dir still autoupdated-anthropic-documentation-knowledge
 ├── pipeline/
 │   ├── agent/                        ✅ moved (TS agents, prompts, monitor.sh, verify.sh, sanitiser, package.json)
 │   │   ├── update-agent.ts           ✅ parameterised by SKILL_NAME env
@@ -66,8 +66,8 @@ anthropic-docs-skills-autoupdated/    ← logical name; local dir still claude-c
 ├── README.md                         ✅ NEW — describes the multi-skill repo
 ├── CHANGELOG.md                      ✅ NEW — repo-level history (per-skill history in skills/<name>/CHANGELOG.md)
 ├── LICENSE                           ✅ unchanged
-├── package.json + lockfile           ✅ scripts updated to pipeline/scripts/* paths; renamed to anthropic-docs-skills-autoupdated
-├── .claude-plugin/plugin.json        ✅ renamed to anthropic-docs-skills-autoupdated
+├── package.json + lockfile           ✅ scripts updated to pipeline/scripts/* paths; renamed to autoupdated-anthropic-documentation-knowledge
+├── .claude-plugin/plugin.json        ✅ renamed to autoupdated-anthropic-documentation-knowledge
 ├── .gitignore                        ✅ unchanged
 ├── .github/
 │   ├── workflows/

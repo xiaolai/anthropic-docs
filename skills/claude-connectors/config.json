@@ -18,7 +18,10 @@
     "SKILL-claude-skills.md",
     "SKILL-claude-plugins.md"
   ],
-  "rules": [],
+  "rules": [
+    "rules/mcpb-manifest.md",
+    "rules/mcp-apps-design.md"
+  ],
   "dispatch": {
     "connectors/overview.md": "SKILL-connectors-overview.md",
     "connectors/getting-started.md": "SKILL-connectors-overview.md",

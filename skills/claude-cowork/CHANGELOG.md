@@ -7,7 +7,7 @@ machine-generated entry on every successful daily run.
 
 ### Added
 
-- Scaffold created as part of the `anthropic-docs-skills-autoupdated`
+- Scaffold created as part of the `autoupdated-anthropic-documentation-knowledge`
   multi-skill big-bang migration.
 - Router `SKILL.md` with 2-surface dispatch (cowork, office-agents).
 - Surface stubs for both surfaces.

@@ -19,10 +19,17 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 # Paths after the multi-skill refactor: workflow at repo root .github/,
 # agents at pipeline/agent/.
-WORKFLOW="$REPO_ROOT/.github/workflows/daily.yml"
-# Fallback to the legacy single-skill workflow name during the transition.
+WORKFLOW="$REPO_ROOT/.github/workflows/pipeline.yml"
+# Fallback to legacy filenames during the transition (daily.yml was the
+# previous name; cc-update-check.yml was the pre-multi-skill name).
 if [[ ! -f "$WORKFLOW" ]]; then
-  WORKFLOW="$REPO_ROOT/.github/workflows/cc-update-check.yml"
+  for FALLBACK in "$REPO_ROOT/.github/workflows/daily.yml" \
+                  "$REPO_ROOT/.github/workflows/cc-update-check.yml"; do
+    if [[ -f "$FALLBACK" ]]; then
+      WORKFLOW="$FALLBACK"
+      break
+    fi
+  done
 fi
 REPORT_TS="$REPO_ROOT/pipeline/agent/report-agent.ts"
 REPORT_PROMPT="$REPO_ROOT/pipeline/agent/report-prompt.md"
