@@ -10,6 +10,18 @@ The newest entry is at the top.
 
 ---
 
+## v2.1.143 — 2026-05-18 — npm version bump (0.0.0 → 2.1.143)
+
+First registered npm version for `@anthropic-ai/claude-code`. The pipeline
+monitor detected the package at `v2.1.143`; this is the baseline version
+recorded in `state.json` for all future bump comparisons. The docs index
+hash also changed (`0b1ca29a…` → `1022e166…`) with the same page count (103),
+indicating in-place content updates with no added or removed pages.
+
+No surface file edits were required — `SKILL.md` already carries `v2.1.143`
+(hardcoded during the 2026-05-17 security-hardening pass). README version
+stamp and this CHANGELOG entry are the only propagation targets.
+
 ## 2026-05-17 — codex audit-fix pass 4 (8 findings → CLEAN in 2 rounds)
 
 Sanity-check audit re-run after the push-to-100 pass. Codex surfaced
