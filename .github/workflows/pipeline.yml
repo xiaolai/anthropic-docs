@@ -140,12 +140,25 @@ jobs:
       # so re-fetch them here BEFORE the agent steps. Skip the refresh
       # when monitor sees no changes — saves ~30s per skill per run on
       # quiet hours (most of the day).
+      #
+      # Per-skill override: a skill's config.json may declare
+      # `pipelineOverrides.customRefreshScript` to use a bespoke
+      # fetcher (e.g., anthropic-pulse scrapes HTML, not llms.txt).
+      # We dispatch to the named script when present, else the
+      # standard refresh-docs-snapshot.sh.
       - name: Refresh docs-snapshot (ephemeral, this run only)
         id: refresh
         if: steps.monitor.outputs.changes == 'true' || inputs.force_refresh == 'true'
         run: |
           START=$(date +%s)
-          bash pipeline/scripts/refresh-docs-snapshot.sh
+          SKILL_CONFIG="skills/$SKILL_NAME/config.json"
+          CUSTOM=$(jq -r '.pipelineOverrides.customRefreshScript // empty' "$SKILL_CONFIG" 2>/dev/null)
+          if [[ -n "$CUSTOM" ]]; then
+            echo "Using custom refresh script for $SKILL_NAME: $CUSTOM"
+            bash "$CUSTOM"
+          else
+            bash pipeline/scripts/refresh-docs-snapshot.sh
+          fi
           ELAPSED=$(( $(date +%s) - START ))
           jq --arg s "refresh" --arg r "success" --arg d "${ELAPSED}s" \
             '.steps += [{"step":$s,"result":$r,"duration":$d}]' \
