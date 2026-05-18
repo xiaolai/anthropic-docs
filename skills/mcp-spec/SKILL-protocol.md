@@ -111,6 +111,13 @@ Standard JSON-RPC error codes plus MCP-specific extensions:
 MCP-defined error semantics live in the spec under
 [`specification/2025-11-25/basic/`](https://modelcontextprotocol.io/specification/2025-11-25/basic/).
 
+> **Note (SDK inconsistency):** For "resource not found" errors, current SDKs vary:
+> TypeScript → `-32602`; Python → `0`; C#/Rust/Java/Go/PHP → `-32002`; Kotlin → `-32603`;
+> Ruby/Swift → left to the implementor.
+> [Draft SEP-2164](https://modelcontextprotocol.io/seps/2164-resource-not-found-error.md)
+> proposes standardizing on `-32602`. Until it is adopted, clients handling `resources/read`
+> errors should treat `-32602`, `-32002`, `0`, and `-32603` all as "resource not found".
+
 ## Protocol versioning
 
 Version string format: `YYYY-MM-DD` — the date of the last
@@ -146,7 +153,18 @@ Reference: [`learn/versioning.md`](https://modelcontextprotocol.io/docs/learn/ve
 Protocol evolution happens via SEPs — Specification Enhancement
 Proposals. The process is documented at
 [`community/sep-guidelines.md`](https://modelcontextprotocol.io/community/sep-guidelines.md).
-Active SEPs live under [`seps/`](https://modelcontextprotocol.io/seps/).
+All SEPs live under [`seps/`](https://modelcontextprotocol.io/seps/).
+
+### Recently indexed draft SEPs
+
+The three SEPs below were added to the docs index on 2026-05-18.
+All are in **Draft** status — not yet normative.
+
+| SEP | Title | What it changes |
+|---|---|---|
+| [SEP-2106](https://modelcontextprotocol.io/seps/2106-json-schema-2020-12.md) | Tools `inputSchema` & `outputSchema` conform to JSON Schema 2020-12 | Loosens tool schema fields to accept full JSON Schema 2020-12 (composition keywords, `$ref`, array outputs); `structuredContent` becomes any JSON value |
+| [SEP-2164](https://modelcontextprotocol.io/seps/2164-resource-not-found-error.md) | Standardize resource-not-found error code to `-32602` | Aligns SDKs on `-32602` (Invalid Params) for missing resources; current SDKs return four different codes |
+| [SEP-2596](https://modelcontextprotocol.io/seps/2596-spec-feature-lifecycle-and-deprecation.md) | Feature lifecycle and deprecation policy | Formal Active → Deprecated → Removed state machine with a minimum 12-month window; formalizes HTTP+SSE transport as Deprecated |
 
 ---
 

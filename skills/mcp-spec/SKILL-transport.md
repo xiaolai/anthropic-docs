@@ -111,6 +111,13 @@ Migration path: streamable HTTP servers can offer SSE compatibility
 during a transition period by exposing both endpoints; once all
 clients update, the SSE endpoints can be removed.
 
+> **Draft SEP-2596** formalizes the MCP feature lifecycle and deprecation policy. Under that
+> policy, the HTTP+SSE transport is classified as **Deprecated** with an earliest removal of
+> three months after SEP-2596 reaches Final (the 12-month minimum window is waived because the
+> transport has already been informally deprecated for over a year). Until SEP-2596 is Final,
+> no hard removal date exists — plan migration to streamable HTTP at your earliest convenience.
+> See [SEP-2596](https://modelcontextprotocol.io/seps/2596-spec-feature-lifecycle-and-deprecation.md).
+
 ## Choosing a transport
 
 ```

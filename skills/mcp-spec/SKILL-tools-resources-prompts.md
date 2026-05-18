@@ -27,6 +27,7 @@ A tool is a callable function the server exposes to the host LLM.
 ```json
 {
   "name": "search_files",
+  "title": "Search Files",
   "description": "Search files matching a query",
   "inputSchema": {
     "type": "object",
@@ -37,31 +38,42 @@ A tool is a callable function the server exposes to the host LLM.
     "required": ["query"]
   },
   "outputSchema": {
-    "type": "object",
-    "properties": {
-      "results": {
-        "type": "array",
-        "items": { "type": "object", "properties": { "path": { "type": "string" } } }
-      }
-    }
+    "type": "array",
+    "items": { "type": "object", "properties": { "path": { "type": "string" } } }
   },
   "annotations": {
-    "title": "Search Files",
     "readOnlyHint": true,
     "destructiveHint": false,
     "idempotentHint": true,
     "openWorldHint": false
+  },
+  "execution": {
+    "taskSupport": "optional"
   }
 }
 ```
 
-- `inputSchema` — JSON Schema, used by the LLM and the client to
-  validate arguments.
-- `outputSchema` — optional. When present, the response's
-  `structuredContent` should match it.
+- `title` — optional human-readable display name for the tool (separate from `name`).
+- `inputSchema` — JSON Schema 2020-12 object. `type: "object"` is required. All JSON Schema
+  2020-12 keywords are supported (`anyOf`, `oneOf`, `allOf`, `$ref`, etc.). Defaults to
+  dialect 2020-12 when no `$schema` field is present.
+- `outputSchema` — optional JSON Schema 2020-12 describing the `structuredContent` shape.
+  May be any valid JSON Schema (objects, arrays, primitives).
 - `annotations` — *non-binding* hints for clients (UI rendering,
   permission prompts). All Boolean fields default to safe-pessimistic
   values when absent.
+- `execution.taskSupport` — optional; controls task-augmented invocation.
+  `"forbidden"` (default) | `"optional"` | `"required"`. Requires the server to also declare
+  `capabilities.tasks.requests.tools.call`.
+
+Source: [`specification/2025-11-25/basic/index.md` §JSON Schema Usage](https://modelcontextprotocol.io/specification/2025-11-25/basic/index.md),
+[`specification/2025-11-25/basic/utilities/tasks.md`](https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/tasks.md).
+
+> **JSON Schema 2020-12 is now the normative default** in the `2025-11-25` spec (`basic/index.md`
+> §JSON Schema Usage). `inputSchema` allows all 2020-12 keywords alongside `type: "object"`;
+> `outputSchema` allows any valid JSON Schema (not just objects); `structuredContent` accepts any
+> JSON value. [SEP-2106](https://modelcontextprotocol.io/seps/2106-json-schema-2020-12.md)
+> (still Draft/Standards Track) tracks formal ratification of this normative change.
 
 ### Calling
 
@@ -75,7 +87,8 @@ A tool is a callable function the server exposes to the host LLM.
 - `{type: "text", text: "..."}`
 - `{type: "image", data: "<base64>", mimeType: "image/png"}`
 - `{type: "audio", data: "<base64>", mimeType: "audio/wav"}`
-- `{type: "resource", resource: {...}}` — embed a resource by reference.
+- `{type: "resource_link", uri, name?, description?, mimeType?}` — link to a resource by URI (client fetches on demand; not guaranteed to appear in `resources/list`).
+- `{type: "resource", resource: {...}}` — embed a resource's full content directly in the response.
 
 Errors at the *tool* level set `isError: true` with an error
 description in `content` (client surfaces to LLM). Errors at the
@@ -93,6 +106,7 @@ optionally subscribes, and reads.
 {
   "uri": "file:///path/to/data.json",
   "name": "Data file",
+  "title": "Application Config",
   "description": "Application configuration",
   "mimeType": "application/json"
 }

@@ -6,6 +6,8 @@ capabilities), the client and server roles, the transport layers
 (stdio / streamable HTTP / SSE), and the core primitives (tools,
 resources, prompts, sampling, roots, completion).
 
+**Last updated**: 2026-05-18
+
 Part of the [anthropic-docs](../../README.md) plugin.
 
 ## Surfaces
@@ -32,3 +34,8 @@ Part of the [anthropic-docs](../../README.md) plugin.
 SKILL_NAME=mcp-spec npm run update
 ```
 
+## Recent activity
+
+| Date | Update | Research | Mending | Report | Total | Notes |
+|------|--------|----------|---------|--------|-------|-------|
+| 2026-05-18 | $0.80 | $1.22 | $0.00 | — | **$2.02** | review — check-diff-size failed; first cold-start sync 0.0.0→1.29.0, 3 new SEPs |

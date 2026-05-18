@@ -145,7 +145,44 @@ Don't conflate — throwing exceptions from a tool handler typically
 maps to protocol-level errors, but business-logic failures should
 return `isError: true` with a useful text content.
 
-## Rule 8 — Subscriptions require `resources.subscribe` capability
+## Rule 8 — `inputSchema` defaults to JSON Schema 2020-12; avoid composition-keyword workarounds
+
+Since the `2025-11-25` spec revision, `inputSchema` and `outputSchema` default to JSON Schema
+2020-12 dialect when no `$schema` field is present. Composition keywords (`anyOf`, `oneOf`,
+`allOf`, `$ref`) and `$defs` are fully supported.
+
+**WRONG (old workaround — no longer needed):**
+```typescript
+// Wrapping alternatives in a description string because anyOf wasn't allowed
+inputSchema: {
+  type: "object",
+  properties: {
+    format: { type: "string", description: "One of: json, csv, xml" }
+  }
+}
+```
+
+**RIGHT (use JSON Schema 2020-12 directly):**
+```typescript
+inputSchema: {
+  type: "object",
+  properties: {
+    format: { type: "string", enum: ["json", "csv", "xml"] }
+  },
+  required: ["format"]
+}
+// Or with anyOf for complex types:
+inputSchema: {
+  type: "object",
+  properties: {
+    value: { anyOf: [{ type: "string" }, { type: "number" }] }
+  }
+}
+```
+
+Note: `outputSchema` may now also be any JSON Schema shape (arrays, primitives — not just objects).
+
+## Rule 9 — Subscriptions require `resources.subscribe` capability
 
 `resources/subscribe` only works if the server declared
 `capabilities.resources.subscribe = true`. The SDK doesn't warn you
