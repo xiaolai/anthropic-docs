@@ -47,18 +47,23 @@ MDM profile should explicitly NOT set `inferenceProvider: foundry`.
 
 ## Rule 4 — Telemetry kill switches
 
-Three independent telemetry toggles:
+Four independent telemetry toggles (all default `false` → telemetry enabled):
 
-- `disableCrashReporting`: boolean, scrubs and disables crash reports
-- `disableProductAnalytics`: boolean, disables usage telemetry
-- `disableAutoUpdate`: boolean, disables auto-update checks
+- `disableEssentialTelemetry`: boolean — disables crash reports and error
+  stack traces. **Caution:** this opts you into a manual support model;
+  Anthropic cannot remotely diagnose fleet failures. Strongly recommended to
+  leave enabled during initial rollout.
+- `disableNonessentialTelemetry`: boolean — disables product-usage analytics.
+- `disableNonessentialServices`: boolean — disables cosmetic third-party
+  fetches (favicons, artifact-preview iframes). Degrades UI slightly but
+  does not affect functionality.
+- `disableAutoUpdates`: boolean — disables auto-update checks; IT must
+  redistribute new builds manually.
 
-All three are off-by-default (telemetry enabled). For air-gapped or
-compliance-hardened deployments, set all three to `true`.
+For air-gapped or compliance-hardened deployments, set all four to `true`.
+Telemetry NEVER contains user prompts or completions.
 
-Telemetry NEVER contains user prompts or completions, but if your
-audit posture requires zero Anthropic-bound network traffic, disable
-all three.
+Source: [`3p/telemetry.md`](https://claude.com/docs/cowork/3p/telemetry.md).
 
 ## Rule 5 — Don't mix per-user and admin profiles
 
@@ -91,6 +96,30 @@ breaking change immediately.
 requests return 429 `cap_exceeded` until the next billing month.
 Set to a value above your monthly forecast, with a buffer.
 
+## Rule 9 — Array and object keys must be JSON strings, not native plist structures
+
+The most common Cowork on 3P configuration mistake. Keys with documented
+type `string[]`, `object`, or `object[]` must be **JSON-encoded strings**
+in `.mobileconfig` (a single `<string>` element) or as a registry
+`REG_SZ` string value — NOT as native plist `<array>`/`<dict>` elements
+or separate dotted keys.
+
+Affected keys: `inferenceModels`, `managedMcpServers`,
+`coworkEgressAllowedHosts`, `disabledBuiltinTools`,
+`inferenceGatewayOidc`, `otlpHeaders`, `orgPluginSettings`.
+
+```xml
+<!-- Correct -->
+<key>inferenceModels</key>
+<string>["claude-sonnet-4","claude-opus-4"]</string>
+
+<!-- Wrong — will silently fail -->
+<key>inferenceModels</key>
+<array><string>claude-sonnet-4</string><string>claude-opus-4</string></array>
+```
+
+Source: [`3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
+
 ---
 
-*Source: claude.com/docs/cowork/3p/configuration.md + feature-matrix.md.*
+*Source: claude.com/docs/cowork/3p/configuration.md + feature-matrix.md + telemetry.md.*

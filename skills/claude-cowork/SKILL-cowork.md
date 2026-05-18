@@ -124,16 +124,38 @@ APJ, and other sovereign regions).
 
 Every managed-configuration key lives in
 [`3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
-That page is the source of truth for:
+That page is the source of truth; quick reference below.
 
-- Inference provider selection (`inferenceProvider`)
-- Region pinning (`inferenceVertexRegion`, `inferenceBedrockRegion`)
-- Feature toggles (web search, local MCP, etc.)
-- Telemetry toggles
-- MCP server allowlist
-- Plugin / skill / hook distribution settings
-- Per-user spend caps
-- Auto-update policy
+**Activation / connection**
+
+| Key | Type | Notes |
+|---|---|---|
+| `inferenceProvider` | string | `vertex` \| `bedrock` \| `foundry` \| `gateway`. 3P mode only activates when this key is set AND valid credentials are present. |
+| `deploymentOrganizationUuid` | string (UUID) | **Required before rollout** — identifies your fleet in telemetry and support cases. |
+| `disableDeploymentModeChooser` | boolean | `true` hides the "Sign in to Anthropic" option on the sign-in screen. |
+| `inferenceVertexRegion` / `inferenceBedrockRegion` | string | Required when using Vertex or Bedrock to guarantee data residency. |
+| `inferenceModels` | string\|object[] (JSON string) | Model picker contents. Entries may be strings or objects with `name`, `labelOverride` (display text), and `supports1m: true` for 1M-context variants. |
+| `inferenceCredentialHelper` / `inferenceCredentialHelperTtlSec` | string / integer | Executable path whose stdout is the credential; TTL in seconds (default 3600). |
+
+**Sandbox & workspace**
+
+| Key | Type | Default | Notes |
+|---|---|---|---|
+| `disabledBuiltinTools` | string[] (JSON string) | `[]` | Tool names to remove (e.g. `["WebSearch","Bash"]`). |
+| `coworkEgressAllowedHosts` | string[] (JSON string) | inference endpoint only | Hosts reachable from the agent sandbox. `["*"]` disables filtering. Does NOT restrict the Code tab. |
+| `isClaudeCodeForDesktopEnabled` | boolean | `true` | Show/hide the Code tab. |
+
+**Connectors & extensions**
+
+| Key | Type | Default | Notes |
+|---|---|---|---|
+| `managedMcpServers` | object[] (JSON string) | `[]` | Remote MCP servers deployed to all users; supports `oauth`, `headersHelper`, `toolPolicy`. |
+| `orgPluginSettings` | object (JSON string) | `{}` | Per-tool policy for MCP servers delivered via org plugins. |
+| `isLocalDevMcpEnabled` / `isDesktopExtensionEnabled` / `isDesktopExtensionSignatureRequired` | boolean | `true` / `true` / `false` | Allow user-added local MCP servers; allow `.mcpb` desktop extensions; require signed extensions. |
+
+> **Important:** All `string[]` and `object[]` values must be written as
+> JSON-encoded strings (not native plist arrays or registry multi-value
+> structures). See [Rule 9 in `rules/mdm-config.md`](rules/mdm-config.md).
 
 ## Data residency
 
@@ -215,7 +237,31 @@ User-facing how-to pages for standard Cowork (non-3P):
 
 [`monitoring.md`](https://claude.com/docs/cowork/monitoring.md)
 covers OpenTelemetry export, usage analytics, spend tracking, and the
-session-activity event schema.
+session-activity event schema. Requires Claude Desktop ≥ 1.1.4173.
+
+Configure via **Admin settings → Cowork**: set `otlpEndpoint`,
+`otlpProtocol` (`http/json` or `http/protobuf`), and `otlpHeaders`.
+
+**OTel event names:**
+
+| Event name | Fired when |
+|---|---|
+| `user_prompt` | User submits a prompt |
+| `tool_result` | A tool completes execution |
+| `api_request` | An API call to Claude completes |
+| `api_error` | An API call fails |
+
+All events carry standard attributes: `session.id`, `organization.id`,
+`user.account_uuid`, `user.account_id`, `user.id`, `user.email`,
+`workspace.host_paths`, `terminal.type`.
+
+The `prompt.id` attribute (UUID v4) links every event produced by a
+single user prompt — use it to reconstruct the full trace.
+
+Key per-event attributes: `tool_result` includes `decision_type`
+(`accept`/`reject`), `decision_source`, and `tool_input` (truncated at
+~4 KB); `api_request` includes `input_tokens`, `output_tokens`,
+`cache_read_tokens`, `cache_creation_tokens`, and `cost_usd`.
 
 ---
 
