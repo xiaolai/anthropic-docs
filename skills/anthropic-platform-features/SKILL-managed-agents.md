@@ -42,8 +42,16 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
   agents. Limited CPU / memory / network egress. Configure per agent
   via the environments resource.
 - **Beta API surface.** All Managed-Agents endpoints currently live
-  under `/v1/...` with the `anthropic-beta` header. Pin the beta
-  string to a specific version; the shape may evolve.
+  under `/v1/...` with the `anthropic-beta` header
+  (`managed-agents-2026-04-01`). Pin the beta string to a specific
+  version; the shape may evolve.
+- **Memory stores persist cross-session.** A memory store
+  (`memstore_...` ID) is a workspace-scoped collection of text
+  documents mounted as a directory in the agent's container. Create
+  via `POST /v1/memory_stores`, seed with
+  `POST /v1/memory_stores/{id}/memories`, attach when starting a
+  session. Every write creates an immutable version (audit trail).
+  Requires the agent toolset to be enabled for read/write operations.
 - **Webhooks for async results.** Long-running Dreams notify
   completion via webhook (configure per agent). Don't poll — the
   webhook is cheaper and faster.
@@ -65,7 +73,7 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
 | **Skills** | [`skills.md`](https://platform.claude.com/docs/en/managed-agents/skills.md) |
 | **Tools** | [`tools.md`](https://platform.claude.com/docs/en/managed-agents/tools.md) |
 | **Files** | [`files.md`](https://platform.claude.com/docs/en/managed-agents/files.md) |
-| **Memory** | [`memory.md`](https://platform.claude.com/docs/en/managed-agents/memory.md) |
+| **Memory stores** | [`memory.md`](https://platform.claude.com/docs/en/managed-agents/memory.md) | Persistent cross-session storage; create via `POST /v1/memory_stores` → `memstore_...` ID; seed with `POST /v1/memory_stores/{id}/memories`; attach to sessions; requires beta header `managed-agents-2026-04-01` |
 | **Vaults** | [`vaults.md`](https://platform.claude.com/docs/en/managed-agents/vaults.md) (secret storage) |
 
 ## Environments & runtime
