@@ -1,0 +1,36 @@
+{
+  "name": "anthropic-pulse",
+  "displayName": "Anthropic Pulse — news + research digests",
+  "description": "Fresh digest (every 30 min) of recent Anthropic news posts and research publications. Unlike the other 7 skills which mirror reference documentation, this one surfaces TIME-SENSITIVE narrative content — model launches, product announcements, partnership news, research papers — so Claude can answer 'did X just launch?' or 'what's Anthropic's recent thinking on Y?' without WebFetching the index page.",
+  "upstream": {
+    "newsIndexUrl": "https://www.anthropic.com/news",
+    "researchIndexUrl": "https://www.anthropic.com/research",
+    "_note": "This skill does NOT use the standard docsIndexUrl + docsPathFilter pattern because the upstream is HTML index pages, not llms.txt. The pipeline scrape lives at pipeline/scripts/fetch-anthropic-pulse.sh and is wired into the workflow as a per-skill conditional step.",
+    "npmPackages": [],
+    "pypiPackages": [],
+    "githubRepos": [],
+    "bugTrackerRepo": null,
+    "docsIndexUrl": "https://www.anthropic.com/news",
+    "docsPathFilter": "_skip_"
+  },
+  "router": "SKILL.md",
+  "surfaces": [
+    "SKILL-news.md",
+    "SKILL-research.md"
+  ],
+  "rules": [],
+  "dispatch": {
+    "news": "SKILL-news.md",
+    "research": "SKILL-research.md"
+  },
+  "schemas": {},
+  "knownIssuesSurface": null,
+  "pipelineOverrides": {
+    "skipMonitorDocsCheck": true,
+    "skipRefreshDocsSnapshot": true,
+    "customRefreshScript": "pipeline/scripts/fetch-anthropic-pulse.sh",
+    "skipResearchAgent": true,
+    "skipUpdateAgent": true,
+    "_note": "This skill is deterministically rendered from upstream HTML — no LLM agents needed. fetch-anthropic-pulse.sh handles both fetch + render. Zero token cost per pipeline run."
+  }
+}

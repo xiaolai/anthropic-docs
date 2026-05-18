@@ -1,5 +1,13 @@
 # claude-agent-sdk
 
+> **Looking for structured learning?** The
+> [Skilljar courses](https://anthropic.skilljar.com/) include
+> "Building Effective Agents" — the foundational course for SDK
+> work. Pair it with the hands-on
+> [tutorials at claude.com/resources/tutorials](https://claude.com/resources/tutorials).
+> This skill is the always-current API reference Claude reads at
+> intent-match time; the courses + tutorials build the mental model.
+
 Auto-updated reference skill for the **Claude Agent SDK** — Anthropic's libraries for building autonomous AI agents that wrap the Claude Code CLI runtime. Covers both [TypeScript](https://github.com/anthropics/claude-agent-sdk-typescript) (`@anthropic-ai/claude-agent-sdk` on npm) and [Python](https://github.com/anthropics/claude-agent-sdk-python) (`claude-agent-sdk` on PyPI).
 
 Part of the [autoupdated-anthropic-documentation-knowledge](../../README.md) plugin.

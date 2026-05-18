@@ -1,0 +1,29 @@
+{
+  "registry": {
+    "packages": []
+  },
+  "github": {
+    "repos": [],
+    "bugTracker": {
+      "repo": "",
+      "lastScannedIssueNumber": 0
+    }
+  },
+  "docs": {
+    "indexUrl": "https://www.anthropic.com/news",
+    "indexSha256": "",
+    "pageCount": 0,
+    "knownPages": {}
+  },
+  "trackedIssues": {},
+  "researchedIssues": {},
+  "lastAuditedVersion": "n/a",
+  "lastUpdated": "2026-05-18T03:36:19Z",
+  "scaffoldComplete": true,
+  "lastRunWarnings": [],
+  "pulse": {
+    "newsItemsTracked": 15,
+    "researchItemsTracked": 13,
+    "lastFetchedAt": "2026-05-18T03:36:19Z"
+  }
+}

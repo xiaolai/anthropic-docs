@@ -1,5 +1,12 @@
 # anthropic-platform-features
 
+> **Looking for the policy & economics side?** See
+> [anthropic.com/economic-futures](https://www.anthropic.com/economic-futures)
+> for Anthropic's research agenda on AI's economic impact. Major
+> releases from that initiative also surface via the
+> [`anthropic-pulse`](../anthropic-pulse/) research digest when
+> published.
+
 Auto-updated reference skill for **Anthropic platform features** above
 the raw API: Agent Skills format, MCP connector, tool use, build-with-
 claude features (extended thinking, batches, citations, Bedrock,

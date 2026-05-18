@@ -47,6 +47,19 @@ SKILL_CONFIG="$ROOT/config.json"
 if [[ -f "$SKILL_CONFIG" ]]; then
   CONFIG_DOCS_URL=$(jq -r '.upstream.docsIndexUrl // empty' "$SKILL_CONFIG")
   DOCS_INDEX_URL="${DOCS_INDEX_URL:-$CONFIG_DOCS_URL}"
+  # Custom-pipeline opt-out: skills that don't use the standard
+  # llms.txt + MANIFEST pattern can declare
+  #   pipelineOverrides.skipMonitorDocsCheck: true
+  # in their config.json. We honor it here — drift detection only makes
+  # sense for skills whose MANIFEST is populated by the standard
+  # refresh-docs-snapshot.sh flow. anthropic-pulse is the canonical
+  # example: HTML-only upstream, custom fetcher, MANIFEST is a stub.
+  SKIP_DOCS_CHECK=$(jq -r '.pipelineOverrides.skipMonitorDocsCheck // false' "$SKILL_CONFIG")
+  if [[ "${FORCE_DRIFT_CHECK:-0}" != "1" && "$SKIP_DOCS_CHECK" == "true" ]]; then
+    echo "Skill '$SKILL_NAME' opts out of docs-drift via pipelineOverrides.skipMonitorDocsCheck."
+    echo "(This skill uses a custom fetcher; standard MANIFEST-vs-llms.txt comparison does not apply.)"
+    exit 0
+  fi
 fi
 DOCS_INDEX_URL="${DOCS_INDEX_URL:-https://code.claude.com/llms.txt}"
 

@@ -1,5 +1,11 @@
 # claude-code
 
+> **Looking for structured learning?** Anthropic publishes free courses on
+> [Skilljar](https://anthropic.skilljar.com/) — try "Claude Code in
+> Action" and "Building Effective Agents." This skill is the
+> always-current reference Claude reads at intent-match time; the
+> courses teach you the underlying concepts.
+
 An auto-updated Claude Code skill that tracks the official Claude
 Code documentation (`code.claude.com/docs/*`) and bug-labeled GitHub
 issues at `anthropics/claude-code`, then surfaces a curated reference

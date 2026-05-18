@@ -20,3 +20,6 @@ __pycache__/
 # verbatim and keeps the public repo footprint small (~20 MB → ~50 KB).
 skills/*/docs-snapshot/*/
 !skills/*/docs-snapshot/MANIFEST.json
+
+# anthropic-pulse cache (not redistributed)
+skills/anthropic-pulse/.pulse-cache/

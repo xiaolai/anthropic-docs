@@ -1,0 +1,9 @@
+{
+  "indexUrl": "https://www.anthropic.com/news",
+  "indexSha256": "",
+  "indexBytes": 0,
+  "pageCount": 0,
+  "refreshedAt": "2026-05-18T00:00:00Z",
+  "pages": [],
+  "_note": "anthropic-pulse does NOT use the standard docs-snapshot pattern (no llms.txt upstream). This stub exists only because verify.sh requires MANIFEST.json as a per-skill required file. Per-feed JSON caches live at .pulse-cache/{news,research}.json (gitignored). The pipeline renders SKILL-*.md surfaces directly from those caches via pipeline/scripts/fetch-anthropic-pulse.sh."
+}

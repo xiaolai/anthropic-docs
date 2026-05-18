@@ -80,7 +80,7 @@
     {
       "timestamp": "2026-05-17T13:30:00Z",
       "overall": 91,
-      "note": "Architectural refactor complete (Phases 0-3 of the comprehensive plan). 8 \u2192 24 NL artifacts: SKILL.md split into router + 7 surface files; rules/claude-code.md split into 5 per-surface rule files; templates/, schema/, scripts/, CHANGELOG.md, PR template added. All 24 files scored \u2265 80 threshold. Pre-fix-up baseline.",
+      "note": "Architectural refactor complete (Phases 0-3 of the comprehensive plan). 8 → 24 NL artifacts: SKILL.md split into router + 7 surface files; rules/claude-code.md split into 5 per-surface rule files; templates/, schema/, scripts/, CHANGELOG.md, PR template added. All 24 files scored ≥ 80 threshold. Pre-fix-up baseline.",
       "files": {
         "SKILL.md": {
           "score": 91,
@@ -183,7 +183,7 @@
     {
       "timestamp": "2026-05-17T14:00:00Z",
       "overall": 97,
-      "note": "Fix-up pass: 17 files edited. Highest-impact fix was templates/commands/example.md (75 \u2192 98) \u2014 added empty-input guard, explicit output format, file-not-found error path. templates/agents/example.md reached 100 (added second example block + body now invokes Grep/Glob as declared). Three cross-file consistency fixes: dropped unverified `agent-sdk/mcp.md` URL from SKILL-mcp.md AND both agent dispatch tables. README usability gaps fixed (auto-discovery confirmation, crontab error redirect). Description-vs-content mismatches in rules/plugins.md and rules/hooks.md corrected. All 24 files now \u2265 90.",
+      "note": "Fix-up pass: 17 files edited. Highest-impact fix was templates/commands/example.md (75 → 98) — added empty-input guard, explicit output format, file-not-found error path. templates/agents/example.md reached 100 (added second example block + body now invokes Grep/Glob as declared). Three cross-file consistency fixes: dropped unverified `agent-sdk/mcp.md` URL from SKILL-mcp.md AND both agent dispatch tables. README usability gaps fixed (auto-discovery confirmation, crontab error redirect). Description-vs-content mismatches in rules/plugins.md and rules/hooks.md corrected. All 24 files now ≥ 90.",
       "files": {
         "SKILL.md": {
           "score": 91,
@@ -286,7 +286,7 @@
     {
       "timestamp": "2026-05-17T15:00:00Z",
       "overall": 97,
-      "note": "Security hardening pass: addressed all 9 findings from /nlpm:security-scan (4 High + 3 Medium + 2 Low). Added Security Boundary sections to all 4 agent prompts; built defang+wrap sanitisation library in agent/lib/sanitize.ts; added defense-in-depth bash defang to monitor.sh; generated agent/package-lock.json + switched workflow to npm ci; scoped CLAUDE_CODE_OAUTH_TOKEN to per-step env (no $GITHUB_ENV write); tightened workflow permissions; pinned global Claude Code CLI; pinned MCP template versions + added templates/MCP-PINNING.md sidecar. 6 NL files modified, 1 NL file added. No score regression \u2014 all 25 files now \u2265 90.",
+      "note": "Security hardening pass: addressed all 9 findings from /nlpm:security-scan (4 High + 3 Medium + 2 Low). Added Security Boundary sections to all 4 agent prompts; built defang+wrap sanitisation library in agent/lib/sanitize.ts; added defense-in-depth bash defang to monitor.sh; generated agent/package-lock.json + switched workflow to npm ci; scoped CLAUDE_CODE_OAUTH_TOKEN to per-step env (no $GITHUB_ENV write); tightened workflow permissions; pinned global Claude Code CLI; pinned MCP template versions + added templates/MCP-PINNING.md sidecar. 6 NL files modified, 1 NL file added. No score regression — all 25 files now ≥ 90.",
       "files": {
         "SKILL.md": {
           "score": 91,
@@ -393,7 +393,7 @@
     {
       "timestamp": "2026-05-17T16:00:00Z",
       "overall": 98,
-      "note": "Codex audit-fix pass closed 13 NL audit findings (4 High + 6 Med + 3 Low). 4 NL files touched: report-prompt full Security Boundary parity, research-prompt stale ref fix, README architecture bullets + maintainer section, dev-docs postscript. 1 new file scored (dev-docs/scaffold-design.md @ 98). Workflow + report-agent.ts + monitor.sh + typecheck-templates.sh also fixed but are not NL artifacts. All 26 NL files now \u2265 90. [Update: 2 final low-finding fixes applied \u2014 README crontab now uses idiomatic \"|| true\" guard; dev-docs stale rows now carry \"superseded \u2014 see \u00a7 Post-scaffold evolution\" cross-refs. Both files now at 100.]",
+      "note": "Codex audit-fix pass closed 13 NL audit findings (4 High + 6 Med + 3 Low). 4 NL files touched: report-prompt full Security Boundary parity, research-prompt stale ref fix, README architecture bullets + maintainer section, dev-docs postscript. 1 new file scored (dev-docs/scaffold-design.md @ 98). Workflow + report-agent.ts + monitor.sh + typecheck-templates.sh also fixed but are not NL artifacts. All 26 NL files now ≥ 90. [Update: 2 final low-finding fixes applied — README crontab now uses idiomatic \"|| true\" guard; dev-docs stale rows now carry \"superseded — see § Post-scaffold evolution\" cross-refs. Both files now at 100.]",
       "files": {
         "SKILL.md": {
           "score": 91,
@@ -504,7 +504,7 @@
     {
       "timestamp": "2026-05-17T17:00:00Z",
       "overall": 100,
-      "note": "Push-to-100 pass \u2014 every NL artifact now at perfect 100. Round 1: 7 targeted edits (SKILL.md repo-link explicit, SKILL-hooks 2x \"some\" + \"as docs change\" rewordings, SKILL-settings \"on each docs change\" tightened, SKILL-mcp transport forward-ref expanded, system-prompt \"carefully\" \u2192 \"in full\", plugin.json homepage added, MCP-PINNING bump-criteria enumerated). Round 2: re-scored carry-over files with proper project context (8 files were under-scored under stale rubric assumptions). Round 3: bulk-removed dead <pipeline-stamp> + <release-date> placeholders (13 files affected \u2014 no agent ever substituted them, so they were permanent visible-to-reader stubs). Round 4: softened block-YAML caution + removed \"correctly\" vague word in rules/skills-agents-commands.md. Final: 26/26 at 100; 0 vague-quantifier hits across all 13 SKILL/rules files.",
+      "note": "Push-to-100 pass — every NL artifact now at perfect 100. Round 1: 7 targeted edits (SKILL.md repo-link explicit, SKILL-hooks 2x \"some\" + \"as docs change\" rewordings, SKILL-settings \"on each docs change\" tightened, SKILL-mcp transport forward-ref expanded, system-prompt \"carefully\" → \"in full\", plugin.json homepage added, MCP-PINNING bump-criteria enumerated). Round 2: re-scored carry-over files with proper project context (8 files were under-scored under stale rubric assumptions). Round 3: bulk-removed dead <pipeline-stamp> + <release-date> placeholders (13 files affected — no agent ever substituted them, so they were permanent visible-to-reader stubs). Round 4: softened block-YAML caution + removed \"correctly\" vague word in rules/skills-agents-commands.md. Final: 26/26 at 100; 0 vague-quantifier hits across all 13 SKILL/rules files.",
       "files": {
         "SKILL.md": {
           "score": 100,
@@ -609,6 +609,60 @@
         "dev-docs/scaffold-design.md": {
           "score": 100,
           "type": "design-memo"
+        }
+      }
+    },
+    {
+      "timestamp": "2026-05-18T02:52:07Z",
+      "overall": 100,
+      "files": {
+        ".claude-plugin/plugin.json": {
+          "score": 100,
+          "type": "manifest"
+        },
+        "skills/anthropic-api/SKILL.md": {
+          "score": 100,
+          "type": "skill"
+        },
+        "skills/anthropic-platform-features/SKILL.md": {
+          "score": 100,
+          "type": "skill"
+        },
+        "skills/anthropic-platform-features/templates/skill/SKILL.md": {
+          "score": 100,
+          "type": "skill"
+        },
+        "skills/claude-agent-sdk/SKILL.md": {
+          "score": 100,
+          "type": "skill"
+        },
+        "skills/claude-code/SKILL.md": {
+          "score": 100,
+          "type": "skill"
+        },
+        "skills/claude-code/templates/skills/example/SKILL.md": {
+          "score": 100,
+          "type": "skill"
+        },
+        "skills/claude-connectors/SKILL.md": {
+          "score": 100,
+          "type": "skill"
+        },
+        "skills/claude-cowork/SKILL.md": {
+          "score": 100,
+          "type": "skill"
+        },
+        "skills/mcp-spec/SKILL.md": {
+          "score": 100,
+          "type": "skill"
+        },
+        ".claude/nlpm.local.md": {
+          "score": 100,
+          "type": "config"
+        },
+        ".claude/settings.json": {
+          "score": 100,
+          "type": "settings"
         }
       }
     }

@@ -51,10 +51,23 @@ mistakes at edit time.
 | `claude-connectors` | [`claude.com/docs/{connectors,skills,plugins}`](https://claude.com/docs/connectors) — connectors directory + custom + MCPB + MCP Apps design | 5 | 34 |
 | `claude-cowork` | [`claude.com/docs/{cowork,office-agents}`](https://claude.com/docs/cowork) — Cowork on 3P + Office agents | 2 | 35 |
 | `mcp-spec` | [`modelcontextprotocol.io`](https://modelcontextprotocol.io) + 3 SDK repos — MCP open spec | 5 | 116 |
+| `anthropic-pulse` | [`anthropic.com/news`](https://www.anthropic.com/news) + [`anthropic.com/research`](https://www.anthropic.com/research) — fresh digest of recent posts | 2 | rolling (~30 latest) |
 
-**Total: 30 surface files + 14 rule files + 42 templates covering 624 pages of upstream docs.**
+**Total: 8 skills, 32 surface files + 14 rule files + 42 templates covering 624+ pages of upstream docs and rolling news/research digests.**
 
 See [`dev-docs/multi-skill-migration.md`](dev-docs/multi-skill-migration.md) for the full ecosystem plan + per-skill source mappings.
+
+## Learning resources (not packaged as skills)
+
+Some Anthropic content is better as a link than as a skill. Three sources we do NOT package — but you should know they exist:
+
+| Resource | Best for | Why not a skill |
+|---|---|---|
+| [anthropic.skilljar.com](https://anthropic.skilljar.com/) | Structured courses (Claude Code, Agent SDK, prompt engineering) | Interactive course material — videos, quizzes — doesn't fit the "Claude reads markdown at intent-match time" model. Take them in the Skilljar UI. |
+| [claude.com/resources/tutorials](https://claude.com/resources/tutorials) | Curated hands-on tutorials with full walkthroughs | Users searching for tutorials typically prefer the tutorial UI directly; replicating in a skill adds little over the URL itself. |
+| [anthropic.com/economic-futures](https://www.anthropic.com/economic-futures) | The Anthropic Economic Futures initiative (policy, research agenda) | Niche audience; relevant items surface via [`anthropic-pulse`](skills/anthropic-pulse/) when published. |
+
+When relevant, the per-skill READMEs link to the appropriate Skilljar courses (Claude Code → "Claude Code Fundamentals", Agent SDK → "Building Agents with Claude") and tutorial collections.
 
 ## What you DON'T get (transparency)
 

@@ -8,6 +8,26 @@ Newest entry on top.
 
 ---
 
+## 2026-05-18 — anthropic-pulse: 8th skill (news + research digests)
+
+Added an 8th skill — `anthropic-pulse` — for time-sensitive narrative content from anthropic.com/news and anthropic.com/research. Fundamentally different from the other 7 in three ways:
+
+- **Deterministic render**: zero LLM cost per pipeline run. `pipeline/scripts/fetch-anthropic-pulse.sh` scrapes both HTML index pages, extracts items via targeted perl regex (`<h2-h6>` + `<span class="...title...">` heading variants for Anthropic's two card layouts, `<time>` for dates, `<span class="...subject|caption...">` for categories), caches as JSON, and renders `SKILL-news.md` + `SKILL-research.md` tables. No agent in the loop → no prompt-injection surface, no token spend.
+- **Different upstream shape**: HTML pages, not llms.txt. Pipeline override flag `pipelineOverrides.skipMonitorDocsCheck: true` in `config.json` opts the skill out of `check-docs-drift.sh`'s MANIFEST-vs-llms.txt comparison (added that opt-out to the drift script).
+- **Digest model**: each item is title + date + category + URL. Body content lives at the upstream URL — Claude WebFetches when a user needs depth on a specific post. No content redistribution; copyright-clean.
+
+Initial fetch: 15 news items + 13 research items. UTF-8 round-tripping (`Claude's` not `Claudeâs`) required four iterations of perl encoding layers to get right — `binmode STDIN, ":encoding(UTF-8)"` + `:raw` STDOUT is the final answer (matching JSON::PP's "unicode-string in, UTF-8-bytes out" expectation).
+
+Cross-linking added for the 3 sources that don't earn skill treatment:
+- Root README "Learning resources" section lists [anthropic.skilljar.com](https://anthropic.skilljar.com/), [claude.com/resources/tutorials](https://claude.com/resources/tutorials), and [anthropic.com/economic-futures](https://www.anthropic.com/economic-futures) with the explicit reasoning for why each is a link not a skill.
+- `claude-code/README.md` opens with a Skilljar callout.
+- `claude-agent-sdk/README.md` opens with a Skilljar + tutorials callout.
+- `anthropic-platform-features/README.md` opens with an economic-futures callout.
+
+All 8 skills pass `verify:all` end-to-end.
+
+---
+
 ## 2026-05-18 — Repo rename + audit fixes (B1-B5, M1-M3, H1, H2, H5)
 
 **Repo renamed**: `anthropic-docs-skills-autoupdated` → `autoupdated-anthropic-documentation-knowledge`. Plus the predecessor refs to `claude-code-documentation-knowledge-autoupdated` that survived the previous rename. 35 files touched; 0 remaining stale refs.
