@@ -8,6 +8,8 @@ resources, prompts, sampling, roots, completion).
 
 Part of the [anthropic-docs](../../README.md) plugin.
 
+**Last updated**: 2026-05-18
+
 ## Surfaces
 
 | File | Topic |
@@ -31,4 +33,10 @@ Part of the [anthropic-docs](../../README.md) plugin.
 ```bash
 SKILL_NAME=mcp-spec npm run update
 ```
+
+## Recent activity
+
+| Date | Update | Research | Mending | Report | Total | Notes |
+|------|--------|----------|---------|--------|-------|-------|
+| 2026-05-18 | $0.53 | $1.22 | — | — | **$1.74** | success — v1.29.0 init, docs 116→118 pages (SEP-2106, SEP-2164) |
 

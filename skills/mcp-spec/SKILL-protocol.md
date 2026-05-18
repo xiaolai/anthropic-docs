@@ -111,6 +111,14 @@ Standard JSON-RPC error codes plus MCP-specific extensions:
 MCP-defined error semantics live in the spec under
 [`specification/2025-11-25/basic/`](https://modelcontextprotocol.io/specification/2025-11-25/basic/).
 
+> **Draft (SEP-2164):** The current spec recommends `-32002` for
+> resource-not-found errors, but SDK implementations are inconsistent —
+> TypeScript uses `-32602`, Python uses `0`, and several others use
+> `-32002`. [SEP-2164](https://modelcontextprotocol.io/seps/2164-resource-not-found-error.md)
+> proposes standardising on `-32602` (Invalid Params) as the canonical
+> code. Until adopted, clients SHOULD handle both `-32002` and `-32602`
+> when detecting resource-not-found conditions.
+
 ## Protocol versioning
 
 Version string format: `YYYY-MM-DD` — the date of the last
@@ -147,6 +155,15 @@ Protocol evolution happens via SEPs — Specification Enhancement
 Proposals. The process is documented at
 [`community/sep-guidelines.md`](https://modelcontextprotocol.io/community/sep-guidelines.md).
 Active SEPs live under [`seps/`](https://modelcontextprotocol.io/seps/).
+
+Selected notable SEPs (as of 2026-05-18):
+
+| SEP | Title | Status |
+|---|---|---|
+| [2106](https://modelcontextprotocol.io/seps/2106-json-schema-2020-12.md) | Tools `inputSchema` & `outputSchema` Conform to JSON Schema 2020-12 | Draft |
+| [2164](https://modelcontextprotocol.io/seps/2164-resource-not-found-error.md) | Standardize Resource Not Found Error Code | Draft |
+| [1613](https://modelcontextprotocol.io/seps/1613-establish-json-schema-2020-12-as-default-dialect-f.md) | Establish JSON Schema 2020-12 as Default Dialect | — |
+| [1303](https://modelcontextprotocol.io/seps/1303-input-validation-errors-as-tool-execution-errors.md) | Input Validation Errors as Tool Execution Errors | — |
 
 ---
 
