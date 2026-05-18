@@ -1,22 +1,31 @@
-name: Daily multi-skill update
+name: Multi-skill update (every 30 min)
 
-# Daily fan-out over every skill in skills/*. Each matrix entry runs the
-# full pipeline for one skill: monitor → optional update → research →
-# verify+mend → safety gates → commit (or draft PR on gate failure).
+# Multi-skill fan-out over every skill in skills/*. Each matrix entry runs
+# the full pipeline for one skill: monitor → optional snapshot-refresh +
+# update → research → verify+mend → safety gates → commit (or draft PR
+# on gate failure).
 #
 # fail-fast: false so one bad skill doesn't kill the others.
-# max-parallel: 1 to control the Max-20x subscription quota — runs are
-# sequential. Bump to N once the quota math is understood.
+# max-parallel: 1 to serialize against the Claude Code subscription quota.
+#
+# docs-snapshot/ note: per-skill page trees are gitignored. The pipeline
+# re-fetches them ephemerally via refresh-docs-snapshot.sh ONLY when
+# monitor.sh detects an upstream change. No-change runs skip the refresh
+# entirely — most runs cost ~30s and zero LLM tokens.
 
 on:
   schedule:
-    - cron: "0 8 * * *"  # Daily at 08:00 UTC
+    - cron: "*/30 * * * *"  # Every 30 minutes. GH free-tier coalesces under load.
   workflow_dispatch:
     inputs:
       skill_filter:
         description: "Optional regex to limit which skills run (e.g. 'claude-code')"
         required: false
         default: ""
+      force_refresh:
+        description: "Force refresh-docs-snapshot.sh even if monitor sees no changes"
+        required: false
+        default: "false"
 
 permissions:
   contents: read
@@ -121,6 +130,25 @@ jobs:
           fi
           jq --arg s "monitor" --arg r "success" --arg d "${ELAPSED}s" --arg c "$CHANGES" \
             '.steps += [{"step":$s,"result":$r,"duration":$d,"changesDetected":($c == "true")}]' \
+            "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
+
+      # ---------------------------------------------------------------
+      # 1b. Refresh docs-snapshot — ephemeral, only when needed
+      # ---------------------------------------------------------------
+      # Page trees are gitignored; only MANIFEST.json is committed.
+      # The agents and validate-examples PASS 2 need the pages on disk,
+      # so re-fetch them here BEFORE the agent steps. Skip the refresh
+      # when monitor sees no changes — saves ~30s per skill per run on
+      # quiet hours (most of the day).
+      - name: Refresh docs-snapshot (ephemeral, this run only)
+        id: refresh
+        if: steps.monitor.outputs.changes == 'true' || inputs.force_refresh == 'true'
+        run: |
+          START=$(date +%s)
+          bash pipeline/scripts/refresh-docs-snapshot.sh
+          ELAPSED=$(( $(date +%s) - START ))
+          jq --arg s "refresh" --arg r "success" --arg d "${ELAPSED}s" \
+            '.steps += [{"step":$s,"result":$r,"duration":$d}]' \
             "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
 
       # ---------------------------------------------------------------

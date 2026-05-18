@@ -9,3 +9,14 @@ __pycache__/
 # package-lock.json files MUST be committed — npm ci in the workflow
 # enforces them as a supply-chain defence (security audit Finding #4).
 # Do NOT add package-lock.json to this gitignore.
+
+# Per-skill docs-snapshot page trees: ephemeral cache, NOT redistributed.
+# The pipeline (CI and local) re-fetches these via
+# `pipeline/scripts/refresh-docs-snapshot.sh` on every run. Only the per-
+# skill MANIFEST.json (hashes + URLs + counts) is committed, which is
+# what the drift gate compares against.
+#
+# Rationale: avoids redistributing upstream-copyrighted documentation
+# verbatim and keeps the public repo footprint small (~20 MB → ~50 KB).
+skills/*/docs-snapshot/*/
+!skills/*/docs-snapshot/MANIFEST.json

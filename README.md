@@ -63,7 +63,28 @@ SKILL_NAME=claude-code bash pipeline/agent/monitor.sh
 SKILL_NAME=claude-code npx tsx pipeline/agent/research-agent.ts
 ```
 
-The daily workflow matrix-iterates over `skills/*/` automatically.
+The CI workflow at `.github/workflows/daily.yml` matrix-iterates over `skills/*/` every 30 minutes (GitHub free-tier coalesces under load — typical end-to-end latency is sub-hour). Most runs are no-ops because `monitor.sh` exits cheaply when upstream hasn't changed.
+
+## Local development — first-clone bootstrap
+
+The `docs-snapshot/` page trees are **gitignored** (`skills/*/docs-snapshot/*/` in `.gitignore`); only each skill's `MANIFEST.json` (hashes + URLs + counts) is committed. Rationale: avoid redistributing upstream-copyrighted documentation, and keep the public repo small (~20 MB → ~50 KB).
+
+On a fresh clone, bootstrap the snapshots you want to work with:
+
+```bash
+npm ci                          # one-time: root devDeps (ajv)
+npm --prefix pipeline/agent ci  # one-time: agent deps
+
+# Bootstrap one skill's snapshot (~30s-2min per skill, depending on page count)
+SKILL_NAME=claude-code bash pipeline/scripts/refresh-docs-snapshot.sh
+
+# Or all 7 skills at once:
+for SKILL in $(ls skills); do
+  SKILL_NAME=$SKILL bash pipeline/scripts/refresh-docs-snapshot.sh
+done
+```
+
+After bootstrap, `SKILL_NAME=<name> npm run verify:all` works locally with the populated check enforceable via `FORCE_POPULATED_CHECK=1`.
 
 ## For maintainers
 
@@ -71,9 +92,9 @@ Each skill's `config.json` is the source of truth for its upstream sources, disp
 
 Adding a new skill:
 1. `mkdir skills/<name>` + write `config.json`, `SKILL.md` router, surface stubs
-2. Add `<name>` to the workflow matrix in `.github/workflows/daily.yml`
-3. Run `SKILL_NAME=<name> bash pipeline/scripts/refresh-docs-snapshot.sh` to bootstrap
-4. Local smoke: `SKILL_NAME=<name> bash pipeline/agent/verify.sh`
+2. The workflow auto-discovers `skills/*/` (no matrix-list edit needed)
+3. Run `SKILL_NAME=<name> bash pipeline/scripts/refresh-docs-snapshot.sh` to bootstrap the snapshot locally — the resulting `MANIFEST.json` gets committed; the page files stay gitignored
+4. Local smoke: `SKILL_NAME=<name> npm run verify:all`
 
 See `skills/claude-code/` as the reference example.
 
