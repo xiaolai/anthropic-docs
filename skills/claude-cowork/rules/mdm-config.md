@@ -91,6 +91,25 @@ breaking change immediately.
 requests return 429 `cap_exceeded` until the next billing month.
 Set to a value above your monthly forecast, with a buffer.
 
+## Rule 9 — `orgPluginSettings`: tool policy for plugin-delivered MCP servers
+
+Plugin-delivered MCP servers (`.mcp.json` inside an `org-plugins/` plugin)
+do not carry a `toolPolicy` in the plugin manifest. To allowlist or
+denylist tools on a plugin-distributed server, set `orgPluginSettings`
+in managed configuration, keyed by the server's `name` field:
+
+```json
+{
+  "orgPluginSettings": {
+    "my-company-server": {
+      "toolPolicy": { "allow": ["safe_tool"], "deny": ["dangerous_tool"] }
+    }
+  }
+}
+```
+
+Source: [`3p/extensions.md`](https://claude.com/docs/cowork/3p/extensions.md).
+
 ---
 
-*Source: claude.com/docs/cowork/3p/configuration.md + feature-matrix.md.*
+*Source: claude.com/docs/cowork/3p/configuration.md + feature-matrix.md + extensions.md.*

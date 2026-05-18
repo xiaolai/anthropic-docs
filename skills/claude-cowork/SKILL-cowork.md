@@ -192,16 +192,20 @@ Full comparison: [`3p/feature-matrix.md`](https://claude.com/docs/cowork/3p/feat
 Salient gaps in 3P (versus full Claude Enterprise):
 
 - No Chat tab (Cowork + Code tabs only).
-- No Anthropic 1P connectors (except M365).
+- No Anthropic 1P connectors (except M365; Google Workspace coming soon).
 - No Project / plugin sharing across orgs.
-- No public plugin marketplace.
+- No public plugin marketplace (org-plugins directory provides an
+  org-scoped marketplace).
 - No mobile dispatch.
 - No voice mode.
 - No Claude in Chrome.
 - No web-based admin console — admin functions delivered via MDM.
 - Per-user spend caps are blanket-only (not differentiated by role).
-- Compliance / Analytics APIs are not exposed; equivalent capability
-  via OpenTelemetry export.
+- Compliance / Analytics APIs not exposed; use OpenTelemetry export.
+
+**Also available in 3P:** Scheduled tasks (✓) and Memory (✓). Memory
+in 3P is stored on the local device only — not on Anthropic
+infrastructure. Users manage it at **Settings → Cowork → Memory**.
 
 ## Cowork guide (standard mode)
 
@@ -216,6 +220,24 @@ User-facing how-to pages for standard Cowork (non-3P):
 [`monitoring.md`](https://claude.com/docs/cowork/monitoring.md)
 covers OpenTelemetry export, usage analytics, spend tracking, and the
 session-activity event schema.
+
+Requires Claude desktop app **≥ 1.1.4173**. Configure at
+**Admin settings → Cowork**: OTLP endpoint URL, protocol
+(`http/json` or `http/protobuf`), and auth headers.
+
+### OTel event types
+
+| Event name       | Fired when                                        |
+|---|---|
+| `user_prompt`    | User submits a prompt                             |
+| `tool_result`    | A tool completes execution                        |
+| `api_request`    | An API call to Claude completes                   |
+| `api_error`      | An API call to Claude fails                       |
+| `tool_decision`  | Tool-permission decision made (`accept`/`reject`) |
+
+All events carry `prompt.id` (UUID v4 linking all events for a single
+prompt) plus standard attributes: `session.id`, `organization.id`,
+`user.account_uuid`, `user.email`.
 
 ---
 

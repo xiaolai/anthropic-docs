@@ -87,7 +87,31 @@ supported by [Cowork on 3P](SKILL-cowork.md). This decouples M365
 deployment from Anthropic's API for organizations with the same
 residency / regulatory drivers.
 
+**Azure AI Foundry**: deployment names must use default model IDs
+(e.g. `claude-opus-4-6`), not custom names.
+
+**Setup wizard**: use the `claude-in-office` plugin from the
+`anthropics/financial-services-plugins` marketplace (add marketplace,
+install plugin, run `/claude-in-office:setup`). It provisions cloud
+resources, generates the manifest, and handles Azure admin consent.
+
 See [`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md).
+
+## Network allowlist (3P deployments)
+
+Key domains required for Cowork on 3P Office add-in deployments:
+
+| Domain | Required for |
+|---|---|
+| `pivot.claude.ai` | Always — add-in host (UI, analytics, telemetry) |
+| `login.microsoftonline.com` | Always — Entra ID sign-in and admin config |
+| `bridge.claudeusercontent.com` | Work-across-apps feature (WebSocket bridge) |
+| `sts.amazonaws.com` + `bedrock-runtime.<region>.amazonaws.com` | Bedrock direct |
+| `aiplatform.googleapis.com` + `<region>-aiplatform.googleapis.com` | Vertex AI direct |
+| `<resource>.services.ai.azure.com` | Foundry direct |
+| `graph.microsoft.com` | Outlook (mailbox and calendar API) |
+
+Full domain tables (1P and 3P): [`third-party-platforms.md § Network allowlist`](https://claude.com/docs/office-agents/third-party-platforms.md).
 
 ## Enterprise readiness
 
