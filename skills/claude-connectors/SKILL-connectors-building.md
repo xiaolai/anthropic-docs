@@ -32,6 +32,17 @@ Salient axes:
 | Distribution to Claude Code users specifically | Plugin |
 | Distribution across all Claude products | MCP server + plugin |
 
+> **Scaffold tip:** The fastest way to start is the
+> [`mcp-server-dev` plugin](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/mcp-server-dev)
+> for Claude Code. Install it and run `/mcp-server-dev:build-mcp-server` —
+> it interviews you about your use case, picks the deployment model,
+> and generates a working server. Source: [`what-to-build.md`](https://claude.com/docs/connectors/building/what-to-build.md).
+
+> **Skills are not a standalone directory type.** If you have skills
+> to ship, bundle them in a plugin. The Connectors Directory only
+> accepts MCP servers; the plugin directory accepts plugins (which
+> bundle skills + connectors). You cannot submit a bare skill.
+
 ## Custom connector: building an MCP server
 
 The foundation: [`building/index.md`](https://claude.com/docs/connectors/building/index.md).
@@ -48,16 +59,81 @@ for the protocol details. The Claude-specific concerns are:
 
 ## Authentication
 
-Two pages cover auth:
+Source: [`authentication.md`](https://claude.com/docs/connectors/building/authentication.md).
+For deferring auth until it is needed, see
+[`lazy-authentication.md`](https://claude.com/docs/connectors/building/lazy-authentication.md).
 
-| Page | Topic |
+### Supported authentication types
+
+Claude supports five auth approaches for remote MCP servers across all
+platforms (Claude.ai, Desktop, Mobile, Claude Code, Cowork):
+
+| Type | Description |
 |---|---|
-| [`authentication.md`](https://claude.com/docs/connectors/building/authentication.md) | OAuth flows, scope design, token handling, refresh, revocation |
-| [`lazy-authentication.md`](https://claude.com/docs/connectors/building/lazy-authentication.md) | Let users call public tools immediately and defer OAuth until a protected tool is actually invoked |
+| **OAuth + Dynamic Client Registration (DCR)** | Automatic client registration per RFC 7591 — default choice |
+| **OAuth + Client ID Metadata Document (CIMD)** | Self-hosted client identification document instead of DCR |
+| **Anthropic-held credentials** | Partner submits client credentials to Anthropic; Anthropic completes token exchange after user consent |
+| **Custom connections** | Platform-specific auth (requires Anthropic approval) |
+| **No authentication** | Public servers without access controls |
 
-The lazy pattern is recommended: surface as much value as possible
-before forcing the user through OAuth. Users who never invoke a
-protected tool never need to authenticate.
+Bearer tokens pasted by users and credentials in URL query parameters
+are **not supported** — the MCP spec explicitly prohibits them.
+
+### Key differences from the generic MCP spec
+
+| Requirement | Detail |
+|---|---|
+| **User consent always required** | No pure machine-to-machine flows; every connection needs explicit user approval |
+| **PKCE mandatory (S256)** | All authorization requests must include an S256 code challenge; servers must advertise PKCE support |
+| **DCR efficiency concern** | DCR creates a new OAuth client per connection — can overwhelm authorization servers at high directory traffic; Anthropic-held credentials sidestep this |
+
+### Token management
+
+Claude refreshes tokens both **reactively** (upon a `401` response) and
+**proactively** (up to 5 minutes before expiry). Authorization servers
+should rotate refresh tokens for public-client connections and return
+RFC 6749-compliant error codes (e.g. `invalid_grant`). The `/token`
+endpoint must accept `application/x-www-form-urlencoded` per RFC 6749.
+
+### Callback URLs
+
+| Surface | Callback URL |
+|---|---|
+| Hosted surfaces (Claude.ai, Desktop, Mobile, Cowork) | `https://claude.ai/api/mcp/auth_callback` |
+| Claude Code | Ephemeral loopback, e.g. `http://localhost:3118/callback` |
+
+### Lazy authentication (recommended pattern)
+
+Surface as much value as possible before requiring OAuth. Users who
+never invoke a protected tool never need to authenticate.
+Reference: [`lazy-authentication.md`](https://claude.com/docs/connectors/building/lazy-authentication.md).
+
+## Supported capabilities and performance limits
+
+Source: [`building/index.md`](https://claude.com/docs/connectors/building/index.md).
+
+### Supported transport and features
+
+| Category | Supported |
+|---|---|
+| Transport | Streamable HTTP, legacy HTTP+SSE |
+| Primitives | Tools, prompts, resources |
+| Tool result types | Text, image |
+| Resource types | Text, binary |
+| Auth | OAuth callback handling, token refresh, Dynamic Client Registration |
+
+### Not supported
+
+- Resource subscriptions
+- Sampling
+- Advanced / draft MCP capabilities
+
+### Performance limits
+
+| Surface | Tool result size | Timeout |
+|---|---|---|
+| Claude.ai / Desktop / Mobile / Cowork | ~150,000 characters | 5 minutes |
+| Claude Code | 25,000 tokens (configurable) | Configurable |
 
 ## Directory vs custom
 

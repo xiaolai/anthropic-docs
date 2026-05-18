@@ -103,7 +103,7 @@ Key fields:
 - `compatibility` — supported OS list.
 - `entry` — path to your MCP server's entrypoint.
 - `tools` — declared tool list with annotations.
-- `icons` — icon paths, optionally per theme (light/dark) and size.
+- `icons` — icon paths, optionally per theme (light/dark) and size. Place `icon.png` at bundle root; 512×512px recommended (256×256px minimum), PNG format.
 - `user_config` — generates a settings UI in Claude Desktop.
 
 ### Installation paths (user-facing)

@@ -34,8 +34,20 @@ commands that drive it.
 - **Claude Cowork** — full plugin support (see
   [`claude-cowork → SKILL-cowork.md`](../claude-cowork/SKILL-cowork.md)).
 
-Plugins are NOT available on Claude.ai web or Mobile (as of this
-snapshot — check upstream for current state).
+Plugins are **not** available on Claude.ai web or Claude Mobile.
+
+## Anthropic's open-sourced plugins
+
+Anthropic has open-sourced 11 reference plugins covering areas
+including: productivity, sales, finance, legal, marketing, customer
+support, product management, biology research, and data analysis.
+
+Browse the public plugin directory at
+[claude.com/plugins-for/cowork](https://claude.com/plugins-for/cowork).
+
+> **Status note (as of 2026-05):** Plugin support in Cowork is a
+> research preview available to all paid Claude users. Installed
+> plugins currently save locally; org-wide sharing is coming.
 
 ## Plugin marketplaces
 
@@ -59,6 +71,23 @@ directory" pattern).
 | **User-global** | `~/.claude/plugins/` | Plugins you use across all projects |
 | **Project-local** | `<project>/.claude/plugins/` | Plugins specific to one codebase, committed to repo |
 | **Org-managed** | MDM-distributed | Cowork on 3P deployments |
+
+## SETUP.md — guiding Claude through MCP setup
+
+A plugin can include a `SETUP.md` skill to give Claude step-by-step
+instructions for configuring and connecting any MCP servers bundled
+in the plugin. When a user installs or activates your plugin, Claude
+follows `SETUP.md` to complete the setup automatically.
+
+Source: [`plugins/submit.md`](https://claude.com/docs/plugins/submit.md).
+
+## Skills are not a standalone directory type
+
+Skills cannot be submitted to the connector or plugin directory on
+their own — **plugins are the distribution mechanism for skills**.
+To publish a skill publicly, bundle it inside a plugin and submit
+the plugin to the directory. See
+[`SKILL-claude-skills.md`](SKILL-claude-skills.md).
 
 ## Related surfaces
 
