@@ -49,14 +49,25 @@ every property optional — the model can skip them, which surfaces as
 
 If a tool needs a required field, list it in `required: [...]`.
 
-## Rule 3 — `cache_control` is per-block, not per-message
+## Rule 3 — `cache_control` placement: automatic (top-level) or explicit (per-block)
 
-A `cache_control: { type: "ephemeral" }` breakpoint lives on a content
-block, not on the message object. Up to **4 breakpoints per request**.
-Placing one on the system role's string form is also wrong — convert
-`system` to the array form first.
+There are **two valid ways** to place `cache_control`:
 
-**WRONG (cache_control on message):**
+**Automatic (recommended for multi-turn):** place `cache_control` at the **top level of the request body**. The API automatically applies the breakpoint to the last cacheable block and advances it each turn. No per-block annotation needed.
+
+```json
+{
+  "model": "claude-opus-4-7",
+  "max_tokens": 1024,
+  "cache_control": { "type": "ephemeral" },
+  "system": "...",
+  "messages": [...]
+}
+```
+
+**Explicit breakpoints:** place `cache_control` directly on individual content blocks (up to **4 breakpoints per request**). Never place it on the message object (the `{role, content}` wrapper) — that is always wrong. Convert `system` from a string to an array-of-blocks first if you need to annotate it.
+
+**WRONG (on message wrapper):**
 ```json
 { "role": "user", "cache_control": { "type": "ephemeral" }, "content": "..." }
 ```
@@ -72,21 +83,30 @@ Placing one on the system role's string form is also wrong — convert
 }
 ```
 
-## Rule 4 — Extended thinking needs `budget_tokens` and counts against `max_tokens`
+## Rule 4 — Extended thinking: model-specific API
 
-`thinking: { type: "enabled", budget_tokens: N }`. `N` must be > 0 and
-**less than `max_tokens`** (thinking tokens are billed at input rates
-but consume the same output budget as the final response).
+The `thinking` parameter behaves differently per model:
 
-**WRONG (no budget):**
+- **Claude Opus 4.7:** use `thinking: {type: "adaptive"}`. Manual `thinking: {type: "enabled", budget_tokens: N}` returns **400**. Do NOT pass `budget_tokens` to Opus 4.7.
+- **Claude Opus 4.6 / Sonnet 4.6:** adaptive is recommended (`thinking: {type: "adaptive"}`); `budget_tokens` still works but is **deprecated**.
+- **Older models (Opus 4.5, Sonnet 4.5, etc.):** must use `thinking: {type: "enabled", budget_tokens: N}`.
+
+When using `budget_tokens`, `N` must be > 0 and **less than `max_tokens`** (thinking tokens are billed at input rates but consume the output budget).
+
+**WRONG (budget_tokens on Opus 4.7):**
 ```python
-thinking={"type": "enabled"}     # 400 missing_required_field
+# Returns 400 on claude-opus-4-7
+thinking={"type": "enabled", "budget_tokens": 4000}
 ```
 
-**WRONG (budget > max_tokens):**
+**RIGHT (Opus 4.7):**
 ```python
-max_tokens=1000
-thinking={"type": "enabled", "budget_tokens": 4000}  # rejected
+thinking={"type": "adaptive"}   # or omit thinking entirely; pair with effort
+```
+
+**RIGHT (older models):**
+```python
+thinking={"type": "enabled", "budget_tokens": 8000}  # budget_tokens < max_tokens
 ```
 
 ## Rule 5 — `tool_result` must carry the matching `tool_use_id`

@@ -23,15 +23,15 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
   `top_p` (nucleus sampling), `top_k` (vocabulary cutoff). Use
   `temperature` alone for most cases; combine only when you understand
   the interaction.
-- **Extended thinking is opt-in:** set
-  `thinking: { type: "enabled", budget_tokens: N }`. Tokens used in
-  thinking blocks are billed at input-token rates and **count against
-  `max_tokens`** for the final response.
-- **Prompt caching has 4-breakpoint limit per request.** Each
-  `cache_control: { type: "ephemeral" }` is one breakpoint. Default TTL
-  is `5m`; `1h` is also available. The whole prefix up to the
-  breakpoint is cached, so place breakpoints at stable boundaries
-  (system prompt → tools → static context → user turn).
+- **Extended thinking — model-specific behavior:**
+  - **Claude Opus 4.7:** manual `thinking: {type: "enabled", budget_tokens: N}` is **not supported** (returns 400). Use `thinking: {type: "adaptive"}` with the `effort` parameter instead.
+  - **Claude Opus 4.6 / Sonnet 4.6:** adaptive thinking is recommended; manual `budget_tokens` is deprecated but still functional.
+  - **Older models (Opus 4.5, Sonnet 4.5, etc.):** adaptive thinking is not supported — must use `thinking: {type: "enabled", budget_tokens: N}`.
+  - Thinking tokens are billed at input-token rates and count against `max_tokens`.
+- **Prompt caching — two modes:**
+  - **Automatic** (recommended for multi-turn): add `cache_control: {type: "ephemeral"}` at the **top level** of the request body; the API auto-applies the breakpoint to the last cacheable block and advances it each turn.
+  - **Explicit breakpoints:** place `cache_control` directly on individual content blocks. Up to 4 breakpoints per request. Place at stable boundaries (system → tools → static context → user turn).
+  - Default TTL is 5 min; 1-hour TTL also available.
 - **Batches return within 24h** at 50% discount. Submit via
   `POST /v1/messages/batches`; poll for results. Not for interactive use.
 - **Vision input:** images can be base64-inline or URL-referenced.
@@ -78,10 +78,10 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
 
 | Feature | Page | What it does |
 |---|---|---|
-| **Extended thinking** | [`extended-thinking.md`](https://platform.claude.com/docs/en/build-with-claude/extended-thinking.md) | `thinking` blocks with budget tokens — model "thinks out loud" before responding |
-| **Adaptive thinking** | [`adaptive-thinking.md`](https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking.md) | Model auto-decides when to think hard vs respond immediately |
-| **Effort** | [`effort.md`](https://platform.claude.com/docs/en/build-with-claude/effort.md) | Effort-level setting (lower = faster, higher = more thorough) |
-| **Fast mode** | [`fast-mode.md`](https://platform.claude.com/docs/en/build-with-claude/fast-mode.md) | Faster response variant available on Opus 4.6 and Opus 4.7 |
+| **Extended thinking** | [`extended-thinking.md`](https://platform.claude.com/docs/en/build-with-claude/extended-thinking.md) | Manual `thinking: {type: "enabled", budget_tokens: N}` — supported on Opus 4.6, Sonnet 4.6, and older models only |
+| **Adaptive thinking** | [`adaptive-thinking.md`](https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking.md) | `thinking: {type: "adaptive"}` — recommended for Opus 4.7, Opus 4.6, Sonnet 4.6; only mode on Opus 4.7 |
+| **Effort** | [`effort.md`](https://platform.claude.com/docs/en/build-with-claude/effort.md) | Levels: `low` / `medium` / `high` (default) / `xhigh` (Opus 4.7 only) / `max`; placed in `output_config.effort` |
+| **Fast mode** | [`fast-mode.md`](https://platform.claude.com/docs/en/build-with-claude/fast-mode.md) | `speed: "fast"` + beta header `fast-mode-2026-02-01`; up to 2.5x output tokens/s on Opus 4.6 & 4.7 |
 
 ## Throughput / cost patterns
 
