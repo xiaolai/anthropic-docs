@@ -37,7 +37,11 @@ source: https://platform.claude.com/docs/en/api/admin/
   archived, no new requests bill against the workspace.
 - **Member roles:** workspace members have a `workspace_role` field
   distinct from org-level role; set on create, mutable via the members
-  endpoint.
+  endpoint. Workspace roles: `workspace_user`, `workspace_developer`,
+  `workspace_restricted_developer`, `workspace_admin` (not `workspace_billing`
+  — that cannot be set via API).
+- **Org-level roles:** `user`, `developer`, `billing`, `claude_code_user`.
+  `admin` cannot be set via invite — it must be elevated in the Console.
 - **Idempotency:** mutating endpoints (create / update / delete) do
   NOT currently support an `Idempotency-Key` header. Build retry
   logic with caller-side de-duplication.

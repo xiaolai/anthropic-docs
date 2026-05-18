@@ -41,8 +41,16 @@ single queries or stateless multi-turn conversations.
 | `tool_choice` | `auto` / `any` / `tool` / `none` |
 | `metadata` | `{ user_id: "..." }` for abuse signaling |
 | `service_tier` | `auto` / `standard_only` |
-| `thinking` | `{ type: "enabled", budget_tokens: N }` for extended thinking |
+| `thinking` | `ThinkingConfigEnabled \| ThinkingConfigAdaptive \| ThinkingConfigDisabled` — see below |
 | `output_config` | Output configuration — see below |
+
+### `thinking` parameter
+
+| Type | Fields | Notes |
+|---|---|---|
+| `ThinkingConfigEnabled` | `type: "enabled"`, `budget_tokens: number`, `display?: "summarized" \| "omitted"` | Explicit extended thinking. `budget_tokens` ≥1024, < `max_tokens`. `display: "omitted"` redacts thinking but returns a signature for multi-turn continuity; defaults to `"summarized"`. |
+| `ThinkingConfigAdaptive` | `type: "adaptive"`, `display?: "summarized" \| "omitted"` | Model decides whether to think. Same `display` semantics as above. |
+| `ThinkingConfigDisabled` | `type: "disabled"` | Explicitly disable thinking. |
 
 ### `output_config` parameter
 
@@ -53,7 +61,7 @@ An optional object that configures the model's output:
 | `effort` | string | Reasoning effort level: `"low"` / `"medium"` / `"high"` / `"xhigh"` / `"max"`. Controls how much compute the model spends on reasoning. Check `ModelCapabilities.effort` for model support. |
 | `format` | object | Structured output format: `{ type: "json_schema", schema: { ... } }`. Forces the model to return JSON matching the schema. |
 
-Source: [`messages/create.md`](https://platform.claude.com/docs/en/api/messages/create.md)
+Source: [`messages/create.md`](https://platform.claude.com/docs/en/api/messages/create.md) — *last audited 2026-05-18*
 
 > **Note:** `max_tokens: 0` is valid and pre-warms the prompt cache without generating any output tokens.
 
@@ -68,12 +76,13 @@ block) or an array of typed blocks:
 
 | Block type | Use |
 |---|---|
-| `text` | Plain text. May include `cache_control` and `citations`. |
+| `text` | Plain text. May include `cache_control` and `citations`. Citation types: `char_location`, `page_location`, `content_block_location`, `web_search_result_location`, `search_result_location` (from tool-search results). |
 | `image` | `{ source: { type: "base64" \| "url", media_type, data \| url } }` |
 | `document` | PDF or other document input |
 | `tool_use` | Assistant turn: model invoked a **client** tool. Carries `id`, `name`, `input`. |
 | `tool_result` | User turn: result of a previous `tool_use`. **Must reference the matching `tool_use_id`**. |
 | `server_tool_use` | Assistant turn: model invoked a **server** tool (e.g. web_search, web_fetch, code_execution). Different return path — see server tools below. |
+| `tool_reference` | A reference to a deferred tool loaded via the tool-search mechanism (see `defer_loading` below). |
 | `thinking` | Extended-thinking output (when `thinking` enabled) |
 | `redacted_thinking` | Thinking content the API redacted before returning |
 
@@ -81,18 +90,24 @@ block) or an array of typed blocks:
 
 There are two classes of tools in `tools`:
 
-- **Client tools** — fully defined by the caller via `input_schema`; the model returns a `tool_use` block, and the caller executes and returns `tool_result`.
+- **Client tools** — fully defined by the caller via `input_schema`; the model returns a `tool_use` block, and the caller executes and returns `tool_result`. Additional fields: `eager_input_streaming` (stream tool inputs incrementally), `input_examples` (few-shot examples for the model), `type: "custom"` (explicit).
 - **Server tools** — built-in tools executed by Anthropic's infrastructure. Appear as a typed object in `tools` (not a schema definition). The model returns a `server_tool_use` block; the result comes back in the same response without a round-trip.
 
 Known server tool types (specify in `tools` array):
 
-| Tool type string | Description |
-|---|---|
-| `web_search_20250305` / `web_search_20260209` | Web search. Supports `allowed_domains`, `blocked_domains`, `user_location`, `max_uses`. |
-| `web_fetch_20250910` | Fetch a URL. Supports `allowed_domains`, `blocked_domains`, `max_content_tokens`, `citations`. |
-| `code_execution_20250825` / `code_execution_20260120` | Execute code in a sandbox. |
+| Tool type string | Tool name | Notes |
+|---|---|---|
+| `web_search_20250305` / `web_search_20260209` | `web_search` | Web search. Supports `allowed_domains`, `blocked_domains`, `user_location`, `max_uses`. |
+| `web_fetch_20250910` / `web_fetch_20260209` | `web_fetch` | Fetch a URL. Supports `allowed_domains`, `blocked_domains`, `max_content_tokens`, `citations`, `allowed_callers`. |
+| `web_fetch_20260309` | `web_fetch` | Newest variant — adds `use_cache: boolean` to bypass server-side caching. |
+| `code_execution_20250522` / `code_execution_20250825` / `code_execution_20260120` | `code_execution` | Execute code. `20260120` adds REPL state persistence (daemon+gVisor checkpoint). |
+| `bash_20250124` | `bash` | Execute bash commands in a sandbox. |
+| `memory_20250818` | `memory` | Persistent memory store access. |
+| `text_editor_20250124` / `text_editor_20250429` / `text_editor_20250728` | `str_replace_editor` / `str_replace_based_edit_tool` | Text editing. `20250728` adds `max_characters` limit. |
+| `tool_search_tool_bm25_20251119` | `tool_search_tool_bm25` | BM25 full-text tool search — loads deferred tools on demand. |
+| `tool_search_tool_regex_20251119` | `tool_search_tool_regex` | Regex tool search — loads deferred tools on demand. |
 
-Server tools also support `defer_loading: true` to exclude from the initial system prompt (loaded on demand) and `strict: true` for schema validation.
+Common fields on all server tools: `allowed_callers` (restrict which other tools may call this one: `"direct"`, `"code_execution_20250825"`, `"code_execution_20260120"`), `defer_loading: true` (exclude from initial system prompt; loaded on demand via tool-search), `strict: true` (validate inputs), `cache_control`, `max_uses`.
 
 ### Prompt caching: `cache_control`
 

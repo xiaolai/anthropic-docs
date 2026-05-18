@@ -47,17 +47,24 @@ audit reports.
 
 ## Endpoint catalog
 
-Endpoints under `/v1/organizations/compliance/...`. Each page in
-the snapshot documents one endpoint's parameters, response shape,
-and pagination.
+Endpoints under `/v1/compliance/...` (note: **no** `/organizations` prefix — these are org-scoped by auth key). Each page documents parameters, response shape, and pagination.
 
-| Topic | Source dir |
-|---|---|
-| Compliance API section index | [`compliance.md`](https://platform.claude.com/docs/en/api/compliance.md) |
-| Activity feed | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
-| Content data (per-message records) | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
-| Org-level data | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
-| Errors | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
+| Topic | Endpoints | Source |
+|---|---|---|
+| Section index | — | [`compliance.md`](https://platform.claude.com/docs/en/api/compliance.md) |
+| **Activities** | `GET /v1/compliance/activities` | [`compliance/activities/list.md`](https://platform.claude.com/docs/en/api/compliance/activities/list.md) — 290+ filterable `activity_types` |
+| **Apps** | — | [`compliance/apps/`](https://platform.claude.com/docs/en/api/compliance/apps/) |
+| Apps › Chats | `GET .../chats`, `DELETE .../chats/{id}`, `GET .../chats/{id}/messages` | Chat records + message content |
+| Apps › Chat files | `GET .../files`, `GET .../files/{id}/content`, `DELETE .../files/{id}` | Uploaded file records |
+| Apps › Chat generated files | `GET .../generated_files`, `GET .../generated_files/{id}/content` | Claude-generated file records |
+| Apps › Artifacts | `GET .../artifacts`, `GET .../artifacts/{id}/content` | Artifact records |
+| Apps › Projects | `GET .../projects`, `GET .../projects/{id}`, `DELETE .../projects/{id}` | Project records |
+| Apps › Project documents | `GET .../documents`, `GET .../documents/{id}`, `DELETE .../documents/{id}` | Project document records |
+| Apps › Project attachments | `GET .../attachments` | [`compliance/apps/projects/attachments.md`](https://platform.claude.com/docs/en/api/compliance/apps/projects/attachments.md) |
+| **Groups** | `GET /v1/compliance/groups`, `GET .../groups/{id}`, `GET .../groups/{id}/members` | Compliance groups and members |
+| **Organizations** | `GET /v1/compliance/organizations` | Org listing |
+| Org roles | `GET .../organizations/roles`, `GET .../roles/{id}`, `GET .../roles/{id}/permissions` | Role and permission discovery |
+| Org users | `GET .../organizations/users` | User listing |
 
 The conceptual coverage of each (what to use it for, what fields
 mean, integration patterns) lives in the platform-features
@@ -72,4 +79,4 @@ for the wire shape.
 
 ---
 
-*Source pages: 37 under `platform.claude.com/docs/en/api/compliance/`.*
+*Source pages: 37 under `platform.claude.com/docs/en/api/compliance/`. Last audited 2026-05-18.*
