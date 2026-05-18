@@ -49,7 +49,7 @@ for cmd in curl jq perl; do
 done
 
 CURL_OPTS=(--connect-timeout 10 --max-time 60 --retry 2 --retry-delay 3 \
-  --user-agent "autoupdated-anthropic-documentation-knowledge/1.0 (+https://github.com/xiaolai/autoupdated-anthropic-documentation-knowledge)")
+  --user-agent "anthropic-docs/1.0 (+https://github.com/xiaolai/anthropic-docs)")
 TODAY=$(date -u +%Y-%m-%d)
 NOW=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 

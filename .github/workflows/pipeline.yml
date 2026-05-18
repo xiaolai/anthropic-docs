@@ -43,7 +43,7 @@ jobs:
   # nothing on the LLM quota.
   # ---------------------------------------------------------------------
   discover-skills:
-    if: github.repository == 'xiaolai/autoupdated-anthropic-documentation-knowledge'
+    if: github.repository == 'xiaolai/anthropic-docs'
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.list.outputs.matrix }}

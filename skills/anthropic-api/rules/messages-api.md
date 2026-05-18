@@ -57,4 +57,4 @@ actually pay off (typically system + tools + last large doc).
 ---
 
 *Auto-updated daily. If a rule conflicts with current API behavior,
-file an issue at [xiaolai/autoupdated-anthropic-documentation-knowledge](https://github.com/xiaolai/autoupdated-anthropic-documentation-knowledge).*
+file an issue at [xiaolai/anthropic-docs](https://github.com/xiaolai/anthropic-docs).*

@@ -8,6 +8,16 @@ Newest entry on top.
 
 ---
 
+## 2026-05-18 — Repo + plugin renamed to `anthropic-docs`
+
+Renamed the GitHub repo, local directory, plugin manifest, npm package, schema `$id` URLs, workflow `github.repository` guards, and all 39 present-tense self-references from `autoupdated-anthropic-documentation-knowledge` → `anthropic-docs`. The long name was a mouthful in install commands and table rows; the short name reads naturally and matches the marketplace category. GitHub auto-redirects the old URL → new one indefinitely, so external links keep working.
+
+Historical references preserved verbatim: this CHANGELOG, `skills/*/CHANGELOG.md`, and `dev-docs/multi-skill-migration.md` + `dev-docs/scaffold-design.md` still use the long name where they describe the original scaffold work — those are records of what was true at the time, not present-tense references.
+
+Marketplace entry updated in `xiaolai/claude-plugin-marketplace` to point at the new repo location. The predecessor `claude-agent-sdk-skill-autoupdated` (archived 2026-05-18) had its README migration link refreshed to point at the new name.
+
+---
+
 ## 2026-05-18 — anthropic-pulse: 8th skill (news + research digests)
 
 Added an 8th skill — `anthropic-pulse` — for time-sensitive narrative content from anthropic.com/news and anthropic.com/research. Fundamentally different from the other 7 in three ways:

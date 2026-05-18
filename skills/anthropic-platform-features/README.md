@@ -13,7 +13,7 @@ claude features (extended thinking, batches, citations, Bedrock,
 Vertex, embeddings, fast mode, context editing), manage-claude ops
 (WIF, billing, identity), and Managed Agents.
 
-Part of the [autoupdated-anthropic-documentation-knowledge](../../README.md) plugin.
+Part of the [anthropic-docs](../../README.md) plugin.
 
 ## Surfaces
 

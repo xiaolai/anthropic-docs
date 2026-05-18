@@ -75,5 +75,5 @@ Path-scoped correction rules live in `rules/`:
 
 *This skill is auto-updated every 30 minutes by a maintainer-run pipeline. If you
 spot a bug in this content, file an issue at
-[xiaolai/autoupdated-anthropic-documentation-knowledge](https://github.com/xiaolai/autoupdated-anthropic-documentation-knowledge) —
+[xiaolai/anthropic-docs](https://github.com/xiaolai/anthropic-docs) —
 SKILL.md fixes flow back through the next research run, not via PRs.*

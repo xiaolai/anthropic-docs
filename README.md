@@ -1,4 +1,4 @@
-# autoupdated-anthropic-documentation-knowledge
+# anthropic-docs
 
 A self-updating **Claude Code plugin** bundling 8 skills that mirror the
 official Anthropic + MCP documentation surfaces (~624 pages across 4 doc
@@ -36,7 +36,7 @@ mistakes at edit time.
 ## Install
 
 ```bash
-/plugin install xiaolai/autoupdated-anthropic-documentation-knowledge
+/plugin install xiaolai/anthropic-docs
 ```
 
 (or clone the repo and `/plugin install .` from your local copy)
@@ -77,7 +77,7 @@ This repo distributes the **synthesized SKILL surfaces** (our authorial work) pl
 ## Architecture
 
 ```
-autoupdated-anthropic-documentation-knowledge/
+anthropic-docs/
 ├── pipeline/                  ← shared infrastructure
 │   ├── agent/                 ← TS agents + sanitiser + monitor.sh + verify.sh
 │   ├── scripts/               ← verification scripts

@@ -234,4 +234,4 @@ types, and complete examples live in
 [`SKILL-python.md`](../SKILL-python.md). When that surface and this
 file disagree, the surface is canonical and this file is stale — file
 an issue at
-[xiaolai/autoupdated-anthropic-documentation-knowledge](https://github.com/xiaolai/autoupdated-anthropic-documentation-knowledge).*
+[xiaolai/anthropic-docs](https://github.com/xiaolai/anthropic-docs).*

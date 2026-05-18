@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://github.com/xiaolai/autoupdated-anthropic-documentation-knowledge/schemas/anthropic-tool.schema.json",
+  "$id": "https://github.com/xiaolai/anthropic-docs/schemas/anthropic-tool.schema.json",
   "title": "Anthropic Messages API tool definition",
   "description": "Schema for a single entry in the `tools: []` array passed to POST /v1/messages. See https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools.md for the canonical reference.",
   "type": "object",

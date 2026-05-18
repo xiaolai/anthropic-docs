@@ -56,4 +56,4 @@ user-invocable: true
 
 *Auto-updated every 30 minutes from anthropic.com/news and
 anthropic.com/research. File issues at
-[xiaolai/autoupdated-anthropic-documentation-knowledge](https://github.com/xiaolai/autoupdated-anthropic-documentation-knowledge).*
+[xiaolai/anthropic-docs](https://github.com/xiaolai/anthropic-docs).*

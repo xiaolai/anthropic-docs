@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://github.com/xiaolai/autoupdated-anthropic-documentation-knowledge/schemas/agent-skill-frontmatter.schema.json",
+  "$id": "https://github.com/xiaolai/anthropic-docs/schemas/agent-skill-frontmatter.schema.json",
   "title": "Agent Skill (.skill package) SKILL.md frontmatter",
   "description": "Schema for the YAML frontmatter block at the top of every .skill package's SKILL.md file. See https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices.md for the canonical reference. USAGE: this schema is not wired into validate-examples.sh (which only validates fenced ```json blocks against schemas). It exists as a reference for users authoring their own .skill packages — validate manually with: `ajv validate -s pipeline/schema/agent-skill-frontmatter.schema.json -d <(yq eval -o=json '.' my-skill/SKILL.md)`.",
   "type": "object",

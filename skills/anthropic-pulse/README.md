@@ -2,7 +2,7 @@
 
 Auto-updated digest of recent **Anthropic news** + **Anthropic research** — fresh every 30 minutes, surfaced at intent-match time.
 
-Part of the [autoupdated-anthropic-documentation-knowledge](../../README.md) plugin.
+Part of the [anthropic-docs](../../README.md) plugin.
 
 ## What this skill is (and isn't)
 

@@ -1,5 +1,5 @@
 {
-  "name": "autoupdated-anthropic-documentation-knowledge",
+  "name": "anthropic-docs",
   "version": "1.0.0",
   "private": true,
   "description": "Multi-skill verification toolchain for the Anthropic docs skills platform. Per-skill content lives at skills/<name>/; this package.json only carries the devDeps for the shared pipeline/scripts/ verification gates.",

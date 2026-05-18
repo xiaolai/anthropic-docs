@@ -61,5 +61,5 @@ user-invocable: true
 ---
 
 *This skill is auto-updated every 30 minutes by a maintainer-run pipeline. File
-issues at [xiaolai/autoupdated-anthropic-documentation-knowledge](https://github.com/xiaolai/autoupdated-anthropic-documentation-knowledge) —
+issues at [xiaolai/anthropic-docs](https://github.com/xiaolai/anthropic-docs) —
 SKILL fixes flow through the next research run, not via PRs.*

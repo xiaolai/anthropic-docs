@@ -6,7 +6,7 @@ capabilities), the client and server roles, the transport layers
 (stdio / streamable HTTP / SSE), and the core primitives (tools,
 resources, prompts, sampling, roots, completion).
 
-Part of the [autoupdated-anthropic-documentation-knowledge](../../README.md) plugin.
+Part of the [anthropic-docs](../../README.md) plugin.
 
 ## Surfaces
 

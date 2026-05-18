@@ -9,7 +9,7 @@ file Claude should then read.
 
 1. Install the plugin in a fresh Claude Code session:
    ```bash
-   /plugin install xiaolai/autoupdated-anthropic-documentation-knowledge
+   /plugin install xiaolai/anthropic-docs
    ```
 2. For each row below, open a new Claude Code conversation and type
    the prompt verbatim.
