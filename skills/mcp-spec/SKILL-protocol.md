@@ -148,6 +148,18 @@ Proposals. The process is documented at
 [`community/sep-guidelines.md`](https://modelcontextprotocol.io/community/sep-guidelines.md).
 Active SEPs live under [`seps/`](https://modelcontextprotocol.io/seps/).
 
+### Notable draft SEPs (as of 2026-05-18)
+
+| SEP | Title | Type | Status | Summary |
+|---|---|---|---|---|
+| [SEP-2106](https://modelcontextprotocol.io/seps/2106-json-schema-2020-12.md) | Tools `inputSchema` & `outputSchema` Conform to JSON Schema 2020-12 | Standards Track | Draft | Loosen tool schema restrictions — `inputSchema` keeps `type: "object"` but allows composition keywords (`anyOf`, `oneOf`, etc.); `outputSchema` allows any JSON Schema; `structuredContent` can be any JSON value. See also `SKILL-tools-resources-prompts.md`. |
+| [SEP-2164](https://modelcontextprotocol.io/seps/2164-resource-not-found-error.md) | Standardize Resource Not Found Error Code | Standards Track | Draft | Standardise on `-32602` (Invalid Params) for resource-not-found errors across all SDKs, replacing the current inconsistency (`-32002`, `-32602`, `-32603`, `0`). |
+| [SEP-2596](https://modelcontextprotocol.io/seps/2596-spec-feature-lifecycle-and-deprecation.md) | Specification Feature Lifecycle and Deprecation Policy | Process | Draft | Defines Active / Deprecated / Removed states for spec features with a minimum 12-month deprecation window before removal. Formalises the HTTP+SSE transport and `includeContext: "thisServer"/"allServers"` as Deprecated with a three-month grace period after the SEP is Final. |
+
+> These SEPs are **Draft** — not yet Final. Behaviour they propose is not
+> yet part of the Current specification (`2025-11-25`). Implement
+> accordingly.
+
 ---
 
 *Source pages: `learn/architecture.md`, `learn/versioning.md`,

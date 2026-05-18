@@ -22,6 +22,14 @@ source: https://modelcontextprotocol.io/specification/2025-11-25/server/
 
 A tool is a callable function the server exposes to the host LLM.
 
+> **Draft proposal — SEP-2106**: [SEP-2106](https://modelcontextprotocol.io/seps/2106-json-schema-2020-12.md)
+> (Draft, Standards Track) proposes loosening the tool schema restrictions.
+> Under the proposal: `inputSchema` would retain `type: "object"` but allow
+> any JSON Schema 2020-12 keywords (`anyOf`, `oneOf`, `$ref`, etc.);
+> `outputSchema` would allow any valid JSON Schema (not just object schemas);
+> and `structuredContent` could be any JSON value including arrays and
+> primitives. **Not yet in the Current spec (`2025-11-25`).**
+
 ### Schema
 
 ```json

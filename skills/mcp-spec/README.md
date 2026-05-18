@@ -6,6 +6,10 @@ capabilities), the client and server roles, the transport layers
 (stdio / streamable HTTP / SSE), and the core primitives (tools,
 resources, prompts, sampling, roots, completion).
 
+**Last updated**: 2026-05-18
+
+**TypeScript SDK version**: v1.29.0 (`@modelcontextprotocol/sdk`)
+
 Part of the [anthropic-docs](../../README.md) plugin.
 
 ## Surfaces
@@ -31,4 +35,10 @@ Part of the [anthropic-docs](../../README.md) plugin.
 ```bash
 SKILL_NAME=mcp-spec npm run update
 ```
+
+## Recent activity
+
+| Date | Update | Research | Mending | Report | Total | Notes |
+|------|--------|----------|---------|--------|-------|-------|
+| 2026-05-18 | $0.85 | $0.50 | — | — | **$1.35** | success — 3 new SEP pages (2106, 2164, 2596), all gates pass |
 
