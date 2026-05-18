@@ -10,6 +10,9 @@ The newest entry is at the top.
 
 ---
 
+## 2026-05-18
+*(pending review — see draft PR on `auto/2026-05-18-pending-review`)* Research pass over 103 pages at v2.1.143; validate-examples and check-populated gates failed — changes held in draft PR pending manual fix.
+
 ## 2026-05-17 — codex audit-fix pass 4 (8 findings → CLEAN in 2 rounds)
 
 Sanity-check audit re-run after the push-to-100 pass. Codex surfaced

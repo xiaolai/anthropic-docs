@@ -27,6 +27,26 @@ Claude Code invokes a hook by executing the file directly. The script needs `chm
 
 To **block** a tool call, the PreToolUse hook must exit with code **2**. Any other non-zero exit is logged as a hook error but does not block. Use stderr for the human-readable reason — Claude surfaces it back to the user.
 
+**Exit code 1 does NOT block** — this is the conventional Unix failure code but Claude Code treats it as a non-blocking error. Always use exit code 2 to enforce policy.
+
+Exception: `WorktreeCreate` — any non-zero exit code aborts worktree creation.
+
+### Alternative: JSON-based blocking (exit 0 + stdout)
+
+You can also block on exit 0 by writing a JSON decision to stdout:
+
+```json
+{
+  "hookSpecificOutput": {
+    "hookEventName": "PreToolUse",
+    "permissionDecision": "deny",
+    "permissionDecisionReason": "Blocked by policy hook"
+  }
+}
+```
+
+Use exit code 2 when you detect a violation early (no output needed). Use JSON output when you need structured output or a custom reason string.
+
 ### Read stdin once
 
 The hook payload arrives on stdin. Reading it twice (or piping stdin through multiple commands) drops bytes — capture once with `PAYLOAD=$(cat)` and then jq-extract from `"$PAYLOAD"`.

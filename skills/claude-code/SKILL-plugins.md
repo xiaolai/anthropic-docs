@@ -50,33 +50,112 @@ Source: `code.claude.com/docs/en/plugins.md`.
 
 ## Marketplace manifest: `marketplace.json`
 
-> *Populated by the research agent.* The `name`, `owner`, and
-> `plugins` array structure.
+A marketplace manifest lives at `marketplace.json` and declares the marketplace and its plugins.
+
+```json
+{
+  "name": "my-marketplace",
+  "owner": "my-org",
+  "plugins": [
+    {
+      "name": "my-plugin",
+      "source": { "type": "github", "repo": "my-org/my-plugin" }
+    }
+  ]
+}
+```
+
+Source: `code.claude.com/docs/en/plugin-marketplaces.md`
 
 ## Marketplace source types
 
-> *Populated by the research agent.* Seven source types:
-> `github`, `git`, `url`, `npm`, `file`, `directory`, `hostPattern`.
+Seven source types for plugin entries in `marketplace.json`:
+
+| Type | Example | Notes |
+|---|---|---|
+| `github` | `{"type":"github","repo":"owner/repo"}` | Fetches latest release zip from GitHub |
+| `git` | `{"type":"git","url":"https://...","ref":"main"}` | Clone via git |
+| `url` | `{"type":"url","url":"https://.../plugin.zip"}` | Download a zip archive |
+| `npm` | `{"type":"npm","package":"@scope/plugin","version":"1.0.0"}` | Install from npm |
+| `file` | `{"type":"file","path":"./plugins/my-plugin"}` | Local directory |
+| `directory` | `{"type":"directory","path":"./plugins/"}` | Auto-discover all plugins in directory |
+| `hostPattern` | `{"type":"hostPattern","pattern":"*.company.com"}` | Restrict access by hostname |
+
+Source: `code.claude.com/docs/en/plugins.md`, `code.claude.com/docs/en/plugin-marketplaces.md`
 
 ## Install scopes
 
-> *Populated by the research agent.* `user` / `project` / `local` —
-> what each means and where the install is recorded.
+| Scope | Where installed | Tracked in git? |
+|---|---|---|
+| `user` | `~/.claude/plugins/` | No |
+| `project` | `.claude/plugins/` | Yes (or gitignored) |
+| `local` | `.claude/plugins/` (local only) | No |
+
+Scope is set with `--scope user|project|local` on `claude plugin install`. Default is `user`.
 
 ## What plugins can ship
 
-> *Populated by the research agent.* Commands, agents, skills, hooks,
-> rules, MCP server configs.
+Plugins can bundle:
+- **Skills** (`skills/<name>/SKILL.md`) — custom slash commands
+- **Agents** (`agents/<name>.md`) — named subagents
+- **Commands** (`commands/<name>.md`) — legacy slash commands
+- **Hooks** (`hooks/hooks.json`) — hook handlers at plugin scope
+- **Rules** (`rules/*.md`) — auto-correction rules
+- **MCP servers** (`.mcp.json`) — MCP server configs loaded when plugin is active
+- **Executables** (`bin/`) — available on PATH when plugin is active
 
 ## Plugin discovery: convention paths
 
-> *Populated by the research agent.* How Claude Code finds
-> `commands/`, `agents/`, `skills/`, etc. inside a plugin.
+Claude Code auto-discovers plugin components from these paths inside the plugin directory. No enumeration in `plugin.json` required:
+
+```
+<plugin-root>/
+  .claude-plugin/
+    plugin.json         ← manifest (required)
+  skills/               ← skill directories
+    <name>/
+      SKILL.md
+  agents/               ← agent definition files
+    <name>.md
+  commands/             ← legacy command files
+    <name>.md
+  hooks/
+    hooks.json          ← hook handlers
+  rules/                ← rules files
+    <name>.md
+  .mcp.json             ← MCP server configs
+  bin/                  ← executables added to PATH
+```
 
 ## CLI commands
 
-> *Populated by the research agent.* `claude plugin install`,
-> `claude plugin list`, `claude plugin marketplace add`, etc.
+```bash
+# Install from a marketplace
+claude plugin install <plugin>@<marketplace>
+
+# Install from a local directory or zip
+claude plugin install --from-dir ./my-plugin
+claude plugin install --from-url https://example.com/plugin.zip
+
+# List installed plugins
+claude plugin list
+
+# Enable/disable a plugin
+claude plugin enable <plugin>@<marketplace>
+claude plugin disable <plugin>@<marketplace>
+
+# Add a marketplace
+claude plugin marketplace add <marketplace-url>
+claude plugin marketplace list
+
+# Update plugins
+claude plugin update
+
+# Within a session: reload after changes
+/reload-plugins
+```
+
+For session-only plugin loading (not installed): use `--plugin-dir ./my-plugin` or `--plugin-url https://example.com/plugin.zip` CLI flags.
 
 ## Worked examples
 
