@@ -83,10 +83,74 @@ Source: `code.claude.com/docs/en/plugins.md`.
 > *Populated by the research agent.* See also:
 > [`templates/.claude-plugin/plugin.json`](templates/.claude-plugin/plugin.json).
 
+## Plugin hint protocol
+
+CLI tools and SDKs can prompt Claude Code users to install a related plugin using the plugin hint protocol. The hint is stripped from command output before it reaches the model, so it never costs tokens.
+
+### How to emit a hint
+
+Gate emission on the `CLAUDECODE` environment variable (Claude Code sets it to `1` for every Bash/PowerShell tool call). Write a `<claude-code-hint />` tag to **stderr**, on its own line:
+
+```shell
+# Shell
+[ -n "$CLAUDECODE" ] &&
+  printf '%s\n' '<claude-code-hint v="1" type="plugin" value="my-plugin@claude-plugins-official" />' >&2
+```
+
+```javascript
+// Node.js
+if (process.env.CLAUDECODE) {
+  process.stderr.write(
+    '<claude-code-hint v="1" type="plugin" value="my-plugin@claude-plugins-official" />\n'
+  )
+}
+```
+
+```python
+# Python
+import os, sys
+if os.environ.get("CLAUDECODE"):
+    print('<claude-code-hint v="1" type="plugin" value="my-plugin@claude-plugins-official" />', file=sys.stderr)
+```
+
+### Hint tag attributes
+
+| Attribute | Required | Description |
+|---|---|---|
+| `v` | yes | Protocol version. `1` is the only supported value. |
+| `type` | yes | Hint kind. `plugin` is the only supported value. |
+| `value` | yes | Plugin identifier in `name@marketplace` form (e.g. `my-plugin@claude-plugins-official`). |
+
+### Behaviour and limits
+
+- Claude Code removes the hint line before passing output to the model, even if the version/type is unrecognised.
+- The tag must be on its **own line** (leading/trailing whitespace allowed). A tag embedded mid-line is ignored.
+- The `value` must reference a plugin in an Anthropic-controlled marketplace (e.g. `claude-plugins-official`). Hints pointing to other marketplaces are silently dropped.
+- **One prompt per plugin, ever**: once shown, the prompt is never repeated regardless of the user's answer.
+- **One prompt per session**: at most one hint prompt fires per Claude Code session across all CLIs.
+- If the user does not respond within 30 seconds the prompt dismisses as **No**.
+- Selecting **Yes** installs the plugin to user scope.
+- Selecting **No, and don't show plugin installation hints again** disables all future hints.
+
+### Good placement points
+
+| Placement | Why it works |
+|---|---|
+| `--help` output | Claude often calls `--help` when exploring an unfamiliar CLI |
+| Unknown-subcommand errors | Reaches the moment Claude is confused |
+| Login / auth success | User is in a setup mindset |
+| First-run welcome | Natural onboarding moment |
+
+### Marketplace submission
+
+Plugin hints only work for plugins listed in the official Anthropic marketplace. Submit at [claude.ai/settings/plugins/submit](https://claude.ai/settings/plugins/submit) or [platform.claude.com/plugins/submit](https://platform.claude.com/plugins/submit).
+
+Source: `code.claude.com/docs/en/plugin-hints.md`
+
 ## Common mistakes (auto-corrected by `rules/plugins.md`)
 
 > *Populated by the research agent.*
 
 ---
 
-*Source pages: `code.claude.com/docs/en/plugins.md`.*
+*Source pages: `code.claude.com/docs/en/plugins.md`, `code.claude.com/docs/en/plugin-hints.md`.*

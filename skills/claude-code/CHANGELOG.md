@@ -10,6 +10,14 @@ The newest entry is at the top.
 
 ---
 
+## 2026-05-18
+- Sync to CC v2.1.143 — version bump from 0.0.0, docs index updated (103 pages, no structural changes), all 8 gates pass, 32 verify checks passed
+
+## v2.1.143 — 2026-05-18
+
+- **Version bump**: `@anthropic-ai/claude-code` updated from `0.0.0` to `2.1.143`. Router (`SKILL.md`) version table and README version stamp updated.
+- **Docs index**: `code.claude.com/llms.txt` index hash changed (103 pages; no pages added or removed). Minor content drift in existing pages; surface files updated on next research pass if any schema-affecting field changed.
+
 ## 2026-05-17 — codex audit-fix pass 4 (8 findings → CLEAN in 2 rounds)
 
 Sanity-check audit re-run after the push-to-100 pass. Codex surfaced
