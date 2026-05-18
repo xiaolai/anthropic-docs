@@ -32,6 +32,13 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
   is `5m`; `1h` is also available. The whole prefix up to the
   breakpoint is cached, so place breakpoints at stable boundaries
   (system prompt → tools → static context → user turn).
+- **Cache diagnostics (beta) pinpoints cache-miss root causes.** Send
+  beta header `cache-diagnosis-2026-04-07` and include
+  `diagnostics: { previous_message_id: "<prev-response-id>" }` in your
+  request. The response `diagnostics.cache_miss_reason` identifies the
+  first divergence point: `model_changed`, `system_changed`,
+  `tools_changed`, or `messages_changed`. Claude API only — not
+  available on Bedrock or Vertex.
 - **Batches return within 24h** at 50% discount. Submit via
   `POST /v1/messages/batches`; poll for results. Not for interactive use.
 - **Vision input:** images can be base64-inline or URL-referenced.
@@ -88,6 +95,7 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
 | Feature | Page | What it does |
 |---|---|---|
 | **Prompt caching** | [`prompt-caching.md`](https://platform.claude.com/docs/en/build-with-claude/prompt-caching.md) | `cache_control: ephemeral` breakpoints, 5-min TTL |
+| **Cache diagnostics** *(beta)* | [`cache-diagnostics.md`](https://platform.claude.com/docs/en/build-with-claude/cache-diagnostics.md) | Diagnose cache misses by comparing consecutive requests; `cache_miss_reason` identifies the first divergence point |
 | **Batch processing** | [`batch-processing.md`](https://platform.claude.com/docs/en/build-with-claude/batch-processing.md) | Submit many requests at lower price, returns in 24h |
 | **Compaction** | [`compaction.md`](https://platform.claude.com/docs/en/build-with-claude/compaction.md) | Auto-summarize older messages when nearing context limit |
 | **Context editing** | [`context-editing.md`](https://platform.claude.com/docs/en/build-with-claude/context-editing.md) | Programmatic context-window management |
@@ -132,4 +140,4 @@ naming, region availability, and auth model:
 
 ---
 
-*Source pages: 29 under `platform.claude.com/docs/en/build-with-claude/`.*
+*Source pages: 30 under `platform.claude.com/docs/en/build-with-claude/`.*
