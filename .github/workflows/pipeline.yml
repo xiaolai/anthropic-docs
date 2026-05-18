@@ -197,7 +197,15 @@ jobs:
 
       - name: Install pipeline/agent deps (npm ci)
         working-directory: pipeline/agent
-        run: npm ci
+        run: |
+          npm ci
+          # SDK v0.3.x ships its CLI as a platform-specific native binary
+          # via optionalDependencies. The package-lock.json on the maintainer's
+          # mac only writes a separate install entry for darwin-arm64, so
+          # `npm ci` on linux-x64 skips the binary. Force-install it here.
+          # Version mirrors the @anthropic-ai/claude-agent-sdk pin in
+          # pipeline/agent/package.json.
+          npm install --no-save --no-package-lock @anthropic-ai/claude-agent-sdk-linux-x64@0.3.143
 
       - name: Install root verification deps (npm ci)
         run: npm ci
