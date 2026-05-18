@@ -68,22 +68,44 @@ console.log();
 let lastResult: any = null;
 let turns = 0;
 
-for await (const message of query({
-  prompt: userMessage,
-  options: {
-    systemPrompt,
-    maxTurns: 60,
-    maxBudgetUsd: 3.0,
-    permissionMode: "bypassPermissions",
-    allowDangerouslySkipPermissions: true,
-    allowedTools: ["Read", "Write", "Edit", "MultiEdit", "Bash", "Grep", "Glob", "WebFetch"],
-    settingSources: [],
-    cwd: SKILL_ROOT,
-    env: cleanEnv,
-  },
-})) {
-  if (message.type === "assistant") turns++;
-  if (message.type === "result") lastResult = message;
+try {
+  for await (const message of query({
+    prompt: userMessage,
+    options: {
+      systemPrompt,
+      maxTurns: 60,
+      maxBudgetUsd: 3.0,
+      permissionMode: "bypassPermissions",
+      allowDangerouslySkipPermissions: true,
+      allowedTools: ["Read", "Write", "Edit", "MultiEdit", "Bash", "Grep", "Glob", "WebFetch"],
+      settingSources: [],
+      cwd: SKILL_ROOT,
+      env: cleanEnv,
+      debug: true,
+      debugFile: "/tmp/sdk-debug.log",
+    },
+  })) {
+    if (message.type === "assistant") turns++;
+    if (message.type === "result") lastResult = message;
+  }
+} catch (err: any) {
+  console.error("=== RESEARCH AGENT SDK ERROR (DIAGNOSTIC) ===");
+  console.error("Error message:", err?.message ?? String(err));
+  console.error("Error name:", err?.name ?? "unknown");
+  console.error("Stack:");
+  console.error(err?.stack ?? "(no stack)");
+  if (err?.cause) {
+    console.error("Cause:", err.cause);
+  }
+  try {
+    const debugLog = readFileSync("/tmp/sdk-debug.log", "utf-8");
+    console.error("=== SDK debug log (tail 50 lines) ===");
+    console.error(debugLog.split("\n").slice(-50).join("\n"));
+  } catch {
+    console.error("(no SDK debug log written)");
+  }
+  console.error("=== END DIAGNOSTIC ===");
+  throw err;
 }
 
 if (lastResult) {
