@@ -176,6 +176,31 @@ style variables — blends seamlessly into the host UI across themes.
 
 Reference: [`mcp-apps/transparent-theming.md`](https://claude.com/docs/connectors/building/mcp-apps/transparent-theming.md).
 
+Key requirements (source: transparent-theming.md):
+
+1. Set `html, body { background: transparent; }` — no opaque backdrop.
+2. Add `<meta name="color-scheme" content="light dark" />` in `<head>`
+   to prevent the browser's opaque-canvas default before scripts run.
+3. Set `prefersBorder: false` in `_meta.ui` via `registerAppResource()`
+   to suppress the host's bordered-card wrapper.
+
+The `connect()` handshake delivers a `hostContext` object with:
+
+| Field | Contents |
+|---|---|
+| `theme` | `"light"` or `"dark"` |
+| `styles.variables` | CSS custom props: `--color-background-*`, `--color-text-*`, `--color-border-*`, `--color-ring-*`, `--font-*`, `--border-radius-*`, `--border-width-*` |
+| `styles.css.fonts` | `@font-face` rules for Anthropic Sans (from `assets.claude.ai`) |
+
+SDK theming helpers:
+
+- `applyDocumentTheme(theme)` — sets `<html data-theme>` + `color-scheme`.
+- `applyHostStyleVariables(variables)` — writes all `styles.variables` to `:root`.
+- `applyHostFonts(fontCss)` — injects `@font-face` rules once.
+- `useApp(options)` / `useHostStyles(app, hostContext)` — React hooks wrapping the above.
+
+For fonts, add `csp: { resourceDomains: ["https://assets.claude.ai"] }` in `_meta.ui`.
+
 ### Instance supersession
 
 When a tool is called more than once in a conversation, keep only
@@ -197,6 +222,23 @@ Build MCP Apps that work with both Claude and ChatGPT using a
 single codebase. Worth the constraints if your audience spans both.
 
 Reference: [`mcp-apps/cross-compatibility.md`](https://claude.com/docs/connectors/building/mcp-apps/cross-compatibility.md).
+
+Use `registerAppTool()` and `registerAppResource()` from
+`@modelcontextprotocol/ext-apps/server` — they auto-generate
+platform-specific metadata. Call `App.connect()` without an explicit
+transport; the SDK auto-detects Claude vs ChatGPT.
+
+**Claude-specific `Resource._meta.ui.domain` computation:**
+
+```sh
+node -e 'const u="https://example.com/mcp"; console.log(
+  require("crypto").createHash("sha256").update(u)
+    .digest("hex").slice(0,32) + ".claudemcpcontent.com")'
+```
+
+Produces e.g. `c3d80a4ed901ee05b21755a88273b4a4.claudemcpcontent.com`
+for `https://example.com/mcp`. Each host platform computes this field
+differently — the command above is Claude-specific.
 
 ### Getting started
 

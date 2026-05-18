@@ -23,12 +23,67 @@ Claude how to perform a specific workflow. Once installed, a user
 can invoke a skill in any conversation by referring to it; Claude
 loads the skill's instructions and follows them.
 
+Skills follow the open [Agent Skills specification](https://agentskills.io/specification).
+
 Skills are the lightweight, scoped counterpart to plugins:
 
 - A **skill** is a single recipe (e.g., "review my pull requests for
   security issues using my org's checklist").
 - A **plugin** bundles multiple skills, connectors, slash commands,
   and sub-agents (e.g., "the entire DevOps team's standard toolkit").
+
+## Availability
+
+Skills require a **Pro, Max, Team, or Enterprise** Claude plan.
+The feature also requires **code execution to be enabled** for the
+account.
+Source: [`skills/overview.md`](https://claude.com/docs/skills/overview.md).
+
+## How skills load (progressive disclosure)
+
+1. **Metadata phase** — at conversation start Claude reads each skill's
+   `name` + `description` (~100 tokens per skill).
+2. **Activation** — when a task matches a description, Claude loads the
+   full `SKILL.md`.
+3. **Resource loading** — additional files (`scripts/`, `references/`,
+   `assets/`) are loaded only when needed.
+
+## Types of skills
+
+| Type | Description |
+|---|---|
+| **Anthropic skills** | Pre-built (Excel, Word, PowerPoint, PDF); auto-activate when relevant |
+| **Partner skills** | From Notion, Figma, Atlassian, etc.; designed for MCP connector integration |
+| **Organization-provisioned** | Deployed org-wide by Team/Enterprise admins |
+| **Custom skills** | Created by users for specialized workflows |
+
+## Authoring quick-reference
+
+Source: [`skills/how-to.md`](https://claude.com/docs/skills/how-to.md).
+
+### Directory layout
+
+```
+my-skill/           ← directory name must match `name` field
+├── SKILL.md        ← required
+├── scripts/        ← optional: Python / Node.js / Bash scripts
+├── references/     ← optional: additional docs Claude can read
+└── assets/         ← optional: templates, images, data files
+```
+
+### SKILL.md frontmatter fields
+
+| Field | Required | Constraint |
+|---|---|---|
+| `name` | ✅ | Lowercase letters, numbers, hyphens only; max **64 chars**; must match directory name |
+| `description` | ✅ | Max **200 chars** on Claude.ai (up to 1024 in the Agent Skills spec) |
+| `dependencies` | optional | `python>=3.8, pandas>=1.5.0` style — installed on skill load |
+
+### Packaging for upload
+
+1. Ensure the directory name matches `name`.
+2. Create a ZIP with the skill directory inside: `my-skill.zip → my-skill/SKILL.md …`
+3. Upload via Claude app.
 
 ## Where users find skills
 

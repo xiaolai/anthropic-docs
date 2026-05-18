@@ -37,6 +37,24 @@ commands that drive it.
 Plugins are NOT available on Claude.ai web or Mobile (as of this
 snapshot — check upstream for current state).
 
+## Plugin directory
+
+Anthropic hosts a public plugin directory at
+[claude.com/plugins-for/cowork](https://claude.com/plugins-for/cowork).
+It is also surfaced in Claude Code as the `claude-plugins-official`
+marketplace. This is distinct from the **Connectors Directory** (MCP
+connectors only). Source:
+[`plugins/submit.md`](https://claude.com/docs/plugins/submit.md),
+[`plugins/overview.md`](https://claude.com/docs/plugins/overview.md).
+
+Anthropic has open-sourced 11 internally-used plugins as starting
+points (Productivity, Sales, Finance, Data, Legal, Marketing, Customer
+Support, Product Management, Biology Research, Enterprise Search,
+Plugin Create).
+
+Plugins carry either **Community** or **Anthropic Verified** status.
+Verified plugins have passed additional quality + safety review.
+
 ## Plugin marketplaces
 
 A marketplace is a directory of installable plugins, identified by
@@ -51,6 +69,35 @@ community. Organizations can run their own private marketplaces for
 internal-only plugins (common in Cowork on 3P deployments — see
 [`claude-cowork`](../claude-cowork/SKILL-cowork.md) for the "org-plugins
 directory" pattern).
+
+## Submitting a plugin
+
+Source: [`plugins/submit.md`](https://claude.com/docs/plugins/submit.md).
+
+**Before submitting:** run `claude plugin validate` to check formatting
+and structure. The plugin source must live in a **public GitHub repo**
+(closed-source is not accepted).
+
+**Submission forms:**
+
+| Surface | URL |
+|---|---|
+| Claude.ai | <https://claude.ai/settings/plugins/submit> |
+| Console | <https://platform.claude.com/plugins/submit> |
+
+After publishing, updates pushed to your GitHub repo are picked up
+automatically — no re-submit required.
+
+**Terms:** all plugins must comply with the
+[Anthropic Software Directory Terms](https://support.claude.com/en/articles/13145338-anthropic-software-directory-terms)
+and
+[Anthropic Software Directory Policy](https://support.claude.com/en/articles/13145358-anthropic-software-directory-policy).
+
+## SETUP.md pattern
+
+Plugins can include a `SETUP.md` skill to guide Claude through
+configuring MCP servers bundled in the plugin. Claude follows the
+setup instructions when a user installs or activates the plugin.
 
 ## Installation scope
 
