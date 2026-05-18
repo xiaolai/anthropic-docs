@@ -132,7 +132,7 @@ That page is the source of truth for:
 - Telemetry toggles
 - MCP server allowlist
 - Plugin / skill / hook distribution settings
-- Per-user spend caps
+- Token usage limits (`inferenceMaxTokensPerWindow`, `inferenceTokenWindowHours`)
 - Auto-update policy
 
 ## Data residency

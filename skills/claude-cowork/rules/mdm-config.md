@@ -47,18 +47,21 @@ MDM profile should explicitly NOT set `inferenceProvider: foundry`.
 
 ## Rule 4 — Telemetry kill switches
 
-Three independent telemetry toggles:
+Four independent telemetry toggles (all boolean, default `false` / enabled):
 
-- `disableCrashReporting`: boolean, scrubs and disables crash reports
-- `disableProductAnalytics`: boolean, disables usage telemetry
-- `disableAutoUpdate`: boolean, disables auto-update checks
+- `disableEssentialTelemetry`: disables crash reports and error stack traces sent to Anthropic. **Opts you into a manual support model** — collect and send logs yourself.
+- `disableNonessentialTelemetry`: disables product-usage analytics (feature adoption, session counts, UI interactions).
+- `disableNonessentialServices`: blocks cosmetic third-party fetches (connector favicons, artifact-preview iframe).
+- `disableAutoUpdates`: disables update checks and downloads; your IT team must redistribute new builds.
 
-All three are off-by-default (telemetry enabled). For air-gapped or
-compliance-hardened deployments, set all three to `true`.
+For air-gapped or compliance-hardened deployments, set all four to `true`.
 
 Telemetry NEVER contains user prompts or completions, but if your
 audit posture requires zero Anthropic-bound network traffic, disable
-all three.
+all four.
+
+Source: [`cowork/3p/telemetry.md`](https://claude.com/docs/cowork/3p/telemetry.md),
+[`cowork/3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
 
 ## Rule 5 — Don't mix per-user and admin profiles
 
@@ -85,11 +88,16 @@ JSON file your org publishes. **Pin plugin versions** in that
 manifest; bare references resolve to "latest" and inherit any
 breaking change immediately.
 
-## Rule 8 — Spend caps are workspace-monthly, not per-request
+## Rule 8 — Usage limits are token-based windows, not dollar-based monthly caps
 
-`workspaceSpendCapUSD` caps monthly usage per workspace. When hit,
-requests return 429 `cap_exceeded` until the next billing month.
-Set to a value above your monthly forecast, with a buffer.
+Two keys control the token usage limit:
+
+- `inferenceMaxTokensPerWindow` (integer): total input + output tokens permitted per device per window. Enforced locally; persists across restarts.
+- `inferenceTokenWindowHours` (integer, 1–720): length of the tumbling window for the cap above.
+
+There is **no `workspaceSpendCapUSD` key** in the configuration schema. Dollar-based or role-differentiated spend caps are only available in full Claude Enterprise (not Cowork on 3P). Set `inferenceMaxTokensPerWindow` above your expected per-device usage for the window, with a buffer.
+
+Source: [`cowork/3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
 
 ---
 
