@@ -38,11 +38,32 @@ single queries or stateless multi-turn conversations.
 | `stop_sequences` | Array of strings; model stops when any is generated |
 | `stream` | `true` for SSE response stream |
 | `tools` | Array of tool definitions (see tool use) |
-| `tool_choice` | `auto` / `any` / `tool` / `none` |
+| `tool_choice` | `auto` / `any` / `tool` / `none` (see `tool_choice` types below) |
 | `metadata` | `{ user_id: "..." }` for abuse signaling |
 | `service_tier` | `auto` / `standard_only` |
-| `thinking` | `{ type: "enabled", budget_tokens: N }` for extended thinking |
+| `thinking` | Extended-thinking config (see thinking types below) |
 | `output_config` | Output configuration — see below |
+| `container` | ID of the compute container to use (e.g. for code-execution sandboxes). |
+| `inference_geo` | Geographic region for inference processing. Defaults to the workspace's `default_inference_geo`. |
+
+### `thinking` parameter types
+
+| Type | Fields | Notes |
+|---|---|---|
+| `ThinkingConfigEnabled` | `type: "enabled"`, `budget_tokens`, optional `display` | Enables extended thinking with a token budget |
+| `ThinkingConfigDisabled` | `type: "disabled"` | Explicitly disables thinking |
+| `ThinkingConfigAdaptive` | `type: "adaptive"`, optional `display` | Model decides how much thinking to use |
+
+### `tool_choice` parameter types
+
+| Type | Fields | Notes |
+|---|---|---|
+| `ToolChoiceAuto` | `type: "auto"`, optional `disable_parallel_tool_use` | Model picks when to use tools |
+| `ToolChoiceAny` | `type: "any"`, optional `disable_parallel_tool_use` | Model must use at least one tool |
+| `ToolChoiceTool` | `name`, `type: "tool"`, optional `disable_parallel_tool_use` | Model must use the named tool |
+| `ToolChoiceNone` | `type: "none"` | Model must not use any tools |
+
+`disable_parallel_tool_use: true` forces single tool calls per turn (default `false`).
 
 ### `output_config` parameter
 
@@ -86,13 +107,22 @@ There are two classes of tools in `tools`:
 
 Known server tool types (specify in `tools` array):
 
-| Tool type string | Description |
+| Tool type / name | Description |
 |---|---|
-| `web_search_20250305` / `web_search_20260209` | Web search. Supports `allowed_domains`, `blocked_domains`, `user_location`, `max_uses`. |
-| `web_fetch_20250910` | Fetch a URL. Supports `allowed_domains`, `blocked_domains`, `max_content_tokens`, `citations`. |
-| `code_execution_20250825` / `code_execution_20260120` | Execute code in a sandbox. |
+| `web_search` (`WebSearchTool20250305`, `WebSearchTool20260209`) | Web search. Supports `allowed_domains`, `blocked_domains`, `user_location`, `max_uses`. |
+| `web_fetch` (`WebFetchTool20250910`, `WebFetchTool20260209`, `WebFetchTool20260309`) | Fetch a URL. Supports `allowed_domains`, `blocked_domains`, `max_content_tokens`, `citations`. |
+| `code_execution` (`CodeExecutionTool20250522`, `CodeExecutionTool20250825`, `CodeExecutionTool20260120`) | Execute code in a sandbox container. |
+| `bash` (`ToolBash20250124`) | Run bash commands inside a container. |
+| `text_editor` (`ToolTextEditor20250124`, `ToolTextEditor20250429`, `ToolTextEditor20250728`) | File editing operations inside a container. |
+| `memory` (`MemoryTool20250818`) | Read/write to a managed memory store. |
+| `bm25_search` (`ToolSearchToolBm25_20251119`) | BM25 keyword search over a tool result set. |
+| `regex_search` (`ToolSearchToolRegex20251119`) | Regex search over a tool result set. |
+
+All server tool definitions support an `allowed_callers` field (array of `"direct"` or specific tool IDs) to restrict which callers can invoke the tool.
 
 Server tools also support `defer_loading: true` to exclude from the initial system prompt (loaded on demand) and `strict: true` for schema validation.
+
+Source: [`messages/create.md`](https://platform.claude.com/docs/en/api/messages/create.md)
 
 ### Prompt caching: `cache_control`
 

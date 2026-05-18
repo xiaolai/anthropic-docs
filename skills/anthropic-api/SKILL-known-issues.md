@@ -39,9 +39,29 @@ repo. For each:
 
 ## Entries
 
-> *No confirmed user-impacting bugs surfaced yet. First entries will
-> appear after the research agent's first run that detects a
-> substantive bug worth surfacing.*
+### KI 1031 — claude-opus-4-7 (Bedrock) prepends `<<<SENTINEL\n` (or `<![CDATA[`) to tool input_json string values
+
+**Status:** Open as of 2026-05-18 · [anthropics/anthropic-sdk-typescript#1031](https://github.com/anthropics/anthropic-sdk-typescript/issues/1031)
+
+**Symptom:** With `global.anthropic.claude-opus-4-7` on AWS Bedrock (cross-region inference, streaming tool use), every string value inside a specific tool's `input_json` was prefixed with literal bytes `<<<SENTINEL\n`, then otherwise-correct content. A separate corroborating report shows similar corruption with `<![CDATA[` prefixes (no closing `]]>`). The artifact persists across multiple separate inference calls in the same conversation thread.
+
+**Trigger:** Narrow conditions — flat `Record<string, string>` tool shape with long, newline-rich string values (e.g., file-path → file-content maps); Bedrock cross-region inference endpoint; `claude-opus-4-7` model; observed in a ~5-hour window 2026-05-06 to 2026-05-08 UTC.
+
+**Workaround:** Validate all `tool_use.input` string values before use; strip or reject any that start with `<<<SENTINEL` or `<![CDATA[`. If contamination is detected, start a new conversation thread (the regression appeared to persist via conditioning).
+
+**Label:** `api` (model-level regression, not an SDK bug)
+
+---
+
+### KI 1038 — Vertex AI: document `url` source type rejected with misleading error
+
+**Status:** Open as of 2026-05-18 · [anthropics/anthropic-sdk-typescript#1038](https://github.com/anthropics/anthropic-sdk-typescript/issues/1038)
+
+**Symptom:** When using `@anthropic-ai/vertex-sdk` (v0.16.0) to send a `document` content block with `source.type: "url"`, the Vertex AI endpoint rejects the request with: `messages.0.content.0.image.source.base64.data: URL sources are not supported`. The error path (`image.source.base64.data`) is wrong — the block is a `document`, not an `image`.
+
+**Trigger:** Vertex AI endpoint only; `document` content block with `source.type: "url"`. Direct API / AWS Bedrock unaffected.
+
+**Workaround:** Pass the document as base64 instead of a URL — encode the file bytes and use `source.type: "base64"` with `source.data` and `source.media_type`. See [Anthropic PDF support docs](https://platform.claude.com/docs/en/build-with-claude/pdf-support#option-2-base64-encoded-pdf-document).
 
 ---
 

@@ -3,7 +3,38 @@
   "github": null,
   "docs": null,
   "trackedIssues": null,
-  "researchedIssues": {},
+  "researchedIssues": {
+    "1028": {
+      "title": "Supply chain risk: 2 CRITICAL single-maintainer transitive dependencies in @anthropic-ai/sdk",
+      "verdict": "skipped",
+      "reason": "Security/supply-chain concern, not a user-facing API bug or auto-correctable pattern",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "1031": {
+      "title": "claude-opus-4-7 emits literal <<<SENTINEL\\n prefix on every string value inside a single tool's input_json (Bedrock)",
+      "verdict": "added_known_issue",
+      "reason": "Model-level regression on Bedrock with distinctive symptom and viable workaround; added as KI 1031",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "1035": {
+      "title": "zodOutputFormat fails when project uses zod3",
+      "verdict": "skipped",
+      "reason": "Issue is CLOSED (fixed); no action needed",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "1036": {
+      "title": "Adopt TracingChannel for observability",
+      "verdict": "skipped",
+      "reason": "Feature request, not a bug",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "1038": {
+      "title": "Vertex AI: document URL sources rejected with incorrect error path",
+      "verdict": "added_known_issue",
+      "reason": "Clear workaround (use base64) and misleading error message; added as KI 1038",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    }
+  },
   "lastAuditedVersion": null,
   "lastUpdated": null,
   "scaffoldComplete": true,

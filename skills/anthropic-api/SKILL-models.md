@@ -25,15 +25,31 @@ source: https://platform.claude.com/docs/en/api/models/list.md
 Use these at runtime to discover what's available rather than
 hardcoding model IDs.
 
-## Current model family (Claude 4.X)
+## Available models
 
-Per the latest snapshot:
+Per the API as of 2026-05-18 (`GET /v1/models`), from most to least recent:
 
-| Tier | ID | Notes |
+| ID | Tier | Notes |
 |---|---|---|
-| **Opus** | `claude-opus-4-7` | Most capable; fast mode available |
-| **Sonnet** | `claude-sonnet-4-6` | Balanced cost/capability |
-| **Haiku** | `claude-haiku-4-5-20251001` | Cheapest, fastest; the `-20251001` suffix is the snapshot date |
+| `claude-opus-4-7` | Opus | Most capable; fast mode available (`fast-mode-2026-02-01`) |
+| `claude-mythos-preview` | — | Preview model (may change or be retired) |
+| `claude-opus-4-6` | Opus | Previous Opus generation |
+| `claude-sonnet-4-6` | Sonnet | Balanced cost/capability |
+| `claude-haiku-4-5` | Haiku | Latest Haiku alias |
+| `claude-haiku-4-5-20251001` | Haiku | Dated Haiku snapshot |
+| `claude-opus-4-5` | Opus | Older Opus generation |
+| `claude-opus-4-5-20251101` | Opus | Dated snapshot |
+| `claude-sonnet-4-5` | Sonnet | Older Sonnet generation |
+| `claude-sonnet-4-5-20250929` | Sonnet | Dated snapshot |
+| `claude-opus-4-1` | Opus | Older Opus generation |
+| `claude-opus-4-1-20250805` | Opus | Dated snapshot |
+| `claude-opus-4-0` | Opus | Older Opus generation |
+| `claude-opus-4-20250514` | Opus | Dated snapshot |
+| `claude-sonnet-4-0` | Sonnet | Older Sonnet generation |
+| `claude-sonnet-4-20250514` | Sonnet | Dated snapshot |
+| `claude-3-haiku-20240307` | Haiku (Claude 3) | Legacy; lowest cost |
+
+**Preview models** (e.g., `claude-mythos-preview`) may change shape or be retired without a deprecation window. Pin to dated IDs for stability.
 
 When building new applications, default to the latest and most
 capable model unless cost / latency dictates otherwise.
