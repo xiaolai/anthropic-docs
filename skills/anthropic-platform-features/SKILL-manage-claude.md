@@ -64,6 +64,24 @@ Replace long-lived API keys with short-lived tokens minted from a
 trusted identity provider (typical for cloud-native deployments
 where pod / service identity is the natural credential).
 
+**WIF resource ID prefixes:** service account (`svac_...`), federation
+issuer (`fdis_...`), federation rule (`fdrl_...`).
+
+**Token exchange:** workload presents IdP JWT → SDK posts to
+`POST /v1/oauth/token` (RFC 7523 `jwt-bearer`) → Anthropic returns a
+short-lived `sk-ant-oat01-...` token. OAuth scope: `workspace:developer`.
+`token_lifetime_seconds` range 60–86400s (default 3600s).
+
+**Rule match conditions** (at least one required): `subject_prefix`
+(JWT `sub`, trailing `*` = prefix match), `audience` (exact `aud`),
+`claims` (key→value map), `condition` ([CEL](https://cel.dev/) expression).
+All specified matchers must pass; client passes the `fdrl_...` rule ID
+in the exchange request.
+
+**JWKS source modes:** `discovery` (default, IdP serves
+`/.well-known/openid-configuration`), `explicit_url`, or `inline`
+(air-gapped). Fetch URLs must be `https`, port 443, public DNS.
+
 | Page | Topic |
 |---|---|
 | [`workload-identity-federation.md`](https://platform.claude.com/docs/en/manage-claude/workload-identity-federation.md) | WIF concept + setup overview |

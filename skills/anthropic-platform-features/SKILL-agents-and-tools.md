@@ -76,6 +76,30 @@ Anthropic's hosted MCP server, accessible from the API. Lets API
 consumers use the same MCP-style tool exposure without running their
 own server.
 
+**Beta header:** `mcp-client-2025-11-20` (the previous version
+`mcp-client-2025-04-04` is deprecated).
+
+**Request shape** — pass `mcp_servers` alongside `tools`:
+
+```json
+{
+  "mcp_servers": [
+    {
+      "type": "url",
+      "name": "example-mcp",
+      "url": "https://example-server.modelcontextprotocol.io/sse",
+      "authorization_token": "YOUR_TOKEN"
+    }
+  ],
+  "tools": [
+    { "type": "mcp_toolset", "mcp_server_name": "example-mcp" }
+  ]
+}
+```
+
+Supported transports: Streamable HTTP and SSE (both over HTTPS).
+Local STDIO servers cannot be connected directly.
+
 Source: [`mcp-connector.md`](https://platform.claude.com/docs/en/agents-and-tools/mcp-connector.md).
 
 ### Remote MCP servers

@@ -41,9 +41,14 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
 - **Cloud containers** are the execution sandbox for code-running
   agents. Limited CPU / memory / network egress. Configure per agent
   via the environments resource.
-- **Beta API surface.** All Managed-Agents endpoints currently live
-  under `/v1/...` with the `anthropic-beta` header. Pin the beta
-  string to a specific version; the shape may evolve.
+- **Beta header: `managed-agents-2026-04-01`.** Required on all
+  Managed Agents endpoints (the SDK adds it automatically). Pin to
+  this string; behaviours may be refined between releases. Certain
+  features (outcomes, multi-agent) are in research preview and require
+  additional access.
+- **Rate limits (org-level):** Create endpoints (agents, sessions,
+  environments, etc.) — 300 req/min. Read endpoints (retrieve, list,
+  stream) — 600 req/min. Tier-based and spend limits also apply.
 - **Webhooks for async results.** Long-running Dreams notify
   completion via webhook (configure per agent). Don't poll — the
   webhook is cheaper and faster.

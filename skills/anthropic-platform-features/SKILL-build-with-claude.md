@@ -32,6 +32,14 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
   is `5m`; `1h` is also available. The whole prefix up to the
   breakpoint is cached, so place breakpoints at stable boundaries
   (system prompt → tools → static context → user turn).
+- **Cache diagnostics (beta):** When a cache miss is unexpected, pass
+  `diagnostics: { previous_message_id: <prior-response-id> }` plus the
+  beta header `cache-diagnosis-2026-04-07`. The response field
+  `diagnostics.cache_miss_reason.type` names the first divergence point:
+  `model_changed`, `system_changed`, `tools_changed`, `messages_changed`,
+  `previous_message_not_found`, or `unavailable`. Claude API only — not
+  available on Bedrock or Vertex AI. See
+  [`cache-diagnostics.md`](https://platform.claude.com/docs/en/build-with-claude/cache-diagnostics.md).
 - **Batches return within 24h** at 50% discount. Submit via
   `POST /v1/messages/batches`; poll for results. Not for interactive use.
 - **Vision input:** images can be base64-inline or URL-referenced.
@@ -81,13 +89,14 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
 | **Extended thinking** | [`extended-thinking.md`](https://platform.claude.com/docs/en/build-with-claude/extended-thinking.md) | `thinking` blocks with budget tokens — model "thinks out loud" before responding |
 | **Adaptive thinking** | [`adaptive-thinking.md`](https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking.md) | Model auto-decides when to think hard vs respond immediately |
 | **Effort** | [`effort.md`](https://platform.claude.com/docs/en/build-with-claude/effort.md) | Effort-level setting (lower = faster, higher = more thorough) |
-| **Fast mode** | [`fast-mode.md`](https://platform.claude.com/docs/en/build-with-claude/fast-mode.md) | Faster response variant available on Opus 4.6 and Opus 4.7 |
+| **Fast mode** | [`fast-mode.md`](https://platform.claude.com/docs/en/build-with-claude/fast-mode.md) | Up to 2.5× higher output tokens/sec on Opus 4.6 & 4.7; set `speed: "fast"` with beta header `fast-mode-2026-02-01`; premium pricing; waitlist-gated beta |
 
 ## Throughput / cost patterns
 
 | Feature | Page | What it does |
 |---|---|---|
 | **Prompt caching** | [`prompt-caching.md`](https://platform.claude.com/docs/en/build-with-claude/prompt-caching.md) | `cache_control: ephemeral` breakpoints, 5-min TTL |
+| **Cache diagnostics** | [`cache-diagnostics.md`](https://platform.claude.com/docs/en/build-with-claude/cache-diagnostics.md) | Debug cache misses — compare consecutive requests to find the first divergence point (beta, Claude API only) |
 | **Batch processing** | [`batch-processing.md`](https://platform.claude.com/docs/en/build-with-claude/batch-processing.md) | Submit many requests at lower price, returns in 24h |
 | **Compaction** | [`compaction.md`](https://platform.claude.com/docs/en/build-with-claude/compaction.md) | Auto-summarize older messages when nearing context limit |
 | **Context editing** | [`context-editing.md`](https://platform.claude.com/docs/en/build-with-claude/context-editing.md) | Programmatic context-window management |
@@ -132,4 +141,4 @@ naming, region availability, and auth model:
 
 ---
 
-*Source pages: 29 under `platform.claude.com/docs/en/build-with-claude/`.*
+*Source pages: 30 under `platform.claude.com/docs/en/build-with-claude/`.*
