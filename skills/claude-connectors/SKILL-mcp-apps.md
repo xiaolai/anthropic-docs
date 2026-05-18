@@ -4,10 +4,10 @@ description: |
   Deep reference for MCP Apps for Claude Desktop + Claude.ai —
   packaging via MCPB (.mcpb desktop extensions) and the visual +
   interaction design guidelines for the in-conversation app surface.
-  Covers display modes (inline card, expanded view, sidebar),
-  transparent theming, instance supersession, external link
-  handling, cross-platform compatibility (Claude + ChatGPT), and
-  the MCPB CLI / manifest schema.
+  Covers display modes (inline card, inline carousel, full screen),
+  transparent theming (SDK helpers + CSS token variables), instance
+  supersession, external link handling, cross-platform compatibility
+  (Claude + ChatGPT), and the MCPB CLI / manifest schema.
 source: https://claude.com/docs/connectors/building/mcp-apps/design-guidelines.md
 ---
 
@@ -101,7 +101,7 @@ Key fields:
 - `name`, `version`, `description` — discoverability.
 - `runtime` — Node version requirements (default: bundled runtime).
 - `compatibility` — supported OS list.
-- `entry` — path to your MCP server's entrypoint.
+- `entry_point` — path to your MCP server's entrypoint (relative to manifest dir).
 - `tools` — declared tool list with annotations.
 - `icons` — icon paths, optionally per theme (light/dark) and size.
 - `user_config` — generates a settings UI in Claude Desktop.
@@ -165,14 +165,24 @@ happen to appear alongside.
 ### Display modes
 
 - **Inline card** — compact, embedded directly in conversation. Good
-  for summaries, confirmations, quick actions.
-- **Expanded view** — larger surface for richer interactions.
-- **Sidebar** — persistent context alongside the conversation.
+  for summaries, confirmations, quick actions. Max 500px height,
+  max 2 actions, max 4-5 data points; no nested scroll.
+- **Inline carousel** — side-by-side items for browsing (3–8 items).
+  Each card: image + title + metadata (max 3 lines) + optional CTA.
+- **Full screen** — immersive interface for complex interactions;
+  the conversation composer remains available. No floating panels;
+  use collapsible sidebars, tabs, or pagination instead. (Not yet
+  available on mobile — inline only on iOS/Android.)
 
 ### Transparent theming
 
-Make your widget background transparent and style with Claude's
-style variables — blends seamlessly into the host UI across themes.
+Set `html,body { background: transparent }`, declare
+`<meta name="color-scheme" content="light dark">`, and use the SDK
+helpers from `@modelcontextprotocol/ext-apps` on connect:
+`applyDocumentTheme()`, `applyHostStyleVariables()`,
+`applyHostFonts()`. Style with Claude CSS tokens
+(`--color-background-*`, `--color-text-*`, `--color-border-*`,
+`--font-*`, `--border-radius-*`). Never hardcode hex values.
 
 Reference: [`mcp-apps/transparent-theming.md`](https://claude.com/docs/connectors/building/mcp-apps/transparent-theming.md).
 

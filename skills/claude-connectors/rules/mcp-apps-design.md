@@ -53,17 +53,35 @@ it.
 
 ## Rule 5 — Use transparent backgrounds + Claude style variables
 
-Set `background: transparent` on your root and inherit Claude's CSS
-custom properties (theme variables) so your widget visually melts
-into the host UI in both light and dark modes.
+Set `background: transparent` on `html` and `body`, and style using
+Claude's CSS custom properties so your widget visually melts into the
+host UI in both light and dark modes. Use the SDK helpers from
+`@modelcontextprotocol/ext-apps`:
+
+```ts
+import { applyDocumentTheme, applyHostStyleVariables, applyHostFonts } from "@modelcontextprotocol/ext-apps";
+// On connect:
+applyDocumentTheme(ctx.theme);           // sets data-theme + color-scheme
+applyHostStyleVariables(ctx.styles.variables); // writes --color-* / --font-* onto :root
+applyHostFonts(ctx.styles.css.fonts);    // injects @font-face for Anthropic Sans
+```
+
+Correct CSS after variables are applied (never hardcode hex values):
 
 ```css
-:root {
-  background: transparent;
-  color: var(--claude-text-color);
-  font-family: var(--claude-font-family);
+html, body { margin: 0; background: transparent; }
+.card {
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  background: var(--color-background-secondary);
+  border: var(--border-width-regular) solid var(--color-border-primary);
+  border-radius: var(--border-radius-md);
 }
 ```
+
+Key variable families: `--color-background-*`, `--color-text-*`,
+`--color-border-*`, `--font-*`, `--border-radius-*`, `--shadow-*`.
+Full table: [design-guidelines.md#style-variables](https://claude.com/docs/connectors/building/mcp-apps/design-guidelines.md#style-variables).
 
 ## Rule 6 — Implement instance supersession
 

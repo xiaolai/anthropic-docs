@@ -30,14 +30,26 @@ commands that drive it.
 
 ## Where plugins are available
 
-- **Claude Code (CLI)** — `/plugin` commands, plugin marketplaces.
-- **Claude Cowork** — full plugin support (see
-  [`claude-cowork → SKILL-cowork.md`](../claude-cowork/SKILL-cowork.md)).
+- **Claude Code (CLI)** — full plugin support (create, install, use).
+- **Claude Cowork** — full plugin support; research preview for all
+  paid Claude users (Pro, Max, Team, Enterprise). Org-wide sharing
+  coming.
 
-Plugins are NOT available on Claude.ai web or Mobile (as of this
-snapshot — check upstream for current state).
+Plugins are **not** available on Claude.ai web or Mobile.
 
-## Plugin marketplaces
+## Plugin directory
+
+Anthropic has open-sourced 11 reference plugins available at
+[`claude.com/plugins-for/cowork`](https://claude.com/plugins-for/cowork):
+Productivity, Enterprise search, Sales, Finance, Data, Legal,
+Marketing, Customer support, Product management, Biology research,
+and Plugin Create.
+
+Community plugins can be submitted; Anthropic performs basic automated
+review. Plugins with an **"Anthropic Verified"** badge have additional
+quality/safety review.
+
+## Plugin marketplaces (Claude Code)
 
 A marketplace is a directory of installable plugins, identified by
 a URL pointing at a `marketplace.json` file. Users can:
@@ -46,11 +58,7 @@ a URL pointing at a `marketplace.json` file. Users can:
 - Install plugins from a marketplace with one command.
 - Update / remove installed plugins.
 
-Anthropic operates a public plugin marketplace for the broader
-community. Organizations can run their own private marketplaces for
-internal-only plugins (common in Cowork on 3P deployments — see
-[`claude-cowork`](../claude-cowork/SKILL-cowork.md) for the "org-plugins
-directory" pattern).
+Reference: [`code.claude.com/docs/en/plugin-marketplaces`](https://code.claude.com/docs/en/plugin-marketplaces).
 
 ## Installation scope
 
@@ -59,6 +67,32 @@ directory" pattern).
 | **User-global** | `~/.claude/plugins/` | Plugins you use across all projects |
 | **Project-local** | `<project>/.claude/plugins/` | Plugins specific to one codebase, committed to repo |
 | **Org-managed** | MDM-distributed | Cowork on 3P deployments |
+
+## Plugin manifest (`plugin.json`) and composition
+
+Plugins are file-based directories with a `plugin.json` manifest.
+Components:
+
+| Component | Config file | Notes |
+|---|---|---|
+| Skills | `SKILL.md` files in skills subdirs | Activate dynamically by context |
+| MCP connectors | `.mcp.json` | Remote MCPs, local MCPs, or MCPBs |
+| Slash commands | defined in `plugin.json` | User-triggered workflows |
+| Sub-agents | defined in `plugin.json` | Delegated parallel workstreams |
+
+**`SETUP.md`**: A special skill in a plugin that guides Claude through
+configuring and connecting bundled MCP servers on install/activation.
+
+**Validation**: `claude plugin validate` (before submission).
+
+**Submission forms**:
+- Claude.ai: `https://claude.ai/settings/plugins/submit`
+- Console: `https://platform.claude.com/plugins/submit`
+
+GitHub-linked submissions auto-update when you push; no re-submission
+needed. Repo must be public. Closed-source plugins are not accepted.
+
+Full technical reference: [`code.claude.com/docs/en/plugins-reference`](https://code.claude.com/docs/en/plugins-reference).
 
 ## Related surfaces
 
