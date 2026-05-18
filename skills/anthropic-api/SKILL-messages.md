@@ -42,6 +42,24 @@ single queries or stateless multi-turn conversations.
 | `metadata` | `{ user_id: "..." }` for abuse signaling |
 | `service_tier` | `auto` / `standard_only` |
 | `thinking` | `{ type: "enabled", budget_tokens: N }` for extended thinking |
+| `output_config` | Output configuration — see below |
+
+### `output_config` parameter
+
+An optional object that configures the model's output:
+
+| Sub-field | Type | Notes |
+|---|---|---|
+| `effort` | string | Reasoning effort level: `"low"` / `"medium"` / `"high"` / `"xhigh"` / `"max"`. Controls how much compute the model spends on reasoning. Check `ModelCapabilities.effort` for model support. |
+| `format` | object | Structured output format: `{ type: "json_schema", schema: { ... } }`. Forces the model to return JSON matching the schema. |
+
+Source: [`messages/create.md`](https://platform.claude.com/docs/en/api/messages/create.md)
+
+> **Note:** `max_tokens: 0` is valid and pre-warms the prompt cache without generating any output tokens.
+
+### Message count limit
+
+Requests support up to **100,000 messages** in the `messages` array.
 
 ### Content blocks
 
@@ -53,10 +71,28 @@ block) or an array of typed blocks:
 | `text` | Plain text. May include `cache_control` and `citations`. |
 | `image` | `{ source: { type: "base64" \| "url", media_type, data \| url } }` |
 | `document` | PDF or other document input |
-| `tool_use` | Assistant turn: model invoked a tool. Carries `id`, `name`, `input`. |
-| `tool_result` | User turn: result of a previous tool_use. **Must reference the matching `tool_use_id`**. |
+| `tool_use` | Assistant turn: model invoked a **client** tool. Carries `id`, `name`, `input`. |
+| `tool_result` | User turn: result of a previous `tool_use`. **Must reference the matching `tool_use_id`**. |
+| `server_tool_use` | Assistant turn: model invoked a **server** tool (e.g. web_search, web_fetch, code_execution). Different return path — see server tools below. |
 | `thinking` | Extended-thinking output (when `thinking` enabled) |
 | `redacted_thinking` | Thinking content the API redacted before returning |
+
+### Server tools vs. client tools
+
+There are two classes of tools in `tools`:
+
+- **Client tools** — fully defined by the caller via `input_schema`; the model returns a `tool_use` block, and the caller executes and returns `tool_result`.
+- **Server tools** — built-in tools executed by Anthropic's infrastructure. Appear as a typed object in `tools` (not a schema definition). The model returns a `server_tool_use` block; the result comes back in the same response without a round-trip.
+
+Known server tool types (specify in `tools` array):
+
+| Tool type string | Description |
+|---|---|
+| `web_search_20250305` / `web_search_20260209` | Web search. Supports `allowed_domains`, `blocked_domains`, `user_location`, `max_uses`. |
+| `web_fetch_20250910` | Fetch a URL. Supports `allowed_domains`, `blocked_domains`, `max_content_tokens`, `citations`. |
+| `code_execution_20250825` / `code_execution_20260120` | Execute code in a sandbox. |
+
+Server tools also support `defer_loading: true` to exclude from the initial system prompt (loaded on demand) and `strict: true` for schema validation.
 
 ### Prompt caching: `cache_control`
 

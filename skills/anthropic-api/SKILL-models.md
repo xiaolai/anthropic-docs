@@ -47,12 +47,34 @@ capable model unless cost / latency dictates otherwise.
   specific snapshot. Recommended when reproducibility matters
   (benchmarks, regression-sensitive workflows).
 
+## `ModelCapabilities` schema
+
+The `GET /v1/models` list response and `GET /v1/models/{id}` retrieve
+response include a `capabilities` field with the following structure
+(all fields are `CapabilitySupport` objects with `supported: boolean`
+unless noted):
+
+| Field | Notes |
+|---|---|
+| `batch` | Whether the model supports the Batch API. |
+| `citations` | Whether the model supports citation generation. |
+| `code_execution` | Whether the model supports code-execution server tools. |
+| `context_management` | Object with strategies: `clear_thinking_20251015`, `clear_tool_uses_20250919`, `compact_20260112`, plus top-level `supported`. |
+| `effort` | Object with levels: `low`, `medium`, `high`, `xhigh`, `max` (each `CapabilitySupport`) plus `supported`. |
+| `image_input` | Whether the model accepts image content blocks. |
+| `pdf_input` | Whether the model accepts PDF content blocks. |
+| `structured_outputs` | Whether the model supports `output_config.format.json_schema`. |
+| `thinking` | Object with `supported` and `types` (`adaptive`, `enabled`). |
+
+Source: [`models/list.md`](https://platform.claude.com/docs/en/api/models/list.md)
+
 ## Context windows
 
 Per-model context window sizes change over time. Always consult
 [`models/retrieve.md`](https://platform.claude.com/docs/en/api/models/retrieve.md)
-output at runtime rather than hardcoding the limit. Conceptual
-overview: [`anthropic-platform-features → SKILL-build-with-claude.md`](../anthropic-platform-features/SKILL-build-with-claude.md)
+output at runtime rather than hardcoding the limit. The response also
+includes `max_input_tokens` and `max_tokens` (max output) fields.
+Conceptual overview: [`anthropic-platform-features → SKILL-build-with-claude.md`](../anthropic-platform-features/SKILL-build-with-claude.md)
 under "Context windows".
 
 ## Deprecation and retirement
