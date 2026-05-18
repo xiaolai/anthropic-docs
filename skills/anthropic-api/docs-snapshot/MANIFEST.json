@@ -3,7 +3,7 @@
   "indexSha256": "c4c9c5d0ec624334a91f3c546a66ab251a0b368efc845e4b948c80b770177fea",
   "indexBytes": 152271,
   "pageCount": 199,
-  "refreshedAt": "2026-05-17T23:58:52Z",
+  "refreshedAt": "2026-05-18T08:03:43Z",
   "pages": [
     {
       "path": "en/api/admin.md",
@@ -756,16 +756,16 @@
       "bytes": 17903
     },
     {
-      "path": "en/api/beta/user_profiles/create_enrollment_url.md",
-      "url": "https://platform.claude.com/docs/en/api/beta/user_profiles/create_enrollment_url.md",
-      "sha256": "c015307685b0397b28ca8ee0dd48f814b6dae04cb46f63785ca6d4b51b371da7",
-      "bytes": 1918
-    },
-    {
       "path": "en/api/beta/user_profiles/create.md",
       "url": "https://platform.claude.com/docs/en/api/beta/user_profiles/create.md",
       "sha256": "39a4a88cc79f7672138218aa0b0945b73113edd0be1087fbd3df2df6491424d0",
       "bytes": 3882
+    },
+    {
+      "path": "en/api/beta/user_profiles/create_enrollment_url.md",
+      "url": "https://platform.claude.com/docs/en/api/beta/user_profiles/create_enrollment_url.md",
+      "sha256": "c015307685b0397b28ca8ee0dd48f814b6dae04cb46f63785ca6d4b51b371da7",
+      "bytes": 1918
     },
     {
       "path": "en/api/beta/user_profiles/list.md",
