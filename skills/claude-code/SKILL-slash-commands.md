@@ -18,23 +18,41 @@ source: https://code.claude.com/docs/en/slash-commands.md
 
 ## Discovery paths
 
-> *Populated by the research agent.* Covers `~/.claude/commands/`,
-> `<project>/.claude/commands/`, and plugin-shipped commands.
+Source: [`skills.md`](https://code.claude.com/docs/en/skills.md).
+
+| Scope | Path(s) | Namespace |
+|---|---|---|
+| Enterprise (managed) | Managed settings injection | no namespace |
+| User (personal) | `~/.claude/skills/<name>/SKILL.md` or `~/.claude/commands/<name>.md` | `/name` |
+| Project | `.claude/skills/<name>/SKILL.md` or `.claude/commands/<name>.md` | `/name` |
+| Plugin | `<plugin-root>/skills/<name>/SKILL.md` | `/plugin-name:name` |
+
+**Precedence:** Enterprise > user > project. Plugin skills use a separate namespace (`plugin:skill`) so they cannot conflict with standalone commands.
+
+**Live detection:** Claude Code watches skill directories during a session. Adding, editing, or removing a `SKILL.md` takes effect without restarting (creating a brand new top-level `skills/` directory requires a restart to start watching it).
+
+**Monorepo discovery:** Skills also load from parent directories up to repo root and from nested `.claude/skills/` in `--add-dir` directories.
+
+**Legacy commands:** Files in `.claude/commands/` work identically to `skills/`. If both a skill and command share the same name, the skill takes precedence.
 
 ## Frontmatter schema
 
-<!-- seed: replace on first real research pass -->
+A skill (`SKILL.md`) or command (`.md` in `commands/`) uses YAML frontmatter. All fields are optional; `description` is strongly recommended.
 
-A slash command is a Markdown file with YAML frontmatter. Common keys:
+| Key | Notes |
+|---|---|
+| `name` | Display name (defaults to directory/file name). Lowercase letters, numbers, hyphens, max 64 chars. |
+| `description` | What the skill does and when to use it. Claude uses this for auto-invocation decisions. Combined with `when_to_use`, truncated at 1,536 chars in skill listing. |
+| `when_to_use` | Additional trigger context appended to `description`. |
+| `argument-hint` | Hint shown in autocomplete, e.g. `"[issue-number]"` or `"[filename] [format]"`. |
+| `arguments` | Named positional args for `$name` substitution. Space-separated string or YAML list. Maps names to positions in order. |
+| `disable-model-invocation` | `true` = Claude won't auto-invoke; user must type `/name`. Also prevents preloading into subagents. |
+| `user-invocable` | `false` = hidden from the `/` menu; background knowledge only. Default: `true`. |
+| `allowed-tools` | Tools usable without permission prompt while this skill is active. Space-separated or YAML list. |
+| `model` | Model override for this skill's invocation. |
+| `context` | `"fork"` = run in a subagent. |
 
-| Key | Type | Notes |
-|---|---|---|
-| `description` | string | One-line summary shown in command lists. Keep ≤120 chars. |
-| `argument-hint` | string | Placeholder text shown after the command name, e.g. `"<file path>"`. |
-| `allowed-tools` | string | Comma-separated tool list (e.g. `Read, Bash(git:*)`). Restricts what the command can call. The `<Tool>(<matcher>)` parenthetical narrows a tool to specific invocations (see `SKILL-settings.md` `permissions` block for the matcher grammar). |
-| `model` | string | Optional model override for this command's invocation. |
-
-Minimal command (`~/.claude/commands/wc.md`):
+Minimal skill (`~/.claude/skills/wc/SKILL.md`):
 
 ```markdown
 ---
@@ -46,26 +64,71 @@ allowed-tools: Read
 Count the words in $ARGUMENTS. Read the file and report `<path>: <N> words`.
 ```
 
-**Avoid putting `$ARGUMENTS` into a `!`-prefixed shell line.** The `!` prefix invokes a shell, and `$ARGUMENTS` is unsanitised caller input — `foo.txt; rm -rf ~` parses as three commands. The `allowed-tools` matcher constrains which tool the model can invoke; it does not escape arguments. Prefer `Read` (this example) over `!`-shell when the input touches `$ARGUMENTS`. The fuller risk analysis is in [`templates/commands/example.md`](templates/commands/example.md) under "Safety note".
-
-Source: `code.claude.com/docs/en/slash-commands.md`.
-
 ## Argument substitution: `$ARGUMENTS`
 
-> *Populated by the research agent.*
+`$ARGUMENTS` is replaced with the text typed after the command name. Example: `/wc foo.txt` → `$ARGUMENTS` becomes `foo.txt`.
+
+For named positional arguments, declare them in frontmatter:
+
+```yaml
+---
+arguments: filename format
+---
+Convert $filename to $format.
+```
+
+`/convert report.pdf html` → `$filename` = `report.pdf`, `$format` = `html`.
+
+**Security note:** Do NOT put `$ARGUMENTS` into a `!`-prefixed shell line. `$ARGUMENTS` is unsanitized caller input — `foo.txt; rm -rf ~` would execute as three shell commands. Use `allowed-tools: Read` and let Claude read the file rather than shelling it in.
+
+**Available substitutions** (always present):
+
+| Variable | Value |
+|---|---|
+| `$ARGUMENTS` | All text after the command name |
+| `$CLAUDE_PROJECT_DIR` | Absolute path to project root |
 
 ## Inline shell execution: `!` prefix
 
-> *Populated by the research agent.* `! <command>` runs the shell
-> command and embeds its output into the command body.
+In skill body content (not frontmatter), prefix a line with `!` to run a shell command and inline the output before Claude sees the skill:
+
+```markdown
+## Current git status
+
+!`git status --short`
+```
+
+Also supported: fenced code blocks with `!` as the language:
+
+````markdown
+```!
+git diff HEAD
+```
+````
+
+The output replaces the `!` line before the skill content reaches Claude.
+
+**Shell execution can be disabled** organization-wide via `disableSkillShellExecution: true` in managed settings (does not affect bundled or managed skills).
 
 ## File references: `@` prefix
 
-> *Populated by the research agent.*
+In skill body content, prefix a path with `@` to include the file's content inline:
+
+```markdown
+Here is the current README:
+
+@README.md
+```
+
+Claude Code replaces `@README.md` with the file's contents before the skill reaches Claude. Relative paths resolve from the project root.
 
 ## Namespacing and plugin-shipped commands
 
-> *Populated by the research agent.* Covers `plugin:command` syntax.
+Standalone skills (not in a plugin) are invoked as `/skill-name`. Plugin skills are invoked as `/plugin-name:skill-name`. This prevents conflicts between plugins that happen to have skills with the same name.
+
+Plugin skills live at `<plugin-root>/skills/<name>/SKILL.md`. The plugin's `name` field in `plugin.json` is the namespace prefix. You cannot override the namespace from within the skill.
+
+Managed/enterprise skills can be injected via the `claudeMd` setting in managed settings (which injects CLAUDE.md-style instructions). For distributing skills through a plugin, see [`SKILL-plugins.md`](SKILL-plugins.md).
 
 ## Worked examples
 

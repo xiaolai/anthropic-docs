@@ -18,8 +18,15 @@ source: https://code.claude.com/docs/en/mcp.md
 
 ## File scope
 
-> *Populated by the research agent.* Project `.mcp.json` vs user-level
-> MCP config.
+Source: [`mcp.md`](https://code.claude.com/docs/en/mcp.md).
+
+| Scope | Stored in | Loads in | Shared? |
+|---|---|---|---|
+| Local (default) | `~/.claude.json` (per-project entry) | Current project only | No |
+| Project | `.mcp.json` at project root | Current project only | Yes (version control) |
+| User | `~/.claude.json` (top-level) | All your projects | No |
+
+**Scope precedence** (when same server name appears in multiple scopes): Local > Project > User > Plugin-provided > claude.ai connectors. Plugins and connectors match by endpoint, not name.
 
 ## Top-level shape
 
@@ -48,25 +55,90 @@ Source: `code.claude.com/docs/en/mcp.md`.
 
 ## Transport: `stdio`
 
-> *Populated by the research agent.* Local subprocess transport.
+Runs a local subprocess. Default when no `type` field is set. Best for tools that need direct system access.
+
+```json
+{
+  "mcpServers": {
+    "my-server": {
+      "command": "npx",
+      "args": ["-y", "@scope/server@1.2.3", "--option"],
+      "env": { "API_KEY": "${MY_API_KEY}" }
+    }
+  }
+}
+```
+
+`CLAUDE_PROJECT_DIR` is set in the spawned process's environment to the project root. Use `${CLAUDE_PROJECT_DIR:-}` with a default when referencing it in `command`/`args` outside plugin-provided configs.
+
+**Pin versions.** The bare `npx -y @scope/server` pattern (no version pin) resolves to latest on every startup — a supply-chain compromise runs with whatever capabilities the server requests. Always pin: `@scope/server@1.2.3`.
+
+CLI: `claude mcp add [options] <name> -- <command> [args...]`
 
 ## Transport: `http`
 
-> *Populated by the research agent.* Remote HTTP transport, headers,
-> auth.
+Recommended for cloud-based services. The MCP specification calls this `streamable-http`; both `type: "http"` and `type: "streamable-http"` are accepted.
+
+```json
+{
+  "mcpServers": {
+    "notion": {
+      "type": "http",
+      "url": "https://mcp.notion.com/mcp",
+      "headers": { "Authorization": "Bearer ${NOTION_TOKEN}" }
+    }
+  }
+}
+```
+
+Environment variable expansion supported in `url` and `headers`: `${VAR}` (required) and `${VAR:-default}` (with fallback). CLI: `claude mcp add --transport http <name> <url> [--header "Key: value"]`
+
+Automatic reconnection with exponential backoff (up to 5 attempts, 1s initial delay, doubles each time) on disconnect. As of v2.1.121, initial connection also retries up to 3 times on transient errors.
 
 ## Transport: `sse`
 
-> *Populated by the research agent.* Server-Sent Events transport.
+**Deprecated** — use `http` instead where available. Still functional; same reconnection behavior as `http`.
+
+```json
+{
+  "mcpServers": {
+    "legacy-server": {
+      "type": "sse",
+      "url": "https://api.example.com/sse",
+      "headers": { "X-API-Key": "${MY_KEY}" }
+    }
+  }
+}
+```
+
+CLI: `claude mcp add --transport sse <name> <url>`
 
 ## Tool naming convention
 
-> *Populated by the research agent.* `mcp__<server>__<tool>` —
-> double-underscore separator.
+MCP tools are exposed to Claude as `mcp__<server-name>__<tool-name>` (double-underscore separators). The server name comes from the key in `mcpServers`.
 
-## Capabilities declaration
+Examples:
+- `mcp__memory__create_entities` — tool `create_entities` on the `memory` server
+- `mcp__github__search_repositories` — tool `search_repositories` on the `github` server
 
-> *Populated by the research agent.*
+Use this naming in permission rules, hook matchers, and `--allowedTools`:
+```json
+{ "permissions": { "allow": ["mcp__github__search_repositories"] } }
+```
+
+In hook matchers: `mcp__memory__.*` matches all tools from the `memory` server (the `.*` is required; bare `mcp__memory` is an exact string that matches nothing).
+
+**Reserved server name:** `workspace` is reserved for internal use. If your config defines a server with that name, Claude Code skips it and warns you to rename it.
+
+## Capabilities declaration and managed MCP configuration
+
+**Dynamic tool updates:** Servers that send `list_changed` notifications let Claude Code refresh tools, prompts, and resources without reconnecting.
+
+**OAuth:** For remote servers that require OAuth 2.0, run `/mcp` inside Claude Code to authenticate.
+
+**MCP timeout:** Set `MCP_TIMEOUT=10000 claude` (ms) to control server startup timeout. `MAX_MCP_OUTPUT_TOKENS=50000` raises the 10k-token output warning threshold.
+
+**Managed MCP (enterprise):** Admins can pre-configure servers in `managed-settings.json` via `allowedMcpServers` (allowlist), `deniedMcpServers` (denylist), and `allowManagedMcpServersOnly` (enforce allowlist). See [`settings.md`](https://code.claude.com/docs/en/settings.md) § *Managed-only settings* and [`SKILL-settings.md`](SKILL-settings.md).
 
 ## Worked examples
 
