@@ -41,8 +41,24 @@ single queries or stateless multi-turn conversations.
 | `tool_choice` | `auto` / `any` / `tool` / `none` |
 | `metadata` | `{ user_id: "..." }` for abuse signaling |
 | `service_tier` | `auto` / `standard_only` |
-| `thinking` | `{ type: "enabled", budget_tokens: N }` for extended thinking |
+| `thinking` | `{ type: "enabled", budget_tokens: N }` or `{ type: "adaptive" }` — see below |
 | `output_config` | Output configuration — see below |
+| `inference_geo` | Optional string. Geographic region for inference processing. If omitted, the workspace's `default_inference_geo` is used. |
+
+### `thinking` parameter
+
+Two mutually exclusive types (source:
+[`messages/create.md`](https://platform.claude.com/docs/en/api/messages/create.md)):
+
+| Type | Required fields | Optional fields |
+|---|---|---|
+| `ThinkingConfigEnabled` | `type: "enabled"`, `budget_tokens: number` (≥1024, < `max_tokens`) | `display` |
+| `ThinkingConfigAdaptive` | `type: "adaptive"` | `display` |
+
+`display` controls how thinking content appears:
+
+- `"summarized"` (default) — thinking content is returned in `thinking` blocks.
+- `"omitted"` — thinking is redacted; a signature is returned for multi-turn continuity.
 
 ### `output_config` parameter
 
@@ -130,14 +146,39 @@ in the platform-features skill for caching strategy.
   ],
   "stop_reason": "end_turn",
   "stop_sequence": null,
+  "stop_details": null,
   "usage": {
     "input_tokens": 25,
     "cache_creation_input_tokens": 0,
+    "cache_creation": {
+      "ephemeral_5m_input_tokens": 0,
+      "ephemeral_1h_input_tokens": 0
+    },
     "cache_read_input_tokens": 0,
-    "output_tokens": 100
+    "output_tokens": 100,
+    "inference_geo": "us",
+    "service_tier": "standard",
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    }
   }
 }
 ```
+
+**New `usage` sub-fields** (source: [`messages/create.md`](https://platform.claude.com/docs/en/api/messages/create.md)):
+
+| Field | Type | Notes |
+|---|---|---|
+| `cache_creation` | object | Breakdown of cached tokens by TTL: `{ ephemeral_5m_input_tokens, ephemeral_1h_input_tokens }` |
+| `inference_geo` | string | Geographic region where inference was performed for this request |
+| `service_tier` | `"standard"` \| `"priority"` \| `"batch"` | Which service tier was used |
+| `server_tool_use` | object | Count of server tool calls: `{ web_search_requests, web_fetch_requests }` |
+
+**`stop_details` field**: Present when `stop_reason == "refusal"`. Contains:
+- `category`: `"cyber"` or `"bio"` — the policy category that triggered the refusal (null if no named category)
+- `explanation`: Human-readable explanation of the refusal (text is not stable)
+- `type`: `"refusal"`
 
 ### Stop reasons
 

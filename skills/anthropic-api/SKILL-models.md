@@ -27,15 +27,26 @@ hardcoding model IDs.
 
 ## Current model family (Claude 4.X)
 
-Per the latest snapshot:
+Per the docs index as of 2026-05-18 (source:
+[`messages/create.md` model enum](https://platform.claude.com/docs/en/api/messages/create.md)):
 
-| Tier | ID | Notes |
+| Tier | ID | Description |
 |---|---|---|
-| **Opus** | `claude-opus-4-7` | Most capable; fast mode available |
-| **Sonnet** | `claude-sonnet-4-6` | Balanced cost/capability |
-| **Haiku** | `claude-haiku-4-5-20251001` | Cheapest, fastest; the `-20251001` suffix is the snapshot date |
+| **Mythos** | `claude-mythos-preview` | **New.** "New class of intelligence, strongest in coding and cybersecurity" |
+| **Opus** | `claude-opus-4-7` | Frontier intelligence for long-running agents and coding (latest Opus) |
+| **Opus** | `claude-opus-4-6` | Frontier intelligence for long-running agents and coding |
+| **Sonnet** | `claude-sonnet-4-6` | Best combination of speed and intelligence (latest Sonnet 4.6) |
+| **Haiku** | `claude-haiku-4-5` | Fastest model with near-frontier intelligence (undated alias) |
+| **Haiku** | `claude-haiku-4-5-20251001` | Dated snapshot of Haiku 4.5 |
 
-When building new applications, default to the latest and most
+Older-generation aliases also available: `claude-opus-4-5`,
+`claude-opus-4-5-20251101`, `claude-sonnet-4-5`,
+`claude-sonnet-4-5-20250929`, `claude-opus-4-1`,
+`claude-opus-4-1-20250805`, `claude-opus-4-0` /
+`claude-opus-4-20250514`, `claude-sonnet-4-0` /
+`claude-sonnet-4-20250514`, `claude-3-haiku-20240307`.
+
+When building new applications, default to the latest most
 capable model unless cost / latency dictates otherwise.
 
 ## Model ID conventions
