@@ -1,0 +1,3134 @@
+# Admin
+
+# Organizations
+
+## Me
+
+**get** `/v1/organizations/me`
+
+Retrieve information about the organization associated with the authenticated API key.
+
+### Returns
+
+- `Organization = object { id, name, type }`
+
+  - `id: string`
+
+    ID of the Organization.
+
+  - `name: string`
+
+    Name of the Organization.
+
+  - `type: "organization"`
+
+    Object type.
+
+    For Organizations, this is always `"organization"`.
+
+    - `"organization"`
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/me \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY"
+```
+
+## Domain Types
+
+### Organization
+
+- `Organization = object { id, name, type }`
+
+  - `id: string`
+
+    ID of the Organization.
+
+  - `name: string`
+
+    Name of the Organization.
+
+  - `type: "organization"`
+
+    Object type.
+
+    For Organizations, this is always `"organization"`.
+
+    - `"organization"`
+
+# Invites
+
+## Create
+
+**post** `/v1/organizations/invites`
+
+Create Invite
+
+### Body Parameters
+
+- `email: string`
+
+  Email of the User.
+
+- `role: "user" or "developer" or "billing" or "claude_code_user"`
+
+  Role for the invited User. Cannot be "admin".
+
+  - `"user"`
+
+  - `"developer"`
+
+  - `"billing"`
+
+  - `"claude_code_user"`
+
+### Returns
+
+- `Invite = object { id, email, expires_at, 4 more }`
+
+  - `id: string`
+
+    ID of the Invite.
+
+  - `email: string`
+
+    Email of the User being invited.
+
+  - `expires_at: string`
+
+    RFC 3339 datetime string indicating when the Invite expires.
+
+  - `invited_at: string`
+
+    RFC 3339 datetime string indicating when the Invite was created.
+
+  - `role: "user" or "developer" or "billing" or 2 more`
+
+    Organization role of the User.
+
+    - `"user"`
+
+    - `"developer"`
+
+    - `"billing"`
+
+    - `"admin"`
+
+    - `"claude_code_user"`
+
+  - `status: "accepted" or "expired" or "deleted" or "pending"`
+
+    Status of the Invite.
+
+    - `"accepted"`
+
+    - `"expired"`
+
+    - `"deleted"`
+
+    - `"pending"`
+
+  - `type: "invite"`
+
+    Object type.
+
+    For Invites, this is always `"invite"`.
+
+    - `"invite"`
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/invites \
+    -H 'Content-Type: application/json' \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY" \
+    -d '{
+          "email": "user@emaildomain.com",
+          "role": "user"
+        }'
+```
+
+## Retrieve
+
+**get** `/v1/organizations/invites/{invite_id}`
+
+Get Invite
+
+### Path Parameters
+
+- `invite_id: string`
+
+  ID of the Invite.
+
+### Returns
+
+- `Invite = object { id, email, expires_at, 4 more }`
+
+  - `id: string`
+
+    ID of the Invite.
+
+  - `email: string`
+
+    Email of the User being invited.
+
+  - `expires_at: string`
+
+    RFC 3339 datetime string indicating when the Invite expires.
+
+  - `invited_at: string`
+
+    RFC 3339 datetime string indicating when the Invite was created.
+
+  - `role: "user" or "developer" or "billing" or 2 more`
+
+    Organization role of the User.
+
+    - `"user"`
+
+    - `"developer"`
+
+    - `"billing"`
+
+    - `"admin"`
+
+    - `"claude_code_user"`
+
+  - `status: "accepted" or "expired" or "deleted" or "pending"`
+
+    Status of the Invite.
+
+    - `"accepted"`
+
+    - `"expired"`
+
+    - `"deleted"`
+
+    - `"pending"`
+
+  - `type: "invite"`
+
+    Object type.
+
+    For Invites, this is always `"invite"`.
+
+    - `"invite"`
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/invites/$INVITE_ID \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY"
+```
+
+## List
+
+**get** `/v1/organizations/invites`
+
+List Invites
+
+### Query Parameters
+
+- `after_id: optional string`
+
+  ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately after this object.
+
+- `before_id: optional string`
+
+  ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately before this object.
+
+- `limit: optional number`
+
+  Number of items to return per page.
+
+  Defaults to `20`. Ranges from `1` to `1000`.
+
+### Returns
+
+- `data: array of Invite`
+
+  - `id: string`
+
+    ID of the Invite.
+
+  - `email: string`
+
+    Email of the User being invited.
+
+  - `expires_at: string`
+
+    RFC 3339 datetime string indicating when the Invite expires.
+
+  - `invited_at: string`
+
+    RFC 3339 datetime string indicating when the Invite was created.
+
+  - `role: "user" or "developer" or "billing" or 2 more`
+
+    Organization role of the User.
+
+    - `"user"`
+
+    - `"developer"`
+
+    - `"billing"`
+
+    - `"admin"`
+
+    - `"claude_code_user"`
+
+  - `status: "accepted" or "expired" or "deleted" or "pending"`
+
+    Status of the Invite.
+
+    - `"accepted"`
+
+    - `"expired"`
+
+    - `"deleted"`
+
+    - `"pending"`
+
+  - `type: "invite"`
+
+    Object type.
+
+    For Invites, this is always `"invite"`.
+
+    - `"invite"`
+
+- `first_id: string`
+
+  First ID in the `data` list. Can be used as the `before_id` for the previous page.
+
+- `has_more: boolean`
+
+  Indicates if there are more results in the requested page direction.
+
+- `last_id: string`
+
+  Last ID in the `data` list. Can be used as the `after_id` for the next page.
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/invites \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY"
+```
+
+## Delete
+
+**delete** `/v1/organizations/invites/{invite_id}`
+
+Delete Invite
+
+### Path Parameters
+
+- `invite_id: string`
+
+  ID of the Invite.
+
+### Returns
+
+- `id: string`
+
+  ID of the Invite.
+
+- `type: "invite_deleted"`
+
+  Deleted object type.
+
+  For Invites, this is always `"invite_deleted"`.
+
+  - `"invite_deleted"`
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/invites/$INVITE_ID \
+    -X DELETE \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY"
+```
+
+## Domain Types
+
+### Invite
+
+- `Invite = object { id, email, expires_at, 4 more }`
+
+  - `id: string`
+
+    ID of the Invite.
+
+  - `email: string`
+
+    Email of the User being invited.
+
+  - `expires_at: string`
+
+    RFC 3339 datetime string indicating when the Invite expires.
+
+  - `invited_at: string`
+
+    RFC 3339 datetime string indicating when the Invite was created.
+
+  - `role: "user" or "developer" or "billing" or 2 more`
+
+    Organization role of the User.
+
+    - `"user"`
+
+    - `"developer"`
+
+    - `"billing"`
+
+    - `"admin"`
+
+    - `"claude_code_user"`
+
+  - `status: "accepted" or "expired" or "deleted" or "pending"`
+
+    Status of the Invite.
+
+    - `"accepted"`
+
+    - `"expired"`
+
+    - `"deleted"`
+
+    - `"pending"`
+
+  - `type: "invite"`
+
+    Object type.
+
+    For Invites, this is always `"invite"`.
+
+    - `"invite"`
+
+### Invite Delete Response
+
+- `InviteDeleteResponse = object { id, type }`
+
+  - `id: string`
+
+    ID of the Invite.
+
+  - `type: "invite_deleted"`
+
+    Deleted object type.
+
+    For Invites, this is always `"invite_deleted"`.
+
+    - `"invite_deleted"`
+
+# Users
+
+## Retrieve
+
+**get** `/v1/organizations/users/{user_id}`
+
+Get User
+
+### Path Parameters
+
+- `user_id: string`
+
+  ID of the User.
+
+### Returns
+
+- `User = object { id, added_at, email, 3 more }`
+
+  - `id: string`
+
+    ID of the User.
+
+  - `added_at: string`
+
+    RFC 3339 datetime string indicating when the User joined the Organization.
+
+  - `email: string`
+
+    Email of the User.
+
+  - `name: string`
+
+    Name of the User.
+
+  - `role: "user" or "developer" or "billing" or 2 more`
+
+    Organization role of the User.
+
+    - `"user"`
+
+    - `"developer"`
+
+    - `"billing"`
+
+    - `"admin"`
+
+    - `"claude_code_user"`
+
+  - `type: "user"`
+
+    Object type.
+
+    For Users, this is always `"user"`.
+
+    - `"user"`
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/users/$USER_ID \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY"
+```
+
+## List
+
+**get** `/v1/organizations/users`
+
+List Users
+
+### Query Parameters
+
+- `after_id: optional string`
+
+  ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately after this object.
+
+- `before_id: optional string`
+
+  ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately before this object.
+
+- `email: optional string`
+
+  Filter by user email.
+
+- `limit: optional number`
+
+  Number of items to return per page.
+
+  Defaults to `20`. Ranges from `1` to `1000`.
+
+### Returns
+
+- `data: array of User`
+
+  - `id: string`
+
+    ID of the User.
+
+  - `added_at: string`
+
+    RFC 3339 datetime string indicating when the User joined the Organization.
+
+  - `email: string`
+
+    Email of the User.
+
+  - `name: string`
+
+    Name of the User.
+
+  - `role: "user" or "developer" or "billing" or 2 more`
+
+    Organization role of the User.
+
+    - `"user"`
+
+    - `"developer"`
+
+    - `"billing"`
+
+    - `"admin"`
+
+    - `"claude_code_user"`
+
+  - `type: "user"`
+
+    Object type.
+
+    For Users, this is always `"user"`.
+
+    - `"user"`
+
+- `first_id: string`
+
+  First ID in the `data` list. Can be used as the `before_id` for the previous page.
+
+- `has_more: boolean`
+
+  Indicates if there are more results in the requested page direction.
+
+- `last_id: string`
+
+  Last ID in the `data` list. Can be used as the `after_id` for the next page.
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/users \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY"
+```
+
+## Update
+
+**post** `/v1/organizations/users/{user_id}`
+
+Update User
+
+### Path Parameters
+
+- `user_id: string`
+
+  ID of the User.
+
+### Body Parameters
+
+- `role: "user" or "developer" or "billing" or "claude_code_user"`
+
+  New role for the User. Cannot be "admin".
+
+  - `"user"`
+
+  - `"developer"`
+
+  - `"billing"`
+
+  - `"claude_code_user"`
+
+### Returns
+
+- `User = object { id, added_at, email, 3 more }`
+
+  - `id: string`
+
+    ID of the User.
+
+  - `added_at: string`
+
+    RFC 3339 datetime string indicating when the User joined the Organization.
+
+  - `email: string`
+
+    Email of the User.
+
+  - `name: string`
+
+    Name of the User.
+
+  - `role: "user" or "developer" or "billing" or 2 more`
+
+    Organization role of the User.
+
+    - `"user"`
+
+    - `"developer"`
+
+    - `"billing"`
+
+    - `"admin"`
+
+    - `"claude_code_user"`
+
+  - `type: "user"`
+
+    Object type.
+
+    For Users, this is always `"user"`.
+
+    - `"user"`
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/users/$USER_ID \
+    -H 'Content-Type: application/json' \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY" \
+    -d '{
+          "role": "user"
+        }'
+```
+
+## Delete
+
+**delete** `/v1/organizations/users/{user_id}`
+
+Remove User
+
+### Path Parameters
+
+- `user_id: string`
+
+  ID of the User.
+
+### Returns
+
+- `id: string`
+
+  ID of the User.
+
+- `type: "user_deleted"`
+
+  Deleted object type.
+
+  For Users, this is always `"user_deleted"`.
+
+  - `"user_deleted"`
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/users/$USER_ID \
+    -X DELETE \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY"
+```
+
+## Domain Types
+
+### User
+
+- `User = object { id, added_at, email, 3 more }`
+
+  - `id: string`
+
+    ID of the User.
+
+  - `added_at: string`
+
+    RFC 3339 datetime string indicating when the User joined the Organization.
+
+  - `email: string`
+
+    Email of the User.
+
+  - `name: string`
+
+    Name of the User.
+
+  - `role: "user" or "developer" or "billing" or 2 more`
+
+    Organization role of the User.
+
+    - `"user"`
+
+    - `"developer"`
+
+    - `"billing"`
+
+    - `"admin"`
+
+    - `"claude_code_user"`
+
+  - `type: "user"`
+
+    Object type.
+
+    For Users, this is always `"user"`.
+
+    - `"user"`
+
+### User Delete Response
+
+- `UserDeleteResponse = object { id, type }`
+
+  - `id: string`
+
+    ID of the User.
+
+  - `type: "user_deleted"`
+
+    Deleted object type.
+
+    For Users, this is always `"user_deleted"`.
+
+    - `"user_deleted"`
+
+# Workspaces
+
+## Create
+
+**post** `/v1/organizations/workspaces`
+
+Create Workspace
+
+### Body Parameters
+
+- `name: string`
+
+  Name of the Workspace.
+
+- `data_residency: optional object { allowed_inference_geos, default_inference_geo, workspace_geo }`
+
+  Data residency configuration for the workspace. If omitted, defaults to workspace_geo=`"us"`, allowed_inference_geos=`"unrestricted"`, and default_inference_geo=`"global"`.
+
+  - `allowed_inference_geos: optional array of string or "unrestricted"`
+
+    Permitted inference geo values. Defaults to 'unrestricted' if omitted, which allows all geos. Use the string 'unrestricted' to allow all geos, or a list of specific geos.
+
+    - `UnionMember0 = array of string`
+
+    - `UnionMember1 = "unrestricted"`
+
+      - `"unrestricted"`
+
+  - `default_inference_geo: optional string`
+
+    Default inference geo applied when requests omit the parameter. Defaults to 'global' if omitted. Must be a member of allowed_inference_geos unless allowed_inference_geos is `"unrestricted"`.
+
+  - `workspace_geo: optional string`
+
+    Geographic region for workspace data storage. Immutable after creation. Defaults to 'us' if omitted.
+
+### Returns
+
+- `Workspace = object { id, archived_at, created_at, 4 more }`
+
+  - `id: string`
+
+    ID of the Workspace.
+
+  - `archived_at: string`
+
+    RFC 3339 datetime string indicating when the Workspace was archived, or `null` if the Workspace is not archived.
+
+  - `created_at: string`
+
+    RFC 3339 datetime string indicating when the Workspace was created.
+
+  - `data_residency: object { allowed_inference_geos, default_inference_geo, workspace_geo }`
+
+    Data residency configuration.
+
+    - `allowed_inference_geos: array of string or "unrestricted"`
+
+      Permitted inference geo values. 'unrestricted' means all geos are allowed.
+
+      - `UnionMember0 = array of string`
+
+      - `UnionMember1 = "unrestricted"`
+
+        - `"unrestricted"`
+
+    - `default_inference_geo: string`
+
+      Default inference geo applied when requests omit the parameter.
+
+    - `workspace_geo: string`
+
+      Geographic region for workspace data storage. Immutable after creation.
+
+  - `display_color: string`
+
+    Hex color code representing the Workspace in the Anthropic Console.
+
+  - `name: string`
+
+    Name of the Workspace.
+
+  - `type: "workspace"`
+
+    Object type.
+
+    For Workspaces, this is always `"workspace"`.
+
+    - `"workspace"`
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/workspaces \
+    -H 'Content-Type: application/json' \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY" \
+    -d '{
+          "name": "x"
+        }'
+```
+
+## Retrieve
+
+**get** `/v1/organizations/workspaces/{workspace_id}`
+
+Get Workspace
+
+### Path Parameters
+
+- `workspace_id: string`
+
+  ID of the Workspace.
+
+### Returns
+
+- `Workspace = object { id, archived_at, created_at, 4 more }`
+
+  - `id: string`
+
+    ID of the Workspace.
+
+  - `archived_at: string`
+
+    RFC 3339 datetime string indicating when the Workspace was archived, or `null` if the Workspace is not archived.
+
+  - `created_at: string`
+
+    RFC 3339 datetime string indicating when the Workspace was created.
+
+  - `data_residency: object { allowed_inference_geos, default_inference_geo, workspace_geo }`
+
+    Data residency configuration.
+
+    - `allowed_inference_geos: array of string or "unrestricted"`
+
+      Permitted inference geo values. 'unrestricted' means all geos are allowed.
+
+      - `UnionMember0 = array of string`
+
+      - `UnionMember1 = "unrestricted"`
+
+        - `"unrestricted"`
+
+    - `default_inference_geo: string`
+
+      Default inference geo applied when requests omit the parameter.
+
+    - `workspace_geo: string`
+
+      Geographic region for workspace data storage. Immutable after creation.
+
+  - `display_color: string`
+
+    Hex color code representing the Workspace in the Anthropic Console.
+
+  - `name: string`
+
+    Name of the Workspace.
+
+  - `type: "workspace"`
+
+    Object type.
+
+    For Workspaces, this is always `"workspace"`.
+
+    - `"workspace"`
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/workspaces/$WORKSPACE_ID \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY"
+```
+
+## List
+
+**get** `/v1/organizations/workspaces`
+
+List Workspaces
+
+### Query Parameters
+
+- `after_id: optional string`
+
+  ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately after this object.
+
+- `before_id: optional string`
+
+  ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately before this object.
+
+- `include_archived: optional boolean`
+
+  Whether to include Workspaces that have been archived in the response
+
+- `limit: optional number`
+
+  Number of items to return per page.
+
+  Defaults to `20`. Ranges from `1` to `1000`.
+
+### Returns
+
+- `data: array of Workspace`
+
+  - `id: string`
+
+    ID of the Workspace.
+
+  - `archived_at: string`
+
+    RFC 3339 datetime string indicating when the Workspace was archived, or `null` if the Workspace is not archived.
+
+  - `created_at: string`
+
+    RFC 3339 datetime string indicating when the Workspace was created.
+
+  - `data_residency: object { allowed_inference_geos, default_inference_geo, workspace_geo }`
+
+    Data residency configuration.
+
+    - `allowed_inference_geos: array of string or "unrestricted"`
+
+      Permitted inference geo values. 'unrestricted' means all geos are allowed.
+
+      - `UnionMember0 = array of string`
+
+      - `UnionMember1 = "unrestricted"`
+
+        - `"unrestricted"`
+
+    - `default_inference_geo: string`
+
+      Default inference geo applied when requests omit the parameter.
+
+    - `workspace_geo: string`
+
+      Geographic region for workspace data storage. Immutable after creation.
+
+  - `display_color: string`
+
+    Hex color code representing the Workspace in the Anthropic Console.
+
+  - `name: string`
+
+    Name of the Workspace.
+
+  - `type: "workspace"`
+
+    Object type.
+
+    For Workspaces, this is always `"workspace"`.
+
+    - `"workspace"`
+
+- `first_id: string`
+
+  First ID in the `data` list. Can be used as the `before_id` for the previous page.
+
+- `has_more: boolean`
+
+  Indicates if there are more results in the requested page direction.
+
+- `last_id: string`
+
+  Last ID in the `data` list. Can be used as the `after_id` for the next page.
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/workspaces \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY"
+```
+
+## Update
+
+**post** `/v1/organizations/workspaces/{workspace_id}`
+
+Update Workspace
+
+### Path Parameters
+
+- `workspace_id: string`
+
+### Body Parameters
+
+- `name: string`
+
+  Name of the Workspace.
+
+- `data_residency: optional object { allowed_inference_geos, default_inference_geo }`
+
+  Data residency configuration for the workspace.
+
+  - `allowed_inference_geos: optional array of string or "unrestricted"`
+
+    Permitted inference geo values. Use 'unrestricted' to allow all geos, or a list of specific geos.
+
+    - `UnionMember0 = array of string`
+
+    - `UnionMember1 = "unrestricted"`
+
+      - `"unrestricted"`
+
+  - `default_inference_geo: optional string`
+
+    Default inference geo applied when requests omit the parameter. Must be a member of allowed_inference_geos unless allowed_inference_geos is `"unrestricted"`.
+
+### Returns
+
+- `Workspace = object { id, archived_at, created_at, 4 more }`
+
+  - `id: string`
+
+    ID of the Workspace.
+
+  - `archived_at: string`
+
+    RFC 3339 datetime string indicating when the Workspace was archived, or `null` if the Workspace is not archived.
+
+  - `created_at: string`
+
+    RFC 3339 datetime string indicating when the Workspace was created.
+
+  - `data_residency: object { allowed_inference_geos, default_inference_geo, workspace_geo }`
+
+    Data residency configuration.
+
+    - `allowed_inference_geos: array of string or "unrestricted"`
+
+      Permitted inference geo values. 'unrestricted' means all geos are allowed.
+
+      - `UnionMember0 = array of string`
+
+      - `UnionMember1 = "unrestricted"`
+
+        - `"unrestricted"`
+
+    - `default_inference_geo: string`
+
+      Default inference geo applied when requests omit the parameter.
+
+    - `workspace_geo: string`
+
+      Geographic region for workspace data storage. Immutable after creation.
+
+  - `display_color: string`
+
+    Hex color code representing the Workspace in the Anthropic Console.
+
+  - `name: string`
+
+    Name of the Workspace.
+
+  - `type: "workspace"`
+
+    Object type.
+
+    For Workspaces, this is always `"workspace"`.
+
+    - `"workspace"`
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/workspaces/$WORKSPACE_ID \
+    -H 'Content-Type: application/json' \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY" \
+    -d '{
+          "name": "x"
+        }'
+```
+
+## Archive
+
+**post** `/v1/organizations/workspaces/{workspace_id}/archive`
+
+Archive Workspace
+
+### Path Parameters
+
+- `workspace_id: string`
+
+### Returns
+
+- `Workspace = object { id, archived_at, created_at, 4 more }`
+
+  - `id: string`
+
+    ID of the Workspace.
+
+  - `archived_at: string`
+
+    RFC 3339 datetime string indicating when the Workspace was archived, or `null` if the Workspace is not archived.
+
+  - `created_at: string`
+
+    RFC 3339 datetime string indicating when the Workspace was created.
+
+  - `data_residency: object { allowed_inference_geos, default_inference_geo, workspace_geo }`
+
+    Data residency configuration.
+
+    - `allowed_inference_geos: array of string or "unrestricted"`
+
+      Permitted inference geo values. 'unrestricted' means all geos are allowed.
+
+      - `UnionMember0 = array of string`
+
+      - `UnionMember1 = "unrestricted"`
+
+        - `"unrestricted"`
+
+    - `default_inference_geo: string`
+
+      Default inference geo applied when requests omit the parameter.
+
+    - `workspace_geo: string`
+
+      Geographic region for workspace data storage. Immutable after creation.
+
+  - `display_color: string`
+
+    Hex color code representing the Workspace in the Anthropic Console.
+
+  - `name: string`
+
+    Name of the Workspace.
+
+  - `type: "workspace"`
+
+    Object type.
+
+    For Workspaces, this is always `"workspace"`.
+
+    - `"workspace"`
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/workspaces/$WORKSPACE_ID/archive \
+    -X POST \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY"
+```
+
+# Members
+
+## Create
+
+**post** `/v1/organizations/workspaces/{workspace_id}/members`
+
+Create Workspace Member
+
+### Path Parameters
+
+- `workspace_id: string`
+
+  ID of the Workspace.
+
+### Body Parameters
+
+- `user_id: string`
+
+  ID of the User.
+
+- `workspace_role: "workspace_user" or "workspace_developer" or "workspace_restricted_developer" or "workspace_admin"`
+
+  Role of the new Workspace Member. Cannot be "workspace_billing".
+
+  - `"workspace_user"`
+
+  - `"workspace_developer"`
+
+  - `"workspace_restricted_developer"`
+
+  - `"workspace_admin"`
+
+### Returns
+
+- `WorkspaceMember = object { type, user_id, workspace_id, workspace_role }`
+
+  - `type: "workspace_member"`
+
+    Object type.
+
+    For Workspace Members, this is always `"workspace_member"`.
+
+    - `"workspace_member"`
+
+  - `user_id: string`
+
+    ID of the User.
+
+  - `workspace_id: string`
+
+    ID of the Workspace.
+
+  - `workspace_role: "workspace_user" or "workspace_developer" or "workspace_restricted_developer" or 2 more`
+
+    Role of the Workspace Member.
+
+    - `"workspace_user"`
+
+    - `"workspace_developer"`
+
+    - `"workspace_restricted_developer"`
+
+    - `"workspace_admin"`
+
+    - `"workspace_billing"`
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/workspaces/$WORKSPACE_ID/members \
+    -H 'Content-Type: application/json' \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY" \
+    -d '{
+          "user_id": "user_01WCz1FkmYMm4gnmykNKUu3Q",
+          "workspace_role": "workspace_user"
+        }'
+```
+
+## Retrieve
+
+**get** `/v1/organizations/workspaces/{workspace_id}/members/{user_id}`
+
+Get Workspace Member
+
+### Path Parameters
+
+- `workspace_id: string`
+
+  ID of the Workspace.
+
+- `user_id: string`
+
+  ID of the User.
+
+### Returns
+
+- `WorkspaceMember = object { type, user_id, workspace_id, workspace_role }`
+
+  - `type: "workspace_member"`
+
+    Object type.
+
+    For Workspace Members, this is always `"workspace_member"`.
+
+    - `"workspace_member"`
+
+  - `user_id: string`
+
+    ID of the User.
+
+  - `workspace_id: string`
+
+    ID of the Workspace.
+
+  - `workspace_role: "workspace_user" or "workspace_developer" or "workspace_restricted_developer" or 2 more`
+
+    Role of the Workspace Member.
+
+    - `"workspace_user"`
+
+    - `"workspace_developer"`
+
+    - `"workspace_restricted_developer"`
+
+    - `"workspace_admin"`
+
+    - `"workspace_billing"`
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/workspaces/$WORKSPACE_ID/members/$USER_ID \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY"
+```
+
+## List
+
+**get** `/v1/organizations/workspaces/{workspace_id}/members`
+
+List Workspace Members
+
+### Path Parameters
+
+- `workspace_id: string`
+
+  ID of the Workspace.
+
+### Query Parameters
+
+- `after_id: optional string`
+
+  ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately after this object.
+
+- `before_id: optional string`
+
+  ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately before this object.
+
+- `limit: optional number`
+
+  Number of items to return per page.
+
+  Defaults to `20`. Ranges from `1` to `1000`.
+
+### Returns
+
+- `data: array of WorkspaceMember`
+
+  - `type: "workspace_member"`
+
+    Object type.
+
+    For Workspace Members, this is always `"workspace_member"`.
+
+    - `"workspace_member"`
+
+  - `user_id: string`
+
+    ID of the User.
+
+  - `workspace_id: string`
+
+    ID of the Workspace.
+
+  - `workspace_role: "workspace_user" or "workspace_developer" or "workspace_restricted_developer" or 2 more`
+
+    Role of the Workspace Member.
+
+    - `"workspace_user"`
+
+    - `"workspace_developer"`
+
+    - `"workspace_restricted_developer"`
+
+    - `"workspace_admin"`
+
+    - `"workspace_billing"`
+
+- `first_id: string`
+
+  First ID in the `data` list. Can be used as the `before_id` for the previous page.
+
+- `has_more: boolean`
+
+  Indicates if there are more results in the requested page direction.
+
+- `last_id: string`
+
+  Last ID in the `data` list. Can be used as the `after_id` for the next page.
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/workspaces/$WORKSPACE_ID/members \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY"
+```
+
+## Update
+
+**post** `/v1/organizations/workspaces/{workspace_id}/members/{user_id}`
+
+Update Workspace Member
+
+### Path Parameters
+
+- `workspace_id: string`
+
+  ID of the Workspace.
+
+- `user_id: string`
+
+  ID of the User.
+
+### Body Parameters
+
+- `workspace_role: "workspace_user" or "workspace_developer" or "workspace_restricted_developer" or 2 more`
+
+  New workspace role for the User.
+
+  - `"workspace_user"`
+
+  - `"workspace_developer"`
+
+  - `"workspace_restricted_developer"`
+
+  - `"workspace_admin"`
+
+  - `"workspace_billing"`
+
+### Returns
+
+- `WorkspaceMember = object { type, user_id, workspace_id, workspace_role }`
+
+  - `type: "workspace_member"`
+
+    Object type.
+
+    For Workspace Members, this is always `"workspace_member"`.
+
+    - `"workspace_member"`
+
+  - `user_id: string`
+
+    ID of the User.
+
+  - `workspace_id: string`
+
+    ID of the Workspace.
+
+  - `workspace_role: "workspace_user" or "workspace_developer" or "workspace_restricted_developer" or 2 more`
+
+    Role of the Workspace Member.
+
+    - `"workspace_user"`
+
+    - `"workspace_developer"`
+
+    - `"workspace_restricted_developer"`
+
+    - `"workspace_admin"`
+
+    - `"workspace_billing"`
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/workspaces/$WORKSPACE_ID/members/$USER_ID \
+    -H 'Content-Type: application/json' \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY" \
+    -d '{
+          "workspace_role": "workspace_user"
+        }'
+```
+
+## Delete
+
+**delete** `/v1/organizations/workspaces/{workspace_id}/members/{user_id}`
+
+Delete Workspace Member
+
+### Path Parameters
+
+- `workspace_id: string`
+
+  ID of the Workspace.
+
+- `user_id: string`
+
+  ID of the User.
+
+### Returns
+
+- `type: "workspace_member_deleted"`
+
+  Deleted object type.
+
+  For Workspace Members, this is always `"workspace_member_deleted"`.
+
+  - `"workspace_member_deleted"`
+
+- `user_id: string`
+
+  ID of the User.
+
+- `workspace_id: string`
+
+  ID of the Workspace.
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/workspaces/$WORKSPACE_ID/members/$USER_ID \
+    -X DELETE \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY"
+```
+
+## Domain Types
+
+### Workspace Member
+
+- `WorkspaceMember = object { type, user_id, workspace_id, workspace_role }`
+
+  - `type: "workspace_member"`
+
+    Object type.
+
+    For Workspace Members, this is always `"workspace_member"`.
+
+    - `"workspace_member"`
+
+  - `user_id: string`
+
+    ID of the User.
+
+  - `workspace_id: string`
+
+    ID of the Workspace.
+
+  - `workspace_role: "workspace_user" or "workspace_developer" or "workspace_restricted_developer" or 2 more`
+
+    Role of the Workspace Member.
+
+    - `"workspace_user"`
+
+    - `"workspace_developer"`
+
+    - `"workspace_restricted_developer"`
+
+    - `"workspace_admin"`
+
+    - `"workspace_billing"`
+
+### Member Delete Response
+
+- `MemberDeleteResponse = object { type, user_id, workspace_id }`
+
+  - `type: "workspace_member_deleted"`
+
+    Deleted object type.
+
+    For Workspace Members, this is always `"workspace_member_deleted"`.
+
+    - `"workspace_member_deleted"`
+
+  - `user_id: string`
+
+    ID of the User.
+
+  - `workspace_id: string`
+
+    ID of the Workspace.
+
+# Rate Limits
+
+## List
+
+**get** `/v1/organizations/workspaces/{workspace_id}/rate_limits`
+
+List rate-limit overrides configured for a workspace.
+
+Returns only the groups and limiter types that have a workspace-level
+override. Groups without overrides inherit the organization limits and
+are not listed; use `GET /v1/organizations/rate_limits` to see those.
+
+### Path Parameters
+
+- `workspace_id: string`
+
+  The ID of the workspace.
+
+### Query Parameters
+
+- `group_type: optional "model_group" or "batch" or "token_count" or 3 more`
+
+  Filter by group type.
+
+  - `"model_group"`
+
+  - `"batch"`
+
+  - `"token_count"`
+
+  - `"files"`
+
+  - `"skills"`
+
+  - `"web_search"`
+
+- `page: optional string`
+
+  Opaque cursor from a previous response's `next_page`.
+
+### Returns
+
+- `data: array of object { group_type, limits, models, type }`
+
+  Rate-limit entries for the workspace, one per group that has at least one override.
+
+  - `group_type: "model_group" or "batch" or "token_count" or 3 more`
+
+    The kind of rate-limit group this entry represents. `model_group` entries apply to a family of models (listed in `models`); other values apply to an API-surface category and have `models` set to `null`.
+
+    - `"model_group"`
+
+    - `"batch"`
+
+    - `"token_count"`
+
+    - `"files"`
+
+    - `"skills"`
+
+    - `"web_search"`
+
+  - `limits: array of object { org_limit, type, value }`
+
+    The limiter values overridden for this group in this workspace. Limiter types without a workspace override are omitted and inherit the organization value.
+
+    - `org_limit: number`
+
+      The organization-level value for the same limiter type, for reference. `null` when the organization has no limit configured for this limiter type.
+
+    - `type: string`
+
+      The limiter type (for example, `requests_per_minute` or `input_tokens_per_minute`).
+
+    - `value: number`
+
+      The workspace-level override value for this limiter type.
+
+  - `models: array of string`
+
+    Model names this entry's limits apply to, including aliases. `null` when `group_type` is not `"model_group"`.
+
+  - `type: "workspace_rate_limit"`
+
+    Object type. Always `workspace_rate_limit` for workspace rate-limit entries.
+
+    - `"workspace_rate_limit"`
+
+- `next_page: string`
+
+  Token to provide in as `page` in the subsequent request to retrieve the next page of data.
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/workspaces/$WORKSPACE_ID/rate_limits \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY"
+```
+
+## Domain Types
+
+### Rate Limit List Response
+
+- `RateLimitListResponse = object { data, next_page }`
+
+  - `data: array of object { group_type, limits, models, type }`
+
+    Rate-limit entries for the workspace, one per group that has at least one override.
+
+    - `group_type: "model_group" or "batch" or "token_count" or 3 more`
+
+      The kind of rate-limit group this entry represents. `model_group` entries apply to a family of models (listed in `models`); other values apply to an API-surface category and have `models` set to `null`.
+
+      - `"model_group"`
+
+      - `"batch"`
+
+      - `"token_count"`
+
+      - `"files"`
+
+      - `"skills"`
+
+      - `"web_search"`
+
+    - `limits: array of object { org_limit, type, value }`
+
+      The limiter values overridden for this group in this workspace. Limiter types without a workspace override are omitted and inherit the organization value.
+
+      - `org_limit: number`
+
+        The organization-level value for the same limiter type, for reference. `null` when the organization has no limit configured for this limiter type.
+
+      - `type: string`
+
+        The limiter type (for example, `requests_per_minute` or `input_tokens_per_minute`).
+
+      - `value: number`
+
+        The workspace-level override value for this limiter type.
+
+    - `models: array of string`
+
+      Model names this entry's limits apply to, including aliases. `null` when `group_type` is not `"model_group"`.
+
+    - `type: "workspace_rate_limit"`
+
+      Object type. Always `workspace_rate_limit` for workspace rate-limit entries.
+
+      - `"workspace_rate_limit"`
+
+  - `next_page: string`
+
+    Token to provide in as `page` in the subsequent request to retrieve the next page of data.
+
+# API Keys
+
+## Retrieve
+
+**get** `/v1/organizations/api_keys/{api_key_id}`
+
+Get API Key
+
+### Path Parameters
+
+- `api_key_id: string`
+
+  ID of the API key.
+
+### Returns
+
+- `APIKey = object { id, created_at, created_by, 6 more }`
+
+  - `id: string`
+
+    ID of the API key.
+
+  - `created_at: string`
+
+    RFC 3339 datetime string indicating when the API Key was created.
+
+  - `created_by: object { id, type }`
+
+    The ID and type of the actor that created the API key.
+
+    - `id: string`
+
+      ID of the actor that created the object.
+
+    - `type: string`
+
+      Type of the actor that created the object.
+
+  - `expires_at: string`
+
+    RFC 3339 datetime string indicating when the API Key expires, or `null` if it never expires.
+
+  - `name: string`
+
+    Name of the API key.
+
+  - `partial_key_hint: string`
+
+    Partially redacted hint for the API key.
+
+  - `status: "active" or "inactive" or "archived" or "expired"`
+
+    Status of the API key.
+
+    - `"active"`
+
+    - `"inactive"`
+
+    - `"archived"`
+
+    - `"expired"`
+
+  - `type: "api_key"`
+
+    Object type.
+
+    For API Keys, this is always `"api_key"`.
+
+    - `"api_key"`
+
+  - `workspace_id: string`
+
+    ID of the Workspace associated with the API key, or `null` if the API key belongs to the default Workspace.
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/api_keys/$API_KEY_ID \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY"
+```
+
+## List
+
+**get** `/v1/organizations/api_keys`
+
+List API Keys
+
+### Query Parameters
+
+- `after_id: optional string`
+
+  ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately after this object.
+
+- `before_id: optional string`
+
+  ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately before this object.
+
+- `created_by_user_id: optional string`
+
+  Filter by the ID of the User who created the object.
+
+- `limit: optional number`
+
+  Number of items to return per page.
+
+  Defaults to `20`. Ranges from `1` to `1000`.
+
+- `status: optional "active" or "inactive" or "archived" or "expired"`
+
+  Filter by API key status.
+
+  - `"active"`
+
+  - `"inactive"`
+
+  - `"archived"`
+
+  - `"expired"`
+
+- `workspace_id: optional string`
+
+  Filter by Workspace ID.
+
+### Returns
+
+- `data: array of APIKey`
+
+  - `id: string`
+
+    ID of the API key.
+
+  - `created_at: string`
+
+    RFC 3339 datetime string indicating when the API Key was created.
+
+  - `created_by: object { id, type }`
+
+    The ID and type of the actor that created the API key.
+
+    - `id: string`
+
+      ID of the actor that created the object.
+
+    - `type: string`
+
+      Type of the actor that created the object.
+
+  - `expires_at: string`
+
+    RFC 3339 datetime string indicating when the API Key expires, or `null` if it never expires.
+
+  - `name: string`
+
+    Name of the API key.
+
+  - `partial_key_hint: string`
+
+    Partially redacted hint for the API key.
+
+  - `status: "active" or "inactive" or "archived" or "expired"`
+
+    Status of the API key.
+
+    - `"active"`
+
+    - `"inactive"`
+
+    - `"archived"`
+
+    - `"expired"`
+
+  - `type: "api_key"`
+
+    Object type.
+
+    For API Keys, this is always `"api_key"`.
+
+    - `"api_key"`
+
+  - `workspace_id: string`
+
+    ID of the Workspace associated with the API key, or `null` if the API key belongs to the default Workspace.
+
+- `first_id: string`
+
+  First ID in the `data` list. Can be used as the `before_id` for the previous page.
+
+- `has_more: boolean`
+
+  Indicates if there are more results in the requested page direction.
+
+- `last_id: string`
+
+  Last ID in the `data` list. Can be used as the `after_id` for the next page.
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/api_keys \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY"
+```
+
+## Update
+
+**post** `/v1/organizations/api_keys/{api_key_id}`
+
+Update API Key
+
+### Path Parameters
+
+- `api_key_id: string`
+
+  ID of the API key.
+
+### Body Parameters
+
+- `name: optional string`
+
+  Name of the API key.
+
+- `status: optional "active" or "inactive" or "archived"`
+
+  Status of the API key.
+
+  - `"active"`
+
+  - `"inactive"`
+
+  - `"archived"`
+
+### Returns
+
+- `APIKey = object { id, created_at, created_by, 6 more }`
+
+  - `id: string`
+
+    ID of the API key.
+
+  - `created_at: string`
+
+    RFC 3339 datetime string indicating when the API Key was created.
+
+  - `created_by: object { id, type }`
+
+    The ID and type of the actor that created the API key.
+
+    - `id: string`
+
+      ID of the actor that created the object.
+
+    - `type: string`
+
+      Type of the actor that created the object.
+
+  - `expires_at: string`
+
+    RFC 3339 datetime string indicating when the API Key expires, or `null` if it never expires.
+
+  - `name: string`
+
+    Name of the API key.
+
+  - `partial_key_hint: string`
+
+    Partially redacted hint for the API key.
+
+  - `status: "active" or "inactive" or "archived" or "expired"`
+
+    Status of the API key.
+
+    - `"active"`
+
+    - `"inactive"`
+
+    - `"archived"`
+
+    - `"expired"`
+
+  - `type: "api_key"`
+
+    Object type.
+
+    For API Keys, this is always `"api_key"`.
+
+    - `"api_key"`
+
+  - `workspace_id: string`
+
+    ID of the Workspace associated with the API key, or `null` if the API key belongs to the default Workspace.
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/api_keys/$API_KEY_ID \
+    -H 'Content-Type: application/json' \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY" \
+    -d '{}'
+```
+
+# Usage Report
+
+## Retrieve Messages
+
+**get** `/v1/organizations/usage_report/messages`
+
+Get Messages Usage Report
+
+### Query Parameters
+
+- `starting_at: string`
+
+  Time buckets that start on or after this RFC 3339 timestamp will be returned.
+  Each time bucket will be snapped to the start of the minute/hour/day in UTC.
+
+- `account_ids: optional array of string`
+
+  Restrict usage returned to the specified user account ID(s).
+
+- `api_key_ids: optional array of string`
+
+  Restrict usage returned to the specified API key ID(s).
+
+- `bucket_width: optional "1d" or "1m" or "1h"`
+
+  Time granularity of the response data.
+
+  - `"1d"`
+
+  - `"1m"`
+
+  - `"1h"`
+
+- `context_window: optional array of "0-200k" or "200k-1M"`
+
+  Restrict usage returned to the specified context window(s).
+
+  - `"0-200k"`
+
+  - `"200k-1M"`
+
+- `ending_at: optional string`
+
+  Time buckets that end before this RFC 3339 timestamp will be returned.
+
+- `group_by: optional array of "api_key_id" or "workspace_id" or "model" or 6 more`
+
+  Group by any subset of the available options. Grouping by `speed` requires the `fast-mode-2026-02-01` beta header.
+
+  - `"api_key_id"`
+
+  - `"workspace_id"`
+
+  - `"model"`
+
+  - `"service_tier"`
+
+  - `"context_window"`
+
+  - `"inference_geo"`
+
+  - `"speed"`
+
+  - `"account_id"`
+
+  - `"service_account_id"`
+
+- `inference_geos: optional array of "global" or "us" or "not_available"`
+
+  Restrict usage returned to the specified inference geo(s). Use `not_available` for models that do not support specifying `inference_geo`.
+
+  - `"global"`
+
+  - `"us"`
+
+  - `"not_available"`
+
+- `limit: optional number`
+
+  Maximum number of time buckets to return in the response.
+
+  The default and max limits depend on `bucket_width`:
+  • `"1d"`: Default of 7 days, maximum of 31 days
+  • `"1h"`: Default of 24 hours, maximum of 168 hours
+  • `"1m"`: Default of 60 minutes, maximum of 1440 minutes
+
+- `models: optional array of string`
+
+  Restrict usage returned to the specified model(s).
+
+- `page: optional string`
+
+  Optionally set to the `next_page` token from the previous response.
+
+- `service_account_ids: optional array of string`
+
+  Restrict usage returned to the specified service account ID(s).
+
+- `service_tiers: optional array of "standard" or "batch" or "priority" or 3 more`
+
+  Restrict usage returned to the specified service tier(s).
+
+  - `"standard"`
+
+  - `"batch"`
+
+  - `"priority"`
+
+  - `"priority_on_demand"`
+
+  - `"flex"`
+
+  - `"flex_discount"`
+
+- `speeds: optional array of "standard" or "fast"`
+
+  Restrict usage returned to the specified speed(s) (Claude Code research preview).
+  Requires the `fast-mode-2026-02-01` beta header.
+
+  - `"standard"`
+
+  - `"fast"`
+
+- `workspace_ids: optional array of string`
+
+  Restrict usage returned to the specified workspace ID(s).
+
+### Header Parameters
+
+- `"anthropic-beta": optional array of string`
+
+  Optional header to specify the beta version(s) you want to use.
+
+  To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.
+
+### Returns
+
+- `MessagesUsageReport = object { data, has_more, next_page }`
+
+  - `data: array of object { ending_at, results, starting_at }`
+
+    - `ending_at: string`
+
+      End of the time bucket (exclusive) in RFC 3339 format.
+
+    - `results: array of object { account_id, api_key_id, cache_creation, 10 more }`
+
+      List of usage items for this time bucket.  There may be multiple items if one or more `group_by[]` parameters are specified.
+
+      - `account_id: string`
+
+        ID of the user account that made the request. `null` if not grouping by account or for non-OAuth requests.
+
+      - `api_key_id: string`
+
+        ID of the API key used. `null` if not grouping by API key or for usage in the Anthropic Console.
+
+      - `cache_creation: object { ephemeral_1h_input_tokens, ephemeral_5m_input_tokens }`
+
+        The number of input tokens for cache creation.
+
+        - `ephemeral_1h_input_tokens: number`
+
+          The number of input tokens used to create the 1 hour cache entry.
+
+        - `ephemeral_5m_input_tokens: number`
+
+          The number of input tokens used to create the 5 minute cache entry.
+
+      - `cache_read_input_tokens: number`
+
+        The number of input tokens read from the cache.
+
+      - `context_window: "0-200k" or "200k-1M"`
+
+        Context window used. `null` if not grouping by context window.
+
+        - `"0-200k"`
+
+        - `"200k-1M"`
+
+      - `inference_geo: string`
+
+        Inference geo used matching requests' `inference_geo` parameter if set, otherwise the workspace's `default_inference_geo`.
+        For models that do not support specifying `inference_geo` the value is `"not_available"`. Always `null` if not grouping by inference geo.
+
+      - `model: string`
+
+        Model used. `null` if not grouping by model.
+
+      - `output_tokens: number`
+
+        The number of output tokens generated.
+
+      - `server_tool_use: object { web_search_requests }`
+
+        Server-side tool usage metrics.
+
+        - `web_search_requests: number`
+
+          The number of web search requests made.
+
+      - `service_account_id: string`
+
+        ID of the service account that made the request. `null` if not grouping by service account or for non-OIDC-federation requests.
+
+      - `service_tier: "standard" or "batch" or "priority" or 3 more`
+
+        Service tier used. `null` if not grouping by service tier.
+
+        - `"standard"`
+
+        - `"batch"`
+
+        - `"priority"`
+
+        - `"priority_on_demand"`
+
+        - `"flex"`
+
+        - `"flex_discount"`
+
+      - `uncached_input_tokens: number`
+
+        The number of uncached input tokens processed.
+
+      - `workspace_id: string`
+
+        ID of the Workspace used. `null` if not grouping by workspace or for the default workspace.
+
+    - `starting_at: string`
+
+      Start of the time bucket (inclusive) in RFC 3339 format.
+
+  - `has_more: boolean`
+
+    Indicates if there are more results.
+
+  - `next_page: string`
+
+    Token to provide in as `page` in the subsequent request to retrieve the next page of data.
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/usage_report/messages \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY"
+```
+
+## Retrieve Claude Code
+
+**get** `/v1/organizations/usage_report/claude_code`
+
+Retrieve daily aggregated usage metrics for Claude Code users.
+Enables organizations to analyze developer productivity and build custom dashboards.
+
+### Query Parameters
+
+- `starting_at: string`
+
+  UTC date in YYYY-MM-DD format. Returns metrics for this single day only.
+
+- `limit: optional number`
+
+  Number of records per page (default: 20, max: 1000).
+
+- `page: optional string`
+
+  Opaque cursor token from previous response's `next_page` field.
+
+### Returns
+
+- `ClaudeCodeUsageReport = object { data, has_more, next_page }`
+
+  - `data: array of object { actor, core_metrics, customer_type, 6 more }`
+
+    List of Claude Code usage records for the requested date.
+
+    - `actor: object { email_address, type }  or object { api_key_name, type }`
+
+      The user or API key that performed the Claude Code actions.
+
+      - `UserActor = object { email_address, type }`
+
+        - `email_address: string`
+
+          Email address of the user who performed Claude Code actions.
+
+        - `type: "user_actor"`
+
+          - `"user_actor"`
+
+      - `APIActor = object { api_key_name, type }`
+
+        - `api_key_name: string`
+
+          Name of the API key used to perform Claude Code actions.
+
+        - `type: "api_actor"`
+
+          - `"api_actor"`
+
+    - `core_metrics: object { commits_by_claude_code, lines_of_code, num_sessions, pull_requests_by_claude_code }`
+
+      Core productivity metrics measuring Claude Code usage and impact.
+
+      - `commits_by_claude_code: number`
+
+        Number of git commits created through Claude Code's commit functionality.
+
+      - `lines_of_code: object { added, removed }`
+
+        Statistics on code changes made through Claude Code.
+
+        - `added: number`
+
+          Total number of lines of code added across all files by Claude Code.
+
+        - `removed: number`
+
+          Total number of lines of code removed across all files by Claude Code.
+
+      - `num_sessions: number`
+
+        Number of distinct Claude Code sessions initiated by this actor.
+
+      - `pull_requests_by_claude_code: number`
+
+        Number of pull requests created through Claude Code's PR functionality.
+
+    - `customer_type: "api" or "subscription"`
+
+      Type of customer account (api for API customers, subscription for Pro/Team customers).
+
+      - `"api"`
+
+      - `"subscription"`
+
+    - `date: string`
+
+      UTC date for the usage metrics in YYYY-MM-DD format.
+
+    - `model_breakdown: array of object { estimated_cost, model, tokens }`
+
+      Token usage and cost breakdown by AI model used.
+
+      - `estimated_cost: object { amount, currency }`
+
+        Estimated cost for using this model
+
+        - `amount: number`
+
+          Estimated cost amount in minor currency units (e.g., cents for USD).
+
+        - `currency: string`
+
+          Currency code for the estimated cost (e.g., 'USD').
+
+      - `model: string`
+
+        Name of the AI model used for Claude Code interactions.
+
+      - `tokens: object { cache_creation, cache_read, input, output }`
+
+        Token usage breakdown for this model
+
+        - `cache_creation: number`
+
+          Number of cache creation tokens consumed by this model.
+
+        - `cache_read: number`
+
+          Number of cache read tokens consumed by this model.
+
+        - `input: number`
+
+          Number of input tokens consumed by this model.
+
+        - `output: number`
+
+          Number of output tokens generated by this model.
+
+    - `organization_id: string`
+
+      ID of the organization that owns the Claude Code usage.
+
+    - `terminal_type: string`
+
+      Type of terminal or environment where Claude Code was used.
+
+    - `tool_actions: map[object { accepted, rejected } ]`
+
+      Breakdown of tool action acceptance and rejection rates by tool type.
+
+      - `accepted: number`
+
+        Number of tool action proposals that the user accepted.
+
+      - `rejected: number`
+
+        Number of tool action proposals that the user rejected.
+
+    - `subscription_type: optional "enterprise" or "team"`
+
+      Subscription tier for subscription customers. `null` for API customers.
+
+      - `"enterprise"`
+
+      - `"team"`
+
+  - `has_more: boolean`
+
+    True if there are more records available beyond the current page.
+
+  - `next_page: string`
+
+    Opaque cursor token for fetching the next page of results, or null if no more pages are available.
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/usage_report/claude_code \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY"
+```
+
+## Domain Types
+
+### Claude Code Usage Report
+
+- `ClaudeCodeUsageReport = object { data, has_more, next_page }`
+
+  - `data: array of object { actor, core_metrics, customer_type, 6 more }`
+
+    List of Claude Code usage records for the requested date.
+
+    - `actor: object { email_address, type }  or object { api_key_name, type }`
+
+      The user or API key that performed the Claude Code actions.
+
+      - `UserActor = object { email_address, type }`
+
+        - `email_address: string`
+
+          Email address of the user who performed Claude Code actions.
+
+        - `type: "user_actor"`
+
+          - `"user_actor"`
+
+      - `APIActor = object { api_key_name, type }`
+
+        - `api_key_name: string`
+
+          Name of the API key used to perform Claude Code actions.
+
+        - `type: "api_actor"`
+
+          - `"api_actor"`
+
+    - `core_metrics: object { commits_by_claude_code, lines_of_code, num_sessions, pull_requests_by_claude_code }`
+
+      Core productivity metrics measuring Claude Code usage and impact.
+
+      - `commits_by_claude_code: number`
+
+        Number of git commits created through Claude Code's commit functionality.
+
+      - `lines_of_code: object { added, removed }`
+
+        Statistics on code changes made through Claude Code.
+
+        - `added: number`
+
+          Total number of lines of code added across all files by Claude Code.
+
+        - `removed: number`
+
+          Total number of lines of code removed across all files by Claude Code.
+
+      - `num_sessions: number`
+
+        Number of distinct Claude Code sessions initiated by this actor.
+
+      - `pull_requests_by_claude_code: number`
+
+        Number of pull requests created through Claude Code's PR functionality.
+
+    - `customer_type: "api" or "subscription"`
+
+      Type of customer account (api for API customers, subscription for Pro/Team customers).
+
+      - `"api"`
+
+      - `"subscription"`
+
+    - `date: string`
+
+      UTC date for the usage metrics in YYYY-MM-DD format.
+
+    - `model_breakdown: array of object { estimated_cost, model, tokens }`
+
+      Token usage and cost breakdown by AI model used.
+
+      - `estimated_cost: object { amount, currency }`
+
+        Estimated cost for using this model
+
+        - `amount: number`
+
+          Estimated cost amount in minor currency units (e.g., cents for USD).
+
+        - `currency: string`
+
+          Currency code for the estimated cost (e.g., 'USD').
+
+      - `model: string`
+
+        Name of the AI model used for Claude Code interactions.
+
+      - `tokens: object { cache_creation, cache_read, input, output }`
+
+        Token usage breakdown for this model
+
+        - `cache_creation: number`
+
+          Number of cache creation tokens consumed by this model.
+
+        - `cache_read: number`
+
+          Number of cache read tokens consumed by this model.
+
+        - `input: number`
+
+          Number of input tokens consumed by this model.
+
+        - `output: number`
+
+          Number of output tokens generated by this model.
+
+    - `organization_id: string`
+
+      ID of the organization that owns the Claude Code usage.
+
+    - `terminal_type: string`
+
+      Type of terminal or environment where Claude Code was used.
+
+    - `tool_actions: map[object { accepted, rejected } ]`
+
+      Breakdown of tool action acceptance and rejection rates by tool type.
+
+      - `accepted: number`
+
+        Number of tool action proposals that the user accepted.
+
+      - `rejected: number`
+
+        Number of tool action proposals that the user rejected.
+
+    - `subscription_type: optional "enterprise" or "team"`
+
+      Subscription tier for subscription customers. `null` for API customers.
+
+      - `"enterprise"`
+
+      - `"team"`
+
+  - `has_more: boolean`
+
+    True if there are more records available beyond the current page.
+
+  - `next_page: string`
+
+    Opaque cursor token for fetching the next page of results, or null if no more pages are available.
+
+### Messages Usage Report
+
+- `MessagesUsageReport = object { data, has_more, next_page }`
+
+  - `data: array of object { ending_at, results, starting_at }`
+
+    - `ending_at: string`
+
+      End of the time bucket (exclusive) in RFC 3339 format.
+
+    - `results: array of object { account_id, api_key_id, cache_creation, 10 more }`
+
+      List of usage items for this time bucket.  There may be multiple items if one or more `group_by[]` parameters are specified.
+
+      - `account_id: string`
+
+        ID of the user account that made the request. `null` if not grouping by account or for non-OAuth requests.
+
+      - `api_key_id: string`
+
+        ID of the API key used. `null` if not grouping by API key or for usage in the Anthropic Console.
+
+      - `cache_creation: object { ephemeral_1h_input_tokens, ephemeral_5m_input_tokens }`
+
+        The number of input tokens for cache creation.
+
+        - `ephemeral_1h_input_tokens: number`
+
+          The number of input tokens used to create the 1 hour cache entry.
+
+        - `ephemeral_5m_input_tokens: number`
+
+          The number of input tokens used to create the 5 minute cache entry.
+
+      - `cache_read_input_tokens: number`
+
+        The number of input tokens read from the cache.
+
+      - `context_window: "0-200k" or "200k-1M"`
+
+        Context window used. `null` if not grouping by context window.
+
+        - `"0-200k"`
+
+        - `"200k-1M"`
+
+      - `inference_geo: string`
+
+        Inference geo used matching requests' `inference_geo` parameter if set, otherwise the workspace's `default_inference_geo`.
+        For models that do not support specifying `inference_geo` the value is `"not_available"`. Always `null` if not grouping by inference geo.
+
+      - `model: string`
+
+        Model used. `null` if not grouping by model.
+
+      - `output_tokens: number`
+
+        The number of output tokens generated.
+
+      - `server_tool_use: object { web_search_requests }`
+
+        Server-side tool usage metrics.
+
+        - `web_search_requests: number`
+
+          The number of web search requests made.
+
+      - `service_account_id: string`
+
+        ID of the service account that made the request. `null` if not grouping by service account or for non-OIDC-federation requests.
+
+      - `service_tier: "standard" or "batch" or "priority" or 3 more`
+
+        Service tier used. `null` if not grouping by service tier.
+
+        - `"standard"`
+
+        - `"batch"`
+
+        - `"priority"`
+
+        - `"priority_on_demand"`
+
+        - `"flex"`
+
+        - `"flex_discount"`
+
+      - `uncached_input_tokens: number`
+
+        The number of uncached input tokens processed.
+
+      - `workspace_id: string`
+
+        ID of the Workspace used. `null` if not grouping by workspace or for the default workspace.
+
+    - `starting_at: string`
+
+      Start of the time bucket (inclusive) in RFC 3339 format.
+
+  - `has_more: boolean`
+
+    Indicates if there are more results.
+
+  - `next_page: string`
+
+    Token to provide in as `page` in the subsequent request to retrieve the next page of data.
+
+# Cost Report
+
+## Retrieve
+
+**get** `/v1/organizations/cost_report`
+
+Get Cost Report
+
+### Query Parameters
+
+- `starting_at: string`
+
+  Time buckets that start on or after this RFC 3339 timestamp will be returned.
+  Each time bucket will be snapped to the start of the minute/hour/day in UTC.
+
+- `bucket_width: optional "1d"`
+
+  Time granularity of the response data.
+
+  - `"1d"`
+
+- `ending_at: optional string`
+
+  Time buckets that end before this RFC 3339 timestamp will be returned.
+
+- `group_by: optional array of "workspace_id" or "description"`
+
+  Group by any subset of the available options.
+
+  - `"workspace_id"`
+
+  - `"description"`
+
+- `limit: optional number`
+
+  Maximum number of time buckets to return in the response.
+
+- `page: optional string`
+
+  Optionally set to the `next_page` token from the previous response.
+
+### Header Parameters
+
+- `"anthropic-beta": optional array of string`
+
+  Optional header to specify the beta version(s) you want to use.
+
+  To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.
+
+### Returns
+
+- `CostReport = object { data, has_more, next_page }`
+
+  - `data: array of object { ending_at, results, starting_at }`
+
+    - `ending_at: string`
+
+      End of the time bucket (exclusive) in RFC 3339 format.
+
+    - `results: array of object { amount, context_window, cost_type, 7 more }`
+
+      List of cost items for this time bucket. There may be multiple items if one or more `group_by[]` parameters are specified.
+
+      - `amount: string`
+
+        Cost amount in lowest currency units (e.g. cents) as a decimal string. For example, `"123.45"` in `"USD"` represents `$1.23`.
+
+      - `context_window: "0-200k" or "200k-1M"`
+
+        Input context window used. `null` if not grouping by description or for non-token costs.
+
+        - `"0-200k"`
+
+        - `"200k-1M"`
+
+      - `cost_type: "tokens" or "web_search" or "code_execution" or "session_usage"`
+
+        Type of cost. `null` if not grouping by description.
+
+        - `"tokens"`
+
+        - `"web_search"`
+
+        - `"code_execution"`
+
+        - `"session_usage"`
+
+      - `currency: string`
+
+        Currency code for the cost amount. Currently always `"USD"`.
+
+      - `description: string`
+
+        Description of the cost item. `null` if not grouping by description.
+
+      - `inference_geo: string`
+
+        Inference geo used matching requests' `inference_geo` parameter if set, otherwise the workspace's `default_inference_geo`.
+        For models that do not support specifying `inference_geo` the value is `"not_available"`. Always `null` if not grouping by inference geo.
+
+      - `model: string`
+
+        Model name used. `null` if not grouping by description or for non-token costs.
+
+      - `service_tier: "standard" or "batch"`
+
+        Service tier used. `null` if not grouping by description or for non-token costs.
+
+        - `"standard"`
+
+        - `"batch"`
+
+      - `token_type: "uncached_input_tokens" or "output_tokens" or "cache_read_input_tokens" or 2 more`
+
+        Type of token. `null` if not grouping by description or for non-token costs.
+
+        - `"uncached_input_tokens"`
+
+        - `"output_tokens"`
+
+        - `"cache_read_input_tokens"`
+
+        - `"cache_creation.ephemeral_1h_input_tokens"`
+
+        - `"cache_creation.ephemeral_5m_input_tokens"`
+
+      - `workspace_id: string`
+
+        ID of the Workspace this cost is associated with. `null` if not grouping by workspace or for the default workspace.
+
+    - `starting_at: string`
+
+      Start of the time bucket (inclusive) in RFC 3339 format.
+
+  - `has_more: boolean`
+
+    Indicates if there are more results.
+
+  - `next_page: string`
+
+    Token to provide in as `page` in the subsequent request to retrieve the next page of data.
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/cost_report \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY"
+```
+
+## Domain Types
+
+### Cost Report
+
+- `CostReport = object { data, has_more, next_page }`
+
+  - `data: array of object { ending_at, results, starting_at }`
+
+    - `ending_at: string`
+
+      End of the time bucket (exclusive) in RFC 3339 format.
+
+    - `results: array of object { amount, context_window, cost_type, 7 more }`
+
+      List of cost items for this time bucket. There may be multiple items if one or more `group_by[]` parameters are specified.
+
+      - `amount: string`
+
+        Cost amount in lowest currency units (e.g. cents) as a decimal string. For example, `"123.45"` in `"USD"` represents `$1.23`.
+
+      - `context_window: "0-200k" or "200k-1M"`
+
+        Input context window used. `null` if not grouping by description or for non-token costs.
+
+        - `"0-200k"`
+
+        - `"200k-1M"`
+
+      - `cost_type: "tokens" or "web_search" or "code_execution" or "session_usage"`
+
+        Type of cost. `null` if not grouping by description.
+
+        - `"tokens"`
+
+        - `"web_search"`
+
+        - `"code_execution"`
+
+        - `"session_usage"`
+
+      - `currency: string`
+
+        Currency code for the cost amount. Currently always `"USD"`.
+
+      - `description: string`
+
+        Description of the cost item. `null` if not grouping by description.
+
+      - `inference_geo: string`
+
+        Inference geo used matching requests' `inference_geo` parameter if set, otherwise the workspace's `default_inference_geo`.
+        For models that do not support specifying `inference_geo` the value is `"not_available"`. Always `null` if not grouping by inference geo.
+
+      - `model: string`
+
+        Model name used. `null` if not grouping by description or for non-token costs.
+
+      - `service_tier: "standard" or "batch"`
+
+        Service tier used. `null` if not grouping by description or for non-token costs.
+
+        - `"standard"`
+
+        - `"batch"`
+
+      - `token_type: "uncached_input_tokens" or "output_tokens" or "cache_read_input_tokens" or 2 more`
+
+        Type of token. `null` if not grouping by description or for non-token costs.
+
+        - `"uncached_input_tokens"`
+
+        - `"output_tokens"`
+
+        - `"cache_read_input_tokens"`
+
+        - `"cache_creation.ephemeral_1h_input_tokens"`
+
+        - `"cache_creation.ephemeral_5m_input_tokens"`
+
+      - `workspace_id: string`
+
+        ID of the Workspace this cost is associated with. `null` if not grouping by workspace or for the default workspace.
+
+    - `starting_at: string`
+
+      Start of the time bucket (inclusive) in RFC 3339 format.
+
+  - `has_more: boolean`
+
+    Indicates if there are more results.
+
+  - `next_page: string`
+
+    Token to provide in as `page` in the subsequent request to retrieve the next page of data.
+
+# Rate Limits
+
+## List
+
+**get** `/v1/organizations/rate_limits`
+
+List Messages API rate limits for your organization.
+
+Each entry corresponds to one rate-limit group (either a model family
+or an API-surface category such as the Files API or Message Batches)
+and contains the set of limiter values that apply to it.
+
+### Query Parameters
+
+- `group_type: optional "model_group" or "batch" or "token_count" or 3 more`
+
+  Filter by group type.
+
+  - `"model_group"`
+
+  - `"batch"`
+
+  - `"token_count"`
+
+  - `"files"`
+
+  - `"skills"`
+
+  - `"web_search"`
+
+- `model: optional string`
+
+  Filter to the single entry containing this model. Accepts full model names and aliases. Returns 404 if the model is not found or has no rate limits for this organization.
+
+- `page: optional string`
+
+  Opaque cursor from a previous response's `next_page`.
+
+### Returns
+
+- `data: array of object { group_type, limits, models, type }`
+
+  Rate-limit entries for the organization, one per group.
+
+  - `group_type: "model_group" or "batch" or "token_count" or 3 more`
+
+    The kind of rate-limit group this entry represents. `model_group` entries apply to a family of models (listed in `models`); other values apply to an API-surface category and have `models` set to `null`.
+
+    - `"model_group"`
+
+    - `"batch"`
+
+    - `"token_count"`
+
+    - `"files"`
+
+    - `"skills"`
+
+    - `"web_search"`
+
+  - `limits: array of object { type, value }`
+
+    The limiter values that apply to this group.
+
+    - `type: string`
+
+      The limiter type (for example, `requests_per_minute` or `input_tokens_per_minute`).
+
+    - `value: number`
+
+      The configured limit value for this limiter type.
+
+  - `models: array of string`
+
+    Model names this entry's limits apply to, including aliases. `null` when `group_type` is not `"model_group"`.
+
+  - `type: "rate_limit"`
+
+    Object type. Always `rate_limit` for organization rate-limit entries.
+
+    - `"rate_limit"`
+
+- `next_page: string`
+
+  Token to provide in as `page` in the subsequent request to retrieve the next page of data.
+
+### Example
+
+```http
+curl https://api.anthropic.com/v1/organizations/rate_limits \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_ADMIN_API_KEY"
+```
+
+## Domain Types
+
+### Rate Limit List Response
+
+- `RateLimitListResponse = object { data, next_page }`
+
+  - `data: array of object { group_type, limits, models, type }`
+
+    Rate-limit entries for the organization, one per group.
+
+    - `group_type: "model_group" or "batch" or "token_count" or 3 more`
+
+      The kind of rate-limit group this entry represents. `model_group` entries apply to a family of models (listed in `models`); other values apply to an API-surface category and have `models` set to `null`.
+
+      - `"model_group"`
+
+      - `"batch"`
+
+      - `"token_count"`
+
+      - `"files"`
+
+      - `"skills"`
+
+      - `"web_search"`
+
+    - `limits: array of object { type, value }`
+
+      The limiter values that apply to this group.
+
+      - `type: string`
+
+        The limiter type (for example, `requests_per_minute` or `input_tokens_per_minute`).
+
+      - `value: number`
+
+        The configured limit value for this limiter type.
+
+    - `models: array of string`
+
+      Model names this entry's limits apply to, including aliases. `null` when `group_type` is not `"model_group"`.
+
+    - `type: "rate_limit"`
+
+      Object type. Always `rate_limit` for organization rate-limit entries.
+
+      - `"rate_limit"`
+
+  - `next_page: string`
+
+    Token to provide in as `page` in the subsequent request to retrieve the next page of data.

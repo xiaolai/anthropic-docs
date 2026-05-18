@@ -231,7 +231,10 @@ if [[ -n "$DOCS_INDEX_URL" ]]; then
   DOCS_PATH_FILTER=$(jq -r '.upstream.docsPathFilter // empty' "$SKILL_CONFIG")
   if [[ -n "$DOCS_PATH_FILTER" ]]; then
     if [[ "$DOCS_PATH_FILTER" == *"(?!"* ]] || [[ "$DOCS_PATH_FILTER" == *"(?="* ]]; then
-      new_page_urls=$(printf '%s\n' "$new_page_urls" | perl -ne "print if /$DOCS_PATH_FILTER/")
+      # m{...} delimiter via env-var so `/` in the pattern (e.g. `agent-sdk/`)
+      # doesn't collide with the regex delimiter — see refresh-docs-snapshot.sh
+      # for the matching fix.
+      new_page_urls=$(printf '%s\n' "$new_page_urls" | PATTERN="$DOCS_PATH_FILTER" perl -ne 'print if /$ENV{PATTERN}/')
     else
       new_page_urls=$(printf '%s\n' "$new_page_urls" | grep -E "$DOCS_PATH_FILTER" || true)
     fi

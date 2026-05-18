@@ -2,9 +2,15 @@
   "indexUrl": "https://platform.claude.com/llms.txt",
   "indexSha256": "c4c9c5d0ec624334a91f3c546a66ab251a0b368efc845e4b948c80b770177fea",
   "indexBytes": 152271,
-  "pageCount": 192,
-  "refreshedAt": "2026-05-17T23:10:32Z",
+  "pageCount": 199,
+  "refreshedAt": "2026-05-17T23:58:52Z",
   "pages": [
+    {
+      "path": "en/api/admin.md",
+      "url": "https://platform.claude.com/docs/en/api/admin.md",
+      "sha256": "4cea68dab09901ac805e11479d55c828635a2c58dd162363aad22900787b1d7c",
+      "bytes": 67855
+    },
     {
       "path": "en/api/admin/api_keys.md",
       "url": "https://platform.claude.com/docs/en/api/admin/api_keys.md",
@@ -226,6 +232,12 @@
       "url": "https://platform.claude.com/docs/en/api/admin/workspaces/update.md",
       "sha256": "2eb5041b4a4127a04b82007b59d3aab8d2d098de85e7b207dffb5c9f168fb837",
       "bytes": 2338
+    },
+    {
+      "path": "en/api/beta.md",
+      "url": "https://platform.claude.com/docs/en/api/beta.md",
+      "sha256": "653a29c526f2693301d4b1c2e57fac54c2dc9230770c7646accf99ffd4a61645",
+      "bytes": 2572819
     },
     {
       "path": "en/api/beta/agents.md",
@@ -870,6 +882,24 @@
       "bytes": 30566
     },
     {
+      "path": "en/api/completions.md",
+      "url": "https://platform.claude.com/docs/en/api/completions.md",
+      "sha256": "0952191956d053ad8c2c04519d6fb38f7706b18ae2cd4a1c1d2e0fd7a33bce47",
+      "bytes": 12151
+    },
+    {
+      "path": "en/api/completions/create.md",
+      "url": "https://platform.claude.com/docs/en/api/completions/create.md",
+      "sha256": "2809921d10818ad7967a98c9f04963bbc9d3f13d1f9edfe58284e50175462ffa",
+      "bytes": 9364
+    },
+    {
+      "path": "en/api/compliance.md",
+      "url": "https://platform.claude.com/docs/en/api/compliance.md",
+      "sha256": "703187e21341f790f7bae41a168fab006a2e9c9a5a7577b6c01e4de76d4f4ba8",
+      "bytes": 60111
+    },
+    {
       "path": "en/api/compliance/activities.md",
       "url": "https://platform.claude.com/docs/en/api/compliance/activities.md",
       "sha256": "13e183b773e3526f9d08f1eefafecd3b84bbdcd9e92de8265ca6854626691d88",
@@ -1092,6 +1122,12 @@
       "bytes": 1419
     },
     {
+      "path": "en/api/messages.md",
+      "url": "https://platform.claude.com/docs/en/api/messages.md",
+      "sha256": "e2bb1a23711495835a39af2d476d8fe931f1f6576e85d56c8446fc9812790aaa",
+      "bytes": 1018419
+    },
+    {
       "path": "en/api/messages/batches.md",
       "url": "https://platform.claude.com/docs/en/api/messages/batches.md",
       "sha256": "081a0db6f50e16215b8f8c71ddc00cdc89f9b8f7a633742eac6c57da53d570be",
@@ -1144,6 +1180,12 @@
       "url": "https://platform.claude.com/docs/en/api/messages/create.md",
       "sha256": "b0690ff5a59a9c318068ab1a836c5d7eaf919dc96fde0d765bcbf843fc187329",
       "bytes": 139001
+    },
+    {
+      "path": "en/api/models.md",
+      "url": "https://platform.claude.com/docs/en/api/models.md",
+      "sha256": "b484853870dbcf377bfc03554bec968c5a7a72c154d1a97717f9de830566fd9e",
+      "bytes": 24255
     },
     {
       "path": "en/api/models/list.md",

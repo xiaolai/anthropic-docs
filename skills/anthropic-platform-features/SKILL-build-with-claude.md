@@ -17,7 +17,14 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
 > *Router lives in [`SKILL.md`](SKILL.md). For raw API request/
 > response shape, see [`anthropic-api → SKILL-messages.md`](../anthropic-api/SKILL-messages.md).*
 
-## Foundation
+## Platform foundation (top-level intro pages)
+
+| Page | Topic |
+|---|---|
+| [`intro.md`](docs-snapshot/platform.claude.com/en/intro.md) | Platform overview |
+| [`get-started.md`](docs-snapshot/platform.claude.com/en/get-started.md) | First-API-call walkthrough |
+
+## Foundation (build-with-claude)
 
 | Page | Topic |
 |---|---|
@@ -26,6 +33,12 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
 | [`streaming.md`](docs-snapshot/platform.claude.com/en/build-with-claude/streaming.md) | `stream: true` event types |
 | [`structured-outputs.md`](docs-snapshot/platform.claude.com/en/build-with-claude/structured-outputs.md) | JSON Schema validation on output |
 | [`handling-stop-reasons.md`](docs-snapshot/platform.claude.com/en/build-with-claude/handling-stop-reasons.md) | `stop_reason` enum, end-of-turn semantics |
+
+## Test & Evaluate (guardrails)
+
+| Page | Topic |
+|---|---|
+| [`test-and-evaluate/strengthen-guardrails/handle-streaming-refusals.md`](docs-snapshot/platform.claude.com/en/test-and-evaluate/strengthen-guardrails/handle-streaming-refusals.md) | Handling `stop_reason: refusal` mid-stream |
 
 ## Reasoning controls
 

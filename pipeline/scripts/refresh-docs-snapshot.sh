@@ -97,7 +97,11 @@ DOCS_PATH_FILTER=$(jq -r '.upstream.docsPathFilter // empty' "$SKILL_CONFIG")
 if [[ -n "$DOCS_PATH_FILTER" ]]; then
   if [[ "$DOCS_PATH_FILTER" == *"(?!"* ]] || [[ "$DOCS_PATH_FILTER" == *"(?="* ]]; then
     # PCRE-style negative/positive lookahead — fall back to perl.
-    URLS=$(printf '%s\n' "$URLS" | perl -ne "print if /$DOCS_PATH_FILTER/")
+    # Use m{...} delimiter so '/' in the filter (e.g. 'agent-sdk/') doesn't
+    # close the regex early; export the pattern as an env var so the shell
+    # doesn't interpolate it into perl's source (which would re-trigger the
+    # same delimiter-collision bug).
+    URLS=$(printf '%s\n' "$URLS" | PATTERN="$DOCS_PATH_FILTER" perl -ne 'print if /$ENV{PATTERN}/')
   else
     URLS=$(printf '%s\n' "$URLS" | grep -E "$DOCS_PATH_FILTER" || true)
   fi

@@ -35,6 +35,7 @@ required:
 
 | Resource | Source dir |
 |---|---|
+| Beta API section index | [`beta.md`](docs-snapshot/platform.claude.com/en/api/beta.md) |
 | `agents/` | [`beta/agents/`](docs-snapshot/platform.claude.com/en/api/beta/agents/) |
 | `environments/` | [`beta/environments/`](docs-snapshot/platform.claude.com/en/api/beta/environments/) |
 | `files/` | [`beta/files/`](docs-snapshot/platform.claude.com/en/api/beta/files/) |

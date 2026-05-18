@@ -29,6 +29,7 @@ and pagination.
 
 | Topic | Source dir |
 |---|---|
+| Compliance API section index | [`compliance.md`](docs-snapshot/platform.claude.com/en/api/compliance.md) |
 | Activity feed | [`compliance/`](docs-snapshot/platform.claude.com/en/api/compliance/) |
 | Content data (per-message records) | [`compliance/`](docs-snapshot/platform.claude.com/en/api/compliance/) |
 | Org-level data | [`compliance/`](docs-snapshot/platform.claude.com/en/api/compliance/) |

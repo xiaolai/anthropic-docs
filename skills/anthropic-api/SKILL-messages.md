@@ -175,10 +175,22 @@ for tool definitions and patterns.
 
 ## Source pages
 
+- [`messages.md`](docs-snapshot/platform.claude.com/en/api/messages.md) — Messages API section index
 - [`messages/create.md`](docs-snapshot/platform.claude.com/en/api/messages/create.md) — POST /v1/messages
 - [`messages/count_tokens.md`](docs-snapshot/platform.claude.com/en/api/messages/count_tokens.md) — token counting
 - [`messages/batches.md`](docs-snapshot/platform.claude.com/en/api/messages/batches.md) + [`messages/batches/`](docs-snapshot/platform.claude.com/en/api/messages/batches/) — batch processing
 
+## Legacy: Text Completions API
+
+The legacy `/v1/complete` endpoint (predecessor to Messages) is still
+documented at:
+
+- [`completions.md`](docs-snapshot/platform.claude.com/en/api/completions.md) — section index
+- [`completions/create.md`](docs-snapshot/platform.claude.com/en/api/completions/create.md) — `POST /v1/complete`
+
+**Do not use for new applications.** Text Completions does not support
+tool use, vision, or structured outputs. Migrate to Messages.
+
 ---
 
-*Source pages: 8 under `platform.claude.com/docs/en/api/messages/`.*
+*Source pages: 9 under `platform.claude.com/docs/en/api/messages*` (Messages family) + 2 legacy completions.*

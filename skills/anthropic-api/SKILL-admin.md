@@ -19,6 +19,7 @@ source: https://platform.claude.com/docs/en/api/admin/
 | Endpoint | Page |
 |---|---|
 | `GET /v1/organizations/me` | [`admin/organizations/me.md`](docs-snapshot/platform.claude.com/en/api/admin/organizations/me.md) |
+| Admin API section index | [`admin.md`](docs-snapshot/platform.claude.com/en/api/admin.md) |
 
 Returns the current organization (the one tied to the API key).
 

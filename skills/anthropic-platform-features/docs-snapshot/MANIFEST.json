@@ -2,8 +2,8 @@
   "indexUrl": "https://platform.claude.com/llms.txt",
   "indexSha256": "c4c9c5d0ec624334a91f3c546a66ab251a0b368efc845e4b948c80b770177fea",
   "indexBytes": 152271,
-  "pageCount": 105,
-  "refreshedAt": "2026-05-17T23:09:49Z",
+  "pageCount": 108,
+  "refreshedAt": "2026-05-17T23:58:06Z",
   "pages": [
     {
       "path": "en/agents-and-tools/agent-skills/best-practices.md",
@@ -366,6 +366,18 @@
       "bytes": 33271
     },
     {
+      "path": "en/get-started.md",
+      "url": "https://platform.claude.com/docs/en/get-started.md",
+      "sha256": "5eb9136cd40b4dc3c83a7ee531a6499066b881da805ad62e4b7d46e94c51880b",
+      "bytes": 15754
+    },
+    {
+      "path": "en/intro.md",
+      "url": "https://platform.claude.com/docs/en/intro.md",
+      "sha256": "09000d9804095d00735a259adfead051ca5b285a31b5b8a918cba25f3156df30",
+      "bytes": 3886
+    },
+    {
       "path": "en/manage-claude/admin-api.md",
       "url": "https://platform.claude.com/docs/en/manage-claude/admin-api.md",
       "sha256": "7145cf320cfc04ee03b3e52e6d764707d5b1d391aed1a67819db9a48555b4754",
@@ -634,6 +646,12 @@
       "url": "https://platform.claude.com/docs/en/managed-agents/webhooks.md",
       "sha256": "4d4cc7512ba15fc141c7b6b780f70a8c780f7bd7508654399d05b7a0e48445f4",
       "bytes": 12378
+    },
+    {
+      "path": "en/test-and-evaluate/strengthen-guardrails/handle-streaming-refusals.md",
+      "url": "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/handle-streaming-refusals.md",
+      "sha256": "17536a7edab384392a0f011711364e0aa6d46b1e3839b23efd648e5975964afb",
+      "bytes": 10177
     }
   ]
 }

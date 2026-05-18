@@ -39,11 +39,18 @@ user-invocable: true
 
 | Surface file | Read when the user asks about… |
 |---|---|
-| [`SKILL-messages.md`](SKILL-messages.md) | `POST /v1/messages`, request/response shape, `tool_use` / `tool_result` content blocks, streaming (`stream: true`), system prompts, `count_tokens`, message batches |
+| [`SKILL-messages.md`](SKILL-messages.md) | `POST /v1/messages`, request/response shape, `tool_use` / `tool_result` content blocks, streaming (`stream: true`), system prompts, `count_tokens`, message batches; also legacy `/v1/complete` (text completions) |
 | [`SKILL-admin.md`](SKILL-admin.md) | admin API — organizations, workspaces, API keys, invites, usage reports, cost reports |
 | [`SKILL-compliance.md`](SKILL-compliance.md) | data residency, audit logs, retention policies, compliance API endpoints |
 | [`SKILL-beta.md`](SKILL-beta.md) | features gated behind `anthropic-beta` header, beta endpoints, opt-in feature flags |
 | [`SKILL-models.md`](SKILL-models.md) | model IDs (`claude-opus-4-7`, `claude-sonnet-4-6`, `claude-haiku-4-5-20251001`, …), context window sizes, deprecation dates, model card / capabilities |
+
+> **Out of scope for this skill** (intentionally excluded by `docsPathFilter`):
+> the auto-generated per-language SDK reference under
+> `platform.claude.com/docs/en/api/{cli,csharp,go,java,php,python,ruby,terraform,typescript}/`
+> (~1100 pages). Use your IDE's type-defs from `@anthropic-ai/sdk`
+> (npm) or `anthropic` (PyPI) for those — they ship the authoritative
+> signatures and stay in sync with the SDK release you're using.
 
 ## Auto-correction rules
 

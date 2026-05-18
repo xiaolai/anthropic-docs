@@ -1,0 +1,359 @@
+# Streaming refusals
+
+---
+
+Starting with Claude 4 models, streaming responses from Claude's API return **`stop_reason`: `"refusal"`** when streaming classifiers intervene to handle potential policy violations. This new safety feature helps maintain content compliance during real-time streaming.
+
+<Tip>
+To learn more about refusals triggered by API safety filters for Claude Sonnet 4.5, see [Understanding Sonnet 4.5's API Safety Filters](https://support.claude.com/en/articles/12449294-understanding-sonnet-4-5-s-api-safety-filters).
+</Tip>
+
+## API response format
+
+When streaming classifiers detect content that violates Anthropic's policies, the API returns this response:
+
+```json
+{
+  "role": "assistant",
+  "content": [
+    {
+      "type": "text",
+      "text": "Hello.."
+    }
+  ],
+  "stop_reason": "refusal"
+}
+```
+
+<Warning>
+No additional refusal message is included. You must handle the response and provide appropriate user-facing messaging.
+</Warning>
+
+## Reset context after refusal
+
+When you receive **`stop_reason`: `refusal`**, you must reset the conversation context before continuing. You can remove or rephrase the turn that triggered the refusal, or clear the conversation history entirely. Attempting to continue without resetting will result in continued refusals.
+
+<Note>
+Usage metrics are still provided in the response for billing purposes, even when the response is refused.
+
+You will be billed for output tokens up until the refusal.
+</Note>
+
+<Tip>
+If you encounter `refusal` stop reasons frequently while using Claude Sonnet 4.5 or Opus 4.1, you can try updating your API calls to use Haiku 4.5 (`claude-haiku-4-5-20251001`), which has different usage restrictions. Learn more about [understanding Sonnet 4.5's API safety filters](https://support.claude.com/en/articles/12449294-understanding-sonnet-4-5-s-api-safety-filters).
+</Tip>
+
+## Implementation guide
+
+Here's how to detect and handle streaming refusals in your application:
+
+<CodeGroup>
+```bash cURL
+# Stream request and check for refusal
+response=$(curl -N https://api.anthropic.com/v1/messages \
+  --header "anthropic-version: 2023-06-01" \
+  --header "content-type: application/json" \
+  --header "x-api-key: $ANTHROPIC_API_KEY" \
+  --data '{
+    "model": "claude-opus-4-7",
+    "messages": [{"role": "user", "content": "Hello"}],
+    "max_tokens": 1024,
+    "stream": true
+  }')
+
+# Check for refusal in the stream
+if echo "$response" | grep -q '"stop_reason":"refusal"'; then
+  echo "Response refused - resetting conversation context"
+  # Reset your conversation state here
+fi
+```
+
+```python Python hidelines={1..2}
+import anthropic
+
+client = anthropic.Anthropic()
+messages = []
+
+
+def reset_conversation():
+    """Reset conversation context after refusal"""
+    global messages
+    messages = []
+    print("Conversation reset due to refusal")
+
+
+try:
+    with client.messages.stream(
+        max_tokens=1024,
+        messages=messages + [{"role": "user", "content": "Hello"}],
+        model="claude-opus-4-7",
+    ) as stream:
+        for event in stream:
+            # Check for refusal in message delta
+            if event.type == "message_delta":
+                if event.delta.stop_reason == "refusal":
+                    reset_conversation()
+                    break
+except Exception as e:
+    print(f"Error: {e}")
+```
+
+```typescript TypeScript nocheck hidelines={1..2}
+import Anthropic from "@anthropic-ai/sdk";
+
+const client = new Anthropic();
+let messages: any[] = [];
+
+function resetConversation() {
+  // Reset conversation context after refusal
+  messages = [];
+  console.log("Conversation reset due to refusal");
+}
+
+try {
+  const stream = await client.messages.stream({
+    messages: [...messages, { role: "user", content: "Hello" }],
+    model: "claude-opus-4-7",
+    max_tokens: 1024
+  });
+
+  for await (const event of stream) {
+    // Check for refusal in message delta
+    if (event.type === "message_delta" && event.delta.stop_reason === "refusal") {
+      resetConversation();
+      break;
+    }
+  }
+} catch (error) {
+  console.error("Error:", error);
+}
+```
+
+```csharp C# nocheck
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Anthropic;
+using Anthropic.Models.Messages;
+
+class Program
+{
+    private static List<Message> messages = new();
+
+    static async Task Main(string[] args)
+    {
+        AnthropicClient client = new();
+
+        var parameters = new MessageCreateParams
+        {
+            Model = Model.ClaudeOpus4_7,
+            MaxTokens = 1024,
+            Messages = [new() { Role = Role.User, Content = "Hello" }]
+        };
+
+        try
+        {
+            await foreach (var msg in client.Messages.CreateStreaming(parameters))
+            {
+                if (msg.Type == "message_delta" && msg.Delta?.StopReason == "refusal")
+                {
+                    ResetConversation();
+                    break;
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error: {e.Message}");
+        }
+    }
+
+    private static void ResetConversation()
+    {
+        messages.Clear();
+        Console.WriteLine("Conversation reset due to refusal");
+    }
+}
+```
+
+```go Go nocheck hidelines={1..10,17..18,-1..}
+package main
+
+import (
+	"context"
+	"fmt"
+	"log"
+
+	"github.com/anthropics/anthropic-sdk-go"
+)
+
+var messages []anthropic.MessageParam
+
+func resetConversation() {
+	messages = []anthropic.MessageParam{}
+	fmt.Println("Conversation reset due to refusal")
+}
+
+func main() {
+	client := anthropic.NewClient()
+
+	stream := client.Messages.NewStreaming(context.TODO(), anthropic.MessageNewParams{
+		Model:     anthropic.ModelClaudeOpus4_7,
+		MaxTokens: 1024,
+		Messages: []anthropic.MessageParam{
+			anthropic.NewUserMessage(anthropic.NewTextBlock("Hello")),
+		},
+	})
+
+streamLoop:
+	for stream.Next() {
+		event := stream.Current()
+		switch eventVariant := event.AsAny().(type) {
+		case anthropic.MessageDeltaEvent:
+			if eventVariant.Delta.StopReason == "refusal" {
+				resetConversation()
+				break streamLoop
+			}
+		}
+	}
+
+	if err := stream.Err(); err != nil {
+		log.Fatal(err)
+	}
+}
+```
+
+```java Java hidelines={1..5,9..10}
+import com.anthropic.client.AnthropicClient;
+import com.anthropic.client.okhttp.AnthropicOkHttpClient;
+import com.anthropic.models.messages.MessageCreateParams;
+import com.anthropic.models.messages.MessageParam;
+import com.anthropic.models.messages.Model;
+import com.anthropic.core.http.StreamResponse;
+import com.anthropic.models.messages.RawMessageStreamEvent;
+import com.anthropic.models.messages.StopReason;
+import java.util.ArrayList;
+import java.util.List;
+
+List<MessageParam> messages = new ArrayList<>();
+
+void main() {
+    AnthropicClient client = AnthropicOkHttpClient.fromEnv();
+
+    MessageCreateParams params = MessageCreateParams.builder()
+        .model(Model.CLAUDE_OPUS_4_7)
+        .maxTokens(1024L)
+        .addUserMessage("Hello")
+        .build();
+
+    try (StreamResponse<RawMessageStreamEvent> stream = client.messages().createStreaming(params)) {
+        stream.stream().forEach(event -> {
+            event.messageDelta().ifPresent(deltaEvent -> {
+                deltaEvent.delta().stopReason().ifPresent(stopReason -> {
+                    if (stopReason.equals(StopReason.REFUSAL)) {
+                        resetConversation();
+                    }
+                });
+            });
+        });
+    } catch (Exception e) {
+        System.err.println("Error: " + e.getMessage());
+    }
+}
+
+void resetConversation() {
+    messages.clear();
+    IO.println("Conversation reset due to refusal");
+}
+```
+
+```php PHP nocheck hidelines={1..4}
+<?php
+
+use Anthropic\Client;
+
+$client = new Client(apiKey: getenv("ANTHROPIC_API_KEY"));
+$messages = [];
+
+function resetConversation(&$messages) {
+    $messages = [];
+    echo "Conversation reset due to refusal\n";
+}
+
+try {
+    $stream = $client->messages->createStream(
+        maxTokens: 1024,
+        messages: [
+            ['role' => 'user', 'content' => 'Hello']
+        ],
+        model: 'claude-opus-4-7',
+    );
+
+    foreach ($stream as $event) {
+        if (isset($event->type) && $event->type === 'message_delta') {
+            if (isset($event->delta->stopReason) && $event->delta->stopReason === 'refusal') {
+                resetConversation($messages);
+                break;
+            }
+        }
+    }
+} catch (Exception $e) {
+    echo "Error: " . $e->getMessage() . "\n";
+}
+```
+
+```ruby Ruby nocheck hidelines={1..2}
+require "anthropic"
+
+client = Anthropic::Client.new
+messages = []
+
+def reset_conversation(messages)
+  messages.clear
+  puts "Conversation reset due to refusal"
+end
+
+begin
+  stream = client.messages.stream(
+    model: :"claude-opus-4-7",
+    max_tokens: 1024,
+    messages: [{ role: "user", content: "Hello" }]
+  )
+
+  stream.each do |event|
+    if event.type == :message_delta && event.delta.stop_reason == :refusal
+      reset_conversation(messages)
+      break
+    end
+  end
+rescue => e
+  puts "Error: #{e.message}"
+end
+```
+</CodeGroup>
+
+## Current refusal types
+
+The API currently handles refusals in three different ways:
+
+| Refusal Type | Response Format | When It Occurs |
+|-------------|----------------|----------------|
+| Streaming classifier refusals | **`stop_reason`: `refusal`** | During streaming when content violates policies |
+| API input and copyright validation | 400 error codes | When input fails validation checks |
+| Model-generated refusals | Standard text responses | When the model itself decides to refuse |
+
+<Note>
+Future API versions will expand the **`stop_reason`: `refusal`** pattern to unify refusal handling across all types.
+</Note>
+
+## Best practices
+
+- **Monitor for refusals**: Include **`stop_reason`: `refusal`** checks in your error handling
+- **Reset automatically**: Implement automatic context reset when refusals are detected
+- **Provide custom messaging**: Create user-friendly messages for better UX when refusals occur
+- **Track refusal patterns**: Monitor refusal frequency to identify potential issues with your prompts
+
+## Migration notes
+
+- Future models will expand this pattern to other refusal types
+- Plan your error handling to accommodate future unification of refusal responses

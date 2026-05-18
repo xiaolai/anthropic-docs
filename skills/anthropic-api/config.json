@@ -4,7 +4,7 @@
   "description": "The Anthropic Messages API and adjacent surfaces (admin endpoints, compliance, beta features, models catalog) hosted under platform.claude.com/docs/en/api/. Excludes the auto-generated per-language SDK reference (covered better by IDE type defs).",
   "upstream": {
     "docsIndexUrl": "https://platform.claude.com/llms.txt",
-    "docsPathFilter": "api/(messages|admin|compliance|beta|models)/",
+    "docsPathFilter": "api/(messages|admin|compliance|beta|models|completions)(/|\\.md$)",
     "npmPackages": ["@anthropic-ai/sdk"],
     "pypiPackages": ["anthropic"],
     "githubRepos": [
