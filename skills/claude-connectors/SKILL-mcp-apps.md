@@ -164,10 +164,43 @@ happen to appear alongside.
 
 ### Display modes
 
-- **Inline card** — compact, embedded directly in conversation. Good
-  for summaries, confirmations, quick actions.
-- **Expanded view** — larger surface for richer interactions.
-- **Sidebar** — persistent context alongside the conversation.
+Declare supported modes via `appCapabilities.availableDisplayModes` in
+`ui/initialize`; request a switch with `ui/request-display-mode`. Mode
+identifiers: `inline`, `fullscreen`, `pip`.
+
+- **Inline card** — compact, embedded in conversation. Constraints:
+  max height 500 px; max 2 actions (placed at bottom); max 4–5 data
+  points; no nested scroll; no menus or popovers.
+- **Inline carousel** — side-by-side browsable items (new). 3–8 items;
+  each card: image + title + metadata (≤3 lines) + optional CTA;
+  consistent card dimensions within a carousel.
+- **Full screen** — immersive (replaces former "Expanded view"). The
+  conversation composer remains visible. App provides its own fullscreen
+  button; host adds a close button in the header bar. No floating panels
+  — use collapsible sidebars, tabs, or pagination to disclose detail.
+
+Source: [`mcp-apps/design-guidelines.md`](https://claude.com/docs/connectors/building/mcp-apps/design-guidelines.md)
+
+### Mobile rendering
+
+On mobile Claude renders MCP Apps in a native WebView (WKWebView on
+iOS, WebView on Android) rather than a sandboxed iframe. Mobile-only
+constraints: inline display only (fullscreen coming later); no
+camera/mic/location access.
+
+Key mobile API fields:
+
+| Field | Type | Purpose |
+|---|---|---|
+| `hostContext.safeAreaInsets` | `{top,right,bottom,left}` px | Keep content clear of notches + home indicator |
+| `_meta.ui.prefersBorder` | `false` | Remove the outer card border on mobile |
+| `_meta.ui.csp.connectDomains` | `string[]` | Allowlist external API origins (all blocked by default) |
+| `_meta.ui.csp.resourceDomains` | `string[]` | Allowlist CDN / image origins |
+
+Minimum tap target: 44×44 pt. Design responsively from 320 px up;
+use container queries. Maximum inline height on mobile: 500 px.
+
+Source: [`mcp-apps/design-guidelines.md`](https://claude.com/docs/connectors/building/mcp-apps/design-guidelines.md)
 
 ### Transparent theming
 

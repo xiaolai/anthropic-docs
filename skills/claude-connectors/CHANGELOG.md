@@ -3,6 +3,9 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-18
+*(pending review — see PR auto/2026-05-18-pending-review)* — Initial research pass over 34 docs pages (connectors / skills / plugins); checkDiffSize gate triggered review hold.
+
 ## [0.1.0] — 2026-05-17
 
 ### Added

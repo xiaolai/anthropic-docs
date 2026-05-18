@@ -39,7 +39,7 @@ A connector can do two things:
 | **Remote MCP servers** | Cloud-hosted MCP servers reachable over HTTPS | [`custom/remote-mcp.md`](https://claude.com/docs/connectors/custom/remote-mcp.md) |
 | **MCP Apps** | MCP servers that render UI in the conversation | [`building/mcp-apps/getting-started.md`](https://claude.com/docs/connectors/building/mcp-apps/getting-started.md) |
 | **MCP Bundles (MCPB)** | Local MCP servers packaged as Desktop extensions (.mcpb) | [`custom/desktop-extensions.md`](https://claude.com/docs/connectors/custom/desktop-extensions.md) |
-| **Self-serve local MCP** | Local servers distributed via npm/PyPI (not directory-listable) | [`overview.md`](https://claude.com/docs/connectors/overview.md) |
+| **Self-serve local MCP** | Local servers via npm/PyPI — not directory-listable directly; package as MCPB or bundle in a plugin via `.mcp.json` | [`overview.md`](https://claude.com/docs/connectors/overview.md) |
 
 ## Connectors Directory
 

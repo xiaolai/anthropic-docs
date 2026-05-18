@@ -28,29 +28,81 @@ Once installed, all four are wired together — a single install
 gives the user the connector + the skills that compose it + the
 commands that drive it.
 
+### MCP configuration in plugins
+
+A plugin's MCP connectors are declared in `.mcp.json` within the
+plugin directory. Plugins can include remote MCPs, local MCPs, and
+MCPBs.
+
+### SETUP.md skill
+
+Plugins can include a `SETUP.md` skill to guide Claude through
+configuring and connecting any MCP servers bundled in the plugin.
+Claude follows the setup instructions when a user installs or
+activates the plugin.
+
+### MCP connector guidance
+
+Use connectors already in the [Connectors Directory](https://claude.com/docs/connectors/directory.md)
+or from well-known developers — this increases the likelihood of
+Anthropic Verified status and reduces user warnings.
+
 ## Where plugins are available
 
-- **Claude Code (CLI)** — `/plugin` commands, plugin marketplaces.
-- **Claude Cowork** — full plugin support (see
-  [`claude-cowork → SKILL-cowork.md`](../claude-cowork/SKILL-cowork.md)).
+| Platform | Plugin support |
+|---|---|
+| **Claude Code** | Full — create, install, use plugins |
+| **Claude Cowork** | Full — extends agentic multi-step workflows |
 
-Plugins are NOT available on Claude.ai web or Mobile (as of this
-snapshot — check upstream for current state).
+Plugins are **not** available on Claude.ai web or Mobile.
+
+> **Research preview:** Plugin support in Cowork is a research preview
+> for all paid Claude users. Plugins are currently saved locally to
+> the user's machine. Org-wide sharing and management are coming soon.
+
+Source: [`plugins/overview.md`](https://claude.com/docs/plugins/overview.md)
+
+## Plugin directory
+
+Anthropic open-sourced 11 reference plugins at
+[claude.com/plugins-for/cowork](https://claude.com/plugins-for/cowork):
+
+| Plugin | Purpose |
+|---|---|
+| Productivity | Tasks, calendars, daily workflows |
+| Enterprise search | Information across company tools/docs |
+| Sales | Prospect research, deal prep |
+| Finance | Financials, modeling, key metrics |
+| Data | Query, visualize, interpret datasets |
+| Legal | Document review, risk flagging, compliance |
+| Marketing | Content drafting, campaign planning |
+| Customer support | Issue triage, response drafting |
+| Product management | Specs, roadmaps, progress tracking |
+| Biology research | Literature search, experiment planning |
+| Plugin Create | Create and customize new plugins |
+
+**Anthropic Verified** badge: plugins that have undergone additional
+quality and safety review beyond basic automated screening.
 
 ## Plugin marketplaces
 
-A marketplace is a directory of installable plugins, identified by
-a URL pointing at a `marketplace.json` file. Users can:
+A marketplace is a directory of installable plugins identified by a URL
+pointing at a `marketplace.json` file. Getting plugins to users:
 
-- Browse plugins from any marketplace they trust.
-- Install plugins from a marketplace with one command.
-- Update / remove installed plugins.
+1. **Direct install** — simplest for internal tools or small teams.
+2. **Your own marketplace** — host a `marketplace.json`; opted-in users
+   browse and install. See Claude Code docs for setup.
+3. **Claude plugin directory** — submit to reach all Cowork + Code users.
 
-Anthropic operates a public plugin marketplace for the broader
-community. Organizations can run their own private marketplaces for
-internal-only plugins (common in Cowork on 3P deployments — see
-[`claude-cowork`](../claude-cowork/SKILL-cowork.md) for the "org-plugins
-directory" pattern).
+Submission forms:
+- Claude.ai: `https://claude.ai/settings/plugins/submit`
+- Console: `https://platform.claude.com/plugins/submit`
+
+Validate before submitting: `claude plugin validate`. After the first
+submission, CI auto-mirrors updates from your public GitHub repo — no
+re-submission needed for updates.
+
+Source: [`plugins/submit.md`](https://claude.com/docs/plugins/submit.md)
 
 ## Installation scope
 

@@ -85,10 +85,48 @@ the user's confirmation modal and the directory's allowlist).
 <button onClick={() => mcpApp.openLink('https://external.com')}>Open</button>
 ```
 
-## Rule 8 — Test on mobile viewports
+## Rule 8 — Test on mobile viewports (minimum 320 pt)
 
-Claude Mobile renders MCP Apps too. A card that's only laid out for
-desktop widths breaks on mobile. Test at 360px width minimum.
+Claude Mobile renders MCP Apps in a native WebView (WKWebView on iOS,
+WebView on Android). Design responsively from **320 pt** minimum width
+up. Minimum tap target: 44×44 pt.
+
+## Rule 9 — Declare display modes via `appCapabilities.availableDisplayModes`
+
+Do not hard-code the display mode. Declare which modes your app supports
+in `ui/initialize` and request switches with `ui/request-display-mode`.
+Valid mode IDs: `inline`, `fullscreen`, `pip`.
+
+```json
+// in ui/initialize response
+{
+  "appCapabilities": {
+    "availableDisplayModes": ["inline", "fullscreen"]
+  }
+}
+```
+
+## Rule 10 — Use `_meta.ui.csp` to allowlist external origins
+
+All external origins are blocked by default. Allowlist only what you
+need per `ui://` resource:
+
+```json
+{
+  "_meta": {
+    "ui": {
+      "csp": {
+        "connectDomains": ["https://api.example.com"],
+        "resourceDomains": ["https://cdn.example.com"]
+      },
+      "prefersBorder": false
+    }
+  }
+}
+```
+
+`frameDomains` (third-party iframes) is currently restricted pending
+Anthropic security review — do not rely on it.
 
 ---
 
