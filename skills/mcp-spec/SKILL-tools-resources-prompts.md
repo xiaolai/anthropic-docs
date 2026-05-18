@@ -55,13 +55,20 @@ A tool is a callable function the server exposes to the host LLM.
 }
 ```
 
-- `inputSchema` — JSON Schema, used by the LLM and the client to
-  validate arguments.
+- `inputSchema` — JSON Schema (currently: `type: "object"` with `properties`
+  and `required`), used by the LLM and the client to validate arguments.
 - `outputSchema` — optional. When present, the response's
-  `structuredContent` should match it.
+  `structuredContent` should match it (currently must also be `type: "object"`).
 - `annotations` — *non-binding* hints for clients (UI rendering,
   permission prompts). All Boolean fields default to safe-pessimistic
   values when absent.
+
+> **Pending (Draft):** [SEP-2106](https://modelcontextprotocol.io/seps/2106-json-schema-2020-12.md)
+> proposes loosening these restrictions to full JSON Schema 2020-12: `inputSchema` retains
+> `type: "object"` but gains composition keywords (`anyOf`, `oneOf`, `allOf`, `$ref`);
+> `outputSchema` drops the `type: "object"` requirement (enabling array or primitive schemas);
+> and `structuredContent` widens from `{ [key: string]: unknown }` to any JSON value. This
+> is a **Draft** proposal — not yet part of the stable spec.
 
 ### Calling
 
@@ -120,6 +127,13 @@ to construct concrete URIs.
 ```
 
 Text resources use `text`; binary resources use `blob` (base64).
+
+If a requested resource does not exist, the server returns a JSON-RPC error.
+The current spec recommends `-32002`; however, [SEP-2164](https://modelcontextprotocol.io/seps/2164-resource-not-found-error.md)
+(Draft) proposes standardizing to `-32602` (Invalid Params) to align with the
+TypeScript SDK and the JSON-RPC standard. Clients should handle both codes
+during the transition. Servers MUST NOT return an empty `contents` array for a
+non-existent resource (ambiguous — could mean empty vs. not found).
 
 ### Subscriptions
 

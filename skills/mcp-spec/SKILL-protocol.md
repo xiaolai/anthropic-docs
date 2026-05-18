@@ -111,6 +111,11 @@ Standard JSON-RPC error codes plus MCP-specific extensions:
 MCP-defined error semantics live in the spec under
 [`specification/2025-11-25/basic/`](https://modelcontextprotocol.io/specification/2025-11-25/basic/).
 
+> **Pending (Draft):** [SEP-2164](https://modelcontextprotocol.io/seps/2164-resource-not-found-error.md)
+> proposes standardizing the resource-not-found error code to `-32602` (Invalid Params) across all
+> official SDKs. Current SDK behavior varies: TypeScript uses `-32602`, C# / Rust / Java / Go / PHP
+> use `-32002`, Kotlin uses `-32603`, and Python uses `0`.
+
 ## Protocol versioning
 
 Version string format: `YYYY-MM-DD` — the date of the last
@@ -147,6 +152,13 @@ Protocol evolution happens via SEPs — Specification Enhancement
 Proposals. The process is documented at
 [`community/sep-guidelines.md`](https://modelcontextprotocol.io/community/sep-guidelines.md).
 Active SEPs live under [`seps/`](https://modelcontextprotocol.io/seps/).
+
+Notable pending SEPs (as of 2026-05-18):
+
+| SEP | Title | Status |
+|---|---|---|
+| [SEP-2106](https://modelcontextprotocol.io/seps/2106-json-schema-2020-12.md) | Tools `inputSchema` & `outputSchema` conform to JSON Schema 2020-12 | Draft |
+| [SEP-2164](https://modelcontextprotocol.io/seps/2164-resource-not-found-error.md) | Standardize resource-not-found error code to `-32602` | Draft |
 
 ---
 

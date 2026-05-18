@@ -1,9 +1,9 @@
 {
   "indexUrl": "https://modelcontextprotocol.io/llms.txt",
-  "indexSha256": "66c1db82f1594bee0fcd0e3259404fa93029a9ccfbcecbc7d7cb485aac4a11b5",
-  "indexBytes": 17325,
-  "pageCount": 116,
-  "refreshedAt": "2026-05-17T23:09:36Z",
+  "indexSha256": "f4a9feb876b075923757e204edfa4440c2c66e10d86ae89bb7d131c8e996b080",
+  "indexBytes": 17712,
+  "pageCount": 118,
+  "refreshedAt": "2026-05-18T17:33:41Z",
   "pages": [
     {
       "path": "clients.md",
@@ -432,6 +432,12 @@
       "bytes": 7057
     },
     {
+      "path": "seps/2106-json-schema-2020-12.md",
+      "url": "https://modelcontextprotocol.io/seps/2106-json-schema-2020-12.md",
+      "sha256": "ff81611dc053295e3dff86a1e89d4ef14c415c54012e6409eef2100cff9fc53a",
+      "bytes": 20949
+    },
+    {
       "path": "seps/2133-extensions.md",
       "url": "https://modelcontextprotocol.io/seps/2133-extensions.md",
       "sha256": "a6497950a3340cd042b9a8a8d39d58fa58afbd33b0b46b86b17787d25e0ff33d",
@@ -448,6 +454,12 @@
       "url": "https://modelcontextprotocol.io/seps/2149-working-group-charter-template.md",
       "sha256": "603ea0c3b270fc62a557cda298c36f80dfe7ebaf70c6ddc36c893c8da3d1bce9",
       "bytes": 24937
+    },
+    {
+      "path": "seps/2164-resource-not-found-error.md",
+      "url": "https://modelcontextprotocol.io/seps/2164-resource-not-found-error.md",
+      "sha256": "c249f3f11887596de154477124c31ac5d050884d9a0b6fd4152da2304dd265da",
+      "bytes": 7900
     },
     {
       "path": "seps/2207-oidc-refresh-token-guidance.md",
@@ -566,8 +578,8 @@
     {
       "path": "seps/index.md",
       "url": "https://modelcontextprotocol.io/seps/index.md",
-      "sha256": "e1169897cf21398bb36e2e133bae2f11234b5d70e8fad68f68954af842f3962f",
-      "bytes": 12190
+      "sha256": "d179f7f22f57a220437742747ff440e5499cbbef7474a36e3badb3b5101e1d05",
+      "bytes": 12702
     },
     {
       "path": "specification/2025-11-25/architecture/index.md",
