@@ -1,6 +1,6 @@
-# Claude Agent SDK — TypeScript Reference (v0.2.77)
+# Claude Agent SDK — TypeScript Reference (v0.3.143)
 
-**Package**: `@anthropic-ai/claude-agent-sdk@0.2.77`
+**Package**: `@anthropic-ai/claude-agent-sdk@0.3.143`
 **Docs**: https://platform.claude.com/docs/en/agent-sdk/overview
 **Repo**: https://github.com/anthropics/claude-agent-sdk-typescript
 **Migration**: Renamed from `@anthropic-ai/claude-code`. See [migration guide](https://platform.claude.com/docs/en/agent-sdk/migration-guide).
@@ -281,7 +281,7 @@ await tagSession(sessionId, null);
 | `tools` | `string[] \| { type: 'preset', preset: 'claude_code' }` | — | Tool configuration |
 | `allowedTools` | `string[]` | All tools | Allowed tool names |
 | `disallowedTools` | `string[]` | `[]` | Blocked tool names |
-| `permissionMode` | `PermissionMode` | `'default'` | `'default' \| 'acceptEdits' \| 'bypassPermissions' \| 'plan' \| 'dontAsk'` — see [Permissions](#permissions) |
+| `permissionMode` | `PermissionMode` | `'default'` | `'default' \| 'acceptEdits' \| 'bypassPermissions' \| 'plan' \| 'dontAsk' \| 'auto'` — see [Permissions](#permissions) |
 | `canUseTool` | `CanUseTool` | — | Custom permission callback |
 | `allowDangerouslySkipPermissions` | `boolean` | `false` | Required with `bypassPermissions` |
 | `permissionPromptToolName` | `string` | — | Route permission prompts through a named MCP tool |
@@ -732,7 +732,8 @@ type PermissionMode =
   | 'acceptEdits'        // Auto-allow file edits, prompt for others
   | 'bypassPermissions'  // Skip all prompts (requires allowDangerouslySkipPermissions)
   | 'plan'               // Read-only planning mode — no writes/execution
-  | 'dontAsk';           // Don't prompt — deny if not pre-approved
+  | 'dontAsk'            // Don't prompt — deny if not pre-approved
+  | 'auto';              // Automatic risk-based decisions (added v0.2.91; matches CLI's auto mode)
 ```
 
 **Note**: `allowedTools` is ignored when `permissionMode: 'bypassPermissions'` — Claude can use any tool.
@@ -1538,4 +1539,4 @@ sandbox: {
 
 ---
 
-**Last verified**: 2026-03-18 | **SDK version**: 0.2.77
+**Last verified**: 2026-05-18 | **SDK version**: 0.3.143

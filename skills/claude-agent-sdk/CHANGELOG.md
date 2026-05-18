@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-05-18
+
+- Docs index hash updated (29 pages, no additions/removals, content drift within existing pages); npm `@anthropic-ai/claude-agent-sdk` v0.3.143 confirmed current
+- state.json registry versions synced: npm v0.3.143, PyPI v0.2.82 (per SKILL.md router table)
+- *(pending review — see draft PR auto/2026-05-18-pending-review)* Research: added KI #42 (Linux musl binary regression since v0.2.116), KI #43 (outputFormat structured-output silent failure); updated PermissionMode type to include `'auto'`; 53 issues scanned; check-diff-size gate failed (first-run init scope)
+
 ## 2026-03-18
 
 - Research only, no version change (TS v0.2.77, Python v0.1.49 unchanged)

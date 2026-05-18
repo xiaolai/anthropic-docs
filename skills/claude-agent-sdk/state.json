@@ -4,14 +4,18 @@
       {
         "manager": "npm",
         "name": "@anthropic-ai/claude-agent-sdk",
-        "version": "0.0.0",
-        "engines": {}
+        "version": "0.3.143",
+        "engines": {
+          "node": ">=18.0.0"
+        }
       },
       {
         "manager": "pypi",
         "name": "claude-agent-sdk",
-        "version": "0.0.0",
-        "engines": {}
+        "version": "0.2.82",
+        "engines": {
+          "python": ">=3.10"
+        }
       }
     ]
   },
@@ -20,17 +24,19 @@
       {
         "repo": "anthropics/claude-agent-sdk-typescript",
         "latestRelease": {
-          "tag": "",
-          "name": "",
-          "publishedAt": ""
+          "tag": "v0.3.143",
+          "name": "v0.3.143",
+          "body": "## What's changed\n\n- `@anthropic-ai/sdk` and `@modelcontextprotocol/sdk` are now `peerDependencies` instead of `dependencies`. Runtime is unaffected (both are bundled); npm/bun/pnpm auto-install them. yarn classic users should add them explicitly for full TypeScript type resolution\n\n## Update\n\n```sh\nnpm install @anthropic-ai/claude-agent-sdk@0.3.143\n# or\nyarn add @anthropic-ai/claude-agent-sdk@0.3.143\n# or\npnpm add @anthropic-ai/claude-agent-sdk@0.3.143\n# or\nbun add @anthropic-ai/claude-agent-sdk@0.3.143\n```",
+          "publishedAt": "2026-05-15T22:28:23Z"
         }
       },
       {
         "repo": "anthropics/claude-agent-sdk-python",
         "latestRelease": {
-          "tag": "",
-          "name": "",
-          "publishedAt": ""
+          "tag": "v0.2.82",
+          "name": "v0.2.82",
+          "body": "### Breaking\r\n\r\n- **Breaking:** MCP servers now connect in the background by default; sessions start immediately and slow servers report `status: \"pending\"` in `init` until ready. Set `MCP_CONNECTION_NONBLOCKING=0` to restore the old behavior of waiting up to 5s before the first query, or mark a server `alwaysLoad: true` to require it in turn 1.\r\n- **Breaking:** Headless and SDK sessions now use Task tools (`TaskCreate` / `TaskUpdate` / `TaskGet` / `TaskList`) instead of `TodoWrite`. Tool consumers should accumulate by task ID instead of replacing a snapshot list.\r\n\r\n### New Features\r\n\r\n- **`EffortLevel` type export**: Added a public `EffortLevel` type alias for Claude effort string levels (`\"low\"`, `\"medium\"`, `\"high\"`, `\"max\"`, `\"xhigh\"`) and exported it from the package root, making it available for downstream SDK wrappers and type annotations (#951)\r\n\r\n### Bug Fixes\r\n\r\n- **Stderr callback isolation**: Fixed an issue where a user-provided `stderr` callback that raises an exception would silently terminate the stderr reader loop, dropping all subsequent stderr lines for the rest of the session. Exceptions are now caught per-line so a failing callback does not prevent delivery of later lines (#932)\r\n- **CancelledError in eager-flush done callback**: Fixed noisy `Exception in callback` log messages on shutdown when pending eager-flush tasks were cancelled. The done callback now gracefully handles `CancelledError` instead of unconditionally calling `Task.exception()` (#931)\r\n- **Tighter `permission_suggestions` type**: Replaced `list[Any] | None` with `list[dict[str, Any]] | None` on `SDKControlPermissionRequest.permission_suggestions`, enabling proper type-checking on consumers of that field (#955)\r\n\r\n### Documentation\r\n\r\n- Clarified that `hooks` dispatch for a given event is concurrent (all matchers fire in parallel), not sequential, preventing incorrect assumptions about ordering-dependent hooks like rate limiters gating subsequent hooks (#956)\r\n\r\n### Internal/Other Changes\r\n\r\n- Bumped `mcp` dependency lower bound to `>=1.23.0` to address GHSA-9h52-p55h-vw2f (CVE-2025-66416), which disables DNS rebinding protection by default in older versions (#927)\r\n- Stabilized eager-flush transcript mirror tests with deterministic wait helpers instead of fixed `asyncio.sleep(0)` yields (#933)\r\n- Updated bundled Claude CLI to version 2.1.142\r\n\r\n---\r\n\r\n**PyPI:** https://pypi.org/project/claude-agent-sdk/0.2.82/\r\n\r\n```bash\r\npip install claude-agent-sdk==0.2.82\r\n```\r",
+          "publishedAt": "2026-05-15T03:47:00Z"
         }
       }
     ],
@@ -41,102 +47,424 @@
   },
   "docs": {
     "indexUrl": "https://code.claude.com/llms.txt",
-    "indexSha256": "0b1ca29a9d37e3e9e2f94a5b3f5da8b838c178aa1887f46316318fd1a8524323",
+    "indexSha256": "c8639f2e9dad6d710a0ba8fa81c04ea0a8bc8c29626e9e5053e7bd79ed4949d2",
     "pageCount": 29,
     "knownPages": {
       "https://code.claude.com/docs/en/agent-sdk/agent-loop.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-18T23:41:56Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/claude-code-features.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-18T23:41:56Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/cost-tracking.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-18T23:41:56Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/custom-tools.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-18T23:41:56Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/file-checkpointing.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-18T23:41:56Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/hooks.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-18T23:41:56Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/hosting.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-18T23:41:56Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/mcp.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-18T23:41:56Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/migration-guide.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-18T23:41:56Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/modifying-system-prompts.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-18T23:41:56Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/observability.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-18T23:41:56Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/overview.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-18T23:41:56Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/permissions.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-18T23:41:56Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/plugins.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-18T23:41:56Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/python.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-18T23:41:56Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/quickstart.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-18T23:41:56Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/secure-deployment.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-18T23:41:56Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/sessions.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-18T23:41:56Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/skills.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-18T23:41:56Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/slash-commands.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-18T23:41:56Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/streaming-output.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-18T23:41:56Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/streaming-vs-single-mode.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-18T23:41:56Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/structured-outputs.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-18T23:41:56Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/subagents.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-18T23:41:56Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/todo-tracking.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-18T23:41:56Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/tool-search.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-18T23:41:56Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/typescript-v2-preview.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-18T23:41:56Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/typescript.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-18T23:41:56Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/user-input.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-18T23:41:56Z"
       }
     }
   },
   "trackedIssues": {},
-  "researchedIssues": {},
-  "lastAuditedVersion": "none",
-  "lastUpdated": "",
+  "researchedIssues": {
+    "237": {
+      "title": "Custom `systemPrompt` string ignored by agent in v0.2.15+ — agent does",
+      "verdict": "skipped",
+      "reason": "closed issue with 0 reactions and 0 comments; insufficient signal",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "238": {
+      "title": "1m context window when using subscription",
+      "verdict": "skipped",
+      "reason": "3 comments but 0 reactions; feature/billing question not a reproducible SDK bug",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "239": {
+      "title": "sandbox.enabled: true silently degrades to unsandboxed execution when",
+      "verdict": "skipped",
+      "reason": "closed, 0 reactions, 1 comment; insufficient signal",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "240": {
+      "title": "More descriptive Errors in the SDK",
+      "verdict": "skipped",
+      "reason": "feature request for better error messages; not a reproducible bug",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "241": {
+      "title": "Have getSessionMessages() return system messages",
+      "verdict": "skipped",
+      "reason": "feature request; closed",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "242": {
+      "title": "Have a way to get subagent conversation via `getSessionMessages()`",
+      "verdict": "skipped",
+      "reason": "feature request; closed",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "243": {
+      "title": "createSdkMcpServer drops Zod v4 field .describe() metadata from tool input",
+      "verdict": "skipped",
+      "reason": "closed, 0 reactions, 1 comment; insufficient signal",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "244": {
+      "title": "SDK writes illegal entries to session JSONL transcripts (empty text bl",
+      "verdict": "skipped",
+      "reason": "open, 0 reactions, 0 comments; insufficient signal",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "245": {
+      "title": "ExitWorktree claims 'no active EnterWorktree session' if worktree created in earlier query()",
+      "verdict": "skipped",
+      "reason": "1 reaction, 1 comment; niche worktree pattern with low user impact",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "246": {
+      "title": "[BUG] dangerouslyDisableSandbox executed without user approval after p",
+      "verdict": "skipped",
+      "reason": "open, 0 reactions, 0 comments; insufficient signal",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "247": {
+      "title": "Prompt Caching is failing with MCP Servers",
+      "verdict": "skipped",
+      "reason": "closed, 0 reactions, 1 comment; insufficient signal",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "248": {
+      "title": "Hook messages not present in the Query AsyncGenerator?",
+      "verdict": "skipped",
+      "reason": "closed, 0 reactions, 2 comments; usage question",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "249": {
+      "title": "[SDK source-gap] can_use_tool remains SDK-limited under real tool path",
+      "verdict": "already_documented",
+      "reason": "covered by existing known issue #27 in SKILL-typescript.md (permissionDecision: deny issue)",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "250": {
+      "title": "Docs aren't updated with releases",
+      "verdict": "skipped",
+      "reason": "meta/docs issue, not an SDK bug",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "251": {
+      "title": "[BUG] sum of output_tokens from 'assistant' messages returned by query()",
+      "verdict": "skipped",
+      "reason": "open, 0 reactions, 0 comments; insufficient signal",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "255": {
+      "title": "query() hangs forever when CLI subprocess fails to start (ENOENT / mis",
+      "verdict": "skipped",
+      "reason": "closed, 0 reactions, 0 comments; insufficient signal",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "260": {
+      "title": "Feature Request: Add `cwd` field to `AgentDefinition`",
+      "verdict": "skipped",
+      "reason": "feature request",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "261": {
+      "title": "PermissionMode type is missing 'auto' value",
+      "verdict": "updated_existing",
+      "reason": "fixed in v0.2.91; updated PermissionMode type in SKILL-typescript.md to include 'auto'",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "263": {
+      "title": "Am I the only one struggling with invalidated caches?",
+      "verdict": "skipped",
+      "reason": "0 reactions, 6 comments but appears to be environment-specific caching behavior, no clear reproduction",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "265": {
+      "title": "`PermissionMode` type missing `'auto'` value in v0.2.90",
+      "verdict": "already_documented",
+      "reason": "duplicate of #261; fixed in v0.2.91",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "266": {
+      "title": "Claude Code CLI crashes with ReferenceError: Bun is not defined when s",
+      "verdict": "skipped",
+      "reason": "closed, 2 comments; environment-specific",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "268": {
+      "title": "listSessions() spawns full CLI process — 900MB+ memory for metadata qu",
+      "verdict": "skipped",
+      "reason": "open, 0 reactions, 1 comment; performance issue without workaround; insufficient signal",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "270": {
+      "title": "`auto` PermissionMode not working?",
+      "verdict": "already_documented",
+      "reason": "related to #261; covered by PermissionMode 'auto' update in SKILL-typescript.md",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "271": {
+      "title": "subagents: Does a link between subagent and tools exist?",
+      "verdict": "skipped",
+      "reason": "usage question, not a bug",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "275": {
+      "title": "feat: expose backgroundTask(taskId) control request for mid-flight sub",
+      "verdict": "skipped",
+      "reason": "feature request",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "277": {
+      "title": "outputFormat returns subtype 'success' when structured_output is absent — should return error_max_structured_output_retries",
+      "verdict": "added_known_issue",
+      "reason": "added as KI #43 in SKILL-known-issues.md; 3 reactions, 6 comments; nested schema structured output silently fails",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "280": {
+      "title": "PostToolUse callback hooks: return value (updatedMCPToolOutput) silent",
+      "verdict": "skipped",
+      "reason": "closed, 0 reactions, 1 comment; insufficient signal",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "281": {
+      "title": "Feature: expose defer_loading config per MCP server and per tool",
+      "verdict": "skipped",
+      "reason": "feature request",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "285": {
+      "title": "docs: update documentation to match latest release",
+      "verdict": "skipped",
+      "reason": "internal docs PR",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "288": {
+      "title": "examples: S3, Redis, Postgres SessionStore reference adapters",
+      "verdict": "skipped",
+      "reason": "examples PR",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "290": {
+      "title": "Feature request: pre-built Agent Skill for @anthropic-ai/claude-agent-",
+      "verdict": "skipped",
+      "reason": "feature request",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "295": {
+      "title": "Background `task_notification` events are lazy-drained: buffered until",
+      "verdict": "skipped",
+      "reason": "closed, 0 reactions, 1 comment; insufficient signal",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "296": {
+      "title": "Linux: musl binary preferred over glibc in v0.2.116 CLI auto-discovery",
+      "verdict": "added_known_issue",
+      "reason": "added as KI #42 in SKILL-known-issues.md; 8 reactions, 8 comments; major regression for all Linux glibc users since v0.2.116",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "297": {
+      "title": "Hardcoded 60s HTTP timeout on MCP POST requests does not seem to be configurable",
+      "verdict": "skipped",
+      "reason": "1 reaction, 2 comments; overlaps with existing known issue #10 (MCP timeout); insufficient additional signal",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "299": {
+      "title": "`query()` with minimal `outputFormat: { type: \"json_schema\" }` can cra",
+      "verdict": "skipped",
+      "reason": "closed, 0 reactions, 1 comment; insufficient signal",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "300": {
+      "title": "beta.sessions stream starvation — 4 of 5 parallel (and serial) session",
+      "verdict": "skipped",
+      "reason": "closed, 0 reactions, 1 comment; beta feature",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "301": {
+      "title": "Grep and Glob removed in Claude Code 2.1.117",
+      "verdict": "skipped",
+      "reason": "2 reactions, 2 comments; tools still available in SDK; CLI internal implementation change only",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "302": {
+      "title": "Non-interactive unsupported slash commands return non-resumable sessio",
+      "verdict": "skipped",
+      "reason": "open, 0 reactions, 0 comments; insufficient signal",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "303": {
+      "title": "updatedPermissions with destination=localSettings resolves successfull",
+      "verdict": "skipped",
+      "reason": "closed, 0 reactions, 0 comments; insufficient signal",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "305": {
+      "title": "fix: probe libc before selecting bundled CLI binary (#296)",
+      "verdict": "skipped",
+      "reason": "PR with proposed fix for KI #42; not a bug report",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "306": {
+      "title": "v0.2.119 picks linux-arm64-musl variant on Debian (glibc) arm64 even w",
+      "verdict": "already_documented",
+      "reason": "duplicate/extension of #296; covered by KI #42",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "310": {
+      "title": "400 status code (no body)",
+      "verdict": "skipped",
+      "reason": "open, 0 reactions, 0 comments; no reproduction details",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "311": {
+      "title": "cache issues in sdk",
+      "verdict": "skipped",
+      "reason": "open, 0 reactions, 0 comments; vague report",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "312": {
+      "title": "empty",
+      "verdict": "skipped",
+      "reason": "empty issue body",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "315": {
+      "title": "Options.agent silently falls back to default Claude for plugin-loaded",
+      "verdict": "skipped",
+      "reason": "open, 0 reactions, 0 comments; insufficient signal",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "316": {
+      "title": "Subagents cannot access MCP server resources declared in subagent defi",
+      "verdict": "skipped",
+      "reason": "open, 0 reactions, 0 comments; insufficient signal",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "317": {
+      "title": "Claude Opus 4.7 missing from ACP model list (hardcoded model registry)",
+      "verdict": "skipped",
+      "reason": "open, 0 reactions, 0 comments; model registry staleness",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "318": {
+      "title": "Uncaught EPIPE from subprocess stdin write callback during startup-cra",
+      "verdict": "already_documented",
+      "reason": "relates to existing known issue #31 (write after end race condition)",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "319": {
+      "title": "Should it be possible to set `metadata.user_id` when using the Agent S",
+      "verdict": "skipped",
+      "reason": "feature request / usage question",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "320": {
+      "title": "Pin GitHub Actions to commit SHAs",
+      "verdict": "skipped",
+      "reason": "internal CI PR",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "322": {
+      "title": "options.hooks causes agent to ignore custom systemPrompt and identify",
+      "verdict": "skipped",
+      "reason": "open, 0 reactions, 0 comments; insufficient signal",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "325": {
+      "title": "createSdkMcpServer drops Zod v4 field .describe() if nested or added a",
+      "verdict": "skipped",
+      "reason": "open, 0 reactions, 1 comment; insufficient signal",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "327": {
+      "title": "examples: add Synap memory integration example",
+      "verdict": "skipped",
+      "reason": "PR for example code; not a bug report",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    }
+  },
+  "lastAuditedVersion": "0.3.143",
+  "lastUpdated": "2026-05-18T23:41:56Z",
   "scaffoldComplete": true,
-  "lastRunWarnings": []
+  "lastRunWarnings": [
+    "2026-05-18: SKILL-python.md content was audited at v0.1.49 but PyPI package is now v0.2.82 — major version drift; full content review needed for v0.1.49→v0.2.82 changes"
+  ],
+  "lastScannedIssueNumber": null
 }
