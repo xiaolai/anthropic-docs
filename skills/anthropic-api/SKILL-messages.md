@@ -76,6 +76,8 @@ block) or an array of typed blocks:
 | `server_tool_use` | Assistant turn: model invoked a **server** tool (e.g. web_search, web_fetch, code_execution). Different return path — see server tools below. |
 | `thinking` | Extended-thinking output (when `thinking` enabled) |
 | `redacted_thinking` | Thinking content the API redacted before returning |
+| `refusal` | Model refused to respond (safety/policy). Contains `reason` (policy category, may be `null`) and `explanation` (human-readable, may be `null`). Set alongside `stop_reason: "refusal"`. |
+| `container_upload` | User turn: a file uploaded to the code-execution container. Used with `code_execution` server tools. |
 
 ### Server tools vs. client tools
 
@@ -89,8 +91,8 @@ Known server tool types (specify in `tools` array):
 | Tool type string | Description |
 |---|---|
 | `web_search_20250305` / `web_search_20260209` | Web search. Supports `allowed_domains`, `blocked_domains`, `user_location`, `max_uses`. |
-| `web_fetch_20250910` | Fetch a URL. Supports `allowed_domains`, `blocked_domains`, `max_content_tokens`, `citations`. |
-| `code_execution_20250825` / `code_execution_20260120` | Execute code in a sandbox. |
+| `web_fetch_20250910` / `web_fetch_20260209` / `web_fetch_20260309` | Fetch a URL. Supports `allowed_domains`, `blocked_domains`, `allowed_callers`, `max_content_tokens`, `citations`. |
+| `code_execution_20250522` / `code_execution_20250825` / `code_execution_20260120` | Execute code in a sandbox. |
 
 Server tools also support `defer_loading: true` to exclude from the initial system prompt (loaded on demand) and `strict: true` for schema validation.
 
@@ -130,11 +132,19 @@ in the platform-features skill for caching strategy.
   ],
   "stop_reason": "end_turn",
   "stop_sequence": null,
+  "container": {
+    "id": "container_...",
+    "expires_at": "2026-..."
+  },
   "usage": {
     "input_tokens": 25,
     "cache_creation_input_tokens": 0,
     "cache_read_input_tokens": 0,
-    "output_tokens": 100
+    "output_tokens": 100,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    }
   }
 }
 ```

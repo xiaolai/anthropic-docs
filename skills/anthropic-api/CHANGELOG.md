@@ -3,6 +3,10 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-18 (run 2)
+
+*(pending review — see draft PR `auto/2026-05-18-pending-review`)* Research agent re-ran baseline audit (88 turns, 291 s); check-docs-drift gate failed — changes await human review before merge.
+
 ## 2026-05-18
 
 *(pending review — see draft PR `auto/2026-05-18-pending-review`)* Research agent performed first full baseline audit of all surfaces; diff size exceeded gate threshold — changes await human review before merge.

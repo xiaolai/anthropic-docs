@@ -51,13 +51,13 @@ Endpoints under `/v1/organizations/compliance/...`. Each page in
 the snapshot documents one endpoint's parameters, response shape,
 and pagination.
 
-| Topic | Source dir |
+| Topic area | Source dir |
 |---|---|
 | Compliance API section index | [`compliance.md`](https://platform.claude.com/docs/en/api/compliance.md) |
-| Activity feed | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
-| Content data (per-message records) | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
-| Org-level data | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
-| Errors | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
+| **Activities** (audit feed) | [`compliance/activities/`](https://platform.claude.com/docs/en/api/compliance/activities/) — `POST /activities/list` |
+| **Apps** — chat list, chat messages, files, generated files, artifacts, projects, project documents | [`compliance/apps/`](https://platform.claude.com/docs/en/api/compliance/apps/) |
+| **Groups** — list groups, get group, list/manage members | [`compliance/groups/`](https://platform.claude.com/docs/en/api/compliance/groups/) |
+| **Organizations** — list orgs, users, roles, role permissions | [`compliance/organizations/`](https://platform.claude.com/docs/en/api/compliance/organizations/) |
 
 The conceptual coverage of each (what to use it for, what fields
 mean, integration patterns) lives in the platform-features
