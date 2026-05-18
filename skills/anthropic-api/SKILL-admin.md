@@ -59,7 +59,29 @@ Workspaces partition an organization for cost / quota / member scope.
 |---|---|
 | `POST /v1/organizations/workspaces` | [`admin/workspaces/create.md`](https://platform.claude.com/docs/en/api/admin/workspaces/create.md) |
 | `GET /v1/organizations/workspaces` | [`admin/workspaces/list.md`](https://platform.claude.com/docs/en/api/admin/workspaces/list.md) |
+| `GET /v1/organizations/workspaces/{id}` | [`admin/workspaces/retrieve.md`](https://platform.claude.com/docs/en/api/admin/workspaces/retrieve.md) |
+| `POST /v1/organizations/workspaces/{id}` | [`admin/workspaces/update.md`](https://platform.claude.com/docs/en/api/admin/workspaces/update.md) — update `name` and/or `data_residency` |
 | `POST /v1/organizations/workspaces/{id}/archive` | [`admin/workspaces/archive.md`](https://platform.claude.com/docs/en/api/admin/workspaces/archive.md) |
+
+### Workspace `data_residency` object
+
+Workspaces carry a `data_residency` configuration controlling where inference runs:
+
+| Field | Type | Notes |
+|---|---|---|
+| `allowed_inference_geos` | `array<string>` or `"unrestricted"` | Permitted geo values; `"unrestricted"` allows all. |
+| `default_inference_geo` | string | Applied when the caller omits `inference_geo` on a Messages request. Must be a member of `allowed_inference_geos` unless that field is `"unrestricted"`. |
+| `workspace_geo` | string | Region for workspace data storage. **Immutable after creation.** |
+
+Set via `data_residency` body param on the update endpoint; matches the `inference_geo` request param on [`POST /v1/messages`](SKILL-messages.md).
+
+### Workspace rate limits
+
+| Endpoint | Page |
+|---|---|
+| `GET /v1/organizations/workspaces/{id}/rate_limits` | [`admin/workspaces/rate_limits/list.md`](https://platform.claude.com/docs/en/api/admin/workspaces/rate_limits/list.md) |
+
+Returns only groups with a workspace-level override (`group_type` ∈ `model_group`, `batch`, `token_count`, `files`, `skills`, `web_search`). Groups without overrides inherit org-level limits; use `GET /v1/organizations/rate_limits` to see those.
 
 Workspace members:
 
@@ -67,6 +89,8 @@ Workspace members:
 |---|---|
 | `POST /v1/organizations/workspaces/{id}/members` | [`admin/workspaces/members/create.md`](https://platform.claude.com/docs/en/api/admin/workspaces/members/create.md) |
 | `GET /v1/organizations/workspaces/{id}/members` | [`admin/workspaces/members.md`](https://platform.claude.com/docs/en/api/admin/workspaces/members.md) |
+| `GET /v1/organizations/workspaces/{id}/members/{user_id}` | [`admin/workspaces/members/retrieve.md`](https://platform.claude.com/docs/en/api/admin/workspaces/members/retrieve.md) |
+| `POST /v1/organizations/workspaces/{id}/members/{user_id}` | [`admin/workspaces/members/update.md`](https://platform.claude.com/docs/en/api/admin/workspaces/members/update.md) |
 | `DELETE /v1/organizations/workspaces/{id}/members/{user_id}` | [`admin/workspaces/members/delete.md`](https://platform.claude.com/docs/en/api/admin/workspaces/members/delete.md) |
 
 ## Users

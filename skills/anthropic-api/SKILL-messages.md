@@ -39,6 +39,8 @@ single queries or stateless multi-turn conversations.
 | `stream` | `true` for SSE response stream |
 | `tools` | Array of tool definitions (see tool use) |
 | `tool_choice` | `auto` / `any` / `tool` / `none` |
+| `container` | String; container identifier to reuse an existing code-execution container across requests. See response `container` field. |
+| `inference_geo` | String; geographic region for inference. Defaults to the workspace's `default_inference_geo`. |
 | `metadata` | `{ user_id: "..." }` for abuse signaling |
 | `service_tier` | `auto` / `standard_only` |
 | `thinking` | `{ type: "enabled", budget_tokens: N }` for extended thinking |
@@ -56,6 +58,16 @@ An optional object that configures the model's output:
 Source: [`messages/create.md`](https://platform.claude.com/docs/en/api/messages/create.md)
 
 > **Note:** `max_tokens: 0` is valid and pre-warms the prompt cache without generating any output tokens.
+
+### Response `container` field
+
+When using the `code_execution` server tool, the response includes a top-level `container` object:
+
+```json
+{ "id": "<container-id>", "expires_at": "<RFC3339 timestamp>" }
+```
+
+Pass `container: "<id>"` in the next request to reuse the same sandbox (avoids cold-start penalty within the TTL window). Set to `null` when no container was used.
 
 ### Message count limit
 
@@ -130,11 +142,13 @@ in the platform-features skill for caching strategy.
   ],
   "stop_reason": "end_turn",
   "stop_sequence": null,
+  "container": null,
   "usage": {
     "input_tokens": 25,
     "cache_creation_input_tokens": 0,
     "cache_read_input_tokens": 0,
-    "output_tokens": 100
+    "output_tokens": 100,
+    "inference_geo": "us"
   }
 }
 ```
