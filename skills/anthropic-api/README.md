@@ -3,6 +3,8 @@
 Auto-updated reference skill for the **Anthropic Messages API** and
 adjacent surfaces (admin, compliance, beta, models).
 
+**Last updated**: 2026-05-18
+
 Part of the [anthropic-docs](../../README.md) plugin.
 
 ## Surfaces
@@ -34,4 +36,10 @@ To run it locally for just this skill:
 ```bash
 SKILL_NAME=anthropic-api npm run update
 ```
+
+## Recent activity
+
+| Date | Update | Research | Mending | Report | Total | Notes |
+|------|--------|----------|---------|--------|-------|-------|
+| 2026-05-18 | review | research + report (no upstream change) |
 
