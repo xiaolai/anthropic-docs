@@ -1,8 +1,9 @@
 # autoupdated-anthropic-documentation-knowledge
 
-A self-updating collection of 7 Claude Code skills that mirror the official
-Anthropic + MCP documentation surfaces (~624 pages across 4 doc portals)
-and present them to Claude at intent-match time. Refreshed every 30 minutes.
+A self-updating **Claude Code plugin** bundling 8 skills that mirror the
+official Anthropic + MCP documentation surfaces (~624 pages across 4 doc
+portals) plus a rolling news/research digest, and present them to Claude at
+intent-match time. Refreshed every 30 minutes.
 
 ## What this gives you
 
@@ -128,7 +129,7 @@ npm --prefix pipeline/agent ci  # one-time: agent deps
 # Bootstrap one skill's snapshot (~30s-2min per skill, depending on page count)
 SKILL_NAME=claude-code bash pipeline/scripts/refresh-docs-snapshot.sh
 
-# Or all 7 skills at once:
+# Or all 8 skills at once:
 for SKILL in $(ls skills); do
   SKILL_NAME=$SKILL bash pipeline/scripts/refresh-docs-snapshot.sh
 done

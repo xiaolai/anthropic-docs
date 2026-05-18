@@ -76,7 +76,7 @@ hardcoded here. It's now derived from `{{DISPATCH_TABLE}}` per-skill.)
 - Tutorials, blog-style guides, "how I use X" prose
 - Pricing, business plans, sales pages
 - Migration narratives (those live in CHANGELOG / release notes)
-- Content that belongs in a sibling skill (each of the 7 skills owns a different doc surface — do not cross-pollinate)
+- Content that belongs in a sibling skill (each of the 8 skills owns a different doc surface — do not cross-pollinate)
 
 ---
 

@@ -53,7 +53,7 @@ For the full per-language reference (every option, every hook event, every messa
 
 ## Update model
 
-The shared pipeline at `pipeline/` runs every 30 minutes (matrix-iterates over all 7 skills; this one is one of them) and rewrites the surface files from the upstream docs + SDK type definitions whenever upstream changes are detected. See the [repo README](../../README.md) for the full pipeline mechanics.
+The shared pipeline at `pipeline/` runs every 30 minutes (matrix-iterates over all 8 skills; this one is one of them) and rewrites the surface files from the upstream docs + SDK type definitions whenever upstream changes are detected. See the [repo README](../../README.md) for the full pipeline mechanics.
 
 To run it locally for just this skill:
 

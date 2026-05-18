@@ -121,7 +121,7 @@ If step 1 passes but step 3 fails, the router dispatch is too vague
 
 ## Negative tests (skill should NOT fire)
 
-These prompts should NOT activate any of the 7 skills — they're out
+These prompts should NOT activate any of the 8 skills — they're out
 of scope. If one of our skills fires, the descriptions are too greedy
 and need narrowing.
 
@@ -155,7 +155,7 @@ description-quality and dispatch-clarity boundaries.
   another skill first). Sharpen and re-test.
 - **FAIL (<60%):** intent matching is broken. Likely causes:
   conflicting skills installed alongside ours; ambiguous descriptions
-  across the 7 skills; Claude's skill-matching threshold not tuned
+  across the 8 skills; Claude's skill-matching threshold not tuned
   to our description style. Surface this as a skill-quality issue,
   not a docs issue.
 
