@@ -41,8 +41,10 @@ single queries or stateless multi-turn conversations.
 | `tool_choice` | `auto` / `any` / `tool` / `none` |
 | `metadata` | `{ user_id: "..." }` for abuse signaling |
 | `service_tier` | `auto` / `standard_only` |
-| `thinking` | `{ type: "enabled", budget_tokens: N }` for extended thinking |
+| `thinking` | `{ type: "enabled", budget_tokens: N, display: "summarized" \| "omitted" }` — `display` controls whether thinking blocks are returned (`summarized`, default) or redacted but signature-preserved for multi-turn (`omitted`). |
 | `output_config` | Output configuration — see below |
+| `inference_geo` | Optional string. Specifies the geographic region for inference processing. Defaults to the workspace's `default_inference_geo`. |
+| `container` | Optional string. Identifies an existing code-execution container to reuse across turns. |
 
 ### `output_config` parameter
 
@@ -73,7 +75,10 @@ block) or an array of typed blocks:
 | `document` | PDF or other document input |
 | `tool_use` | Assistant turn: model invoked a **client** tool. Carries `id`, `name`, `input`. |
 | `tool_result` | User turn: result of a previous `tool_use`. **Must reference the matching `tool_use_id`**. |
+| `tool_reference` | Inside `tool_result` content: references a named tool definition by `tool_name`. `{ type: "tool_reference", tool_name, cache_control? }` |
 | `server_tool_use` | Assistant turn: model invoked a **server** tool (e.g. web_search, web_fetch, code_execution). Different return path — see server tools below. |
+| `container_upload` | User turn: upload a file into the code-execution container. `{ type: "container_upload", file_id, cache_control? }` |
+| `refusal` | Response only: model declined to respond. Carries `policy_category` (nullable) and `explanation` (nullable). Accompanies `stop_reason: "refusal"`. |
 | `thinking` | Extended-thinking output (when `thinking` enabled) |
 | `redacted_thinking` | Thinking content the API redacted before returning |
 
@@ -130,11 +135,15 @@ in the platform-features skill for caching strategy.
   ],
   "stop_reason": "end_turn",
   "stop_sequence": null,
+  "container": null,
   "usage": {
     "input_tokens": 25,
     "cache_creation_input_tokens": 0,
     "cache_read_input_tokens": 0,
-    "output_tokens": 100
+    "output_tokens": 100,
+    "cache_creation": { "ephemeral_5m_input_tokens": 0, "ephemeral_1h_input_tokens": 0 },
+    "server_tool_use": { "web_search_requests": 0, "web_fetch_requests": 0 },
+    "inference_geo": "us"
   }
 }
 ```

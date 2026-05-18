@@ -59,7 +59,23 @@ Workspaces partition an organization for cost / quota / member scope.
 |---|---|
 | `POST /v1/organizations/workspaces` | [`admin/workspaces/create.md`](https://platform.claude.com/docs/en/api/admin/workspaces/create.md) |
 | `GET /v1/organizations/workspaces` | [`admin/workspaces/list.md`](https://platform.claude.com/docs/en/api/admin/workspaces/list.md) |
+| `GET /v1/organizations/workspaces/{id}` | [`admin/workspaces/retrieve.md`](https://platform.claude.com/docs/en/api/admin/workspaces/retrieve.md) |
+| `POST /v1/organizations/workspaces/{id}` | [`admin/workspaces/update.md`](https://platform.claude.com/docs/en/api/admin/workspaces/update.md) |
 | `POST /v1/organizations/workspaces/{id}/archive` | [`admin/workspaces/archive.md`](https://platform.claude.com/docs/en/api/admin/workspaces/archive.md) |
+
+**Workspace create** accepts an optional `data_residency` object:
+
+```json
+{
+  "data_residency": {
+    "workspace_geo": "us",
+    "allowed_inference_geos": "unrestricted",
+    "default_inference_geo": "global"
+  }
+}
+```
+
+`workspace_geo` is immutable after creation. Defaults: `workspace_geo="us"`, `allowed_inference_geos="unrestricted"`, `default_inference_geo="global"`.
 
 Workspace members:
 
@@ -67,7 +83,17 @@ Workspace members:
 |---|---|
 | `POST /v1/organizations/workspaces/{id}/members` | [`admin/workspaces/members/create.md`](https://platform.claude.com/docs/en/api/admin/workspaces/members/create.md) |
 | `GET /v1/organizations/workspaces/{id}/members` | [`admin/workspaces/members.md`](https://platform.claude.com/docs/en/api/admin/workspaces/members.md) |
+| `GET /v1/organizations/workspaces/{id}/members/{user_id}` | [`admin/workspaces/members/retrieve.md`](https://platform.claude.com/docs/en/api/admin/workspaces/members/retrieve.md) |
+| `POST /v1/organizations/workspaces/{id}/members/{user_id}` | [`admin/workspaces/members/update.md`](https://platform.claude.com/docs/en/api/admin/workspaces/members/update.md) |
 | `DELETE /v1/organizations/workspaces/{id}/members/{user_id}` | [`admin/workspaces/members/delete.md`](https://platform.claude.com/docs/en/api/admin/workspaces/members/delete.md) |
+
+Workspace rate limits:
+
+| Endpoint | Page |
+|---|---|
+| `GET /v1/organizations/workspaces/{id}/rate_limits` | [`admin/workspaces/rate_limits/list.md`](https://platform.claude.com/docs/en/api/admin/workspaces/rate_limits/list.md) |
+
+Returns only groups with workspace-level overrides (groups inheriting org-level limits are omitted). Supports filtering by `group_type` (`model_group`, `batch`, `token_count`, `files`, `skills`, `web_search`).
 
 ## Users
 
@@ -116,4 +142,4 @@ Workspace members:
 
 ---
 
-*Source pages: 23 under `platform.claude.com/docs/en/api/admin/`.*
+*Source pages: 38 under `platform.claude.com/docs/en/api/admin/`.*

@@ -27,16 +27,23 @@ hardcoding model IDs.
 
 ## Current model family (Claude 4.X)
 
-Per the latest snapshot:
+Per the live `messages/create.md` model enum (2026-05-18):
 
 | Tier | ID | Notes |
 |---|---|---|
 | **Opus** | `claude-opus-4-7` | Most capable; fast mode available |
+| **Opus preview** | `claude-mythos-preview` | Preview alias; subject to change |
+| **Opus** | `claude-opus-4-6` | Earlier Opus 4 variant |
 | **Sonnet** | `claude-sonnet-4-6` | Balanced cost/capability |
-| **Haiku** | `claude-haiku-4-5-20251001` | Cheapest, fastest; the `-20251001` suffix is the snapshot date |
+| **Haiku** | `claude-haiku-4-5` / `claude-haiku-4-5-20251001` | Cheapest, fastest |
+| **Older (4.5)** | `claude-opus-4-5`, `claude-opus-4-5-20251101`, `claude-sonnet-4-5`, `claude-sonnet-4-5-20250929` | Available but not recommended for new apps |
+| **Older (4.1/4.0)** | `claude-opus-4-1`, `claude-opus-4-1-20250805`, `claude-opus-4-0`, `claude-opus-4-20250514`, `claude-sonnet-4-0`, `claude-sonnet-4-20250514` | Legacy; plan migration |
 
 When building new applications, default to the latest and most
 capable model unless cost / latency dictates otherwise.
+
+> **`claude-mythos-preview`** is a preview alias that may change. Pin a
+> dated model ID (e.g. `claude-opus-4-7`) for production stability.
 
 ## Model ID conventions
 
