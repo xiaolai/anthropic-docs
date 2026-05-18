@@ -3,6 +3,9 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-18
+*(pending review — see PR on branch `auto/2026-05-18-pending-review`)* Initial research pass across 35 cowork + office-agents docs pages; check-diff-size gate failed, changes queued for human review.
+
 ## [0.1.0] — 2026-05-17
 
 ### Added

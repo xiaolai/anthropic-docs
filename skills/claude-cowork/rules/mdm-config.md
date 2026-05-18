@@ -47,18 +47,20 @@ MDM profile should explicitly NOT set `inferenceProvider: foundry`.
 
 ## Rule 4 — Telemetry kill switches
 
-Three independent telemetry toggles:
+Four independent telemetry toggles (all default `false` = telemetry on):
 
-- `disableCrashReporting`: boolean, scrubs and disables crash reports
-- `disableProductAnalytics`: boolean, disables usage telemetry
-- `disableAutoUpdate`: boolean, disables auto-update checks
+- `disableEssentialTelemetry`: boolean — block crash reports and error telemetry to Anthropic (**opts into manual support model**; your team must collect and send logs directly)
+- `disableNonessentialTelemetry`: boolean — block product-usage analytics to Anthropic
+- `disableNonessentialServices`: boolean — block non-critical third-party services (connector favicons, artifact-preview iframe)
+- `disableAutoUpdates`: boolean — block update checks and downloads (IT team must redistribute new builds manually)
 
-All three are off-by-default (telemetry enabled). For air-gapped or
-compliance-hardened deployments, set all three to `true`.
+For air-gapped or compliance-hardened deployments, set all four to `true`.
 
 Telemetry NEVER contains user prompts or completions, but if your
 audit posture requires zero Anthropic-bound network traffic, disable
-all three.
+all four.
+
+Source: [`3p/configuration.md` — Telemetry & updates](https://claude.com/docs/cowork/3p/configuration.md)
 
 ## Rule 5 — Don't mix per-user and admin profiles
 
@@ -85,11 +87,23 @@ JSON file your org publishes. **Pin plugin versions** in that
 manifest; bare references resolve to "latest" and inherit any
 breaking change immediately.
 
-## Rule 8 — Spend caps are workspace-monthly, not per-request
+## Rule 8 — Usage caps are token-window, not dollar-monthly
 
-`workspaceSpendCapUSD` caps monthly usage per workspace. When hit,
-requests return 429 `cap_exceeded` until the next billing month.
-Set to a value above your monthly forecast, with a buffer.
+Cowork on 3P uses **token-based** usage caps enforced locally on the
+device, not dollar-based monthly caps:
+
+- `inferenceMaxTokensPerWindow`: integer — total input + output tokens
+  allowed per device per window; when hit the app refuses new messages
+  until the window resets.
+- `inferenceTokenWindowHours`: integer (1–720) — length of the tumbling
+  window for the cap above.
+
+There is no `workspaceSpendCapUSD` key. Dollar-value billing is handled
+by your cloud provider (Bedrock / Vertex / Foundry / gateway), not by
+the Cowork app itself. Set `inferenceMaxTokensPerWindow` at a level
+aligned with your cloud budget with a generous buffer.
+
+Source: [`3p/configuration.md` — Usage limits](https://claude.com/docs/cowork/3p/configuration.md)
 
 ---
 

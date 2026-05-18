@@ -126,14 +126,23 @@ Every managed-configuration key lives in
 [`3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
 That page is the source of truth for:
 
-- Inference provider selection (`inferenceProvider`)
-- Region pinning (`inferenceVertexRegion`, `inferenceBedrockRegion`)
-- Feature toggles (web search, local MCP, etc.)
-- Telemetry toggles
-- MCP server allowlist
-- Plugin / skill / hook distribution settings
-- Per-user spend caps
-- Auto-update policy
+- **Inference provider** — `inferenceProvider` enum (`vertex`/`bedrock`/`foundry`/`gateway`)
+- **Region pinning** — `inferenceVertexRegion`, `inferenceBedrockRegion`
+- **Deployment identity** — `deploymentOrganizationUuid` (required for support-case attribution)
+- **Credential helper** — `inferenceCredentialHelper`, `inferenceCredentialHelperTtlSec` (for SSO / secrets-manager auth instead of static API keys)
+- **Model list** — `inferenceModels` — supports `supports1m` (1M-context variant) and `labelOverride` per entry
+- **Sandbox lockdown** — `disabledBuiltinTools`, `allowedWorkspaceFolders`, `coworkEgressAllowedHosts`
+- **Token-based usage caps** — `inferenceMaxTokensPerWindow`, `inferenceTokenWindowHours` (local enforcement, not dollar-based)
+- **Telemetry toggles** — `disableEssentialTelemetry`, `disableNonessentialTelemetry`, `disableNonessentialServices`, `disableAutoUpdates`
+- **OTLP export** — `otlpEndpoint`, `otlpProtocol`, `otlpHeaders`, `otlpResourceAttributes`
+- **MCP servers** — `managedMcpServers` (fleet-wide), `isLocalDevMcpEnabled` (user-added)
+- **Desktop extensions** — `isDesktopExtensionEnabled`, `isDesktopExtensionSignatureRequired`
+- **Org plugin policy** — `orgPluginSettings` (per-tool `toolPolicy` locks)
+- **Auto-update window** — `autoUpdaterEnforcementHours` (force install after N hours, 1–72)
+- **Banner** — `banner` (persistent app-wide notice with text, colors, and optional link URL)
+- **Feature toggles** — `isClaudeCodeForDesktopEnabled`, `disableDeploymentModeChooser`, `disableDeepLinkRegistration`
+
+> **Array/object keys must be JSON strings.** Do not use native plist `<array>`/`<dict>` or nested registry keys for `inferenceModels`, `inferenceGatewayOidc`, `managedMcpServers`, `coworkEgressAllowedHosts`, or `otlpHeaders` — they must be JSON-encoded strings inside a single `<string>` element.
 
 ## Data residency
 
