@@ -206,13 +206,6 @@ jobs:
           # Version mirrors the @anthropic-ai/claude-agent-sdk pin in
           # pipeline/agent/package.json.
           npm install --no-save @anthropic-ai/claude-agent-sdk-linux-x64@0.3.143
-          echo "=== DIAGNOSTIC: SDK platform binary layout ==="
-          ls -la node_modules/@anthropic-ai/ 2>&1
-          echo "---"
-          ls -la node_modules/@anthropic-ai/claude-agent-sdk-linux-x64/ 2>&1 | head -20
-          echo "---"
-          which claude 2>&1
-          claude --version 2>&1 || echo "(claude --version failed)"
 
       - name: Install root verification deps (npm ci)
         run: npm ci
