@@ -1,6 +1,7 @@
 ---
 name: my-skill
-description: One-paragraph description of what this skill does and when Claude should activate it. Use specific intent triggers ("Use when the user asks about X, Y, Z"). The platform's skill matcher reads THIS field — write it for matching, not for marketing. Stay under 1024 chars. Include Skip clauses for adjacent intents that should NOT match.
+description: Template starter for an Agent Skill — replace this entire description with one that names the concrete intent triggers ("Use when the user asks about X, Y, Z") and lists negative-intent Skip clauses. The platform's skill matcher reads this field — write it for matching, not for marketing. Stay under 1024 chars.
+user-invocable: false
 ---
 
 # My Skill

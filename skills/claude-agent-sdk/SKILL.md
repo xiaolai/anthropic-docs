@@ -43,7 +43,7 @@ user-invocable: true
 
 - Working with `.ts` files, TypeScript imports, or `npm`/`node` → read `SKILL-typescript.md`
 - Working with `.py` files, Python imports, or `pip`/`python` → read `SKILL-python.md`
-- Ambiguous or multi-language → read both as needed
+- Ambiguous or multi-language → read both surface files
 
 ## Cross-Language Naming Map
 

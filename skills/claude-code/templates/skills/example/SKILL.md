@@ -1,6 +1,7 @@
 ---
 name: example-skill
-description: Example skill. Triggers when the user asks "how do I parse RFC 3339 dates in bash" — replace this description with one that names the concrete trigger condition for your own skill. Keep it ≤200 characters for best intent-matching.
+description: Template example showing the SKILL.md structure — replace this description with one that names YOUR skill's concrete trigger condition ("Triggers when the user asks how to X, Y, Z"). Keep it ≤200 characters for best intent-matching.
+user-invocable: false
 ---
 
 # Example Skill

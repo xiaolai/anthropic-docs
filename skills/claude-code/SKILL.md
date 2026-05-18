@@ -26,7 +26,7 @@ user-invocable: true
 
 | Field | Value |
 |---|---|
-| **Claude Code version** | v<version> |
+| **Claude Code version** | v2.1.143 _(pinned in CI; updated by pipeline)_ |
 | **Source docs** | [code.claude.com/docs](https://code.claude.com/docs/en/overview.md) |
 | **GitHub** | [anthropics/claude-code](https://github.com/anthropics/claude-code) |
 | **npm** | [`@anthropic-ai/claude-code`](https://www.npmjs.com/package/@anthropic-ai/claude-code) |
