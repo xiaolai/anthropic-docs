@@ -47,17 +47,18 @@ audit reports.
 
 ## Endpoint catalog
 
-Endpoints under `/v1/organizations/compliance/...`. Each page in
-the snapshot documents one endpoint's parameters, response shape,
-and pagination.
+Endpoints under `/v1/compliance/...`. Each page in the snapshot documents
+one endpoint's parameters, response shape, and pagination.
 
-| Topic | Source dir |
+| Topic | Key endpoints |
 |---|---|
 | Compliance API section index | [`compliance.md`](https://platform.claude.com/docs/en/api/compliance.md) |
-| Activity feed | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
-| Content data (per-message records) | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
-| Org-level data | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
-| Errors | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
+| **Activities** | `GET /v1/compliance/activities` (list) — activity feed for audit/SIEM |
+| **Apps / Chats** | `GET /v1/compliance/apps`, `GET /v1/compliance/apps/chats` (list, delete, files, messages), `GET /v1/compliance/apps/chats/generated_files` |
+| **Apps / Artifacts** | `GET /v1/compliance/apps/artifacts` (content) |
+| **Apps / Projects** | `GET /v1/compliance/apps/projects` (list, retrieve, delete, documents, attachments) |
+| **Groups** | `GET /v1/compliance/groups` (list, retrieve), `GET /v1/compliance/groups/{id}/members` (list) — filter by `name_prefix`; pagination via `next_page` cursor. Source: [`compliance/groups.md`](https://platform.claude.com/docs/en/api/compliance/groups.md) |
+| **Organizations** | `GET /v1/compliance/organizations` (list, roles/list, roles/{id}/retrieve, roles/{id}/permissions/list, users/list) — roles and user assignments across orgs. Source: [`compliance/organizations.md`](https://platform.claude.com/docs/en/api/compliance/organizations.md) |
 
 The conceptual coverage of each (what to use it for, what fields
 mean, integration patterns) lives in the platform-features
@@ -66,10 +67,10 @@ for the wire shape.
 
 ## Source pages
 
-37 pages under
+38 pages under
 [`https://platform.claude.com/docs/en/api/compliance/`](https://platform.claude.com/docs/en/api/compliance/)
 — see directory listing for the current per-endpoint set.
 
 ---
 
-*Source pages: 37 under `platform.claude.com/docs/en/api/compliance/`.*
+*Source pages: 38 under `platform.claude.com/docs/en/api/compliance/`.*

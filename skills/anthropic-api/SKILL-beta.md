@@ -64,20 +64,20 @@ The beta API includes its own resources that mirror or extend the
 stable API surface. Each lives at `/v1/...` with the beta header
 required:
 
-| Resource | Source dir |
-|---|---|
-| Beta API section index | [`beta.md`](https://platform.claude.com/docs/en/api/beta.md) |
-| `agents/` | [`beta/agents/`](https://platform.claude.com/docs/en/api/beta/agents/) |
-| `environments/` | [`beta/environments/`](https://platform.claude.com/docs/en/api/beta/environments/) |
-| `files/` | [`beta/files/`](https://platform.claude.com/docs/en/api/beta/files/) |
-| `memory_stores/` | [`beta/memory_stores/`](https://platform.claude.com/docs/en/api/beta/memory_stores/) |
-| `messages/` | [`beta/messages/`](https://platform.claude.com/docs/en/api/beta/messages/) (extends stable messages) |
-| `models/` | [`beta/models/`](https://platform.claude.com/docs/en/api/beta/models/) |
-| `sessions/` | [`beta/sessions/`](https://platform.claude.com/docs/en/api/beta/sessions/) |
-| `skills/` | [`beta/skills/`](https://platform.claude.com/docs/en/api/beta/skills/) (Skills upload/management API) |
-| `user_profiles/` | [`beta/user_profiles/`](https://platform.claude.com/docs/en/api/beta/user_profiles/) |
-| `vaults/` | [`beta/vaults/`](https://platform.claude.com/docs/en/api/beta/vaults/) |
-| `webhooks.md` | [`beta/webhooks.md`](https://platform.claude.com/docs/en/api/beta/webhooks.md) |
+| Resource | Source dir | Notable sub-resources |
+|---|---|---|
+| Beta API section index | [`beta.md`](https://platform.claude.com/docs/en/api/beta.md) | |
+| `agents/` | [`beta/agents/`](https://platform.claude.com/docs/en/api/beta/agents/) | `agents/versions/` — agent version history |
+| `environments/` | [`beta/environments/`](https://platform.claude.com/docs/en/api/beta/environments/) | |
+| `files/` | [`beta/files/`](https://platform.claude.com/docs/en/api/beta/files/) | upload / download / retrieve_metadata / delete |
+| `memory_stores/` | [`beta/memory_stores/`](https://platform.claude.com/docs/en/api/beta/memory_stores/) | `memories/` (CRUD), `memory_versions/` (list / retrieve / redact) |
+| `messages/` | [`beta/messages/`](https://platform.claude.com/docs/en/api/beta/messages/) | Extends stable messages; includes beta batches |
+| `models/` | [`beta/models/`](https://platform.claude.com/docs/en/api/beta/models/) | |
+| `sessions/` | [`beta/sessions/`](https://platform.claude.com/docs/en/api/beta/sessions/) | `resources/` (add/delete/list/retrieve/update), `threads/` (archive/events/list/retrieve) |
+| `skills/` | [`beta/skills/`](https://platform.claude.com/docs/en/api/beta/skills/) | `versions/` (create/delete/list/retrieve) |
+| `user_profiles/` | [`beta/user_profiles/`](https://platform.claude.com/docs/en/api/beta/user_profiles/) | `create_enrollment_url` endpoint |
+| `vaults/` | [`beta/vaults/`](https://platform.claude.com/docs/en/api/beta/vaults/) | `credentials/` (CRUD + `mcp_oauth_validate`) |
+| `webhooks.md` | [`beta/webhooks.md`](https://platform.claude.com/docs/en/api/beta/webhooks.md) | |
 
 Most of these align with the Managed Agents product surface —
 see [`anthropic-platform-features → SKILL-managed-agents.md`](../anthropic-platform-features/SKILL-managed-agents.md)

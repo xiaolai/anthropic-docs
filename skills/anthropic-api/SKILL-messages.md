@@ -43,6 +43,8 @@ single queries or stateless multi-turn conversations.
 | `service_tier` | `auto` / `standard_only` |
 | `thinking` | `{ type: "enabled", budget_tokens: N }` for extended thinking |
 | `output_config` | Output configuration — see below |
+| `container` | Container identifier for reuse across requests (e.g. code execution sandbox) |
+| `inference_geo` | Geographic region for inference. Defaults to workspace's `default_inference_geo`. |
 
 ### `output_config` parameter
 
@@ -74,6 +76,7 @@ block) or an array of typed blocks:
 | `tool_use` | Assistant turn: model invoked a **client** tool. Carries `id`, `name`, `input`. |
 | `tool_result` | User turn: result of a previous `tool_use`. **Must reference the matching `tool_use_id`**. |
 | `server_tool_use` | Assistant turn: model invoked a **server** tool (e.g. web_search, web_fetch, code_execution). Different return path — see server tools below. |
+| `tool_reference` | `{ tool_name, type: "tool_reference", cache_control }` — Reference to a deferred tool returned by a tool-search server tool. Used in user turn alongside `tool_search_tool_result`. |
 | `thinking` | Extended-thinking output (when `thinking` enabled) |
 | `redacted_thinking` | Thinking content the API redacted before returning |
 
@@ -90,9 +93,13 @@ Known server tool types (specify in `tools` array):
 |---|---|
 | `web_search_20250305` / `web_search_20260209` | Web search. Supports `allowed_domains`, `blocked_domains`, `user_location`, `max_uses`. |
 | `web_fetch_20250910` | Fetch a URL. Supports `allowed_domains`, `blocked_domains`, `max_content_tokens`, `citations`. |
-| `code_execution_20250825` / `code_execution_20260120` | Execute code in a sandbox. |
+| `code_execution_20250825` / `code_execution_20260120` | Execute code in a sandbox (generic). |
+| `bash_code_execution` | Execute bash commands in a sandbox. Returns `bash_code_execution_tool_result` block. |
+| `text_editor_code_execution` | File editing operations in a sandbox. Returns `text_editor_code_execution_tool_result` block. |
+| `tool_search_tool_bm25_20251119` / `tool_search_tool_bm25` | BM25 full-text search over a registered tool catalog. Returns `tool_search_tool_result` block with `tool_references`. |
+| `tool_search_tool_regex_20251119` / `tool_search_tool_regex` | Regex search over a registered tool catalog. Returns `tool_search_tool_result` block with `tool_references`. |
 
-Server tools also support `defer_loading: true` to exclude from the initial system prompt (loaded on demand) and `strict: true` for schema validation.
+Server tools also support `defer_loading: true` to exclude from the initial system prompt (loaded on demand when returned via `tool_reference` from a tool search) and `strict: true` for schema validation.
 
 ### Prompt caching: `cache_control`
 
