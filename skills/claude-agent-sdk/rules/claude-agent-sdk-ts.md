@@ -1,6 +1,6 @@
 ---
 name: claude-agent-sdk-ts
-description: Edit-time correctness rules for code using @anthropic-ai/claude-agent-sdk in TypeScript. Catches the common mistakes documented in the upstream issue tracker: hooks-as-functions vs callbacks, mismatched permissionMode strings, wrong MCP server config shape, and unsupported tools in allowedTools.
+description: Edit-time correctness rules for code using @anthropic-ai/claude-agent-sdk in TypeScript. Catches the mistakes most commonly logged in the upstream issue tracker — wrong hook shape, missing tool annotations, MCP transport-type confusion, Zod / structured-output pitfalls, and permission-mode interactions. Pairs with SKILL-typescript.md (the deep reference).
 appliesTo:
   - "**/*.ts"
   - "**/*.tsx"
@@ -9,83 +9,90 @@ appliesTo:
 
 # Claude Agent SDK Rules — TypeScript
 
+> *Edit-time corrections. For the full type definitions, options table,
+> message-type catalog, and worked examples, see
+> [`SKILL-typescript.md`](../SKILL-typescript.md). This file lists only
+> the patterns Claude should rewrite on sight.*
+
 ## Package
 
-- Package: `@anthropic-ai/claude-agent-sdk` (NOT `@anthropic-ai/claude-code`)
+- Package: `@anthropic-ai/claude-agent-sdk` (NOT `@anthropic-ai/claude-code`).
+- Latest version is tracked in `state.json.registry.packages[]`; the
+  daily research agent updates SKILL-typescript.md when it changes.
 
 ## Common Mistakes
 
-### Hooks are callback matchers, not direct functions
+### Hooks must be callback matchers, not direct functions
+
 ```typescript
-// WRONG
+// WRONG — direct function: silently never fires
 hooks: { PreToolUse: async (input) => { ... } }
 
-// CORRECT
+// CORRECT — matcher + hooks array
 hooks: { PreToolUse: [{ matcher: 'Bash', hooks: [myCallback] }] }
 ```
 
-### canUseTool returns PermissionResult, not simple objects
+See [`SKILL-typescript.md` § Hooks](../SKILL-typescript.md#hooks) for the
+full `HookCallbackMatcher` type and the per-event matcher behavior
+(some events ignore `matcher`).
+
+### `canUseTool` allow-result MUST include `updatedInput`
+
 ```typescript
-// WRONG — missing updatedInput causes silent failure
+// WRONG — returns no input shape, silent failure
 canUseTool: async (tool, input) => ({ behavior: "allow" })
 
-// CORRECT — always include updatedInput when allowing
+// CORRECT
 canUseTool: async (tool, input, { signal }) => ({
   behavior: "allow", updatedInput: input
 })
 ```
 
-### Structured outputs use outputFormat.schema directly
-```typescript
-// WRONG (old pattern)
-outputFormat: { type: "json_schema", json_schema: { name: "...", strict: true, schema: ... } }
+Full `PermissionResult` union type:
+[`SKILL-typescript.md` § Permissions § canUseTool](../SKILL-typescript.md#canusetool).
 
-// CORRECT
-outputFormat: { type: "json_schema", schema: myJsonSchema }
+### `permissionDecision: 'deny'` causes API 400 — use `'allow'` with sentinel input
+
+```typescript
+// WRONG — breaks conversation history with "tool_use ids without tool_result"
+return {
+  hookSpecificOutput: {
+    hookEventName: 'PreToolUse',
+    permissionDecision: 'deny',
+    permissionDecisionReason: 'Not allowed'
+  }
+};
+
+// CORRECT — allow with modified input that no-ops the action
+return {
+  hookSpecificOutput: {
+    hookEventName: 'PreToolUse',
+    permissionDecision: 'allow',
+    updatedInput: { command: `echo "BLOCKED: ${reason}"` }
+  }
+};
 ```
 
-### Zod schema conversion
-```typescript
-// WRONG (old library)
-import { zodToJsonSchema } from "zod-to-json-schema";
+Background: SKILL-typescript.md § Hooks § Hook Return Values + KI #12.
 
-// CORRECT (built-in Zod v3.24.1+ / v4+)
-const jsonSchema = z.toJSONSchema(myZodSchema, { target: "draft-07" });
-```
+### `allowedTools` is ignored under `bypassPermissions` mode
 
-### Structured output with Zod requires draft-07 target
 ```typescript
-// WRONG — Claude requires JSON Schema draft-07, but Zod defaults to draft-2020-12
-outputFormat: {
-  type: "json_schema",
-  schema: z.toJSONSchema(MySchema)  // Missing target parameter
+// WRONG — allowedTools restriction is silently dropped
+options: {
+  allowedTools: ["Read", "Glob", "Grep"],
+  permissionMode: "bypassPermissions",
+  allowDangerouslySkipPermissions: true
 }
 
-// CORRECT — specify draft-07 target
-outputFormat: {
-  type: "json_schema",
-  schema: z.toJSONSchema(MySchema, { target: "draft-07" })
-}
+// CORRECT — use default or acceptEdits mode for allowedTools to take effect
+options: { allowedTools: [...], permissionMode: "default" }
 ```
 
-### URL-based MCP servers require type field
-```typescript
-// WRONG — causes cryptic "exit code 1"
-mcpServers: { api: { url: "https://example.com/mcp" } }
+Note in [`SKILL-typescript.md` § Permissions § PermissionMode](../SKILL-typescript.md#permissionmode).
 
-// CORRECT
-mcpServers: { api: { type: "http", url: "https://example.com/mcp" } }
-```
+### Subagents require `Task` in `allowedTools`
 
-### No default system prompt or settings
-```typescript
-// SDK v0.1.0+ defaults: no system prompt, no filesystem settings
-// Add explicitly if needed:
-systemPrompt: { type: 'preset', preset: 'claude_code' },
-settingSources: ['project']
-```
-
-### Subagents require Task in allowedTools
 ```typescript
 // WRONG — subagents won't be invocable
 allowedTools: ["Read", "Write"],
@@ -96,105 +103,117 @@ allowedTools: ["Read", "Write", "Task"],
 agents: { reviewer: { ... } }
 ```
 
-### allowedTools doesn't work with bypassPermissions mode
-```typescript
-// WRONG — allowedTools is ignored, Claude can still use Edit/Write/Bash
-options: {
-  allowedTools: ["Read", "Glob", "Grep"],
-  permissionMode: "bypassPermissions",
-  allowDangerouslySkipPermissions: true
-}
+See [`SKILL-typescript.md` § Subagents](../SKILL-typescript.md#subagents).
 
-// CORRECT — use default or acceptEdits mode for allowedTools to work
-options: {
-  allowedTools: ["Read", "Glob", "Grep"],
-  permissionMode: "default"
-}
+### MCP server config: `type` field is required for non-stdio transports
+
+The only valid transport types are `'http'`, `'sse'`, `'sdk'`,
+`'claudeai-proxy'` (and `'stdio'` which is the implicit default when
+`type` is omitted and `command` is present). Common mistake: using
+`type: "url"` (not a real type) or omitting `type` on URL servers.
+
+```typescript
+// WRONG — opaque "exit code 1" or silent no-op
+mcpServers: { api: { url: "https://example.com/mcp" } }
+mcpServers: { api: { type: "url", url: "https://example.com/mcp" } }
+
+// CORRECT
+mcpServers: { api: { type: "http", url: "https://example.com/mcp" } }
 ```
 
-### thinking: { type: 'adaptive' } — now fixed (v0.2.40+)
-```typescript
-// CORRECT (v0.2.40+) — adaptive thinking works as expected
-thinking: { type: 'adaptive' }, effort: 'medium'
-
-// Also valid — explicit budget for older models or fine-grained control
-thinking: { type: 'enabled', budgetTokens: 10000 }
-
-// Deprecated but functional
-maxThinkingTokens: 10000, effort: 'medium'
-```
-
-### permissionDecision: 'deny' causes API 400 error
-```typescript
-// WRONG — breaks conversation history, causes "tool_use ids without tool_result" error
-return {
-  hookSpecificOutput: {
-    hookEventName: 'PreToolUse',
-    permissionDecision: 'deny',
-    permissionDecisionReason: 'Not allowed'
-  }
-};
-
-// CORRECT — use 'allow' with modified input that blocks the action
-return {
-  hookSpecificOutput: {
-    hookEventName: 'PreToolUse',
-    permissionDecision: 'allow',
-    updatedInput: { command: `echo "BLOCKED: ${reason}"` }
-  }
-};
-```
+Full transport type table:
+[`SKILL-typescript.md` § MCP Servers § Config Types](../SKILL-typescript.md#config-types).
+Other MCP gotchas (Unicode sanitization, 5-min timeout, corporate
+proxy issues) are catalogued at
+[`SKILL-typescript.md` § MCP Gotchas](../SKILL-typescript.md#mcp-gotchas)
+— consult that section for the full set of MCP failure modes.
 
 ### Sanitize MCP tool responses for Unicode line separators
-```typescript
-// WRONG — U+2028/U+2029 in tool results corrupts SDK JSON protocol
-async (args) => ({
-  content: [{ type: "text", text: rawOutput }]
-})
 
-// CORRECT — sanitize before returning
+```typescript
+// WRONG — U+2028 / U+2029 corrupt the JSON protocol
+async (args) => ({ content: [{ type: "text", text: rawOutput }] })
+
+// CORRECT — strip before returning
 async (args) => ({
-  content: [{ type: "text", text: rawOutput.replace(/[\u2028\u2029]/g, ' ') }]
+  content: [{ type: "text", text: rawOutput.replace(/[  ]/g, ' ') }]
 })
 ```
 
-### Don't use ANTHROPIC_LOG=debug with SDK
-```typescript
-// WRONG — corrupts JSON protocol between SDK and CLI
-env: { ANTHROPIC_LOG: 'debug' }
+See KI #5 in [`SKILL-typescript.md` § MCP Gotchas](../SKILL-typescript.md#mcp-gotchas).
 
-// CORRECT — use SDK's built-in debug options
-options: { debug: true, debugFile: '/tmp/agent.log' }
-```
+### Structured outputs: `outputFormat.schema` directly, not wrapped
 
-### MCP server type: "url" is not a valid transport type
 ```typescript
-// WRONG — type: "url" doesn't exist, causes silent failure (no error, no output)
-mcpServers: {
-  "my-server": { type: "url", url: "https://mcp.example.com/mcp" }
+// WRONG — the old json_schema wrapper pattern
+outputFormat: {
+  type: "json_schema",
+  json_schema: { name: "...", strict: true, schema: ... }
 }
 
-// CORRECT — use "http" for HTTP/Streamable HTTP servers
-mcpServers: {
-  "my-server": { type: "http", url: "https://mcp.example.com/mcp" }
-}
-
-// Valid MCP server types: (none/'stdio'), 'http', 'sse', 'sdk', 'claudeai-proxy'
+// CORRECT
+outputFormat: { type: "json_schema", schema: myJsonSchema }
 ```
 
-### tool() requires ZodRawShape, not ZodObject
+### Zod → JSON Schema must target draft-07
+
+Claude requires JSON Schema draft-07; Zod defaults to draft-2020-12.
+
 ```typescript
-// WRONG — passing ZodObject makes inputSchema undefined, handler receives only metadata
+// WRONG — schema rejected
+outputFormat: { type: "json_schema", schema: z.toJSONSchema(MySchema) }
+
+// CORRECT
+outputFormat: { type: "json_schema",
+  schema: z.toJSONSchema(MySchema, { target: "draft-07" }) }
+```
+
+Also: do NOT use the deprecated `zod-to-json-schema` package — Zod
+v3.24.1+ / v4+ have built-in `z.toJSONSchema()`.
+
+### `tool()` expects `ZodRawShape`, not `ZodObject`
+
+```typescript
 import { z } from 'zod';
+
+// WRONG — handler receives only metadata, args is empty
 const MySchema = z.object({ query: z.string() });
 const myTool = tool("search", "Search", MySchema, handler);
-// handler receives: (args={signal, _meta, requestId}, extra=undefined)
 
-// CORRECT — pass the shape property, not the ZodObject instance
-const MySchema = z.object({ query: z.string() });
+// CORRECT — pass `.shape`
 const myTool = tool("search", "Search", MySchema.shape, handler);
-// handler receives: (args={query: "..."}, extra=transportContext)
 
 // ALSO CORRECT — define shape inline
 const myTool = tool("search", "Search", { query: z.string() }, handler);
 ```
+
+### No default system prompt or filesystem settings
+
+SDK v0.1.0+ defaults: empty system prompt, no filesystem settings load.
+Add explicitly when needed:
+
+```typescript
+options: {
+  systemPrompt: { type: 'preset', preset: 'claude_code' },
+  settingSources: ['project']
+}
+```
+
+### Don't use `ANTHROPIC_LOG=debug` with the SDK
+
+```typescript
+// WRONG — corrupts the JSON protocol between SDK and CLI subprocess
+env: { ANTHROPIC_LOG: 'debug' }
+
+// CORRECT — use the SDK's built-in debug option
+options: { debug: true, debugFile: '/tmp/agent.log' }
+```
+
+---
+
+*This file lists edit-time correctable patterns. Background, full
+types, and complete examples live in
+[`SKILL-typescript.md`](../SKILL-typescript.md). When that surface and
+this file disagree, the surface is canonical and this file is stale
+— file an issue at
+[xiaolai/autoupdated-anthropic-documentation-knowledge](https://github.com/xiaolai/autoupdated-anthropic-documentation-knowledge).*
