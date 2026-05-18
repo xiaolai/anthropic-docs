@@ -2,11 +2,11 @@
 name: anthropic-managed-agents
 description: |
   Deep reference for the Managed Agents product — Anthropic-hosted
-  long-running agents (Dreams) with their own environments, sessions,
-  files, memory, vaults, tools, MCP connectors, multi-agent
-  coordination, webhooks, GitHub integration, permission policies,
-  and event streaming. Covers onboarding through to production
-  deployment with cloud containers.
+  agents with their own environments, sessions, files, memory stores,
+  vaults, tools, MCP connectors, multi-agent coordination, webhooks,
+  GitHub integration, permission policies, and event streaming. Also
+  covers Dreams (async memory consolidation jobs). Onboarding through
+  production deployment with cloud containers.
 source: https://platform.claude.com/docs/en/managed-agents/overview.md
 ---
 
@@ -23,12 +23,15 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
   your app (you run the loop). Managed Agents is a hosted product
   (Anthropic runs the loop, your agent definition lives on Anthropic
   infrastructure). Decision: SDK for tight integration with your
-  service; Managed Agents for fire-and-forget jobs and the Dreams
-  long-running pattern.
-- **Dreams = long-running.** A Dream is an agent execution that can
-  run for hours or days, surviving across sessions. Use for research
-  syntheses, batch processing, multi-step workflows that don't fit
-  in a single conversation.
+  service; Managed Agents for fire-and-forget jobs and async workflows.
+- **Dreams = memory consolidation (Research Preview).** A Dream is an
+  asynchronous job that reads an existing memory store plus up to 100
+  past session transcripts and produces a NEW reorganized memory store
+  (deduped, contradictions resolved, stale entries replaced). The input
+  store is never modified. Poll `/v1/dreams/{id}` for status; Dreams
+  do not trigger webhooks. Requires BOTH beta headers:
+  `managed-agents-2026-04-01` AND `dreaming-2026-04-21`.
+  Supported models: `claude-opus-4-7`, `claude-sonnet-4-6`.
 - **Sessions are persistent conversations.** Unlike Messages API
   (stateless), a Managed Agent session holds state across calls.
   Bill by tokens consumed, not by session duration.
@@ -44,9 +47,13 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
 - **Beta API surface.** All Managed-Agents endpoints currently live
   under `/v1/...` with the `anthropic-beta` header. Pin the beta
   string to a specific version; the shape may evolve.
-- **Webhooks for async results.** Long-running Dreams notify
-  completion via webhook (configure per agent). Don't poll — the
-  webhook is cheaper and faster.
+- **Webhooks for session state changes.** Webhooks notify you of major
+  session transitions (`session.status_run_started`, `session.status_idled`,
+  `session.status_rescheduled`, `session.status_terminated`) and vault
+  events. Also fires for multiagent thread events and outcome evaluations.
+  Configure via Console (Manage → Webhooks). Webhook payloads carry only the
+  event type + id — fetch the full object separately to avoid stale data on
+  retry. Verify signatures via `X-Webhook-Signature` header.
 
 ## Foundation
 
@@ -92,11 +99,11 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
 |---|---|
 | [`multi-agent.md`](https://platform.claude.com/docs/en/managed-agents/multi-agent.md) | Coordination between multiple managed agents |
 
-## Dreams (long-running)
+## Dreams (memory consolidation)
 
 | Page | Topic |
 |---|---|
-| [`dreams.md`](https://platform.claude.com/docs/en/managed-agents/dreams.md) | "Dreams" — long-running agent jobs that execute over hours/days |
+| [`dreams.md`](https://platform.claude.com/docs/en/managed-agents/dreams.md) | Dreams (Research Preview) — async jobs that consolidate agent memory stores by processing past session transcripts |
 
 ## Page index
 

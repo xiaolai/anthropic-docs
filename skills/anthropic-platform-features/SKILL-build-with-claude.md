@@ -4,11 +4,11 @@ description: |
   Deep reference for the build-with-claude surface — model selection
   (context windows, models page), reasoning (extended thinking,
   adaptive thinking, effort, fast mode), throughput patterns
-  (streaming, batch processing, prompt caching, compaction, context
-  editing), inputs (files, PDF support, multilingual, embeddings,
-  search results, citations), platform integrations (Bedrock,
-  Vertex, Foundry, Claude Platform on AWS), and output handling
-  (structured outputs, handle-stop-reasons).
+  (streaming, batch processing, prompt caching, cache diagnostics,
+  compaction, context editing), inputs (files, PDF support,
+  multilingual, embeddings, search results, citations), platform
+  integrations (Bedrock, Vertex, Foundry, Claude Platform on AWS),
+  and output handling (structured outputs, handle-stop-reasons).
 source: https://platform.claude.com/docs/en/build-with-claude/overview.md
 ---
 
@@ -32,6 +32,14 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
   is `5m`; `1h` is also available. The whole prefix up to the
   breakpoint is cached, so place breakpoints at stable boundaries
   (system prompt → tools → static context → user turn).
+- **Cache diagnostics (beta)** pinpoints why a cache miss occurred by
+  comparing two consecutive requests. Add beta header
+  `cache-diagnosis-2026-04-07` and pass
+  `diagnostics: { previous_message_id: "<prev-response-id>" }`. The
+  response includes a `cache_miss_reason` with types such as
+  `model_changed`, `system_changed`, `tools_changed`, and
+  `messages_changed`. Claude API only — not supported on Bedrock or
+  Vertex AI.
 - **Batches return within 24h** at 50% discount. Submit via
   `POST /v1/messages/batches`; poll for results. Not for interactive use.
 - **Vision input:** images can be base64-inline or URL-referenced.
@@ -88,6 +96,7 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
 | Feature | Page | What it does |
 |---|---|---|
 | **Prompt caching** | [`prompt-caching.md`](https://platform.claude.com/docs/en/build-with-claude/prompt-caching.md) | `cache_control: ephemeral` breakpoints, 5-min TTL |
+| **Cache diagnostics** (beta) | [`cache-diagnostics.md`](https://platform.claude.com/docs/en/build-with-claude/cache-diagnostics.md) | Diagnose cache misses — compare consecutive requests to find where the prefix diverged |
 | **Batch processing** | [`batch-processing.md`](https://platform.claude.com/docs/en/build-with-claude/batch-processing.md) | Submit many requests at lower price, returns in 24h |
 | **Compaction** | [`compaction.md`](https://platform.claude.com/docs/en/build-with-claude/compaction.md) | Auto-summarize older messages when nearing context limit |
 | **Context editing** | [`context-editing.md`](https://platform.claude.com/docs/en/build-with-claude/context-editing.md) | Programmatic context-window management |
@@ -132,4 +141,4 @@ naming, region availability, and auth model:
 
 ---
 
-*Source pages: 29 under `platform.claude.com/docs/en/build-with-claude/`.*
+*Source pages: 30 under `platform.claude.com/docs/en/build-with-claude/`.*

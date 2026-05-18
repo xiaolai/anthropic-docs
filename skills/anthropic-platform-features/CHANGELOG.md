@@ -4,6 +4,8 @@ All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
 ## 2026-05-18
+*(pending review — see PR)* Added new docs page cache-diagnostics.md — docs index grew from 108 to 109 pages; check-diff-size gate tripped, changes on draft branch pending review
+
 - Research audit complete — 108 pages verified across all 4 surfaces (agents-and-tools, build-with-claude, manage-claude, managed-agents), no upstream changes detected; all gates pass
 
 ## [0.1.0] — 2026-05-17
