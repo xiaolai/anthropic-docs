@@ -5,6 +5,8 @@ deployed multi-cloud (Amazon Bedrock, Microsoft Foundry, LLM gateways,
 enterprise SSO, telemetry, M365 connector, policy controls) and
 **Office agents** (Claude in Excel, Slack-style integrations).
 
+**Last updated**: 2026-05-18
+
 Part of the [anthropic-docs](../../README.md) plugin.
 
 ## Surfaces
@@ -24,4 +26,10 @@ Part of the [anthropic-docs](../../README.md) plugin.
 ```bash
 SKILL_NAME=claude-cowork npm run update
 ```
+
+## Recent activity
+
+| Date | Update | Research | Mending | Report | Total | Notes |
+|------|--------|----------|---------|--------|-------|-------|
+| 2026-05-18 | review | docs +0/-1 |
 
