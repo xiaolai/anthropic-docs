@@ -50,42 +50,102 @@ Source: `code.claude.com/docs/en/plugins.md`.
 
 ## Marketplace manifest: `marketplace.json`
 
-> *Populated by the research agent.* The `name`, `owner`, and
-> `plugins` array structure.
+The marketplace manifest lives at the root of a marketplace repository. Keys:
+
+| Field | Notes |
+|---|---|
+| `name` | Marketplace identifier |
+| `owner` | Owning org or user |
+| `plugins` | Array of plugin entries, each with `name` and `source` |
+
+Each `plugins` entry has a `source` object (same structure as `strictKnownMarketplaces` entries).
 
 ## Marketplace source types
 
-> *Populated by the research agent.* Seven source types:
-> `github`, `git`, `url`, `npm`, `file`, `directory`, `hostPattern`.
+Eight source types used in `extraKnownMarketplaces`, `strictKnownMarketplaces`, and marketplace plugin entries:
+
+| Source type | Required field(s) | Notes |
+|---|---|---|
+| `github` | `repo` | Optional `ref` (branch/tag/SHA), `path` (subdirectory) |
+| `git` | `url` | Optional `ref`, `path` |
+| `url` | `url` | Downloads only `marketplace.json`; plugins must use external sources |
+| `npm` | `package` | Scoped packages supported (`@scope/pkg`) |
+| `file` | `path` | Absolute path to `marketplace.json` |
+| `directory` | `path` | Absolute path to directory with `.claude-plugin/marketplace.json` |
+| `hostPattern` | `hostPattern` | Regex against marketplace host (matches `github`, `git`, `url` types) |
+| `pathPattern` | `pathPattern` | Regex against filesystem path (matches `file`, `directory` types) |
+| `settings` | `name`, `plugins` | Inline marketplace in settings.json; plugins must reference external sources |
 
 ## Install scopes
 
-> *Populated by the research agent.* `user` / `project` / `local` —
-> what each means and where the install is recorded.
+| Scope | Recorded in | Notes |
+|---|---|---|
+| `user` | `~/.claude/settings.json` `enabledPlugins` | Available across all projects |
+| `project` | `.claude/settings.json` `enabledPlugins` | Shared with team (committed) |
+| `local` | `.claude/settings.local.json` `enabledPlugins` | Per-machine override, gitignored |
+
+Managed settings can force-enable plugins via `enabledPlugins` — these cannot be disabled by users.
 
 ## What plugins can ship
 
-> *Populated by the research agent.* Commands, agents, skills, hooks,
-> rules, MCP server configs.
+Convention directories at plugin root (NOT inside `.claude-plugin/`):
+
+| Directory/file | Purpose |
+|---|---|
+| `skills/` | Skills as `<name>/SKILL.md` directories |
+| `commands/` | Legacy skills as flat `.md` files |
+| `agents/` | Custom agent definitions |
+| `hooks/hooks.json` | Event handlers |
+| `.mcp.json` | MCP server configurations |
+| `.lsp.json` | LSP server configurations |
+| `monitors/monitors.json` | Background monitor configs |
+| `bin/` | Executables added to Bash tool's PATH |
+| `settings.json` | Default settings applied when plugin enabled |
 
 ## Plugin discovery: convention paths
 
-> *Populated by the research agent.* How Claude Code finds
-> `commands/`, `agents/`, `skills/`, etc. inside a plugin.
+Claude Code auto-discovers all content from convention paths — nothing is enumerated in `plugin.json`. Plugin skills are namespaced: skill `hello` in plugin `my-plugin` creates `/my-plugin:hello`.
 
 ## CLI commands
 
-> *Populated by the research agent.* `claude plugin install`,
-> `claude plugin list`, `claude plugin marketplace add`, etc.
+```bash
+# Install a plugin
+claude plugin install code-review@claude-plugins-official
+
+# List installed plugins
+claude plugin list
+
+# Add a marketplace
+claude plugin marketplace add acme-tools
+
+# Remove a plugin
+claude plugin uninstall code-review@claude-plugins-official
+
+# Reload plugins without restarting
+/reload-plugins
+```
+
+Interactive plugin management: `/plugin` in Claude Code session.
 
 ## Worked examples
 
-> *Populated by the research agent.* See also:
-> [`templates/.claude-plugin/plugin.json`](templates/.claude-plugin/plugin.json).
+See also: [`templates/.claude-plugin/plugin.json`](templates/.claude-plugin/plugin.json).
+
+Development workflow:
+```bash
+# Test locally without installing
+claude --plugin-dir ./my-plugin
+
+# Load multiple plugins
+claude --plugin-dir ./plugin-a --plugin-dir ./plugin-b.zip
+```
 
 ## Common mistakes (auto-corrected by `rules/plugins.md`)
 
-> *Populated by the research agent.*
+- Putting `skills/`, `agents/`, `hooks/`, or `commands/` inside `.claude-plugin/` — only `plugin.json` goes there.
+- Forgetting plugin skill namespace: `/hello` won't work; use `/my-plugin:hello`.
+- Not pinning plugin version in `marketplace.json` — omitting `version` means every commit triggers an update.
+- Expecting short skill names from plugins — plugin skills are always namespaced.
 
 ---
 

@@ -18,17 +18,74 @@ source: https://code.claude.com/docs/en/cli-reference.md
 
 ## Top-level invocation
 
-> *Populated by the research agent.* `claude`, `claude -p`, `claude --resume`, etc.
+| Command | Description |
+|---|---|
+| `claude` | Start interactive session |
+| `claude "query"` | Start interactive session with initial prompt |
+| `claude -p "query"` | Print mode (SDK): query and exit |
+| `cat file \| claude -p "query"` | Process piped content |
+| `claude -c` | Continue most recent conversation in current directory |
+| `claude -r "<session>" "query"` | Resume session by ID or name |
+| `claude update` | Update to latest version |
+| `claude install [version]` | Install specific version (e.g. `stable`, `latest`, `2.1.118`) |
 
 ## CLI flags
 
-> *Populated by the research agent.* Every documented flag with type,
-> default, and effect.
+Selected important flags (full list: `code.claude.com/docs/en/cli-reference.md`):
+
+| Flag | Description |
+|---|---|
+| `--print`, `-p` | Non-interactive (print) mode |
+| `--continue`, `-c` | Load most recent conversation |
+| `--resume`, `-r` | Resume session by ID or name |
+| `--model` | Set model for this session |
+| `--permission-mode` | Starting permission mode (see § *Permission modes*) |
+| `--dangerously-skip-permissions` | Equivalent to `--permission-mode bypassPermissions` |
+| `--output-format` | `text`, `json`, or `stream-json` (print mode only) |
+| `--max-turns` | Limit agentic turns (print mode only) |
+| `--max-budget-usd` | Spending cap (print mode only) |
+| `--append-system-prompt` | Append text to default system prompt |
+| `--system-prompt` | Replace entire system prompt |
+| `--system-prompt-file` | Replace system prompt from file |
+| `--append-system-prompt-file` | Append file to system prompt |
+| `--add-dir` | Add additional working directories |
+| `--tools` | Restrict which built-in tools are available |
+| `--allowedTools` | Tools that execute without permission prompts |
+| `--disallowedTools` | Tools removed from model's context |
+| `--mcp-config` | Load MCP servers from JSON file |
+| `--plugin-dir` | Load plugin from directory for this session |
+| `--plugin-url` | Fetch plugin from URL for this session |
+| `--agent` | Run session as named subagent |
+| `--worktree`, `-w` | Start in isolated git worktree |
+| `--bg` | Start as background agent |
+| `--bare` | Minimal mode: skip hooks, skills, plugins, MCP, CLAUDE.md |
+| `--verbose` | Show full turn-by-turn output |
+| `--debug` | Enable debug mode |
+| `--name`, `-n` | Set session display name |
+| `--effort` | Set effort level: `low`, `medium`, `high`, `xhigh`, `max` |
+| `--no-session-persistence` | Disable session persistence (print mode only) |
+| `--settings` | Path to settings JSON or inline JSON string |
+| `--version`, `-v` | Output version number |
 
 ## Subcommands
 
-> *Populated by the research agent.* `claude plugin`, `claude config`,
-> `claude mcp`, etc.
+| Subcommand | Description |
+|---|---|
+| `claude auth login` | Sign in (`--email`, `--sso`, `--console`) |
+| `claude auth logout` | Log out |
+| `claude auth status` | Show auth status as JSON |
+| `claude agents` | Open agent view for background sessions |
+| `claude attach <id>` | Attach to a background session |
+| `claude stop <id>` | Stop a background session |
+| `claude logs <id>` | Print output from background session |
+| `claude respawn <id>` | Restart a stopped session |
+| `claude rm <id>` | Remove a background session |
+| `claude mcp` | Configure MCP servers |
+| `claude plugin` | Manage plugins (alias: `claude plugins`) |
+| `claude project purge [path]` | Delete all local Claude Code state for a project |
+| `claude remote-control` | Start Remote Control server |
+| `claude setup-token` | Generate long-lived OAuth token for CI |
+| `claude auto-mode defaults` | Print built-in auto mode classifier rules |
 
 ## Environment variables
 
@@ -48,8 +105,20 @@ Source: `code.claude.com/docs/en/settings.md` (environment section). The researc
 
 ## Permission modes
 
-> *Populated by the research agent.* `default`, `acceptEdits`, `plan`,
-> `bypassPermissions` — semantics and use cases.
+| Mode | What runs without asking | Best for |
+|---|---|---|
+| `default` | Reads only | Getting started, sensitive work |
+| `acceptEdits` | Reads, file edits, and common filesystem commands | Iterating on code |
+| `plan` | Reads only (Claude proposes changes without making them) | Exploring before changing |
+| `auto` | Everything, with background safety checks | Long tasks, reducing prompts |
+| `dontAsk` | Only pre-approved tools | Locked-down CI and scripts |
+| `bypassPermissions` | Everything — skips permission layer entirely | Isolated containers/VMs only |
+
+Set at startup: `claude --permission-mode plan`  
+Set as default: `"defaultMode": "acceptEdits"` in `permissions` settings block  
+Cycle modes: `Shift+Tab` in interactive session  
+
+Protected paths are never auto-approved in any mode except `bypassPermissions`.
 
 ## Authentication
 

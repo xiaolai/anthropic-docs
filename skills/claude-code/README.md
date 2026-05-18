@@ -14,8 +14,8 @@ changes that affect the reference surface (schema fields, event
 names, flags, env vars) flow in.
 
 <!-- The two stamps below are auto-filled by the pipeline. -->
-**Claude Code version**: v<version>
-**Last updated**: <YYYY-MM-DD>
+**Claude Code version**: v2.1.143
+**Last updated**: 2026-05-18
 **Pipeline status**: see [`reports/`](reports/) for per-run records.
 
 ## What it does
@@ -166,7 +166,7 @@ and `git pull`.
 
 | Date | Result | Notes |
 |------|--------|-------|
-| — | — | — |
+| 2026-05-18 | review | research-only run (v2.1.143); validate-examples + check-populated failed → draft PR |
 
 ## For maintainers
 
