@@ -18,10 +18,10 @@ source: https://claude.com/docs/skills/overview.md
 
 ## What Skills are (user view)
 
-Skills are reusable task recipes — packaged instructions that teach
-Claude how to perform a specific workflow. Once installed, a user
-can invoke a skill in any conversation by referring to it; Claude
-loads the skill's instructions and follows them.
+Skills are directories containing instructions, scripts, and resources
+that Claude dynamically loads to handle specific tasks. Each skill has
+a `SKILL.md` file that defines when it should be activated and what
+instructions Claude should follow.
 
 Skills are the lightweight, scoped counterpart to plugins:
 
@@ -30,18 +30,99 @@ Skills are the lightweight, scoped counterpart to plugins:
 - A **plugin** bundles multiple skills, connectors, slash commands,
   and sub-agents (e.g., "the entire DevOps team's standard toolkit").
 
-## Where users find skills
+Skills follow the [Agent Skills specification](https://agentskills.io/specification)
+— an open, platform-agnostic standard. Skills you create can work
+across any platform adopting that standard.
 
-Source pages under
-[`https://claude.com/docs/skills/`](https://claude.com/docs/skills/)
-cover the user-facing surface:
+Source: [`skills/overview.md`](https://claude.com/docs/skills/overview.md).
 
-- Browsing the skill directory.
-- Installing a skill from the directory.
-- Installing a custom skill from a URL or file.
-- Managing installed skills (enable/disable, update, remove).
-- Per-conversation skill control (turn a skill on/off for a single
-  conversation).
+## Plan availability
+
+Skills require **Pro, Max, Team, or Enterprise** plan. The feature
+also requires code execution to be enabled.
+
+## Types of skills
+
+| Type | Description |
+|---|---|
+| **Anthropic skills** | Pre-built for document creation (Excel, Word, PowerPoint, PDF); activate automatically |
+| **Partner skills** | From partners like Notion, Figma, Atlassian; designed for MCP connector integration |
+| **Organization-provisioned** | Deployed org-wide by Team/Enterprise admins |
+| **Custom skills** | User-authored for specialized workflows |
+
+## Context-efficiency loading model
+
+Skills use progressive disclosure:
+
+1. **Metadata loading** — Claude reads skill names and descriptions at startup (~100 tokens each).
+2. **Activation** — when a task matches, Claude loads the full `SKILL.md`.
+3. **Resource loading** — additional files (scripts, references) loaded only when needed.
+
+## SKILL.md structure
+
+Minimum: a directory containing a `SKILL.md` file:
+
+```
+brand-guidelines/
+├── SKILL.md
+├── scripts/        # Optional: executable code (Python / JS / Bash)
+├── references/     # Optional: additional documentation
+└── assets/         # Optional: templates, images, data
+```
+
+The directory name must match the `name` field in `SKILL.md`.
+
+### Required frontmatter fields
+
+```markdown
+---
+name: brand-guidelines          # lowercase, hyphens, max 64 chars; matches dir name
+description: Apply Acme Corp brand voice…  # what it does and when to use it
+---
+```
+
+**Description length limits:**
+- **Claude.ai upload**: max **200 characters**
+- **Agent Skills spec**: allows up to 1024 characters
+
+### Optional frontmatter fields
+
+```markdown
+---
+dependencies: python>=3.8, pandas>=1.5.0, matplotlib
+---
+```
+
+`dependencies` — Claude installs these from PyPI / npm when loading the skill.
+
+### Packaging for upload
+
+ZIP the skill directory (directory must be inside the ZIP — not files at root):
+
+```
+# Correct
+my-skill.zip
+└── my-skill/
+    ├── SKILL.md
+    └── scripts/
+
+# Wrong — files at ZIP root fail upload
+my-skill.zip
+├── SKILL.md
+└── scripts/
+```
+
+### Validation
+
+```bash
+skills-ref validate ./my-skill
+```
+
+Validation tool: [github.com/agentskills/agentskills/tree/main/skills-ref](https://github.com/agentskills/agentskills/tree/main/skills-ref).
+
+Example skills library: [github.com/anthropics/skills](https://github.com/anthropics/skills/tree/main/skills).
+
+Source: [`skills/how-to.md`](https://claude.com/docs/skills/how-to.md).
 
 ## Activation model
 

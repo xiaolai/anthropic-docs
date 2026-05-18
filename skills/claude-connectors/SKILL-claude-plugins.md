@@ -28,14 +28,54 @@ Once installed, all four are wired together — a single install
 gives the user the connector + the skills that compose it + the
 commands that drive it.
 
+Plugins originated in Claude Code; the Claude Code plugin guide at
+[code.claude.com/docs/en/plugins](https://code.claude.com/docs/en/plugins)
+covers the manifest schema and authoring workflow.
+
+Source: [`plugins/overview.md`](https://claude.com/docs/plugins/overview.md).
+
 ## Where plugins are available
 
-- **Claude Code (CLI)** — `/plugin` commands, plugin marketplaces.
-- **Claude Cowork** — full plugin support (see
-  [`claude-cowork → SKILL-cowork.md`](../claude-cowork/SKILL-cowork.md)).
+| Platform | Support |
+|---|---|
+| **Claude Code (CLI)** | Full — create, install, use plugins |
+| **Claude Cowork** | Full — extends agentic, multi-step workflows |
 
-Plugins are NOT available on Claude.ai web or Mobile (as of this
-snapshot — check upstream for current state).
+Plugin support in Cowork is a **research preview for all paid Claude
+users**. Plugins are currently saved locally; org-wide sharing is
+coming. Plugins are NOT available on Claude.ai web or Mobile.
+
+## Plugin directory
+
+Anthropic has open-sourced 11 plugins at
+[claude.com/plugins-for/cowork](https://claude.com/plugins-for/cowork):
+
+| Plugin | Purpose |
+|---|---|
+| Productivity | Tasks, calendars, daily workflows |
+| Enterprise search | Find info across company tools and docs |
+| Sales | Prospect research, deal prep, sales process |
+| Finance | Financials, models, key metrics |
+| Data | Query, visualize, and interpret datasets |
+| Legal | Document review, risk flagging, compliance |
+| Marketing | Content, campaigns, launches |
+| Customer support | Triage, responses, solutions |
+| Product management | Specs, roadmaps, tracking |
+| Biology research | Literature search, results analysis |
+| Plugin Create | Create and customize new plugins from scratch |
+
+## Plugin composition details
+
+Plugins can include a `SETUP.md` skill to guide Claude through
+configuring any bundled MCP servers on first use.
+
+MCP configuration inside a plugin uses `.mcp.json` (supports remote
+MCPs, local MCPs, and MCPBs).
+
+Strong recommendation: use connectors from the
+[Connectors Directory](https://claude.com/docs/connectors/directory.md)
+or well-known developers — reduces user-facing warnings and increases
+chance of Anthropic Verified status.
 
 ## Plugin marketplaces
 
@@ -46,11 +86,9 @@ a URL pointing at a `marketplace.json` file. Users can:
 - Install plugins from a marketplace with one command.
 - Update / remove installed plugins.
 
-Anthropic operates a public plugin marketplace for the broader
-community. Organizations can run their own private marketplaces for
-internal-only plugins (common in Cowork on 3P deployments — see
-[`claude-cowork`](../claude-cowork/SKILL-cowork.md) for the "org-plugins
-directory" pattern).
+Anthropic operates a public plugin marketplace. In Claude Code, the
+official `claude-plugins-official` marketplace is automatically
+available to all users. Organizations can run private marketplaces.
 
 ## Installation scope
 
@@ -59,6 +97,29 @@ directory" pattern).
 | **User-global** | `~/.claude/plugins/` | Plugins you use across all projects |
 | **Project-local** | `<project>/.claude/plugins/` | Plugins specific to one codebase, committed to repo |
 | **Org-managed** | MDM-distributed | Cowork on 3P deployments |
+
+## Submitting a plugin to the directory
+
+The plugin directory ([claude.com/plugins-for/cowork](https://claude.com/plugins-for/cowork))
+is separate from the Connectors Directory (which is MCP-connector-only).
+
+**Requirements:**
+- Public GitHub repo (closed-source not accepted)
+- Pass `claude plugin validate` before submitting
+- Comply with [Anthropic Software Directory Terms](https://support.claude.com/en/articles/13145338-anthropic-software-directory-terms)
+  and [Policy](https://support.claude.com/en/articles/13145358-anthropic-software-directory-policy)
+
+**Submission forms:**
+- Claude.ai: [claude.ai/settings/plugins/submit](https://claude.ai/settings/plugins/submit)
+- Console: [platform.claude.com/plugins/submit](https://platform.claude.com/plugins/submit)
+
+Submit a GitHub link or ZIP file. After publish, updates pushed to
+your GitHub repo are picked up automatically — no re-submission needed.
+
+**Anthropic Verified badge:** plugins that pass additional quality and
+safety review. Community plugins have basic automated review only.
+
+Source: [`plugins/submit.md`](https://claude.com/docs/plugins/submit.md).
 
 ## Related surfaces
 

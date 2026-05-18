@@ -4,7 +4,7 @@ description: |
   Deep reference for MCP Apps for Claude Desktop + Claude.ai —
   packaging via MCPB (.mcpb desktop extensions) and the visual +
   interaction design guidelines for the in-conversation app surface.
-  Covers display modes (inline card, expanded view, sidebar),
+  Covers display modes (inline card, inline carousel, fullscreen, pip),
   transparent theming, instance supersession, external link
   handling, cross-platform compatibility (Claude + ChatGPT), and
   the MCPB CLI / manifest schema.
@@ -164,10 +164,26 @@ happen to appear alongside.
 
 ### Display modes
 
-- **Inline card** — compact, embedded directly in conversation. Good
-  for summaries, confirmations, quick actions.
-- **Expanded view** — larger surface for richer interactions.
-- **Sidebar** — persistent context alongside the conversation.
+Declare supported modes via `appCapabilities.availableDisplayModes` in `ui/initialize`.
+The host confirms supported modes; request a switch with `ui/request-display-mode`.
+Mode IDs: `inline`, `fullscreen`, `pip`.
+
+| Mode | Description | Key constraints |
+|---|---|---|
+| **Inline card** | Compact, embedded in conversation. Summaries, confirmations, quick actions. | Max 500px height; max 2 actions; max 4–5 data points; no nested scroll; no menus/popovers |
+| **Inline carousel** | Side-by-side items for browsing (product listings, search results, galleries). | 3–8 items; image + title + metadata + 1 CTA per card; consistent card dimensions |
+| **Fullscreen** | Immersive, complex interactions. Conversation composer stays available. | Avoid floating panels; use collapsible sidebars, tabs, or pagination; provide own fullscreen button |
+| **PiP** | Picture-in-picture — persistent overlay while conversation continues. | Declared via `pip` in `availableDisplayModes` |
+
+**Host layout hints** — `hostContext.safeAreaInsets` (`{top, right, bottom, left}` in px):
+honor these to avoid notches, home indicator, and composer overlay.
+
+**Content security policy** — declare external origins per resource via `_meta.ui.csp`:
+```json
+{ "_meta": { "ui": { "csp": { "default-src": ["'self'", "https://api.example.com"] } } } }
+```
+
+Source: [`mcp-apps/design-guidelines.md`](https://claude.com/docs/connectors/building/mcp-apps/design-guidelines.md).
 
 ### Transparent theming
 
@@ -194,7 +210,18 @@ Reference: [`mcp-apps/external-links.md`](https://claude.com/docs/connectors/bui
 ### Cross-platform compatibility (Claude + ChatGPT)
 
 Build MCP Apps that work with both Claude and ChatGPT using a
-single codebase. Worth the constraints if your audience spans both.
+single codebase. Use `registerAppTool()` / `registerAppResource()`
+(auto-generates platform-specific metadata) and call `App.connect()`
+without an explicit transport — the SDK detects the host.
+
+**Domain handling for Claude** — `Resource._meta.ui.domain` must be
+a hash-based subdomain. Compute it from your server URL:
+
+```bash
+node -e 'const u="https://your-server.com/mcp"; \
+  console.log(require("crypto").createHash("sha256") \
+  .update(u).digest("hex").slice(0,32)+".claudemcpcontent.com")'
+```
 
 Reference: [`mcp-apps/cross-compatibility.md`](https://claude.com/docs/connectors/building/mcp-apps/cross-compatibility.md).
 
