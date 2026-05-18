@@ -21,6 +21,30 @@ scope. Typical consumers: security teams running SIEMs, DLP teams
 monitoring sensitive-content flow, compliance officers building
 audit reports.
 
+## Key facts (at intent time)
+
+- **Auth:** uses an **admin-scoped API key**, not a regular API key.
+  Mint one in the Anthropic Console under the org's API Keys section
+  (admin-only).
+- **Header:** standard `x-api-key: <admin-key>` plus the usual
+  `anthropic-version`. No `anthropic-beta` header required (compliance
+  is stable, not beta).
+- **Plan gating:** Compliance API endpoints return `403` for orgs
+  without the required plan. Check eligibility at
+  [`compliance-api-access`](https://platform.claude.com/docs/en/manage-claude/compliance-api-access.md)
+  before integration.
+- **Pagination:** all list endpoints use cursor pagination
+  (`next_page` field in the response). Treat as a stream.
+- **Retention:** activity feed events are retained per the org's
+  data-retention setting (default 30d, longer on enterprise plans).
+  See [`api-and-data-retention`](https://platform.claude.com/docs/en/manage-claude/api-and-data-retention.md).
+- **Rate limits:** compliance endpoints are subject to their own
+  rate-limit bucket, separate from Messages rate limits. Monitor
+  via the rate-limits API.
+- **Concept overview** lives in
+  [`anthropic-platform-features → SKILL-manage-claude.md`](../anthropic-platform-features/SKILL-manage-claude.md);
+  this surface is the wire reference.
+
 ## Endpoint catalog
 
 Endpoints under `/v1/organizations/compliance/...`. Each page in
@@ -29,11 +53,11 @@ and pagination.
 
 | Topic | Source dir |
 |---|---|
-| Compliance API section index | [`compliance.md`](docs-snapshot/platform.claude.com/en/api/compliance.md) |
-| Activity feed | [`compliance/`](docs-snapshot/platform.claude.com/en/api/compliance/) |
-| Content data (per-message records) | [`compliance/`](docs-snapshot/platform.claude.com/en/api/compliance/) |
-| Org-level data | [`compliance/`](docs-snapshot/platform.claude.com/en/api/compliance/) |
-| Errors | [`compliance/`](docs-snapshot/platform.claude.com/en/api/compliance/) |
+| Compliance API section index | [`compliance.md`](https://platform.claude.com/docs/en/api/compliance.md) |
+| Activity feed | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
+| Content data (per-message records) | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
+| Org-level data | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
+| Errors | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
 
 The conceptual coverage of each (what to use it for, what fields
 mean, integration patterns) lives in the platform-features
@@ -43,7 +67,7 @@ for the wire shape.
 ## Source pages
 
 37 pages under
-[`docs-snapshot/platform.claude.com/en/api/compliance/`](docs-snapshot/platform.claude.com/en/api/compliance/)
+[`https://platform.claude.com/docs/en/api/compliance/`](https://platform.claude.com/docs/en/api/compliance/)
 — see directory listing for the current per-endpoint set.
 
 ---

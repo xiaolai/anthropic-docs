@@ -35,18 +35,18 @@ required:
 
 | Resource | Source dir |
 |---|---|
-| Beta API section index | [`beta.md`](docs-snapshot/platform.claude.com/en/api/beta.md) |
-| `agents/` | [`beta/agents/`](docs-snapshot/platform.claude.com/en/api/beta/agents/) |
-| `environments/` | [`beta/environments/`](docs-snapshot/platform.claude.com/en/api/beta/environments/) |
-| `files/` | [`beta/files/`](docs-snapshot/platform.claude.com/en/api/beta/files/) |
-| `memory_stores/` | [`beta/memory_stores/`](docs-snapshot/platform.claude.com/en/api/beta/memory_stores/) |
-| `messages/` | [`beta/messages/`](docs-snapshot/platform.claude.com/en/api/beta/messages/) (extends stable messages) |
-| `models/` | [`beta/models/`](docs-snapshot/platform.claude.com/en/api/beta/models/) |
-| `sessions/` | [`beta/sessions/`](docs-snapshot/platform.claude.com/en/api/beta/sessions/) |
-| `skills/` | [`beta/skills/`](docs-snapshot/platform.claude.com/en/api/beta/skills/) (Skills upload/management API) |
-| `user_profiles/` | [`beta/user_profiles/`](docs-snapshot/platform.claude.com/en/api/beta/user_profiles/) |
-| `vaults/` | [`beta/vaults/`](docs-snapshot/platform.claude.com/en/api/beta/vaults/) |
-| `webhooks.md` | [`beta/webhooks.md`](docs-snapshot/platform.claude.com/en/api/beta/webhooks.md) |
+| Beta API section index | [`beta.md`](https://platform.claude.com/docs/en/api/beta.md) |
+| `agents/` | [`beta/agents/`](https://platform.claude.com/docs/en/api/beta/agents/) |
+| `environments/` | [`beta/environments/`](https://platform.claude.com/docs/en/api/beta/environments/) |
+| `files/` | [`beta/files/`](https://platform.claude.com/docs/en/api/beta/files/) |
+| `memory_stores/` | [`beta/memory_stores/`](https://platform.claude.com/docs/en/api/beta/memory_stores/) |
+| `messages/` | [`beta/messages/`](https://platform.claude.com/docs/en/api/beta/messages/) (extends stable messages) |
+| `models/` | [`beta/models/`](https://platform.claude.com/docs/en/api/beta/models/) |
+| `sessions/` | [`beta/sessions/`](https://platform.claude.com/docs/en/api/beta/sessions/) |
+| `skills/` | [`beta/skills/`](https://platform.claude.com/docs/en/api/beta/skills/) (Skills upload/management API) |
+| `user_profiles/` | [`beta/user_profiles/`](https://platform.claude.com/docs/en/api/beta/user_profiles/) |
+| `vaults/` | [`beta/vaults/`](https://platform.claude.com/docs/en/api/beta/vaults/) |
+| `webhooks.md` | [`beta/webhooks.md`](https://platform.claude.com/docs/en/api/beta/webhooks.md) |
 
 Most of these align with the Managed Agents product surface —
 see [`anthropic-platform-features → SKILL-managed-agents.md`](../anthropic-platform-features/SKILL-managed-agents.md)
@@ -70,7 +70,7 @@ When a beta is retired:
 ## Source pages
 
 107 pages under
-[`docs-snapshot/platform.claude.com/en/api/beta/`](docs-snapshot/platform.claude.com/en/api/beta/)
+[`https://platform.claude.com/docs/en/api/beta/`](https://platform.claude.com/docs/en/api/beta/)
 — see directory listing for the current per-endpoint set across
 the 11 beta resources.
 

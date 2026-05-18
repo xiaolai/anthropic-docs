@@ -34,7 +34,7 @@ Characteristics:
 - Works offline.
 - No OAuth required.
 
-Reference: [`building/mcpb.md`](docs-snapshot/claude.com/connectors/building/mcpb.md).
+Reference: [`building/mcpb.md`](https://claude.com/docs/connectors/building/mcpb.md).
 
 ### MCPB vs remote: which to build
 
@@ -117,16 +117,16 @@ All three open an installation UI for review + permission grant.
 ### Submission to the Connectors Directory
 
 If your MCPB has broader value, submit to the directory:
-[`building/submission.md`](docs-snapshot/claude.com/connectors/building/submission.md).
+[`building/submission.md`](https://claude.com/docs/connectors/building/submission.md).
 Requires mandatory tool annotations, privacy policy, working
 examples per tool, test credentials, and review per
-[`review-criteria.md`](docs-snapshot/claude.com/connectors/building/review-criteria.md).
+[`review-criteria.md`](https://claude.com/docs/connectors/building/review-criteria.md).
 
 ---
 
 ## Part 2: MCP Apps design guidelines
 
-> Source: [`building/mcp-apps/design-guidelines.md`](docs-snapshot/claude.com/connectors/building/mcp-apps/design-guidelines.md).
+> Source: [`building/mcp-apps/design-guidelines.md`](https://claude.com/docs/connectors/building/mcp-apps/design-guidelines.md).
 
 ### Core principles
 
@@ -174,7 +174,7 @@ happen to appear alongside.
 Make your widget background transparent and style with Claude's
 style variables — blends seamlessly into the host UI across themes.
 
-Reference: [`mcp-apps/transparent-theming.md`](docs-snapshot/claude.com/connectors/building/mcp-apps/transparent-theming.md).
+Reference: [`mcp-apps/transparent-theming.md`](https://claude.com/docs/connectors/building/mcp-apps/transparent-theming.md).
 
 ### Instance supersession
 
@@ -182,36 +182,36 @@ When a tool is called more than once in a conversation, keep only
 the newest copy of the widget active. Prevents stale widgets from
 piling up.
 
-Reference: [`mcp-apps/instance-supersession.md`](docs-snapshot/claude.com/connectors/building/mcp-apps/instance-supersession.md).
+Reference: [`mcp-apps/instance-supersession.md`](https://claude.com/docs/connectors/building/mcp-apps/instance-supersession.md).
 
 ### External links
 
 How Claude handles `ui/open-link` requests; how directory connectors
 can allowlist destinations to skip the confirmation modal.
 
-Reference: [`mcp-apps/external-links.md`](docs-snapshot/claude.com/connectors/building/mcp-apps/external-links.md).
+Reference: [`mcp-apps/external-links.md`](https://claude.com/docs/connectors/building/mcp-apps/external-links.md).
 
 ### Cross-platform compatibility (Claude + ChatGPT)
 
 Build MCP Apps that work with both Claude and ChatGPT using a
 single codebase. Worth the constraints if your audience spans both.
 
-Reference: [`mcp-apps/cross-compatibility.md`](docs-snapshot/claude.com/connectors/building/mcp-apps/cross-compatibility.md).
+Reference: [`mcp-apps/cross-compatibility.md`](https://claude.com/docs/connectors/building/mcp-apps/cross-compatibility.md).
 
 ### Getting started
 
-[`mcp-apps/getting-started.md`](docs-snapshot/claude.com/connectors/building/mcp-apps/getting-started.md)
+[`mcp-apps/getting-started.md`](https://claude.com/docs/connectors/building/mcp-apps/getting-started.md)
 walks through testing MCP Apps in Claude.
 
 ### Troubleshooting
 
-[`mcp-apps/troubleshooting.md`](docs-snapshot/claude.com/connectors/building/mcp-apps/troubleshooting.md)
+[`mcp-apps/troubleshooting.md`](https://claude.com/docs/connectors/building/mcp-apps/troubleshooting.md)
 covers common rendering, theming, and link-handling issues.
 
 ## Page index
 
 8 MCP-Apps + 1 MCPB source page under
-[`docs-snapshot/claude.com/connectors/building/`](docs-snapshot/claude.com/connectors/building/):
+[`https://claude.com/docs/connectors/building/`](https://claude.com/docs/connectors/building/):
 
 | Page | Topic |
 |---|---|

@@ -8,9 +8,14 @@
 # should be routed to a draft PR by the workflow, not pushed to main.
 #
 # Env overrides:
-#   DIFF_THRESHOLD_PCT  default 20  (integer 0..100)
-#   DIFF_BASE           default HEAD (any git ref / commit-ish)
-#   FORCE_DIFF_CHECK    default 0  (set to 1 to enforce even in pre-first-commit / no-HEAD state)
+#   DIFF_THRESHOLD_PCT     default 20  (integer 0..100)
+#   DIFF_BASE              default HEAD (any git ref / commit-ish)
+#   FORCE_DIFF_CHECK       default 0   (set to 1 to enforce even in
+#                                       pre-first-commit / no-HEAD state)
+#   SKIP_DIFF_SIZE_CHECK   default 0   (maintainer escape hatch — set to 1
+#                                       for a legitimate one-shot reformat
+#                                       that exceeds the threshold
+#                                       cosmetically; never set in CI)
 
 set -uo pipefail
 
@@ -56,6 +61,19 @@ if ! git rev-parse --verify "$BASE" >/dev/null 2>&1; then
     exit 1
   fi
   echo "NOTE base ref '$BASE' does not exist (no prior commit?) — skipping diff-size gate."
+  exit 0
+fi
+
+# Maintainer escape hatch for legitimate one-shot reformats / refactors
+# that exceed the threshold cosmetically without changing information
+# content (e.g., a sed-driven link-target rewrite across many files).
+# The gate exists to catch *unbounded LLM rewrites in CI* — when a human
+# has deliberately authored the diff, they should be able to declare it.
+# FORCE_DIFF_CHECK=1 wins over SKIP_DIFF_SIZE_CHECK=1 (safety first).
+if [[ "${FORCE_DIFF_CHECK:-0}" != "1" && "${SKIP_DIFF_SIZE_CHECK:-0}" == "1" ]]; then
+  echo "SKIP_DIFF_SIZE_CHECK=1 — bypassing diff-size gate (maintainer escape hatch)."
+  echo "Use only for legitimate human-authored reformats. CI runs of this script"
+  echo "do NOT set this env, so the daily pipeline still gates LLM diffs."
   exit 0
 fi
 

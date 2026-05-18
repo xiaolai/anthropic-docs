@@ -31,7 +31,7 @@ remote (many clients) — not both. Choose at design time.
 ## Building a server
 
 The canonical guide:
-[`develop/build-server.md`](docs-snapshot/modelcontextprotocol.io/docs/develop/build-server.md).
+[`develop/build-server.md`](https://modelcontextprotocol.io/docs/develop/build-server.md).
 
 ### TypeScript
 
@@ -113,7 +113,7 @@ can initiate:
 
 ## Build with Agent Skills
 
-[`develop/build-with-agent-skills.md`](docs-snapshot/modelcontextprotocol.io/docs/develop/build-with-agent-skills.md)
+[`develop/build-with-agent-skills.md`](https://modelcontextprotocol.io/docs/develop/build-with-agent-skills.md)
 covers using Anthropic-style Agent Skills to guide AI coding
 assistants through MCP server design and implementation — a
 self-referential pattern (skills helping you build MCP servers
@@ -121,7 +121,7 @@ that themselves teach skills).
 
 ## Tutorials
 
-Walk-throughs under [`tutorials/`](docs-snapshot/modelcontextprotocol.io/tutorials/)
+Walk-throughs under [`tutorials/`](https://modelcontextprotocol.io/tutorials/)
 cover common server-building scenarios end-to-end.
 
 ## Reference server gallery
@@ -144,19 +144,19 @@ examples for new server authors.
 
 ## Examples
 
-[`examples.md`](docs-snapshot/modelcontextprotocol.io/examples.md)
+[`examples.md`](https://modelcontextprotocol.io/examples.md)
 catalogs example server implementations beyond the reference
 gallery.
 
 ## Extensions
 
-[`extensions/`](docs-snapshot/modelcontextprotocol.io/extensions/)
+[`extensions/`](https://modelcontextprotocol.io/extensions/)
 documents experimental protocol extensions — features under
 discussion that haven't made it into the core spec yet.
 
 ## SDK tiering
 
-[`community/sdk-tiers.md`](docs-snapshot/modelcontextprotocol.io/community/sdk-tiers.md)
+[`community/sdk-tiers.md`](https://modelcontextprotocol.io/community/sdk-tiers.md)
 defines feature-completeness, protocol-support, and maintenance
 commitment levels for MCP SDKs. Useful when choosing a non-TypeScript /
 non-Python SDK from the community.
@@ -172,9 +172,9 @@ Use during development.
 
 | Page | Topic |
 |---|---|
-| [`tutorials/`](docs-snapshot/modelcontextprotocol.io/tutorials/) | Walk-through tutorials |
-| [`sdk.md`](docs-snapshot/modelcontextprotocol.io/sdk.md) | SDK landing page |
-| [`tools/`](docs-snapshot/modelcontextprotocol.io/tools/) | MCP development tools |
+| [`tutorials/`](https://modelcontextprotocol.io/tutorials/) | Walk-through tutorials |
+| [`sdk.md`](https://modelcontextprotocol.io/sdk.md) | SDK landing page |
+| [`tools/`](https://modelcontextprotocol.io/tools/) | MCP development tools |
 
 ---
 

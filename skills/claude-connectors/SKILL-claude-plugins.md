@@ -73,7 +73,7 @@ directory" pattern).
 ## Page index
 
 All source pages under
-[`docs-snapshot/claude.com/plugins/`](docs-snapshot/claude.com/plugins/)
+[`https://claude.com/docs/plugins/`](https://claude.com/docs/plugins/)
 — see the directory listing for the current set.
 
 ---

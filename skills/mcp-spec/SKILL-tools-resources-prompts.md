@@ -253,18 +253,18 @@ corresponding capability declaration.
 
 | Path | Topic |
 |---|---|
-| [`specification/2025-11-25/server/tools.md`](docs-snapshot/modelcontextprotocol.io/specification/2025-11-25/server/) | Tools spec |
-| [`specification/2025-11-25/server/resources.md`](docs-snapshot/modelcontextprotocol.io/specification/2025-11-25/server/) | Resources spec |
-| [`specification/2025-11-25/server/prompts.md`](docs-snapshot/modelcontextprotocol.io/specification/2025-11-25/server/) | Prompts spec |
-| [`specification/2025-11-25/client/sampling.md`](docs-snapshot/modelcontextprotocol.io/specification/2025-11-25/client/) | Sampling spec |
-| [`specification/2025-11-25/client/roots.md`](docs-snapshot/modelcontextprotocol.io/specification/2025-11-25/client/) | Roots spec |
-| [`specification/2025-11-25/client/elicitation.md`](docs-snapshot/modelcontextprotocol.io/specification/2025-11-25/client/) | Elicitation spec |
-| [`specification/2025-11-25/server/utilities/completion.md`](docs-snapshot/modelcontextprotocol.io/specification/2025-11-25/server/) | Completion spec |
+| [`specification/2025-11-25/server/tools.md`](https://modelcontextprotocol.io/specification/2025-11-25/server/) | Tools spec |
+| [`specification/2025-11-25/server/resources.md`](https://modelcontextprotocol.io/specification/2025-11-25/server/) | Resources spec |
+| [`specification/2025-11-25/server/prompts.md`](https://modelcontextprotocol.io/specification/2025-11-25/server/) | Prompts spec |
+| [`specification/2025-11-25/client/sampling.md`](https://modelcontextprotocol.io/specification/2025-11-25/client/) | Sampling spec |
+| [`specification/2025-11-25/client/roots.md`](https://modelcontextprotocol.io/specification/2025-11-25/client/) | Roots spec |
+| [`specification/2025-11-25/client/elicitation.md`](https://modelcontextprotocol.io/specification/2025-11-25/client/) | Elicitation spec |
+| [`specification/2025-11-25/server/utilities/completion.md`](https://modelcontextprotocol.io/specification/2025-11-25/server/) | Completion spec |
 
 Plus the conceptual overviews:
 
-- [`learn/server-concepts.md`](docs-snapshot/modelcontextprotocol.io/docs/learn/server-concepts.md)
-- [`learn/client-concepts.md`](docs-snapshot/modelcontextprotocol.io/docs/learn/client-concepts.md)
+- [`learn/server-concepts.md`](https://modelcontextprotocol.io/docs/learn/server-concepts.md)
+- [`learn/client-concepts.md`](https://modelcontextprotocol.io/docs/learn/client-concepts.md)
 
 ---
 

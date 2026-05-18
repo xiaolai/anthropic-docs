@@ -33,7 +33,7 @@ Skills are the lightweight, scoped counterpart to plugins:
 ## Where users find skills
 
 Source pages under
-[`docs-snapshot/claude.com/skills/`](docs-snapshot/claude.com/skills/)
+[`https://claude.com/docs/skills/`](https://claude.com/docs/skills/)
 cover the user-facing surface:
 
 - Browsing the skill directory.
@@ -84,7 +84,7 @@ For Cowork on 3P, skill distribution happens via MDM — see
 ## Page index
 
 All source pages under
-[`docs-snapshot/claude.com/skills/`](docs-snapshot/claude.com/skills/)
+[`https://claude.com/docs/skills/`](https://claude.com/docs/skills/)
 — see the directory listing for the current set.
 
 ---

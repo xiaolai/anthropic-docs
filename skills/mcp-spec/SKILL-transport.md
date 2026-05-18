@@ -137,7 +137,7 @@ For OAuth, the spec defines a recommended flow that supports
 public clients (no client secret), suitable for the typical MCP
 client deployment.
 
-Reference: [`specification/2025-11-25/basic/`](docs-snapshot/modelcontextprotocol.io/specification/2025-11-25/basic/)
+Reference: [`specification/2025-11-25/basic/`](https://modelcontextprotocol.io/specification/2025-11-25/basic/)
 under the `auth*` pages.
 
 ## Connection lifecycle (transport-agnostic)

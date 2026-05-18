@@ -28,10 +28,10 @@ Word, and Outlook without leaving the app.
 
 | App        | Capabilities                                                                         | Source page |
 |------------|--------------------------------------------------------------------------------------|-------------|
-| **Excel**      | Read/write cells, formulas, formatting, pivot tables, charts                     | [`excel.md`](docs-snapshot/claude.com/office-agents/excel.md) |
-| **PowerPoint** | Read, edit, generate slides using existing templates                             | [`powerpoint.md`](docs-snapshot/claude.com/office-agents/powerpoint.md) |
-| **Word**       | Draft, redline, review documents with tracked changes and comment-driven editing | [`word.md`](docs-snapshot/claude.com/office-agents/word.md) |
-| **Outlook**    | Inbox triage, voice-matched reply drafts, thread summaries, meeting-time finding | [`outlook.md`](docs-snapshot/claude.com/office-agents/outlook.md) |
+| **Excel**      | Read/write cells, formulas, formatting, pivot tables, charts                     | [`excel.md`](https://claude.com/docs/office-agents/excel.md) |
+| **PowerPoint** | Read, edit, generate slides using existing templates                             | [`powerpoint.md`](https://claude.com/docs/office-agents/powerpoint.md) |
+| **Word**       | Draft, redline, review documents with tracked changes and comment-driven editing | [`word.md`](https://claude.com/docs/office-agents/word.md) |
+| **Outlook**    | Inbox triage, voice-matched reply drafts, thread summaries, meeting-time finding | [`outlook.md`](https://claude.com/docs/office-agents/outlook.md) |
 
 ## Work-across-apps shared state
 
@@ -41,7 +41,7 @@ e.g., findings from an Outlook inbox triage can be referenced when
 drafting a PowerPoint summary, without re-uploading or repeating
 context.
 
-See [`work-across-apps.md`](docs-snapshot/claude.com/office-agents/work-across-apps.md).
+See [`work-across-apps.md`](https://claude.com/docs/office-agents/work-across-apps.md).
 
 ## Outlook setup: Microsoft Graph consent
 
@@ -50,7 +50,7 @@ deployment. The consent flow grants the M365 add-in the Graph scopes
 it needs to triage inbox, summarize threads, and access calendar for
 meeting-time finding.
 
-See [`outlook.md` § Grant Microsoft Graph consent](docs-snapshot/claude.com/office-agents/outlook.md).
+See [`outlook.md` § Grant Microsoft Graph consent](https://claude.com/docs/office-agents/outlook.md).
 
 ## Connectors and Skills integration
 
@@ -63,21 +63,21 @@ across Claude products:
   pipeline review") that any user can invoke inside Excel /
   PowerPoint / Word / Outlook.
 
-See [`connectors-and-skills.md`](docs-snapshot/claude.com/office-agents/connectors-and-skills.md).
+See [`connectors-and-skills.md`](https://claude.com/docs/office-agents/connectors-and-skills.md).
 
 ## Dictation
 
 Speak prompts instead of typing them. The dictation surface is
 available across all four M365 apps.
 
-See [`dictation.md`](docs-snapshot/claude.com/office-agents/dictation.md).
+See [`dictation.md`](https://claude.com/docs/office-agents/dictation.md).
 
 ## FSI plugins
 
 Pre-built plugins for financial-services workflows (modeling,
 disclosures, compliance reviews) ship as a dedicated plugin bundle.
 
-See [`fsi-plugins.md`](docs-snapshot/claude.com/office-agents/fsi-plugins.md).
+See [`fsi-plugins.md`](https://claude.com/docs/office-agents/fsi-plugins.md).
 
 ## Third-party platform deployment
 
@@ -87,13 +87,13 @@ supported by [Cowork on 3P](SKILL-cowork.md). This decouples M365
 deployment from Anthropic's API for organizations with the same
 residency / regulatory drivers.
 
-See [`third-party-platforms.md`](docs-snapshot/claude.com/office-agents/third-party-platforms.md).
+See [`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md).
 
 ## Enterprise readiness
 
 Security architecture diagrams, OpenTelemetry audit setup, usage
 analytics, and spend-tracking conventions live in
-[`enterprise-readiness.md`](docs-snapshot/claude.com/office-agents/enterprise-readiness.md).
+[`enterprise-readiness.md`](https://claude.com/docs/office-agents/enterprise-readiness.md).
 
 Highlights:
 
@@ -106,7 +106,7 @@ Highlights:
 ## Page index
 
 All 11 source pages mirrored under
-[`docs-snapshot/claude.com/office-agents/`](docs-snapshot/claude.com/office-agents/):
+[`https://claude.com/docs/office-agents/`](https://claude.com/docs/office-agents/):
 
 | Page | Topic |
 |---|---|

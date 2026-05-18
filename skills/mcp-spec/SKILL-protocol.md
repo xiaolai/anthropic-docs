@@ -31,7 +31,7 @@ client; remote HTTP servers typically serve many.
 | **MCP Client** | Per-server connection holder inside the host |
 | **MCP Server** | Program providing context (tools/resources/prompts) |
 
-Source: [`learn/architecture.md`](docs-snapshot/modelcontextprotocol.io/learn/architecture.md).
+Source: [`learn/architecture.md`](https://modelcontextprotocol.io/docs/learn/architecture.md).
 
 ## Two layers
 
@@ -62,7 +62,7 @@ All MCP messages are JSON-RPC 2.0:
 3. Client sends `notifications/initialized` (a notification, no
    response expected) — operation phase begins.
 
-See [`specification/2025-11-25/basic/`](docs-snapshot/modelcontextprotocol.io/specification/2025-11-25/basic/)
+See [`specification/2025-11-25/basic/`](https://modelcontextprotocol.io/specification/2025-11-25/basic/)
 for the formal lifecycle spec.
 
 ## Capability negotiation
@@ -109,7 +109,7 @@ Standard JSON-RPC error codes plus MCP-specific extensions:
 | -32000…-32099 | Implementation-defined server errors |
 
 MCP-defined error semantics live in the spec under
-[`specification/2025-11-25/basic/`](docs-snapshot/modelcontextprotocol.io/specification/2025-11-25/basic/).
+[`specification/2025-11-25/basic/`](https://modelcontextprotocol.io/specification/2025-11-25/basic/).
 
 ## Protocol versioning
 
@@ -117,7 +117,7 @@ Version string format: `YYYY-MM-DD` — the date of the last
 backwards-incompatible change.
 
 - **Current**: `2025-11-25`. See
-  [`specification/2025-11-25/`](docs-snapshot/modelcontextprotocol.io/specification/2025-11-25/).
+  [`specification/2025-11-25/`](https://modelcontextprotocol.io/specification/2025-11-25/).
 - **Draft**: in-progress, not for production use.
 - **Final**: past, complete, never changes.
 
@@ -128,25 +128,25 @@ versions simultaneously but MUST agree on a single version per
 session. If negotiation fails, the connection terminates with an
 appropriate error.
 
-Reference: [`learn/versioning.md`](docs-snapshot/modelcontextprotocol.io/learn/versioning.md).
+Reference: [`learn/versioning.md`](https://modelcontextprotocol.io/docs/learn/versioning.md).
 
 ## Specification subtree
 
 | Path | Topic |
 |---|---|
-| [`specification/2025-11-25/basic/`](docs-snapshot/modelcontextprotocol.io/specification/2025-11-25/basic/) | Lifecycle, framing, transports, auth, utilities |
-| [`specification/2025-11-25/client/`](docs-snapshot/modelcontextprotocol.io/specification/2025-11-25/client/) | Client features (sampling, roots, elicitation) |
-| [`specification/2025-11-25/server/`](docs-snapshot/modelcontextprotocol.io/specification/2025-11-25/server/) | Server features (tools, resources, prompts) |
-| [`specification/2025-11-25/architecture/`](docs-snapshot/modelcontextprotocol.io/specification/2025-11-25/architecture/) | Architectural overview |
-| [`specification/2025-11-25/changelog.md`](docs-snapshot/modelcontextprotocol.io/specification/2025-11-25/changelog.md) | Per-version changelog |
-| [`specification/2025-11-25/schema.md`](docs-snapshot/modelcontextprotocol.io/specification/2025-11-25/schema.md) | TypeScript / JSON-Schema definitions |
+| [`specification/2025-11-25/basic/`](https://modelcontextprotocol.io/specification/2025-11-25/basic/) | Lifecycle, framing, transports, auth, utilities |
+| [`specification/2025-11-25/client/`](https://modelcontextprotocol.io/specification/2025-11-25/client/) | Client features (sampling, roots, elicitation) |
+| [`specification/2025-11-25/server/`](https://modelcontextprotocol.io/specification/2025-11-25/server/) | Server features (tools, resources, prompts) |
+| [`specification/2025-11-25/architecture/`](https://modelcontextprotocol.io/specification/2025-11-25/architecture/) | Architectural overview |
+| [`specification/2025-11-25/changelog.md`](https://modelcontextprotocol.io/specification/2025-11-25/changelog.md) | Per-version changelog |
+| [`specification/2025-11-25/schema.md`](https://modelcontextprotocol.io/specification/2025-11-25/schema.md) | TypeScript / JSON-Schema definitions |
 
 ## Specification Enhancement Proposals (SEPs)
 
 Protocol evolution happens via SEPs — Specification Enhancement
 Proposals. The process is documented at
-[`community/sep-guidelines.md`](docs-snapshot/modelcontextprotocol.io/community/sep-guidelines.md).
-Active SEPs live under [`seps/`](docs-snapshot/modelcontextprotocol.io/seps/).
+[`community/sep-guidelines.md`](https://modelcontextprotocol.io/community/sep-guidelines.md).
+Active SEPs live under [`seps/`](https://modelcontextprotocol.io/seps/).
 
 ---
 

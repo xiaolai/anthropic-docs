@@ -42,8 +42,8 @@ inference provider. When credentials are present, the sign-in screen
 offers an option to skip Anthropic authentication and start using the
 3P configuration instead.
 
-Source: [`cowork/overview.md`](docs-snapshot/claude.com/cowork/overview.md),
-[`cowork/3p/overview.md`](docs-snapshot/claude.com/cowork/3p/overview.md).
+Source: [`cowork/overview.md`](https://claude.com/docs/cowork/overview.md),
+[`cowork/3p/overview.md`](https://claude.com/docs/cowork/3p/overview.md).
 
 ## Cowork on 3P: who it's for
 
@@ -76,10 +76,10 @@ option.
 
 | Provider | Setup page | Authentication |
 |---|---|---|
-| **Amazon Bedrock** | [`3p/bedrock.md`](docs-snapshot/claude.com/cowork/3p/bedrock.md) | [`3p/bedrock-aws-sign-in.md`](docs-snapshot/claude.com/cowork/3p/bedrock-aws-sign-in.md) |
-| **Google Cloud Vertex AI** | [`3p/vertex.md`](docs-snapshot/claude.com/cowork/3p/vertex.md) | [`3p/vertex-google-sign-in.md`](docs-snapshot/claude.com/cowork/3p/vertex-google-sign-in.md) |
-| **Microsoft Foundry (preview)** | [`3p/foundry.md`](docs-snapshot/claude.com/cowork/3p/foundry.md) | (uses Azure / Foundry tokens) |
-| **LLM Gateway** (any compatible provider) | [`3p/gateway.md`](docs-snapshot/claude.com/cowork/3p/gateway.md) | [`3p/gateway-sso.md`](docs-snapshot/claude.com/cowork/3p/gateway-sso.md) |
+| **Amazon Bedrock** | [`3p/bedrock.md`](https://claude.com/docs/cowork/3p/bedrock.md) | [`3p/bedrock-aws-sign-in.md`](https://claude.com/docs/cowork/3p/bedrock-aws-sign-in.md) |
+| **Google Cloud Vertex AI** | [`3p/vertex.md`](https://claude.com/docs/cowork/3p/vertex.md) | [`3p/vertex-google-sign-in.md`](https://claude.com/docs/cowork/3p/vertex-google-sign-in.md) |
+| **Microsoft Foundry (preview)** | [`3p/foundry.md`](https://claude.com/docs/cowork/3p/foundry.md) | (uses Azure / Foundry tokens) |
+| **LLM Gateway** (any compatible provider) | [`3p/gateway.md`](https://claude.com/docs/cowork/3p/gateway.md) | [`3p/gateway-sso.md`](https://claude.com/docs/cowork/3p/gateway-sso.md) |
 
 Each provider page documents the regional endpoints, model IDs (in
 that provider's namespace), the `inferenceProvider`/`inferenceVertexRegion`/`inferenceBedrockRegion`
@@ -110,7 +110,7 @@ Cowork Security Overview (Third-Party Platforms)*.
 
 ## Installation & MDM rollout
 
-See [`3p/installation.md`](docs-snapshot/claude.com/cowork/3p/installation.md)
+See [`3p/installation.md`](https://claude.com/docs/cowork/3p/installation.md)
 for the full deployment matrix — single-machine evaluation, fleet
 rollout via Jamf / Intune / Workspace ONE / Group Policy, and the
 MDM profile schema.
@@ -123,7 +123,7 @@ APJ, and other sovereign regions).
 ## Configuration reference
 
 Every managed-configuration key lives in
-[`3p/configuration.md`](docs-snapshot/claude.com/cowork/3p/configuration.md).
+[`3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
 That page is the source of truth for:
 
 - Inference provider selection (`inferenceProvider`)
@@ -148,7 +148,7 @@ is determined entirely by:
 Conversation data never traverses Anthropic's backend in these modes.
 
 For data-storage details (memory, conversation history, file
-artifacts), see [`3p/data-storage.md`](docs-snapshot/claude.com/cowork/3p/data-storage.md).
+artifacts), see [`3p/data-storage.md`](https://claude.com/docs/cowork/3p/data-storage.md).
 
 ## HIPAA
 
@@ -163,7 +163,7 @@ only redacted crash reports and aggregated metrics).
 ## Telemetry and egress
 
 What the app sends to Anthropic, how to turn it off, and the firewall
-allowlist live in [`3p/telemetry.md`](docs-snapshot/claude.com/cowork/3p/telemetry.md).
+allowlist live in [`3p/telemetry.md`](https://claude.com/docs/cowork/3p/telemetry.md).
 With Anthropic-bound telemetry and updates disabled, the compliance
 posture of your deployment is determined entirely by your inference
 provider.
@@ -175,19 +175,19 @@ and MCP servers (local + remote). The org-plugins directory acts as
 an organization-internal marketplace; the public Anthropic plugin
 marketplace is not available in 3P.
 
-See [`3p/extensions.md`](docs-snapshot/claude.com/cowork/3p/extensions.md)
+See [`3p/extensions.md`](https://claude.com/docs/cowork/3p/extensions.md)
 for the per-extension distribution mechanics.
 
 ## M365 connector (3P-specific)
 
 The Anthropic-built M365 connector **is** available in Cowork on 3P
 (unlike most Anthropic 1P connectors, which are not). Setup lives in
-[`3p/connectors-m365.md`](docs-snapshot/claude.com/cowork/3p/connectors-m365.md).
+[`3p/connectors-m365.md`](https://claude.com/docs/cowork/3p/connectors-m365.md).
 Google Workspace connector is not currently supported in 3P (planned).
 
 ## Feature matrix (Enterprise vs 3P)
 
-Full comparison: [`3p/feature-matrix.md`](docs-snapshot/claude.com/cowork/3p/feature-matrix.md).
+Full comparison: [`3p/feature-matrix.md`](https://claude.com/docs/cowork/3p/feature-matrix.md).
 
 Salient gaps in 3P (versus full Claude Enterprise):
 
@@ -207,18 +207,18 @@ Salient gaps in 3P (versus full Claude Enterprise):
 
 User-facing how-to pages for standard Cowork (non-3P):
 
-- [`guide/dispatch.md`](docs-snapshot/claude.com/cowork/guide/dispatch.md) — mobile dispatch.
-- [`guide/projects.md`](docs-snapshot/claude.com/cowork/guide/projects.md) — projects in Cowork.
-- [`guide/plugins.md`](docs-snapshot/claude.com/cowork/guide/plugins.md) — plugins user guide.
+- [`guide/dispatch.md`](https://claude.com/docs/cowork/guide/dispatch.md) — mobile dispatch.
+- [`guide/projects.md`](https://claude.com/docs/cowork/guide/projects.md) — projects in Cowork.
+- [`guide/plugins.md`](https://claude.com/docs/cowork/guide/plugins.md) — plugins user guide.
 
 ## Monitoring
 
-[`monitoring.md`](docs-snapshot/claude.com/cowork/monitoring.md)
+[`monitoring.md`](https://claude.com/docs/cowork/monitoring.md)
 covers OpenTelemetry export, usage analytics, spend tracking, and the
 session-activity event schema.
 
 ---
 
 *Source pages: 24 under `claude.com/docs/cowork/`. See
-[`docs-snapshot/claude.com/cowork/`](docs-snapshot/claude.com/cowork/)
+[`https://claude.com/docs/cowork/`](https://claude.com/docs/cowork/)
 for the version-pinned mirror.*

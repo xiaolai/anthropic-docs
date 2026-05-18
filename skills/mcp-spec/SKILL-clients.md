@@ -35,7 +35,7 @@ connects to. Each client:
 ## Building a client
 
 The canonical guide:
-[`develop/build-client.md`](docs-snapshot/modelcontextprotocol.io/docs/develop/build-client.md).
+[`develop/build-client.md`](https://modelcontextprotocol.io/docs/develop/build-client.md).
 
 It walks through the TypeScript and Python SDK flows, the
 initialize handshake, calling tools, and handling sampling
@@ -146,7 +146,7 @@ user's response.
 
 ## Client best practices
 
-[`develop/clients/client-best-practices.md`](docs-snapshot/modelcontextprotocol.io/docs/develop/clients/client-best-practices.md)
+[`develop/clients/client-best-practices.md`](https://modelcontextprotocol.io/docs/develop/clients/client-best-practices.md)
 covers patterns for scaling MCP host applications across many
 servers and tools:
 
@@ -161,7 +161,7 @@ servers and tools:
 
 ## Existing clients
 
-[`clients.md`](docs-snapshot/modelcontextprotocol.io/clients.md) is
+[`clients.md`](https://modelcontextprotocol.io/clients.md) is
 the registry of applications that support MCP. Notable entries:
 
 - Claude Desktop, Claude Code, Claude Cowork (Anthropic).
@@ -176,8 +176,8 @@ current state.
 
 | Page | Topic |
 |---|---|
-| [`develop/connect-local-servers.md`](docs-snapshot/modelcontextprotocol.io/docs/develop/connect-local-servers.md) | Extending Claude Desktop with local stdio servers |
-| [`develop/connect-remote-servers.md`](docs-snapshot/modelcontextprotocol.io/docs/develop/connect-remote-servers.md) | Connecting Claude to remote HTTP servers |
+| [`develop/connect-local-servers.md`](https://modelcontextprotocol.io/docs/develop/connect-local-servers.md) | Extending Claude Desktop with local stdio servers |
+| [`develop/connect-remote-servers.md`](https://modelcontextprotocol.io/docs/develop/connect-remote-servers.md) | Connecting Claude to remote HTTP servers |
 
 ---
 

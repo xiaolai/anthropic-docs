@@ -35,21 +35,21 @@ A connector can do two things:
 
 | Type | Purpose | Source page |
 |---|---|---|
-| **Prebuilt integrations** | First-party Anthropic-maintained — Google Workspace, GitHub, M365, Slack | [`getting-started.md`](docs-snapshot/claude.com/connectors/getting-started.md) |
-| **Remote MCP servers** | Cloud-hosted MCP servers reachable over HTTPS | [`custom/remote-mcp.md`](docs-snapshot/claude.com/connectors/custom/remote-mcp.md) |
-| **MCP Apps** | MCP servers that render UI in the conversation | [`building/mcp-apps/getting-started.md`](docs-snapshot/claude.com/connectors/building/mcp-apps/getting-started.md) |
-| **MCP Bundles (MCPB)** | Local MCP servers packaged as Desktop extensions (.mcpb) | [`custom/desktop-extensions.md`](docs-snapshot/claude.com/connectors/custom/desktop-extensions.md) |
-| **Self-serve local MCP** | Local servers distributed via npm/PyPI (not directory-listable) | [`overview.md`](docs-snapshot/claude.com/connectors/overview.md) |
+| **Prebuilt integrations** | First-party Anthropic-maintained — Google Workspace, GitHub, M365, Slack | [`getting-started.md`](https://claude.com/docs/connectors/getting-started.md) |
+| **Remote MCP servers** | Cloud-hosted MCP servers reachable over HTTPS | [`custom/remote-mcp.md`](https://claude.com/docs/connectors/custom/remote-mcp.md) |
+| **MCP Apps** | MCP servers that render UI in the conversation | [`building/mcp-apps/getting-started.md`](https://claude.com/docs/connectors/building/mcp-apps/getting-started.md) |
+| **MCP Bundles (MCPB)** | Local MCP servers packaged as Desktop extensions (.mcpb) | [`custom/desktop-extensions.md`](https://claude.com/docs/connectors/custom/desktop-extensions.md) |
+| **Self-serve local MCP** | Local servers distributed via npm/PyPI (not directory-listable) | [`overview.md`](https://claude.com/docs/connectors/overview.md) |
 
 ## Connectors Directory
 
-The [Connectors Directory](docs-snapshot/claude.com/connectors/directory.md)
+The [Connectors Directory](https://claude.com/docs/connectors/directory.md)
 is the open catalog of Anthropic-vetted third-party MCP servers,
 available across all Claude products. Each entry has been reviewed
 for tool annotations, privacy policy, working examples, and test
 credentials (where applicable).
 
-To submit your own: see [`building/submission.md`](docs-snapshot/claude.com/connectors/building/submission.md).
+To submit your own: see [`building/submission.md`](https://claude.com/docs/connectors/building/submission.md).
 
 ## First-party integrations
 
@@ -57,32 +57,32 @@ To submit your own: see [`building/submission.md`](docs-snapshot/claude.com/conn
 
 | Service | Source |
 |---|---|
-| Google Calendar | [`google/calendar.md`](docs-snapshot/claude.com/connectors/google/calendar.md) |
-| Google Drive | [`google/drive.md`](docs-snapshot/claude.com/connectors/google/drive.md) |
-| Gmail | [`google/gmail.md`](docs-snapshot/claude.com/connectors/google/gmail.md) |
+| Google Calendar | [`google/calendar.md`](https://claude.com/docs/connectors/google/calendar.md) |
+| Google Drive | [`google/drive.md`](https://claude.com/docs/connectors/google/drive.md) |
+| Gmail | [`google/gmail.md`](https://claude.com/docs/connectors/google/gmail.md) |
 
 ### GitHub
 
 | Surface | Source |
 |---|---|
-| GitHub repos integration | [`github/index.md`](docs-snapshot/claude.com/connectors/github/index.md) |
+| GitHub repos integration | [`github/index.md`](https://claude.com/docs/connectors/github/index.md) |
 
 ### Microsoft 365
 
 | Surface | Source |
 |---|---|
-| M365 (Outlook, Teams, OneDrive, etc.) | [`microsoft/365.md`](docs-snapshot/claude.com/connectors/microsoft/365.md) |
+| M365 (Outlook, Teams, OneDrive, etc.) | [`microsoft/365.md`](https://claude.com/docs/connectors/microsoft/365.md) |
 
 ### Slack
 
 | Surface | Source |
 |---|---|
-| Slack workspace integration | [`slack/index.md`](docs-snapshot/claude.com/connectors/slack/index.md) |
+| Slack workspace integration | [`slack/index.md`](https://claude.com/docs/connectors/slack/index.md) |
 
 ## Enabling a connector
 
 The user-facing setup flow for first-party integrations: see
-[`getting-started.md`](docs-snapshot/claude.com/connectors/getting-started.md).
+[`getting-started.md`](https://claude.com/docs/connectors/getting-started.md).
 General steps:
 
 1. Open Claude → Settings → Connectors.
@@ -119,7 +119,7 @@ connectors. See [`SKILL-claude-skills.md`](SKILL-claude-skills.md).
 ## Page index
 
 All 12 source pages mirrored under
-[`docs-snapshot/claude.com/connectors/`](docs-snapshot/claude.com/connectors/):
+[`https://claude.com/docs/connectors/`](https://claude.com/docs/connectors/):
 
 - `overview.md` — this surface's source
 - `getting-started.md` — user-facing setup flow

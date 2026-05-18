@@ -18,9 +18,9 @@ source: https://platform.claude.com/docs/en/api/models/list.md
 
 | Endpoint | Source |
 |---|---|
-| `GET /v1/models` — list models | [`models/list.md`](docs-snapshot/platform.claude.com/en/api/models/list.md) |
-| `GET /v1/models/{model_id}` — retrieve model | [`models/retrieve.md`](docs-snapshot/platform.claude.com/en/api/models/retrieve.md) |
-| Models API section index | [`models.md`](docs-snapshot/platform.claude.com/en/api/models.md) |
+| `GET /v1/models` — list models | [`models/list.md`](https://platform.claude.com/docs/en/api/models/list.md) |
+| `GET /v1/models/{model_id}` — retrieve model | [`models/retrieve.md`](https://platform.claude.com/docs/en/api/models/retrieve.md) |
+| Models API section index | [`models.md`](https://platform.claude.com/docs/en/api/models.md) |
 
 Use these at runtime to discover what's available rather than
 hardcoding model IDs.
@@ -50,7 +50,7 @@ capable model unless cost / latency dictates otherwise.
 ## Context windows
 
 Per-model context window sizes change over time. Always consult
-[`models/retrieve.md`](docs-snapshot/platform.claude.com/en/api/models/retrieve.md)
+[`models/retrieve.md`](https://platform.claude.com/docs/en/api/models/retrieve.md)
 output at runtime rather than hardcoding the limit. Conceptual
 overview: [`anthropic-platform-features → SKILL-build-with-claude.md`](../anthropic-platform-features/SKILL-build-with-claude.md)
 under "Context windows".

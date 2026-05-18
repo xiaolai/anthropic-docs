@@ -25,7 +25,7 @@ single queries or stateless multi-turn conversations.
 | Parameter | Type | Notes |
 |---|---|---|
 | `model` | string | Model ID (e.g., `claude-opus-4-7`, `claude-sonnet-4-6`, `claude-haiku-4-5-20251001`) |
-| `max_tokens` | integer | Maximum tokens to generate. Required. Per-model maximum — see [`models/list.md`](docs-snapshot/platform.claude.com/en/api/models/list.md) |
+| `max_tokens` | integer | Maximum tokens to generate. Required. Per-model maximum — see [`models/list.md`](https://platform.claude.com/docs/en/api/models/list.md) |
 | `messages` | array | Alternating `user` / `assistant` turns |
 
 ### Common optional parameters
@@ -143,7 +143,7 @@ Same shape as `/v1/messages` (minus `max_tokens` and `stream`).
 Returns the token count of the request without spending tokens to
 generate a response. Use to size requests before committing.
 
-Source: [`messages/count_tokens.md`](docs-snapshot/platform.claude.com/en/api/messages/count_tokens.md).
+Source: [`messages/count_tokens.md`](https://platform.claude.com/docs/en/api/messages/count_tokens.md).
 
 ## Message batches
 
@@ -158,7 +158,7 @@ Submit many requests at lower price (returns within 24h):
 | `POST /v1/messages/batches/{id}/cancel` | Cancel |
 | `DELETE /v1/messages/batches/{id}` | Delete |
 
-See [`messages/batches/`](docs-snapshot/platform.claude.com/en/api/messages/batches/).
+See [`messages/batches/`](https://platform.claude.com/docs/en/api/messages/batches/).
 
 ## Tool use round-trip
 
@@ -175,18 +175,18 @@ for tool definitions and patterns.
 
 ## Source pages
 
-- [`messages.md`](docs-snapshot/platform.claude.com/en/api/messages.md) — Messages API section index
-- [`messages/create.md`](docs-snapshot/platform.claude.com/en/api/messages/create.md) — POST /v1/messages
-- [`messages/count_tokens.md`](docs-snapshot/platform.claude.com/en/api/messages/count_tokens.md) — token counting
-- [`messages/batches.md`](docs-snapshot/platform.claude.com/en/api/messages/batches.md) + [`messages/batches/`](docs-snapshot/platform.claude.com/en/api/messages/batches/) — batch processing
+- [`messages.md`](https://platform.claude.com/docs/en/api/messages.md) — Messages API section index
+- [`messages/create.md`](https://platform.claude.com/docs/en/api/messages/create.md) — POST /v1/messages
+- [`messages/count_tokens.md`](https://platform.claude.com/docs/en/api/messages/count_tokens.md) — token counting
+- [`messages/batches.md`](https://platform.claude.com/docs/en/api/messages/batches.md) + [`messages/batches/`](https://platform.claude.com/docs/en/api/messages/batches/) — batch processing
 
 ## Legacy: Text Completions API
 
 The legacy `/v1/complete` endpoint (predecessor to Messages) is still
 documented at:
 
-- [`completions.md`](docs-snapshot/platform.claude.com/en/api/completions.md) — section index
-- [`completions/create.md`](docs-snapshot/platform.claude.com/en/api/completions/create.md) — `POST /v1/complete`
+- [`completions.md`](https://platform.claude.com/docs/en/api/completions.md) — section index
+- [`completions/create.md`](https://platform.claude.com/docs/en/api/completions/create.md) — `POST /v1/complete`
 
 **Do not use for new applications.** Text Completions does not support
 tool use, vision, or structured outputs. Migrate to Messages.
