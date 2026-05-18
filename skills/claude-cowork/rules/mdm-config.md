@@ -47,18 +47,19 @@ MDM profile should explicitly NOT set `inferenceProvider: foundry`.
 
 ## Rule 4 — Telemetry kill switches
 
-Three independent telemetry toggles:
+Four independent telemetry/update keys (all `false` by default — telemetry enabled):
 
-- `disableCrashReporting`: boolean, scrubs and disables crash reports
-- `disableProductAnalytics`: boolean, disables usage telemetry
-- `disableAutoUpdate`: boolean, disables auto-update checks
+- `disableEssentialTelemetry`: boolean — crash reports and error telemetry to Anthropic. Disabling opts into manual log support.
+- `disableNonessentialTelemetry`: boolean — product-usage analytics to Anthropic.
+- `disableNonessentialServices`: boolean — non-critical third-party services (connector favicons, artifact-preview iframe).
+- `disableAutoUpdates`: boolean — auto-update checks and downloads from Anthropic.
 
-All three are off-by-default (telemetry enabled). For air-gapped or
-compliance-hardened deployments, set all three to `true`.
+All four are off-by-default (telemetry enabled). For air-gapped or
+compliance-hardened deployments, set all four to `true`.
 
 Telemetry NEVER contains user prompts or completions, but if your
 audit posture requires zero Anthropic-bound network traffic, disable
-all three.
+all four.
 
 ## Rule 5 — Don't mix per-user and admin profiles
 
@@ -85,11 +86,12 @@ JSON file your org publishes. **Pin plugin versions** in that
 manifest; bare references resolve to "latest" and inherit any
 breaking change immediately.
 
-## Rule 8 — Spend caps are workspace-monthly, not per-request
+## Rule 8 — Token caps are per-device per window, not per-request
 
-`workspaceSpendCapUSD` caps monthly usage per workspace. When hit,
-requests return 429 `cap_exceeded` until the next billing month.
-Set to a value above your monthly forecast, with a buffer.
+`inferenceMaxTokensPerWindow` (integer) caps total input + output tokens per
+device per tumbling window defined by `inferenceTokenWindowHours` (1–720 h).
+When the cap is hit, new messages are refused locally until the window resets.
+Both keys are enforced on-device and persist across restarts.
 
 ---
 

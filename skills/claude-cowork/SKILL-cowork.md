@@ -124,16 +124,26 @@ APJ, and other sovereign regions).
 
 Every managed-configuration key lives in
 [`3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
-That page is the source of truth for:
+Key groups:
 
-- Inference provider selection (`inferenceProvider`)
-- Region pinning (`inferenceVertexRegion`, `inferenceBedrockRegion`)
-- Feature toggles (web search, local MCP, etc.)
-- Telemetry toggles
-- MCP server allowlist
-- Plugin / skill / hook distribution settings
-- Per-user spend caps
-- Auto-update policy
+| Group | Representative keys |
+|---|---|
+| Connection | `inferenceProvider`, `deploymentOrganizationUuid`, `disableDeploymentModeChooser` |
+| Credential helper | `inferenceCredentialHelper`, `inferenceCredentialHelperTtlSec` |
+| Models | `inferenceModels` (entries may be strings or `{ name, labelOverride, supports1m }` objects) |
+| Sandbox | `disabledBuiltinTools`, `allowedWorkspaceFolders`, `coworkEgressAllowedHosts`, `isClaudeCodeForDesktopEnabled`, `disableDeepLinkRegistration` |
+| Extensions | `managedMcpServers`, `orgPluginSettings`, `isLocalDevMcpEnabled`, `isDesktopExtensionEnabled`, `isDesktopExtensionSignatureRequired` |
+| Telemetry | `disableEssentialTelemetry`, `disableNonessentialTelemetry`, `disableNonessentialServices`, `disableAutoUpdates`, `autoUpdaterEnforcementHours` |
+| OTel export | `otlpEndpoint`, `otlpProtocol`, `otlpHeaders`, `otlpResourceAttributes` |
+| Usage limits | `inferenceMaxTokensPerWindow`, `inferenceTokenWindowHours` |
+| Appearance | `banner` (object: `text`, `backgroundColor`, `textColor`, `linkUrl`) |
+
+> **Key type rule:** all keys are stored as **strings** in the OS preference
+> store. Array- and object-typed keys (`inferenceModels`, `managedMcpServers`,
+> `coworkEgressAllowedHosts`, `otlpHeaders`, etc.) must be **JSON strings**
+> (a `<string>` element in `.mobileconfig`), not native plist arrays or
+> registry sub-keys. See [`rules/mdm-config.md`](rules/mdm-config.md) for
+> common mistakes.
 
 ## Data residency
 
@@ -213,9 +223,15 @@ User-facing how-to pages for standard Cowork (non-3P):
 
 ## Monitoring
 
-[`monitoring.md`](https://claude.com/docs/cowork/monitoring.md)
-covers OpenTelemetry export, usage analytics, spend tracking, and the
-session-activity event schema.
+[`monitoring.md`](https://claude.com/docs/cowork/monitoring.md) covers
+OpenTelemetry export and the session-activity event schema. Requires
+Claude desktop app v1.1.4173+; available on Team and Enterprise plans.
+
+**OTel event names:** `user_prompt`, `tool_result`, `api_request`,
+`api_error`, `tool_decision`. The `prompt.id` UUID attribute links all
+events produced while processing a single user prompt. Configure export
+via `otlpEndpoint`, `otlpProtocol`, `otlpHeaders`, `otlpResourceAttributes`
+in the managed configuration (see [Configuration reference](#configuration-reference)).
 
 ---
 

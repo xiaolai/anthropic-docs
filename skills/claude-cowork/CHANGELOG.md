@@ -3,6 +3,10 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-18
+
+*(pending review — see PR auto/2026-05-18-pending-review)* Initial docs audit: 35 pages indexed across cowork and office-agents surfaces; research agent produced a diff that exceeded the size gate, held for review.
+
 ## [0.1.0] — 2026-05-17
 
 ### Added
