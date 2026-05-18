@@ -18,17 +18,26 @@ source: https://claude.com/docs/skills/overview.md
 
 ## What Skills are (user view)
 
-Skills are reusable task recipes — packaged instructions that teach
-Claude how to perform a specific workflow. Once installed, a user
-can invoke a skill in any conversation by referring to it; Claude
-loads the skill's instructions and follows them.
+Skills are **directories** containing a `SKILL.md` file plus optional
+scripts, references, and assets. They extend Claude with specialized
+knowledge and workflows. Claude uses progressive disclosure to manage
+context:
+
+1. **Metadata loading** — Claude reads skill names and descriptions at
+   startup (~100 tokens each).
+2. **Activation** — when a task matches a skill's `description`, Claude
+   loads the full `SKILL.md` body.
+3. **Resource loading** — additional files (`scripts/`, `references/`,
+   `assets/`) are loaded only when referenced.
+
+Availability: **Pro, Max, Team, Enterprise** plans. Requires **code
+execution** to be enabled.
 
 Skills are the lightweight, scoped counterpart to plugins:
 
-- A **skill** is a single recipe (e.g., "review my pull requests for
-  security issues using my org's checklist").
+- A **skill** is a single workflow directory.
 - A **plugin** bundles multiple skills, connectors, slash commands,
-  and sub-agents (e.g., "the entire DevOps team's standard toolkit").
+  and sub-agents (see [`SKILL-claude-plugins.md`](SKILL-claude-plugins.md)).
 
 ## Where users find skills
 
@@ -43,20 +52,56 @@ cover the user-facing surface:
 - Per-conversation skill control (turn a skill on/off for a single
   conversation).
 
-## Activation model
+## SKILL.md format
 
-Two activation patterns:
+Minimal valid `SKILL.md` (frontmatter + markdown body):
 
-1. **Always-on** — the skill auto-loads when its trigger matches the
-   conversation (e.g., a file path, a keyword, a tool call). Author
-   configures this via the skill's frontmatter `appliesTo`.
-2. **User-invoked** — the skill loads only when the user explicitly
-   refers to it by name.
+```markdown
+---
+name: brand-guidelines
+description: Apply Acme Corp brand guidelines to presentations and
+  documents, including official colors, fonts, and logo usage.
+---
 
-The Skills format spec (in
-[`anthropic-platform-features`](../anthropic-platform-features/SKILL-agents-and-tools.md))
-documents the activation field schema. This surface covers the
-user-facing semantics.
+# Brand Guidelines
+[...instructions...]
+```
+
+Required frontmatter fields:
+
+| Field | Constraint |
+|---|---|
+| `name` | Lowercase letters, numbers, hyphens only; max 64 characters; must match the directory name |
+| `description` | Tells Claude when to activate the skill; **max 200 characters on Claude.ai** (Agent Skills spec allows 1024) |
+
+Optional: `dependencies` (e.g. `python>=3.8, pandas>=1.5.0`) — Claude
+installs from PyPI/npm on load.
+
+Source: [`skills/how-to.md`](https://claude.com/docs/skills/how-to.md).
+
+## Types of skills
+
+| Type | Description |
+|---|---|
+| **Anthropic skills** | Pre-built for document creation (Excel, Word, PowerPoint, PDF); auto-activate when relevant |
+| **Partner skills** | From partners (Notion, Figma, Atlassian) designed for MCP connector integration |
+| **Organization-provisioned** | Deployed org-wide by Team / Enterprise administrators |
+| **Custom skills** | User-created for specialized workflows |
+
+## Open standard
+
+Skills follow the [Agent Skills specification](https://agentskills.io/specification),
+a platform-agnostic standard that works across any platform that adopts
+it. Example skills: [github.com/anthropics/skills](https://github.com/anthropics/skills/tree/main/skills).
+
+## Packaging and validation
+
+1. Create a ZIP file containing the skill directory (directory name
+   must match `name`).
+2. Validate: `skills-ref validate ./my-skill`
+   ([validation tool](https://github.com/agentskills/agentskills/tree/main/skills-ref))
+3. Upload via **Settings → Capabilities** and enable the skill.
+4. Test by trying prompts that should trigger it.
 
 ## Cross-product availability
 
