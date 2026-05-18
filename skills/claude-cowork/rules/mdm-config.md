@@ -47,18 +47,25 @@ MDM profile should explicitly NOT set `inferenceProvider: foundry`.
 
 ## Rule 4 — Telemetry kill switches
 
-Three independent telemetry toggles:
+Four independent telemetry/update toggles (all `boolean`, default `false` = enabled):
 
-- `disableCrashReporting`: boolean, scrubs and disables crash reports
-- `disableProductAnalytics`: boolean, disables usage telemetry
-- `disableAutoUpdate`: boolean, disables auto-update checks
+- `disableEssentialTelemetry`: block crash reports and error telemetry. **Opting in means your team must collect and send logs manually.**
+- `disableNonessentialTelemetry`: block product-usage analytics.
+- `disableNonessentialServices`: block non-critical third-party fetches (connector favicons, artifact-preview iframe).
+- `disableAutoUpdates`: block update checks and downloads. Your IT team must redistribute new builds.
 
-All three are off-by-default (telemetry enabled). For air-gapped or
-compliance-hardened deployments, set all three to `true`.
+For air-gapped or compliance-hardened deployments, set all four to `true`.
+With all four set, **the app makes no outbound connections to Anthropic-operated hosts at runtime** (only inference endpoint and OTLP collector traffic remains).
 
 Telemetry NEVER contains user prompts or completions, but if your
 audit posture requires zero Anthropic-bound network traffic, disable
-all three.
+all four.
+
+> **Key names changed (2026-05):** Old names `disableCrashReporting`, `disableProductAnalytics`, and
+> `disableAutoUpdate` (no trailing 's') no longer work. Replace them with the names above.
+
+Source: [`3p/telemetry.md`](https://claude.com/docs/cowork/3p/telemetry.md),
+[`3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
 
 ## Rule 5 — Don't mix per-user and admin profiles
 

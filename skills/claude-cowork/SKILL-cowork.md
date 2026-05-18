@@ -124,16 +124,58 @@ APJ, and other sovereign regions).
 
 Every managed-configuration key lives in
 [`3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
-That page is the source of truth for:
+That page is the source of truth. Key groups:
 
-- Inference provider selection (`inferenceProvider`)
-- Region pinning (`inferenceVertexRegion`, `inferenceBedrockRegion`)
-- Feature toggles (web search, local MCP, etc.)
-- Telemetry toggles
-- MCP server allowlist
-- Plugin / skill / hook distribution settings
-- Per-user spend caps
-- Auto-update policy
+**Connection / activation**
+- `inferenceProvider` — enum: `vertex`, `bedrock`, `foundry`, `gateway`
+- `deploymentOrganizationUuid` — your org's UUID for telemetry attribution (generate once, set before rollout)
+- `disableDeploymentModeChooser` — hide the Anthropic sign-in option
+
+**Credential helper (short-lived tokens)**
+- `inferenceCredentialHelper` — path to an executable whose stdout becomes the API credential
+- `inferenceCredentialHelperTtlSec` — cache TTL (default `3600`s)
+
+**Models**
+- `inferenceModels` — provider model IDs; supports `{"name":"...", "labelOverride":"...", "supports1m": true}` object form
+- Region pinning: `inferenceVertexRegion`, `inferenceBedrockRegion`
+
+**Sandbox & workspace**
+- `disabledBuiltinTools` — JSON array of tool names to remove (e.g. `["WebSearch","Bash"]`)
+- `coworkEgressAllowedHosts` — JSON string array of allowed egress hostnames (default: inference endpoint only)
+- `allowedWorkspaceFolders` — JSON string array of allowed workspace paths
+- `isClaudeCodeForDesktopEnabled` — show/hide the Code tab (default `true`)
+- `disableDeepLinkRegistration` — stop app registering as `claude://` handler
+
+**Connectors & extensions**
+- `managedMcpServers` — JSON object array; supports `headersHelper`, `headersHelperTtlSec`, `oauth` object
+- `orgPluginSettings` — per-server `toolPolicy` locks for org-plugin-delivered MCP servers
+- `isLocalDevMcpEnabled` — allow user-added local MCP servers (default `true`)
+- `isDesktopExtensionEnabled` — allow `.mcpb` desktop extensions (default `true`)
+- `isDesktopExtensionSignatureRequired` — reject unsigned extensions (default `false`)
+
+**Telemetry & updates** (see Rule 4 in [`rules/mdm-config.md`](rules/mdm-config.md))
+- `disableEssentialTelemetry` (default `false`)
+- `disableNonessentialTelemetry` (default `false`)
+- `disableNonessentialServices` (default `false`)
+- `disableAutoUpdates` (default `false`)
+- `autoUpdaterEnforcementHours` — force-install pending update after N hours (default `72`, range 1–72)
+
+**OpenTelemetry export**
+- `otlpEndpoint`, `otlpProtocol`, `otlpHeaders`, `otlpResourceAttributes`
+
+**Usage limits**
+- `inferenceMaxTokensPerWindow` — total input+output tokens per device per window
+- `inferenceTokenWindowHours` — tumbling window length (1–720 hours)
+
+**Appearance**
+- `banner` — JSON object with `enabled`, `text`, `backgroundColor`, `textColor`, `linkUrl`
+
+> **MDM profile paths:**
+> macOS: `/Library/Managed Preferences/<user>/com.anthropic.claudefordesktop.plist`
+> Windows: `HKLM\SOFTWARE\Policies\Claude` (machine) / `HKCU\SOFTWARE\Policies\Claude` (user)
+>
+> Config is read once at launch; fully quit and reopen after any change.
+> See [`rules/mdm-config.md`](rules/mdm-config.md) for validation rules and security profiles.
 
 ## Data residency
 
@@ -192,9 +234,9 @@ Full comparison: [`3p/feature-matrix.md`](https://claude.com/docs/cowork/3p/feat
 Salient gaps in 3P (versus full Claude Enterprise):
 
 - No Chat tab (Cowork + Code tabs only).
-- No Anthropic 1P connectors (except M365).
+- No Anthropic 1P connectors (except M365; Google Workspace coming soon).
 - No Project / plugin sharing across orgs.
-- No public plugin marketplace.
+- No public Anthropic plugin marketplace (org-plugins directory appears as org-internal marketplace).
 - No mobile dispatch.
 - No voice mode.
 - No Claude in Chrome.
@@ -202,6 +244,13 @@ Salient gaps in 3P (versus full Claude Enterprise):
 - Per-user spend caps are blanket-only (not differentiated by role).
 - Compliance / Analytics APIs are not exposed; equivalent capability
   via OpenTelemetry export.
+
+Features now available in 3P (updated 2026-05):
+
+- **Memory** — stored on-device (not Anthropic infrastructure). Users can review, pause,
+  or delete under **Settings → Cowork → Memory**.
+- **Scheduled tasks** — available in 3P.
+- **Projects** — available in 3P.
 
 ## Cowork guide (standard mode)
 
