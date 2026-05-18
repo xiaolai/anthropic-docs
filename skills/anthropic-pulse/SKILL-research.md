@@ -1,13 +1,13 @@
 ---
 name: anthropic-pulse-research
 description: |
-  Digest of the most recent ~15-20 Anthropic research papers/posts — alignment 
-  research, evaluations, benchmarks, interpretability, the Anthropic Institute, 
-  the Anthropic Economic Index. Auto-refreshed every 30 minutes from 
+  Digest of the most recent ~15-20 Anthropic research papers/posts — 
+  alignment research, evaluations, benchmarks, interpretability, the Anthropic 
+  Institute, the Anthropic Economic Index. Auto-refreshed every 30 minutes from 
   anthropic.com/research. Use when the user asks: "any recent Anthropic 
   research on X?", "is there a paper on Y?". Skip: production model docs (use 
-  anthropic-api etc.); deep paper content (digest only — Claude WebFetches the 
-  paper for depth).
+  anthropic-api etc.); deep paper content (digest only — Claude WebFetches 
+  the paper for depth).
 source: https://www.anthropic.com/research
 ---
 
