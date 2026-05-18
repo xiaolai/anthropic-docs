@@ -76,6 +76,10 @@ Anthropic's hosted MCP server, accessible from the API. Lets API
 consumers use the same MCP-style tool exposure without running their
 own server.
 
+**Beta header (required):** `anthropic-beta: mcp-client-2025-11-20`.
+Previous version `mcp-client-2025-04-04` is deprecated. Type: `mcp_toolset`.
+Not available on Amazon Bedrock or Vertex AI.
+
 Source: [`mcp-connector.md`](https://platform.claude.com/docs/en/agents-and-tools/mcp-connector.md).
 
 ### Remote MCP servers
@@ -132,7 +136,48 @@ Common mistakes (see [`rules/tool-use.md`](rules/tool-use.md)):
 | [`tool-use/define-tools.md`](https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools.md) | input_schema, tool_choice, descriptions |
 | [`tool-use/tool-reference.md`](https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-reference.md) | Tool-block reference |
 
-### Anthropic-built tools
+### Anthropic-built tools — canonical `type` names
+
+Use these `type` values in the `tools` array. Source:
+[`tool-use/tool-reference.md`](https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-reference.md).
+
+| Tool | `type` string(s) | Execution | Status |
+|---|---|---|---|
+| **Web search** | `web_search_20260209` / `web_search_20250305` | Server | GA |
+| **Web fetch** | `web_fetch_20260209` / `web_fetch_20250910` | Server | GA |
+| **Code execution** | `code_execution_20260120` / `code_execution_20250825` | Server | GA |
+| **Advisor** | `advisor_20260301` | Server | Beta: `advisor-tool-2026-03-01` |
+| **Tool search** | `tool_search_tool_regex_20251119` / `tool_search_tool_bm25_20251119` | Server | GA |
+| **MCP connector** | `mcp_toolset` | Server | Beta: `mcp-client-2025-11-20` |
+| **Memory** | `memory_20250818` | Client | GA |
+| **Bash** | `bash_20250124` | Client | GA |
+| **Text editor** | `text_editor_20250728` / `text_editor_20250124` | Client | GA |
+| **Computer use** | `computer_20251124` / `computer_20250124` | Client | Beta |
+
+Notes:
+- `code_execution_20260120` adds REPL state persistence and programmatic tool calling (Opus/Sonnet 4.5+); `code_execution_20250825` covers Bash + file ops on all models.
+- `web_search_20260209` / `web_fetch_20260209` add dynamic filtering (requires code execution enabled).
+- Code execution is **free** when used alongside `web_search_20260209` or `web_fetch_20260209`.
+- Computer use requires beta header: `computer-use-2025-11-24` (newer models) or `computer-use-2025-01-24` (older models).
+- Web search, web fetch, and code execution are **not** available on Amazon Bedrock or Vertex AI.
+
+### Tool definition optional properties
+
+Every tool in `tools[]` accepts these optional properties (source:
+[`tool-use/tool-reference.md`](https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-reference.md)):
+
+| Property | Purpose | Available on |
+|---|---|---|
+| `cache_control` | Prompt-cache breakpoint at this tool | All tools |
+| `strict` | Guarantee JSON Schema validation on inputs | All except `mcp_toolset` |
+| `defer_loading` | Exclude from initial context; load via tool search on demand | All tools |
+| `allowed_callers` | Array: `"direct"` (model) and/or `"code_execution_20260120"` (sandbox) | All except `mcp_toolset` |
+| `input_examples` | Example inputs to improve call accuracy | User-defined + client tools only |
+| `eager_input_streaming` | Fine-grained input streaming per-tool | User-defined tools only |
+
+`defer_loading: true` does **not** invalidate prompt cache — deferred tools are excluded from the cache prefix entirely.
+
+### Per-page reference
 
 | Tool | Page | Use case |
 |---|---|---|
@@ -142,7 +187,7 @@ Common mistakes (see [`rules/tool-use.md`](rules/tool-use.md)):
 | **Text editor** | [`tool-use/text-editor-tool.md`](https://platform.claude.com/docs/en/agents-and-tools/tool-use/text-editor-tool.md) | File edit operations |
 | **Memory** | [`tool-use/memory-tool.md`](https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool.md) | Persistent memory |
 | **Advisor** | [`tool-use/advisor-tool.md`](https://platform.claude.com/docs/en/agents-and-tools/tool-use/advisor-tool.md) | Self-reflection / planning tool |
-| **Server tools** | [`tool-use/server-tools.md`](https://platform.claude.com/docs/en/agents-and-tools/tool-use/server-tools.md) | Server-side tool exposure pattern |
+| **Server tools** | [`tool-use/server-tools.md`](https://platform.claude.com/docs/en/agents-and-tools/tool-use/server-tools.md) | `server_tool_use` block, `pause_turn` continuation, ZDR |
 | **Web fetch** | [`tool-use/web-fetch-tool.md`](https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-fetch-tool.md) | Fetch content from URLs |
 | **Web search** | [`tool-use/web-search-tool.md`](https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool.md) | Search the web for current information |
 
@@ -165,4 +210,5 @@ Common mistakes (see [`rules/tool-use.md`](rules/tool-use.md)):
 ---
 
 *Source pages: 31 under `platform.claude.com/docs/en/agents-and-tools/`
-(agent-skills/* + mcp-connector + remote-mcp-servers + tool-use/*).*
+(agent-skills/* + mcp-connector + remote-mcp-servers + tool-use/*).
+Last updated: 2026-05-18.*

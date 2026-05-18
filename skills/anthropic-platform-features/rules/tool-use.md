@@ -138,6 +138,51 @@ pin to a specific snapshot (e.g., `claude-opus-4-7-20251030`).
 `{type: "tool", name: "<tool_name>"}`, or `{type: "none"}`. String
 forms (`"auto"`, `"any"`) are rejected — must be an object.
 
+## Rule 9 — `strict: true` requires `additionalProperties: false`
+
+Setting `strict: true` on a tool definition enables grammar-constrained
+sampling (guaranteed schema-valid output). It requires your `input_schema`
+to include `additionalProperties: false`. Without it the API returns a
+validation error.
+
+```json
+{
+  "name": "book_flight",
+  "strict": true,
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "destination": { "type": "string" },
+      "passengers": { "type": "integer" }
+    },
+    "required": ["destination", "passengers"],
+    "additionalProperties": false
+  }
+}
+```
+
+Also: `strict` is not supported on `mcp_toolset` tools.
+Source: [`tool-use/strict-tool-use.md`](https://platform.claude.com/docs/en/agents-and-tools/tool-use/strict-tool-use.md)
+
+## Rule 10 — `allowed_callers` and programmatic tool calling
+
+To let code running inside a `code_execution_20260120` sandbox call a
+tool (programmatic tool calling), set `allowed_callers` on that tool.
+Omitting `"direct"` makes the tool callable only from code (not directly
+by the model). Programmatic tool calling requires the
+`code_execution_20260120` tool version and is not available on Bedrock or Vertex AI.
+
+```json
+{
+  "name": "query_database",
+  "description": "Execute SQL against the sales DB",
+  "input_schema": { "type": "object", "properties": { "sql": { "type": "string" } }, "required": ["sql"] },
+  "allowed_callers": ["code_execution_20260120"]
+}
+```
+
+Source: [`tool-use/programmatic-tool-calling.md`](https://platform.claude.com/docs/en/agents-and-tools/tool-use/programmatic-tool-calling.md)
+
 ---
 
 *Source: distilled from anthropic-sdk-typescript + anthropic-sdk-python

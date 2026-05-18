@@ -5,6 +5,7 @@ machine-generated entry on every successful daily run.
 
 ## 2026-05-18
 - Research audit complete — 108 pages verified across all 4 surfaces (agents-and-tools, build-with-claude, manage-claude, managed-agents), no upstream changes detected; all gates pass
+- *(pending review — see draft PR auto/2026-05-18-pending-review)* Research agent expanded SKILL-agents-and-tools.md (+45 lines) and rules/tool-use.md (+44 lines); routed to draft PR by checkDiffSize gate
 
 ## [0.1.0] — 2026-05-17
 

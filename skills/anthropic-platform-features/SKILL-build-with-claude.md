@@ -31,7 +31,11 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
   `cache_control: { type: "ephemeral" }` is one breakpoint. Default TTL
   is `5m`; `1h` is also available. The whole prefix up to the
   breakpoint is cached, so place breakpoints at stable boundaries
-  (system prompt → tools → static context → user turn).
+  (system prompt → tools → static context → user turn). **Automatic
+  caching shortcut:** add `cache_control` at the request body top level
+  (not on a block) and the system applies the breakpoint to the last
+  cacheable block automatically — useful for growing multi-turn
+  conversations without manually updating block-level markers.
 - **Batches return within 24h** at 50% discount. Submit via
   `POST /v1/messages/batches`; poll for results. Not for interactive use.
 - **Vision input:** images can be base64-inline or URL-referenced.
@@ -81,7 +85,7 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
 | **Extended thinking** | [`extended-thinking.md`](https://platform.claude.com/docs/en/build-with-claude/extended-thinking.md) | `thinking` blocks with budget tokens — model "thinks out loud" before responding |
 | **Adaptive thinking** | [`adaptive-thinking.md`](https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking.md) | Model auto-decides when to think hard vs respond immediately |
 | **Effort** | [`effort.md`](https://platform.claude.com/docs/en/build-with-claude/effort.md) | Effort-level setting (lower = faster, higher = more thorough) |
-| **Fast mode** | [`fast-mode.md`](https://platform.claude.com/docs/en/build-with-claude/fast-mode.md) | Faster response variant available on Opus 4.6 and Opus 4.7 |
+| **Fast mode** | [`fast-mode.md`](https://platform.claude.com/docs/en/build-with-claude/fast-mode.md) | Faster output tokens (up to 2.5×); set `speed: "fast"` + beta header `fast-mode-2026-02-01`; requires waitlist; Opus 4.6 and Opus 4.7 only |
 
 ## Throughput / cost patterns
 
