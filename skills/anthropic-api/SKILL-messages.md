@@ -43,6 +43,8 @@ single queries or stateless multi-turn conversations.
 | `service_tier` | `auto` / `standard_only` |
 | `thinking` | `{ type: "enabled", budget_tokens: N }` for extended thinking |
 | `output_config` | Output configuration — see below |
+| `container` | Container identifier string for reuse across requests (code execution tool). When provided, the code execution sandbox identified by this ID is reused instead of creating a new one. |
+| `inference_geo` | Geographic region for inference processing (e.g. `"us"`, `"eu"`). Defaults to the workspace's `default_inference_geo` if omitted. |
 
 ### `output_config` parameter
 
@@ -66,16 +68,25 @@ Requests support up to **100,000 messages** in the `messages` array.
 Each message's `content` can be a string (shorthand for one text
 block) or an array of typed blocks:
 
-| Block type | Use |
-|---|---|
-| `text` | Plain text. May include `cache_control` and `citations`. |
-| `image` | `{ source: { type: "base64" \| "url", media_type, data \| url } }` |
-| `document` | PDF or other document input |
-| `tool_use` | Assistant turn: model invoked a **client** tool. Carries `id`, `name`, `input`. |
-| `tool_result` | User turn: result of a previous `tool_use`. **Must reference the matching `tool_use_id`**. |
-| `server_tool_use` | Assistant turn: model invoked a **server** tool (e.g. web_search, web_fetch, code_execution). Different return path — see server tools below. |
-| `thinking` | Extended-thinking output (when `thinking` enabled) |
-| `redacted_thinking` | Thinking content the API redacted before returning |
+| Block type | Direction | Use |
+|---|---|---|
+| `text` | input + output | Plain text. May include `cache_control` and `citations`. |
+| `image` | input | `{ source: { type: "base64" \| "url", media_type, data \| url } }` |
+| `document` | input | PDF or other document input (base64 PDF, plain text, URL PDF, or content-block source) |
+| `search_result` | input | Pre-fetched search result passed as input (for citations). Schema: `{ source, title, content, type: "search_result" }` |
+| `tool_use` | output | Model invoked a **client** tool. Carries `id`, `name`, `input`, `caller`. |
+| `tool_result` | input | Result of a previous `tool_use`. **Must reference the matching `tool_use_id`**. |
+| `server_tool_use` | output | Model invoked a **server** tool (web_search, web_fetch, code_execution). Carries `id`, `name`, `input`, `caller`. |
+| `web_search_tool_result` | output | Result of a server-side web search (returned in the same response). |
+| `code_execution_tool_result` | output | Result of a server-side code execution. |
+| `bash_code_execution_tool_result` | output | Result of a bash code execution server tool. |
+| `text_editor_code_execution_tool_result` | output | Result of a text-editor code execution server tool. |
+| `thinking` | output | Extended-thinking output (when `thinking` enabled) |
+| `redacted_thinking` | output | Thinking content the API redacted before returning |
+
+The `tool_use` and `server_tool_use` blocks carry an optional `caller` field:
+- `{ type: "direct" }` — invoked directly by the model
+- `ServerToolCaller` / `ServerToolCaller20260120` — invoked indirectly via a server tool chain
 
 ### Server tools vs. client tools
 
@@ -130,13 +141,31 @@ in the platform-features skill for caching strategy.
   ],
   "stop_reason": "end_turn",
   "stop_sequence": null,
+  "container": { "id": "container_...", "expires_at": "2026-05-18T12:00:00Z" },
   "usage": {
     "input_tokens": 25,
     "cache_creation_input_tokens": 0,
+    "cache_creation": {
+      "ephemeral_5m_input_tokens": 0,
+      "ephemeral_1h_input_tokens": 0
+    },
     "cache_read_input_tokens": 0,
-    "output_tokens": 100
+    "output_tokens": 100,
+    "server_tool_use": { "web_search_requests": 0, "web_fetch_requests": 0 },
+    "service_tier": "standard",
+    "inference_geo": "us"
   }
 }
+```
+
+**Response top-level fields:**
+- `container` — Present when code execution is used. Object with `id: string` (container identifier) and `expires_at: string` (ISO 8601 expiry). Pass `container` in the next request to reuse this sandbox.
+
+**Extended `usage` fields:**
+- `cache_creation` — `{ ephemeral_5m_input_tokens, ephemeral_1h_input_tokens }` — breakdown of cache-creation tokens by TTL bucket. Complements the aggregate `cache_creation_input_tokens`.
+- `server_tool_use` — `{ web_search_requests, web_fetch_requests }` — count of server-side tool calls in this response.
+- `service_tier` — `"standard"` / `"priority"` / `"batch"` — which tier handled this request.
+- `inference_geo` — Geographic region where inference was performed (mirrors `inference_geo` request parameter).
 ```
 
 ### Stop reasons
@@ -229,4 +258,4 @@ tool use, vision, or structured outputs. Migrate to Messages.
 
 ---
 
-*Source pages: 9 under `platform.claude.com/docs/en/api/messages*` (Messages family) + 2 legacy completions.*
+*Source pages: 11 under `platform.claude.com/docs/en/api/messages*` (Messages family including batches sub-pages) + 2 legacy completions. Last updated 2026-05-18.*

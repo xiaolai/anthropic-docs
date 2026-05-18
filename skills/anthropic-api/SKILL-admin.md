@@ -59,14 +59,39 @@ Workspaces partition an organization for cost / quota / member scope.
 |---|---|
 | `POST /v1/organizations/workspaces` | [`admin/workspaces/create.md`](https://platform.claude.com/docs/en/api/admin/workspaces/create.md) |
 | `GET /v1/organizations/workspaces` | [`admin/workspaces/list.md`](https://platform.claude.com/docs/en/api/admin/workspaces/list.md) |
+| `GET /v1/organizations/workspaces/{id}` | [`admin/workspaces/retrieve.md`](https://platform.claude.com/docs/en/api/admin/workspaces/retrieve.md) |
+| `POST /v1/organizations/workspaces/{id}` | [`admin/workspaces/update.md`](https://platform.claude.com/docs/en/api/admin/workspaces/update.md) |
 | `POST /v1/organizations/workspaces/{id}/archive` | [`admin/workspaces/archive.md`](https://platform.claude.com/docs/en/api/admin/workspaces/archive.md) |
+
+### Workspace `data_residency` field
+
+Workspace objects include a `data_residency` sub-object:
+
+| Field | Type | Notes |
+|---|---|---|
+| `workspace_geo` | string | Geographic region for workspace data storage. **Immutable** after creation. |
+| `default_inference_geo` | string | Default inference geo applied to requests that omit `inference_geo`. |
+| `allowed_inference_geos` | array of string \| `"unrestricted"` | Permitted inference geo values. `"unrestricted"` means all geos are allowed. |
+
+Source: [`admin/workspaces/retrieve.md`](https://platform.claude.com/docs/en/api/admin/workspaces/retrieve.md)
+
+### Workspace rate limits
+
+| Endpoint | Page |
+|---|---|
+| `GET /v1/organizations/workspaces/{id}/rate_limits` | [`admin/workspaces/rate_limits/list.md`](https://platform.claude.com/docs/en/api/admin/workspaces/rate_limits/list.md) |
+
+Returns only groups with workspace-level overrides. Groups without overrides inherit org limits (use `GET /v1/organizations/rate_limits` for those).
+Rate-limit group types: `model_group`, `batch`, `token_count`, `files`, `skills`, `web_search`.
 
 Workspace members:
 
 | Endpoint | Page |
 |---|---|
 | `POST /v1/organizations/workspaces/{id}/members` | [`admin/workspaces/members/create.md`](https://platform.claude.com/docs/en/api/admin/workspaces/members/create.md) |
-| `GET /v1/organizations/workspaces/{id}/members` | [`admin/workspaces/members.md`](https://platform.claude.com/docs/en/api/admin/workspaces/members.md) |
+| `GET /v1/organizations/workspaces/{id}/members` | [`admin/workspaces/members/list.md`](https://platform.claude.com/docs/en/api/admin/workspaces/members/list.md) |
+| `GET /v1/organizations/workspaces/{id}/members/{user_id}` | [`admin/workspaces/members/retrieve.md`](https://platform.claude.com/docs/en/api/admin/workspaces/members/retrieve.md) |
+| `POST /v1/organizations/workspaces/{id}/members/{user_id}` | [`admin/workspaces/members/update.md`](https://platform.claude.com/docs/en/api/admin/workspaces/members/update.md) |
 | `DELETE /v1/organizations/workspaces/{id}/members/{user_id}` | [`admin/workspaces/members/delete.md`](https://platform.claude.com/docs/en/api/admin/workspaces/members/delete.md) |
 
 ## Users
@@ -116,4 +141,4 @@ Workspace members:
 
 ---
 
-*Source pages: 23 under `platform.claude.com/docs/en/api/admin/`.*
+*Source pages: 37 under `platform.claude.com/docs/en/api/admin/`.*
