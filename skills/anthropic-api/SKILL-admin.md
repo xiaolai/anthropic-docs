@@ -58,8 +58,13 @@ Workspaces partition an organization for cost / quota / member scope.
 | Endpoint | Page |
 |---|---|
 | `POST /v1/organizations/workspaces` | [`admin/workspaces/create.md`](https://platform.claude.com/docs/en/api/admin/workspaces/create.md) |
+| `GET /v1/organizations/workspaces/{id}` | [`admin/workspaces/retrieve.md`](https://platform.claude.com/docs/en/api/admin/workspaces/retrieve.md) |
+| `POST /v1/organizations/workspaces/{id}` | [`admin/workspaces/update.md`](https://platform.claude.com/docs/en/api/admin/workspaces/update.md) (update name / color) |
 | `GET /v1/organizations/workspaces` | [`admin/workspaces/list.md`](https://platform.claude.com/docs/en/api/admin/workspaces/list.md) |
 | `POST /v1/organizations/workspaces/{id}/archive` | [`admin/workspaces/archive.md`](https://platform.claude.com/docs/en/api/admin/workspaces/archive.md) |
+| `GET /v1/organizations/workspaces/{id}/rate_limits` | [`admin/workspaces/rate_limits/list.md`](https://platform.claude.com/docs/en/api/admin/workspaces/rate_limits/list.md) — workspace overrides only; org defaults appear via `GET /v1/organizations/rate_limits` |
+
+The workspace `create` / `retrieve` / `update` response includes a `data_residency` object with fields `workspace_geo` (immutable after creation), `default_inference_geo`, and `allowed_inference_geos` (`"unrestricted"` or an array of specific geos).
 
 Workspace members:
 
@@ -67,6 +72,8 @@ Workspace members:
 |---|---|
 | `POST /v1/organizations/workspaces/{id}/members` | [`admin/workspaces/members/create.md`](https://platform.claude.com/docs/en/api/admin/workspaces/members/create.md) |
 | `GET /v1/organizations/workspaces/{id}/members` | [`admin/workspaces/members.md`](https://platform.claude.com/docs/en/api/admin/workspaces/members.md) |
+| `GET /v1/organizations/workspaces/{id}/members/{user_id}` | [`admin/workspaces/members/retrieve.md`](https://platform.claude.com/docs/en/api/admin/workspaces/members/retrieve.md) |
+| `POST /v1/organizations/workspaces/{id}/members/{user_id}` | [`admin/workspaces/members/update.md`](https://platform.claude.com/docs/en/api/admin/workspaces/members/update.md) (update role) |
 | `DELETE /v1/organizations/workspaces/{id}/members/{user_id}` | [`admin/workspaces/members/delete.md`](https://platform.claude.com/docs/en/api/admin/workspaces/members/delete.md) |
 
 ## Users
@@ -116,4 +123,4 @@ Workspace members:
 
 ---
 
-*Source pages: 23 under `platform.claude.com/docs/en/api/admin/`.*
+*Source pages: 38 under `platform.claude.com/docs/en/api/admin/`.*

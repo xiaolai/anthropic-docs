@@ -3,7 +3,38 @@
   "github": null,
   "docs": null,
   "trackedIssues": null,
-  "researchedIssues": {},
+  "researchedIssues": {
+    "1052": {
+      "title": "chore: release main",
+      "verdict": "skipped",
+      "reason": "autorelease PR, not a user bug",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "1051": {
+      "title": "fix(internal): restrict isAbsoluteURL scheme regex to http(s)",
+      "verdict": "skipped",
+      "reason": "fix PR not a user-reported bug issue",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "1050": {
+      "title": "fix(client): default redirect to manual to avoid forwarding non-standard auth headers on cross-origin hops",
+      "verdict": "skipped",
+      "reason": "fix PR not a user-reported bug issue",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "1049": {
+      "title": "fix(stream): detect mixed newline SSE boundaries",
+      "verdict": "skipped",
+      "reason": "fix PR not a user-reported bug issue",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "1048": {
+      "title": "fix(stream): preserve cache creation usage deltas",
+      "verdict": "skipped",
+      "reason": "fix PR not a user-reported bug issue",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    }
+  },
   "lastAuditedVersion": null,
   "lastUpdated": null,
   "scaffoldComplete": true,
