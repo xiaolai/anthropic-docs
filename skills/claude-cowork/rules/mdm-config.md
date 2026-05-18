@@ -91,6 +91,37 @@ breaking change immediately.
 requests return 429 `cap_exceeded` until the next billing month.
 Set to a value above your monthly forecast, with a buffer.
 
+## Rule 9 — Set `deploymentOrganizationUuid` before fleet rollout
+
+Anthropic uses `deploymentOrganizationUuid` to find your org's telemetry
+and crash reports when you open a support case. If this key is unset, all
+unconfigured deployments share the same placeholder UUID
+(`00000000-0000-4000-8000-000000000001`) and Anthropic cannot distinguish
+your events from other tenants.
+
+```xml
+<key>deploymentOrganizationUuid</key>
+<string>xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</string>  <!-- generate with uuidgen -->
+```
+
+Generate one UUID per organization and distribute it via your MDM profile.
+Do not reuse UUIDs across organizations or deployment environments.
+
+## Rule 10 — `disabledBuiltinTools` requires exact tool names
+
+`disabledBuiltinTools` accepts a JSON-stringified string array of tool
+names to remove from the agent. Only exact names from the documented set
+are accepted:
+
+```
+Bash, Read, Write, Edit, Glob, Grep, NotebookEdit, WebFetch, WebSearch,
+Task, TodoWrite, TaskCreate, TaskUpdate, TaskGet, TaskList, TaskStop,
+Skill, REPL, JavaScript, AskUserQuestion, ToolSearch, SendUserMessage
+```
+
+Wrong names are silently ignored — the tool remains available. Always
+test by verifying the UI no longer shows the removed tool.
+
 ---
 
 *Source: claude.com/docs/cowork/3p/configuration.md + feature-matrix.md.*

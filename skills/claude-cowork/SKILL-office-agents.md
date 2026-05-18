@@ -74,8 +74,22 @@ See [`dictation.md`](https://claude.com/docs/office-agents/dictation.md).
 
 ## FSI plugins
 
-Pre-built plugins for financial-services workflows (modeling,
-disclosures, compliance reviews) ship as a dedicated plugin bundle.
+An open-source plugin set for financial-services workflows lives at
+[`github.com/anthropics/financial-services-plugins`](https://github.com/anthropics/financial-services-plugins).
+Add the marketplace in Cowork, then install individual plugins:
+
+| Plugin | Focus |
+|---|---|
+| Financial analysis (core — install first) | Comps, DCF, LBO, 3-statement models |
+| Investment banking | CIMs, teasers, buyer lists, merger models |
+| Equity research | Earnings updates, initiating-coverage reports |
+| Private equity | Deal sourcing, DD checklists, IC memos |
+| Wealth management | Financial plans, rebalancing, tax-loss harvesting |
+
+Also included: partner-built plugins from **LSEG** and **S&P Global**.
+
+Key slash commands: `/comps`, `/dcf`, `/earnings`, `/one-pager`, `/ic-memo`, `/source`, `/client-review`.
+Bundled MCP connectors include Daloopa, FactSet, LSEG, PitchBook, Morningstar, Moody's, S&P Global, and others.
 
 See [`fsi-plugins.md`](https://claude.com/docs/office-agents/fsi-plugins.md).
 
@@ -86,6 +100,18 @@ Vertex AI, Azure AI Foundry, or an LLM gateway — the same providers
 supported by [Cowork on 3P](SKILL-cowork.md). This decouples M365
 deployment from Anthropic's API for organizations with the same
 residency / regulatory drivers.
+
+**Foundry constraint:** deployment names must use default model IDs
+(e.g., `claude-opus-4-6`), not custom display names.
+
+**Setup plugin:** the `claude-in-office` plugin (from the
+[financial-services-plugins marketplace](https://github.com/anthropics/financial-services-plugins))
+runs a guided `/claude-in-office:setup` wizard that provisions cloud resources
+(IAM OIDC for Bedrock, OAuth client for Vertex), generates the add-in manifest,
+and completes Azure admin consent in one flow.
+
+The page also includes separate network allowlist tables for 1P (Anthropic API)
+and 3P (gateway / Bedrock / Vertex / Foundry) deployments.
 
 See [`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md).
 

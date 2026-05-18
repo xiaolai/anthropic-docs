@@ -128,11 +128,16 @@ That page is the source of truth for:
 
 - Inference provider selection (`inferenceProvider`)
 - Region pinning (`inferenceVertexRegion`, `inferenceBedrockRegion`)
-- Feature toggles (web search, local MCP, etc.)
-- Telemetry toggles
-- MCP server allowlist
+- Credential helper (`inferenceCredentialHelper`, `inferenceCredentialHelperTtlSec`) — runs an executable to fetch short-lived credentials
+- Model list (`inferenceModels`) — plain model-ID strings or objects with `supports1m` (1M-context variant) and `labelOverride` (picker display name)
+- Deployment identity (`deploymentOrganizationUuid`) — generate before rollout; required for Anthropic to find your telemetry in support cases
+- Sign-in screen control (`disableDeploymentModeChooser`) — hides the Anthropic sign-in option so users see only the 3P option
+- Sandbox controls: `allowedWorkspaceFolders`, `coworkEgressAllowedHosts`, `disabledBuiltinTools`, `disableDeepLinkRegistration`
+- Feature toggles (web search, local MCP, Code tab, etc.)
+- Telemetry toggles (`disableCrashReporting`, `disableProductAnalytics`, `disableAutoUpdate`)
+- MCP server allowlist (`managedMcpServers`, `orgPluginSettings`)
 - Plugin / skill / hook distribution settings
-- Per-user spend caps
+- Per-user spend caps (`workspaceSpendCapUSD`)
 - Auto-update policy
 
 ## Data residency
@@ -146,6 +151,20 @@ is determined entirely by:
    are persisted.
 
 Conversation data never traverses Anthropic's backend in these modes.
+
+**On-disk paths:**
+
+| Platform | Application data | Logs |
+|---|---|---|
+| macOS | `~/Library/Application Support/Claude-3p/` | `~/Library/Logs/Claude-3p/` |
+| Windows | `%LOCALAPPDATA%\Claude-3p\` | under application-data dir |
+
+> **Windows upgrade note.** Older releases stored data under `%APPDATA%\Claude-3p\`
+> (Roaming). The app migrates the directory automatically on the first launch after
+> upgrading — update any backup jobs or endpoint policies that reference the old path.
+
+Each session produces an append-only `audit.jsonl` log (HMAC-chained for tamper
+detection) alongside the conversation JSON.
 
 For data-storage details (memory, conversation history, file
 artifacts), see [`3p/data-storage.md`](https://claude.com/docs/cowork/3p/data-storage.md).
@@ -175,8 +194,21 @@ and MCP servers (local + remote). The org-plugins directory acts as
 an organization-internal marketplace; the public Anthropic plugin
 marketplace is not available in 3P.
 
+**Plugin installation policy** — set `installationPreference` in `.claude-plugin/plugin.json`:
+
+| Value | Behavior |
+|---|---|
+| `"required"` | Auto-installs; uninstall action hidden; reinstalls if removed from disk |
+| `"auto_install"` | Auto-installs; users can uninstall |
+| `"available"` (default) | User installs manually from plugin browser |
+
+**Signature enforcement** — `isDesktopExtensionSignatureRequired: true` (boolean, default
+`false`) rejects unsigned `.mcpb` desktop extensions.
+
 See [`3p/extensions.md`](https://claude.com/docs/cowork/3p/extensions.md)
-for the per-extension distribution mechanics.
+for the per-extension distribution mechanics, org-plugins directory layout, and the
+full recommended MCP server catalog (Atlassian, Notion, Linear, Asana, GitHub, Salesforce,
+financial data providers, and more).
 
 ## M365 connector (3P-specific)
 
@@ -189,19 +221,27 @@ Google Workspace connector is not currently supported in 3P (planned).
 
 Full comparison: [`3p/feature-matrix.md`](https://claude.com/docs/cowork/3p/feature-matrix.md).
 
+Features **available in both** Claude Enterprise and 3P: projects,
+code execution, file access, local + remote MCP, skills/plugins/hooks,
+artifacts, memory (device-local in 3P — see below), scheduled tasks,
+global languages, and org-plugins marketplace.
+
 Salient gaps in 3P (versus full Claude Enterprise):
 
 - No Chat tab (Cowork + Code tabs only).
-- No Anthropic 1P connectors (except M365).
+- No Anthropic 1P connectors (except M365; Google Workspace planned).
 - No Project / plugin sharing across orgs.
-- No public plugin marketplace.
+- No public Anthropic plugin marketplace (org-plugins directory serves as an org-private marketplace instead).
 - No mobile dispatch.
 - No voice mode.
 - No Claude in Chrome.
 - No web-based admin console — admin functions delivered via MDM.
 - Per-user spend caps are blanket-only (not differentiated by role).
-- Compliance / Analytics APIs are not exposed; equivalent capability
-  via OpenTelemetry export.
+- Compliance / Analytics APIs not exposed; equivalent capability via OpenTelemetry export.
+
+> **Memory in 3P** is stored on the user's device under
+> `local-agent-mode-sessions/.../memory/`, not on Anthropic servers.
+> Users review or disable it at **Settings → Cowork → Memory**.
 
 ## Cowork guide (standard mode)
 
