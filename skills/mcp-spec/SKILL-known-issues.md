@@ -38,8 +38,39 @@ upstream repos. For each:
 
 ## Entries
 
-> *No confirmed user-impacting bugs surfaced yet via the research
-> agent.*
+### KI 1 — Resource-not-found error code inconsistent across SDKs
+
+**Symptom:** An MCP client trying to detect "resource not found" errors
+receives different JSON-RPC error codes depending on which SDK the server
+is built on.
+
+**Reproduction:** Call `resources/read` with a non-existent URI against
+servers built with different SDKs:
+
+| SDK | Error code for resource-not-found |
+|---|---|
+| TypeScript (`@modelcontextprotocol/sdk`) | `-32602` (InvalidParams) |
+| Python (`mcp`) | `0` (generic) |
+| C# / Rust / Java / Go / PHP official SDKs | `-32002` (custom RESOURCE_NOT_FOUND) |
+| Kotlin SDK | `-32603` (InternalError) |
+| Ruby / Swift SDKs | Left to the server implementer |
+
+The current spec's error-handling section recommends `-32002`, but the
+TypeScript and Python SDKs diverge from this recommendation.
+
+**Workaround:** Clients needing to detect resource-not-found should:
+1. Treat `-32602`, `-32002`, `-32603`, and `0` as *potentially*
+   resource-not-found, using the error `message` field to confirm.
+2. When building a TypeScript SDK server, `-32602` is returned
+   automatically by the SDK's built-in `resources/read` handler.
+3. When building a Python SDK server, throw a custom `McpError` with
+   `-32002` or `-32602` explicitly if you need clients to detect the case.
+
+**Status:** [SEP-2164](https://modelcontextprotocol.io/seps/2164-resource-not-found-error.md)
+(Draft, Standards Track, created 2026-01-28) proposes standardizing all
+official SDKs to `-32602`. No merge date set yet.
+
+**Link:** [SEP-2164: Standardize Resource Not Found Error Code](https://modelcontextprotocol.io/seps/2164-resource-not-found-error.md)
 
 ---
 

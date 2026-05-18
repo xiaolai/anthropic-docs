@@ -148,6 +148,14 @@ Proposals. The process is documented at
 [`community/sep-guidelines.md`](https://modelcontextprotocol.io/community/sep-guidelines.md).
 Active SEPs live under [`seps/`](https://modelcontextprotocol.io/seps/).
 
+### Notable SEPs (2026-05-18)
+
+| SEP | Title | Status | Summary |
+|---|---|---|---|
+| [SEP-2596](https://modelcontextprotocol.io/seps/2596-spec-feature-lifecycle-and-deprecation.md) | Spec Feature Lifecycle and Deprecation | Draft (Process) | Introduces Active / Deprecated / Removed feature states with a 12-month minimum deprecation window and a canonical deprecated-feature registry; formalises the HTTP+SSE transport as Deprecated. |
+| [SEP-2164](https://modelcontextprotocol.io/seps/2164-resource-not-found-error.md) | Standardize Resource Not Found Error Code | Draft (Standards Track) | Proposes `-32602` (Invalid Params) as the single canonical JSON-RPC error code for resource-not-found, resolving inconsistency across SDKs. |
+| [SEP-2106](https://modelcontextprotocol.io/seps/2106-json-schema-2020-12.md) | Tools `inputSchema` & `outputSchema` Conform to JSON Schema 2020-12 | Draft (Standards Track) | Loosens `inputSchema` to allow full JSON Schema composition keywords (retaining `type: "object"`); removes the `type: "object"` restriction from `outputSchema`; widens `structuredContent` from object-only to any JSON value. |
+
 ---
 
 *Source pages: `learn/architecture.md`, `learn/versioning.md`,
