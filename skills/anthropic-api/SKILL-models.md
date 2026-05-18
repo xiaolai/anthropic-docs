@@ -90,4 +90,4 @@ date, requests targeting that ID return an error.
 
 ---
 
-*Source pages: 2 under `platform.claude.com/docs/en/api/models/`.*
+*Source pages: 3 under `platform.claude.com/docs/en/api/models/`. Last audited: 2026-05-18.*

@@ -41,8 +41,10 @@ single queries or stateless multi-turn conversations.
 | `tool_choice` | `auto` / `any` / `tool` / `none` |
 | `metadata` | `{ user_id: "..." }` for abuse signaling |
 | `service_tier` | `auto` / `standard_only` |
-| `thinking` | `{ type: "enabled", budget_tokens: N }` for extended thinking |
+| `thinking` | `{ type: "enabled", budget_tokens: N }` or `{ type: "adaptive" }` — see below |
 | `output_config` | Output configuration — see below |
+| `container` | Container identifier string for reuse across requests (used with code-execution server tools). |
+| `inference_geo` | Geographic region for inference processing. Defaults to workspace's `default_inference_geo`. |
 
 ### `output_config` parameter
 
@@ -54,6 +56,15 @@ An optional object that configures the model's output:
 | `format` | object | Structured output format: `{ type: "json_schema", schema: { ... } }`. Forces the model to return JSON matching the schema. |
 
 Source: [`messages/create.md`](https://platform.claude.com/docs/en/api/messages/create.md)
+
+### `thinking` parameter
+
+Two config shapes are accepted:
+
+| Shape | When to use |
+|---|---|
+| `{ type: "enabled", budget_tokens: N }` | Explicit extended thinking; minimum 1 024 tokens. Thinking counts against `max_tokens`. |
+| `{ type: "adaptive", display?: "summarized" \| "omitted" }` | Model decides when to think. `display: "omitted"` redacts the thinking block but preserves the signature for multi-turn continuity (defaults to `"summarized"`). |
 
 > **Note:** `max_tokens: 0` is valid and pre-warms the prompt cache without generating any output tokens.
 
@@ -74,6 +85,7 @@ block) or an array of typed blocks:
 | `tool_use` | Assistant turn: model invoked a **client** tool. Carries `id`, `name`, `input`. |
 | `tool_result` | User turn: result of a previous `tool_use`. **Must reference the matching `tool_use_id`**. |
 | `server_tool_use` | Assistant turn: model invoked a **server** tool (e.g. web_search, web_fetch, code_execution). Different return path — see server tools below. |
+| `container_upload` | User turn: `{ type: "container_upload", file_id, cache_control? }` — upload a file to the code-execution container's input directory. |
 | `thinking` | Extended-thinking output (when `thinking` enabled) |
 | `redacted_thinking` | Thinking content the API redacted before returning |
 
@@ -90,9 +102,13 @@ Known server tool types (specify in `tools` array):
 |---|---|
 | `web_search_20250305` / `web_search_20260209` | Web search. Supports `allowed_domains`, `blocked_domains`, `user_location`, `max_uses`. |
 | `web_fetch_20250910` | Fetch a URL. Supports `allowed_domains`, `blocked_domains`, `max_content_tokens`, `citations`. |
-| `code_execution_20250825` / `code_execution_20260120` | Execute code in a sandbox. |
+| `code_execution_20250825` / `code_execution_20260120` | Execute code in a sandbox. Returns `server_tool_use` with name `code_execution`. |
+| `bash_20250124` | Bash execution sub-tool (used within code execution environments). |
+| `text_editor_20250124` / `text_editor_20250429` / `text_editor_20250728` | Text editor sub-tool (view/create/str_replace file operations inside the container). |
 
 Server tools also support `defer_loading: true` to exclude from the initial system prompt (loaded on demand) and `strict: true` for schema validation.
+
+The `server_tool_use` content block in assistant turns carries `name` as one of: `web_search`, `web_fetch`, `code_execution`, `bash_code_execution`, `text_editor_code_execution`.
 
 ### Prompt caching: `cache_control`
 
@@ -135,8 +151,14 @@ in the platform-features skill for caching strategy.
     "cache_creation_input_tokens": 0,
     "cache_read_input_tokens": 0,
     "output_tokens": 100
-  }
+  },
+  "container": null,
+  "service_tier": "standard"
 }
+```
+
+- **`container`** — present when a code-execution server tool ran: `{ "id": "container_...", "expires_at": "<RFC3339>" }`. Pass `container.id` back in subsequent requests as the `container` parameter to reuse the same execution environment. `null` otherwise.
+- **`service_tier`** — actual tier used: `"standard"`, `"priority"`, or `"batch"`.
 ```
 
 ### Stop reasons
@@ -229,4 +251,4 @@ tool use, vision, or structured outputs. Migrate to Messages.
 
 ---
 
-*Source pages: 9 under `platform.claude.com/docs/en/api/messages*` (Messages family) + 2 legacy completions.*
+*Source pages: 10 under `platform.claude.com/docs/en/api/messages*` (Messages family) + 2 legacy completions. Last audited: 2026-05-18.*

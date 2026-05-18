@@ -3,7 +3,128 @@
   "github": null,
   "docs": null,
   "trackedIssues": null,
-  "researchedIssues": {},
+  "researchedIssues": {
+    "956": {
+      "title": "Claude Opus 4.6 and Sonnet 4.6 fail to make parallel tool calls in Batch API",
+      "verdict": "added_known_issue",
+      "reason": "3 reactions, 5 comments; Anthropic employee attempted reproduction; scale-dependent regression confirmed; workaround available (use 4.5 models)",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "964": {
+      "title": "Bug: toolRunner does not propagate container.id across iterations, and setMessagesParams causes duplicate tool call loops",
+      "verdict": "added_known_issue",
+      "reason": "Labeled bug; 1 reaction, 2 comments; confirmed by employee and second user; PRs #966 #974 #981 #994 pending; workaround: implement loop manually",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "968": {
+      "title": "SDK strips directory paths from filenames in multipart uploads, breaking skills.versions.create()",
+      "verdict": "added_known_issue",
+      "reason": "2 reactions, 4 comments; clear 400 reproduction; workaround is raw FormData",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "932": {
+      "title": "toBase64 stack overflow on large inputs (e.g. image uploads) in non-Node environments",
+      "verdict": "added_known_issue",
+      "reason": "0 reactions but 3 comments; clear reproduction in browser/workers; workaround via FileReader/btoa",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "922": {
+      "title": "toolRunner drops defaultHeaders on follow-up requests (breaks proxy/gateway setups)",
+      "verdict": "added_known_issue",
+      "reason": "0 reactions but 5 comments confirming; affects proxy/gateway users; workaround: manual loop",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "928": {
+      "title": "json_schema structured output truncates content at HTML tags containing quotation marks",
+      "verdict": "skipped",
+      "reason": "0 reactions, 2 comments; very specific trigger (cite tags with quoted attrs in json_schema); low overall signal",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "930": {
+      "title": "Message Batches API CORS misconfiguration",
+      "verdict": "skipped",
+      "reason": "0 reactions, 1 comment; server-side CORS issue, not SDK behavior; insufficient confirmation",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "1031": {
+      "title": "claude-opus-4-7 emits literal <<<SENTINEL prefix on every string value inside a single tool's input_json (Bedrock)",
+      "verdict": "skipped",
+      "reason": "0 reactions, 1 comment; Bedrock-specific; single occurrence; not confirmed reproducible",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "1038": {
+      "title": "Vertex AI: document URL sources rejected with incorrect error path",
+      "verdict": "skipped",
+      "reason": "Vertex AI / provider-specific issue; not a general Anthropic API bug",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "1016": {
+      "title": "[Vertex] anthropic-beta header forwarded to countTokens fallback fails on lagging model backends",
+      "verdict": "skipped",
+      "reason": "Vertex AI specific; PR fix already open (#1020, #1037)",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "1036": {
+      "title": "Adopt TracingChannel for observability",
+      "verdict": "skipped",
+      "reason": "Feature request / enhancement proposal, not a bug",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "1028": {
+      "title": "Supply chain risk: 2 CRITICAL single-maintainer transitive dependencies in @anthropic-ai/sdk",
+      "verdict": "skipped",
+      "reason": "Security/supply-chain concern, not an API usage bug",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "1027": {
+      "title": "API: mcp_servers[].optional flag + structured error for graceful degradation on unreachable injected MCP servers",
+      "verdict": "skipped",
+      "reason": "Feature request",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "1018": {
+      "title": "[Enhancement proposal] Agentic summarization for Enterprise and Max customers",
+      "verdict": "skipped",
+      "reason": "Feature request",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "1012": {
+      "title": "feature request: expose thinking / output_config on Managed Agents request-side types",
+      "verdict": "skipped",
+      "reason": "Feature request / type gap, not a bug",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "1010": {
+      "title": "TS2322: Type BetaRunnableTool<{}> is not assignable to type ToolUnion",
+      "verdict": "skipped",
+      "reason": "TypeScript typing issue, fix pending in PR #1039; already being addressed",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "995": {
+      "title": "perf(MessageStream): O(N²) complexity in text accumulation during structured output streaming",
+      "verdict": "skipped",
+      "reason": "Performance issue tracked in #933; not blocking correctness",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "986": {
+      "title": "partialParse in _vendor/partial-json-parser crashes on invalid JSON escape sequences from model output",
+      "verdict": "skipped",
+      "reason": "Internal helper; requires malformed model output to trigger; fix PR pending",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "933": {
+      "title": "O(N²) performance bottleneck in MessageStream during structured output streaming",
+      "verdict": "skipped",
+      "reason": "Performance only, not correctness; tracked with #995",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    },
+    "919": {
+      "title": "Export toJSONSchema doesn't exist in target module from betaZodTool",
+      "verdict": "skipped",
+      "reason": "Module bundling edge case; fix PR pending",
+      "researchedAt": "2026-05-18T00:00:00Z"
+    }
+  },
   "lastAuditedVersion": null,
   "lastUpdated": null,
   "scaffoldComplete": true,
