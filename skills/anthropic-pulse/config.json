@@ -32,6 +32,7 @@
     "skipUpdateAgent": true,
     "skipResearchAgent": true,
     "skipReportAgent": true,
-    "_note": "This skill is deterministically rendered from upstream HTML — no LLM agents needed. fetch-anthropic-pulse.sh handles both fetch + render. Zero token cost per pipeline run."
+    "skipDiffSizeCheck": true,
+    "_note": "This skill is deterministically rendered from upstream HTML — no LLM agents needed. fetch-anthropic-pulse.sh handles both fetch + render. Zero token cost per pipeline run. Diff-size gate skipped because each refresh rewrites the digest tables wholesale (>20% per file by design)."
   }
 }

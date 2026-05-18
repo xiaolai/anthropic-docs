@@ -418,13 +418,25 @@ jobs:
       # ---------------------------------------------------------------
       # 7c. Diff-size gate before finalize-log so the report sees it
       # ---------------------------------------------------------------
+      # Per-skill override: deterministic-render skills (e.g.,
+      # anthropic-pulse) replace whole digest tables on every refresh
+      # — the per-file diff is always >20% by design. They opt out via
+      # pipelineOverrides.skipDiffSizeCheck. The gate's purpose is
+      # catching unbounded LLM rewrites in agent-driven skills; for
+      # mechanical-renderer skills it would always trip.
       - name: Check diff size against HEAD
         id: check_diff_size
         if: always()
         continue-on-error: true
         env:
           DIFF_THRESHOLD_PCT: ${{ env.DIFF_THRESHOLD_PCT }}
-        run: bash pipeline/scripts/check-diff-size.sh
+        run: |
+          SKIP=$(jq -r '.pipelineOverrides.skipDiffSizeCheck // false' "skills/$SKILL_NAME/config.json" 2>/dev/null)
+          if [[ "$SKIP" == "true" ]]; then
+            echo "skipDiffSizeCheck=true for $SKILL_NAME — bypassing diff-size gate."
+            exit 0
+          fi
+          bash pipeline/scripts/check-diff-size.sh
 
       - name: Finalize pipeline log
         if: always()
