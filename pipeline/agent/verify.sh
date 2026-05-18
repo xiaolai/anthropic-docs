@@ -38,7 +38,10 @@ fi
 
 OLD_VERSION=$(jq -r '.oldVersion // empty' "$CHANGE_REPORT")
 NEW_VERSION=$(jq -r '.newVersion // empty' "$CHANGE_REPORT")
-HAS_VERSION_CHANGE=$(jq -r '.changes[]? | select(.type == "npm_version") | .type // empty' "$CHANGE_REPORT" 2>/dev/null || true)
+# monitor.sh emits change-type "package_version" (covers npm + PyPI in the
+# multi-source schema). The legacy single-source emitter used "npm_version"
+# — accept both for backward compat with pre-multi-skill change reports.
+HAS_VERSION_CHANGE=$(jq -r '.changes[]? | select(.type == "package_version" or .type == "npm_version") | .type // empty' "$CHANGE_REPORT" 2>/dev/null || true)
 
 # Per-skill surfaces + rules from config.json (single source of truth).
 # Use `while read` instead of `mapfile` — macOS ships with bash 3.2.

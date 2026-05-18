@@ -52,7 +52,7 @@ mistakes at edit time.
 | `claude-cowork` | [`claude.com/docs/{cowork,office-agents}`](https://claude.com/docs/cowork) — Cowork on 3P + Office agents | 2 | 35 |
 | `mcp-spec` | [`modelcontextprotocol.io`](https://modelcontextprotocol.io) + 3 SDK repos — MCP open spec | 5 | 116 |
 
-**Total: 30 surfaces + 1 rule covering 624 pages of upstream docs.**
+**Total: 30 surface files + 14 rule files + 42 templates covering 624 pages of upstream docs.**
 
 See [`dev-docs/multi-skill-migration.md`](dev-docs/multi-skill-migration.md) for the full ecosystem plan + per-skill source mappings.
 
@@ -82,7 +82,6 @@ autoupdated-anthropic-documentation-knowledge/
 ├── .github/
 │   └── workflows/
 │       └── pipeline.yml       ← matrix-runs the pipeline across all skills every 30 min
-├── pipeline.config.json       ← (TBD) matrix-controlling top-level config
 ├── package.json + lockfile    ← devDeps for shared scripts
 ├── LICENSE
 └── README.md (this file) + CHANGELOG.md

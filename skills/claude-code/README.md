@@ -7,10 +7,10 @@ Claude can read at intent-match time. It is not a full mirror — only
 changes that affect the reference surface (schema fields, event
 names, flags, env vars) flow in.
 
-<!-- The two stamps below are auto-filled by the daily pipeline. -->
+<!-- The two stamps below are auto-filled by the pipeline. -->
 **Claude Code version**: v<version>
 **Last updated**: <YYYY-MM-DD>
-**Pipeline status**: see [`reports/`](reports/) for daily runs.
+**Pipeline status**: see [`reports/`](reports/) for per-run records.
 
 ## What it does
 
@@ -115,7 +115,7 @@ reports/                          Daily run digests
 
 ### Safety gates
 
-After each daily run, five gates run before commit:
+After each pipeline run, five gates run before commit:
 
 | Gate | Catches |
 |---|---|

@@ -30,7 +30,7 @@ user-invocable: true
 | **TypeScript SDK** | [`@modelcontextprotocol/sdk`](https://www.npmjs.com/package/@modelcontextprotocol/sdk) |
 | **Python SDK** | [`mcp`](https://pypi.org/project/mcp/) |
 
-> **This skill is auto-updated daily.** A pipeline reads the upstream
+> **This skill is auto-updated every 30 min.** A pipeline reads the upstream
 > docs and rewrites the per-surface files below. Section structure is
 > stable; content drifts to track upstream.
 
@@ -46,5 +46,5 @@ user-invocable: true
 
 ---
 
-*This skill is auto-updated daily by a maintainer-run pipeline. File
+*This skill is auto-updated every 30 minutes by a maintainer-run pipeline. File
 issues at [xiaolai/autoupdated-anthropic-documentation-knowledge](https://github.com/xiaolai/autoupdated-anthropic-documentation-knowledge).*

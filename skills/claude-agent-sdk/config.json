@@ -5,8 +5,12 @@
   "upstream": {
     "docsIndexUrl": "https://code.claude.com/llms.txt",
     "docsPathFilter": "agent-sdk/",
-    "npmPackages": ["@anthropic-ai/claude-agent-sdk"],
-    "pypiPackages": ["claude-agent-sdk"],
+    "npmPackages": [
+      "@anthropic-ai/claude-agent-sdk"
+    ],
+    "pypiPackages": [
+      "claude-agent-sdk"
+    ],
     "githubRepos": [
       "anthropics/claude-agent-sdk-typescript",
       "anthropics/claude-agent-sdk-python"
@@ -16,7 +20,8 @@
   "router": "SKILL.md",
   "surfaces": [
     "SKILL-typescript.md",
-    "SKILL-python.md"
+    "SKILL-python.md",
+    "SKILL-known-issues.md"
   ],
   "rules": [
     "rules/claude-agent-sdk-ts.md",
@@ -43,7 +48,7 @@
     "agent-sdk/tracking-costs.md": "SKILL-typescript.md"
   },
   "schemas": {},
-  "knownIssuesSurface": null,
+  "knownIssuesSurface": "SKILL-known-issues.md",
   "notes": [
     "Both SKILL-typescript.md and SKILL-python.md draw from the same code.claude.com/agent-sdk/* pages — the per-language split is on conceptual scope (idioms, types, packaging), not on source URLs.",
     "The research agent should dispatch upstream changes to BOTH per-language surfaces when the change is language-agnostic (e.g., hooks event semantics), and to only the matching surface when language-specific (e.g., a Python-only API).",

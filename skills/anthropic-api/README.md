@@ -35,7 +35,3 @@ To run it locally for just this skill:
 SKILL_NAME=anthropic-api npm run update
 ```
 
-## Status
-
-After first daily run completes, `state.json.scaffoldComplete` flips
-to `true` and the SKILL-*.md stubs are replaced with populated content.

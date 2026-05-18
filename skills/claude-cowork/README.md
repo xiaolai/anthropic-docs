@@ -25,7 +25,3 @@ Part of the [autoupdated-anthropic-documentation-knowledge](../../README.md) plu
 SKILL_NAME=claude-cowork npm run update
 ```
 
-## Status
-
-After first daily run completes, `state.json.scaffoldComplete` flips
-to `true` and the SKILL-*.md stubs are replaced with populated content.

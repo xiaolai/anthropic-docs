@@ -11,8 +11,9 @@
     "verify:docs-drift": "bash pipeline/scripts/check-docs-drift.sh",
     "verify:sanitizer-parity": "bash pipeline/scripts/check-sanitizer-parity.sh",
     "verify:gate-parity": "bash pipeline/scripts/check-gate-parity.sh",
+    "verify:change-report-parity": "bash pipeline/scripts/check-change-report-parity.sh",
     "verify:agent-tests": "npm --prefix pipeline/agent test",
-    "verify:all": "npm run verify:examples && npm run verify:templates && npm run verify:populated && npm run verify:diff-size && npm run verify:docs-drift && npm run verify:sanitizer-parity && npm run verify:gate-parity && npm run verify:agent-tests"
+    "verify:all": "npm run verify:examples && npm run verify:templates && npm run verify:populated && npm run verify:diff-size && npm run verify:docs-drift && npm run verify:sanitizer-parity && npm run verify:gate-parity && npm run verify:change-report-parity && npm run verify:agent-tests"
   },
   "devDependencies": {
     "ajv": "8.20.0",

@@ -1,25 +1,649 @@
 {
   "registry": {
-    "package": "@anthropic-ai/sdk",
-    "version": "0.0.0",
-    "engines": {}
+    "packages": [
+      {
+        "manager": "npm",
+        "name": "@anthropic-ai/sdk",
+        "version": "0.0.0",
+        "engines": {}
+      },
+      {
+        "manager": "pypi",
+        "name": "anthropic",
+        "version": "0.0.0",
+        "engines": {}
+      }
+    ]
   },
   "github": {
-    "repo": "anthropics/anthropic-sdk-typescript",
-    "latestRelease": {
-      "tag": "",
-      "name": "",
-      "publishedAt": ""
+    "repos": [
+      {
+        "repo": "anthropics/anthropic-sdk-typescript",
+        "latestRelease": {
+          "tag": "",
+          "name": "",
+          "publishedAt": ""
+        }
+      },
+      {
+        "repo": "anthropics/anthropic-sdk-python",
+        "latestRelease": {
+          "tag": "",
+          "name": "",
+          "publishedAt": ""
+        }
+      }
+    ],
+    "bugTracker": {
+      "repo": "anthropics/anthropic-sdk-typescript",
+      "lastScannedIssueNumber": 0
     }
   },
   "docs": {
     "indexUrl": "https://platform.claude.com/llms.txt",
     "indexSha256": "c4c9c5d0ec624334a91f3c546a66ab251a0b368efc845e4b948c80b770177fea",
     "pageCount": 199,
-    "knownPages": {}
+    "knownPages": {
+      "https://platform.claude.com/docs/en/api/admin.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/api_keys.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/api_keys/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/api_keys/retrieve.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/api_keys/update.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/cost_report.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/cost_report/retrieve.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/invites.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/invites/create.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/invites/delete.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/invites/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/invites/retrieve.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/organizations.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/organizations/me.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/rate_limits.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/rate_limits/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/usage_report.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/usage_report/retrieve_claude_code.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/usage_report/retrieve_messages.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/users.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/users/delete.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/users/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/users/retrieve.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/users/update.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/workspaces.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/workspaces/archive.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/workspaces/create.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/workspaces/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/workspaces/members.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/workspaces/members/create.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/workspaces/members/delete.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/workspaces/members/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/workspaces/members/retrieve.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/workspaces/members/update.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/workspaces/rate_limits.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/workspaces/rate_limits/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/workspaces/retrieve.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/admin/workspaces/update.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/agents.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/agents/archive.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/agents/create.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/agents/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/agents/retrieve.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/agents/update.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/agents/versions.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/agents/versions/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/environments.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/environments/archive.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/environments/create.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/environments/delete.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/environments/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/environments/retrieve.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/environments/update.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/files.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/files/delete.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/files/download.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/files/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/files/retrieve_metadata.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/files/upload.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/memory_stores.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/memory_stores/archive.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/memory_stores/create.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/memory_stores/delete.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/memory_stores/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/memory_stores/memories.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/memory_stores/memories/create.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/memory_stores/memories/delete.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/memory_stores/memories/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/memory_stores/memories/retrieve.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/memory_stores/memories/update.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/memory_stores/memory_versions.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/memory_stores/memory_versions/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/memory_stores/memory_versions/redact.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/memory_stores/memory_versions/retrieve.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/memory_stores/retrieve.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/memory_stores/update.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/messages.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/messages/batches.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/messages/batches/cancel.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/messages/batches/create.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/messages/batches/delete.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/messages/batches/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/messages/batches/results.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/messages/batches/retrieve.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/messages/count_tokens.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/messages/create.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/models.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/models/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/models/retrieve.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/sessions.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/sessions/archive.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/sessions/create.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/sessions/delete.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/sessions/events.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/sessions/events/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/sessions/events/send.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/sessions/events/stream.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/sessions/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/sessions/resources.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/sessions/resources/add.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/sessions/resources/delete.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/sessions/resources/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/sessions/resources/retrieve.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/sessions/resources/update.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/sessions/retrieve.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/sessions/threads.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/sessions/threads/archive.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/sessions/threads/events.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/sessions/threads/events/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/sessions/threads/events/stream.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/sessions/threads/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/sessions/threads/retrieve.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/sessions/update.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/skills.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/skills/create.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/skills/delete.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/skills/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/skills/retrieve.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/skills/versions.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/skills/versions/create.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/skills/versions/delete.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/skills/versions/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/skills/versions/retrieve.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/user_profiles.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/user_profiles/create_enrollment_url.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/user_profiles/create.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/user_profiles/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/user_profiles/retrieve.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/user_profiles/update.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/vaults.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/vaults/archive.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/vaults/create.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/vaults/credentials.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/vaults/credentials/archive.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/vaults/credentials/create.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/vaults/credentials/delete.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/vaults/credentials/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/vaults/credentials/mcp_oauth_validate.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/vaults/credentials/retrieve.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/vaults/credentials/update.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/vaults/delete.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/vaults/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/vaults/retrieve.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/vaults/update.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/beta/webhooks.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/completions.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/completions/create.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/activities.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/activities/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/apps.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/apps/artifacts.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/apps/artifacts/content.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/apps/chats.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/apps/chats/delete.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/apps/chats/files.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/apps/chats/files/content.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/apps/chats/files/delete.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/apps/chats/files/retrieve.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/apps/chats/generated_files.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/apps/chats/generated_files/content.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/apps/chats/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/apps/chats/messages.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/apps/projects.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/apps/projects/attachments.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/apps/projects/delete.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/apps/projects/documents.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/apps/projects/documents/delete.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/apps/projects/documents/retrieve.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/apps/projects/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/apps/projects/retrieve.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/groups.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/groups/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/groups/members.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/groups/members/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/groups/retrieve.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/organizations.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/organizations/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/organizations/roles.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/organizations/roles/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/organizations/roles/permissions.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/organizations/roles/permissions/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/organizations/roles/retrieve.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/organizations/users.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/compliance/organizations/users/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/messages.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/messages/batches.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/messages/batches/cancel.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/messages/batches/create.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/messages/batches/delete.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/messages/batches/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/messages/batches/results.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/messages/batches/retrieve.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/messages/count_tokens.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/messages/create.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/models.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/models/list.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      },
+      "https://platform.claude.com/docs/en/api/models/retrieve.md": {
+        "lastSeen": "2026-05-17T23:58:52Z"
+      }
+    }
   },
   "trackedIssues": {},
-  "lastScannedIssueNumber": 0,
   "researchedIssues": {},
   "lastAuditedVersion": "none",
   "lastUpdated": "2026-05-18T00:00:00Z",

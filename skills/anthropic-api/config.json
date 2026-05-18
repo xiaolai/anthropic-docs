@@ -5,8 +5,12 @@
   "upstream": {
     "docsIndexUrl": "https://platform.claude.com/llms.txt",
     "docsPathFilter": "api/(messages|admin|compliance|beta|models|completions)(/|\\.md$)",
-    "npmPackages": ["@anthropic-ai/sdk"],
-    "pypiPackages": ["anthropic"],
+    "npmPackages": [
+      "@anthropic-ai/sdk"
+    ],
+    "pypiPackages": [
+      "anthropic"
+    ],
     "githubRepos": [
       "anthropics/anthropic-sdk-typescript",
       "anthropics/anthropic-sdk-python"
@@ -19,7 +23,8 @@
     "SKILL-admin.md",
     "SKILL-compliance.md",
     "SKILL-beta.md",
-    "SKILL-models.md"
+    "SKILL-models.md",
+    "SKILL-known-issues.md"
   ],
   "rules": [
     "rules/messages-api.md"
@@ -34,5 +39,5 @@
     "api/models/": "SKILL-models.md"
   },
   "schemas": {},
-  "knownIssuesSurface": null
+  "knownIssuesSurface": "SKILL-known-issues.md"
 }

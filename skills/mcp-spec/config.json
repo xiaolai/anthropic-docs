@@ -5,8 +5,12 @@
   "upstream": {
     "docsIndexUrl": "https://modelcontextprotocol.io/llms.txt",
     "docsPathFilter": "",
-    "npmPackages": ["@modelcontextprotocol/sdk"],
-    "pypiPackages": ["mcp"],
+    "npmPackages": [
+      "@modelcontextprotocol/sdk"
+    ],
+    "pypiPackages": [
+      "mcp"
+    ],
     "githubRepos": [
       "modelcontextprotocol/modelcontextprotocol",
       "modelcontextprotocol/typescript-sdk",
@@ -20,7 +24,8 @@
     "SKILL-servers.md",
     "SKILL-transport.md",
     "SKILL-protocol.md",
-    "SKILL-tools-resources-prompts.md"
+    "SKILL-tools-resources-prompts.md",
+    "SKILL-known-issues.md"
   ],
   "rules": [
     "rules/mcp-server-impl.md"
@@ -33,7 +38,7 @@
     "community/": "SKILL-protocol.md"
   },
   "schemas": {},
-  "knownIssuesSurface": null,
+  "knownIssuesSurface": "SKILL-known-issues.md",
   "notes": [
     "The MCP spec lives in 3 places: modelcontextprotocol.io (the docs site, ~116 pages), the modelcontextprotocol/modelcontextprotocol GitHub repo (the canonical spec), and the language-specific SDK repos. This skill primarily tracks the docs site; the SDK repos are tracked for version bumps + bug-issue surfacing.",
     "dispatch table is best-effort — modelcontextprotocol.io's URL structure is less rigidly categorised than the Anthropic surfaces, so the research agent has more discretion on where to put a given page."
