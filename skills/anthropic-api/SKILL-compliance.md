@@ -23,44 +23,71 @@ audit reports.
 
 ## Key facts (at intent time)
 
-- **Auth:** uses an **admin-scoped API key**, not a regular API key.
-  Mint one in the Anthropic Console under the org's API Keys section
-  (admin-only).
-- **Header:** standard `x-api-key: <admin-key>` plus the usual
-  `anthropic-version`. No `anthropic-beta` header required (compliance
-  is stable, not beta).
+- **Auth:** uses a **compliance API key** (`Authorization: Bearer $ANTHROPIC_COMPLIANCE_API_KEY`). This is a separate key type from the regular API key and the admin-scoped key — request it from Anthropic separately.
+- **Base path:** all compliance endpoints are under `/v1/compliance/...` — **not** `/v1/organizations/...`.
+- **No `anthropic-version` header required** for compliance endpoints; use only `Authorization: Bearer <key>` and optionally `x-api-key` as documented per endpoint.
 - **Plan gating:** Compliance API endpoints return `403` for orgs
   without the required plan. Check eligibility at
   [`compliance-api-access`](https://platform.claude.com/docs/en/manage-claude/compliance-api-access.md)
   before integration.
-- **Pagination:** all list endpoints use cursor pagination
-  (`next_page` field in the response). Treat as a stream.
+- **Pagination:** list endpoints use cursor pagination
+  (`next_page` token in the response; default `limit` 500, max 1000).
 - **Retention:** activity feed events are retained per the org's
   data-retention setting (default 30d, longer on enterprise plans).
   See [`api-and-data-retention`](https://platform.claude.com/docs/en/manage-claude/api-and-data-retention.md).
-- **Rate limits:** compliance endpoints are subject to their own
-  rate-limit bucket, separate from Messages rate limits. Monitor
-  via the rate-limits API.
 - **Concept overview** lives in
   [`anthropic-platform-features → SKILL-manage-claude.md`](../anthropic-platform-features/SKILL-manage-claude.md);
   this surface is the wire reference.
 
 ## Endpoint catalog
 
-Endpoints under `/v1/organizations/compliance/...`. Each page in
-the snapshot documents one endpoint's parameters, response shape,
-and pagination.
+All compliance endpoints are at `https://api.anthropic.com/v1/compliance/...`.
 
-| Topic | Source dir |
+### Activities
+
+| Endpoint | Page |
 |---|---|
-| Compliance API section index | [`compliance.md`](https://platform.claude.com/docs/en/api/compliance.md) |
-| Activity feed | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
-| Content data (per-message records) | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
-| Org-level data | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
-| Errors | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
+| `GET /v1/compliance/activities` | [`compliance/activities/list.md`](https://platform.claude.com/docs/en/api/compliance/activities/list.md) |
 
-The conceptual coverage of each (what to use it for, what fields
-mean, integration patterns) lives in the platform-features
+Returns a paginated list of compliance activities (audit events). Supports `activity_types` filter (290+ event type strings including account lifecycle, API key events, chat events, project events, etc.) plus date range filters.
+
+### Apps (Claude.ai content)
+
+| Endpoint | Page |
+|---|---|
+| `GET /v1/compliance/apps` | [`compliance/apps.md`](https://platform.claude.com/docs/en/api/compliance/apps.md) |
+| `GET /v1/compliance/apps/chats` | [`compliance/apps/chats.md`](https://platform.claude.com/docs/en/api/compliance/apps/chats.md) |
+| `GET /v1/compliance/apps/chats/list` | [`compliance/apps/chats/list.md`](https://platform.claude.com/docs/en/api/compliance/apps/chats/list.md) |
+| `DELETE /v1/compliance/apps/chats/{id}` | [`compliance/apps/chats/delete.md`](https://platform.claude.com/docs/en/api/compliance/apps/chats/delete.md) |
+| Chat files, generated files | [`compliance/apps/chats/files/`](https://platform.claude.com/docs/en/api/compliance/apps/chats/files.md), [`generated_files/`](https://platform.claude.com/docs/en/api/compliance/apps/chats/generated_files.md) |
+| Chat messages | [`compliance/apps/chats/messages.md`](https://platform.claude.com/docs/en/api/compliance/apps/chats/messages.md) |
+| Projects + documents | [`compliance/apps/projects/`](https://platform.claude.com/docs/en/api/compliance/apps/projects.md) |
+| Artifacts | [`compliance/apps/artifacts.md`](https://platform.claude.com/docs/en/api/compliance/apps/artifacts.md) |
+
+### Groups
+
+| Endpoint | Page |
+|---|---|
+| `GET /v1/compliance/groups` | [`compliance/groups/list.md`](https://platform.claude.com/docs/en/api/compliance/groups/list.md) — supports `name_prefix` filter |
+| `GET /v1/compliance/groups/{id}` | [`compliance/groups/retrieve.md`](https://platform.claude.com/docs/en/api/compliance/groups/retrieve.md) |
+| `GET /v1/compliance/groups/{id}/members` | [`compliance/groups/members/list.md`](https://platform.claude.com/docs/en/api/compliance/groups/members/list.md) |
+
+Group object fields: `id`, `name`, `description`, `roles` (array of role IDs), `source_type` (`"direct"` or `"scim"`), `created_at`, `updated_at`.
+
+### Organizations
+
+| Endpoint | Page |
+|---|---|
+| `GET /v1/compliance/organizations` | [`compliance/organizations/list.md`](https://platform.claude.com/docs/en/api/compliance/organizations.md) — no pagination; max 1000 |
+| `GET /v1/compliance/organizations/{id}/users` | [`compliance/organizations/users/list.md`](https://platform.claude.com/docs/en/api/compliance/organizations/users/list.md) |
+| `GET /v1/compliance/organizations/{id}/roles` | [`compliance/organizations/roles/list.md`](https://platform.claude.com/docs/en/api/compliance/organizations/roles/list.md) |
+| `GET /v1/compliance/organizations/{id}/roles/{role_id}` | [`compliance/organizations/roles/retrieve.md`](https://platform.claude.com/docs/en/api/compliance/organizations/roles/retrieve.md) |
+| Role permissions | [`compliance/organizations/roles/permissions/list.md`](https://platform.claude.com/docs/en/api/compliance/organizations/roles/permissions/list.md) |
+
+Organization list response: `{ data: [ { uuid, name, created_at } ] }`.
+
+The conceptual coverage (what to use each endpoint for, integration
+patterns with SIEM/DLP tools) lives in the platform-features
 manage-claude surface — start there for understanding, come here
 for the wire shape.
 
@@ -72,4 +99,4 @@ for the wire shape.
 
 ---
 
-*Source pages: 37 under `platform.claude.com/docs/en/api/compliance/`.*
+*Source pages: 37 under `platform.claude.com/docs/en/api/compliance/` (as of 2026-05-18). Base path corrected to `/v1/compliance/...`.*
