@@ -3,10 +3,10 @@ name: anthropic-pulse-news
 description: |
   Digest of the most recent ~15-20 Anthropic news posts — product launches, 
   partnerships, region openings, model releases, policy updates, business 
-  announcements. Auto-refreshed hourly from anthropic.com/news. Use 
-  when the user asks: "did X just launch?", "what did Anthropic announce?", "is 
-  model Y out yet?", "any partnership news?". Skip: deep technical content 
-  (digest only has title + URL + summary; for body, WebFetch the linked URL).
+  announcements. Auto-refreshed hourly from anthropic.com/news. Use when the 
+  user asks: "did X just launch?", "what did Anthropic announce?", "is model Y 
+  out yet?", "any partnership news?". Skip: deep technical content (digest only 
+  has title + URL + summary; for body, WebFetch the linked URL).
 source: https://www.anthropic.com/news
 ---
 
