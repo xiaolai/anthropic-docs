@@ -1,9 +1,9 @@
 {
   "indexUrl": "https://code.claude.com/llms.txt",
-  "indexSha256": "d64a39fcf257fa5246750f3b6024ff431413871b32be6bc675cee41df35bc031",
-  "indexBytes": 28307,
+  "indexSha256": "c0a299b72f553a2a5d1ee3828af0ad27ed94022c8ca370e649dd4f7d0c6aa681",
+  "indexBytes": 28298,
   "pageCount": 105,
-  "refreshedAt": "2026-05-19T18:00:00Z",
+  "refreshedAt": "2026-05-19T19:21:49Z",
   "pages": [
     {
       "path": "en/admin-setup.md",
@@ -20,8 +20,8 @@
     {
       "path": "en/agent-view.md",
       "url": "https://code.claude.com/docs/en/agent-view.md",
-      "sha256": "61d3a2387dd1d347c9fa95f97656a9169c5a095834b81fa5f708e4c7811ab856",
-      "bytes": 42607
+      "sha256": "6fdb9bceded7754dde5ac6f2755402207f1dcce4b0026246e1aa3d3156d94ef0",
+      "bytes": 42848
     },
     {
       "path": "en/agents.md",
@@ -116,7 +116,7 @@
     {
       "path": "en/cli-reference.md",
       "url": "https://code.claude.com/docs/en/cli-reference.md",
-      "sha256": "14ed19ad602f5251bac9ed7d7fbb0d3314529630f2bd09a7cb3e78f8825ebef7",
+      "sha256": "0dc66f83b240808d2f2959c18fd0f62bcfb61b85e9211b390daa7df7a57ae06b",
       "bytes": 56382
     },
     {
@@ -218,8 +218,8 @@
     {
       "path": "en/env-vars.md",
       "url": "https://code.claude.com/docs/en/env-vars.md",
-      "sha256": "3174fc85aa6fa4e05791571cd9d2293fae68597836f2d29a4f42e59eb9601436",
-      "bytes": 173658
+      "sha256": "2bb93bbfa1ff450a3a969042adb420dd9cca5ba888a3c5c68421d7bdf7b3d1e3",
+      "bytes": 176880
     },
     {
       "path": "en/errors.md",
@@ -338,8 +338,8 @@
     {
       "path": "en/mcp.md",
       "url": "https://code.claude.com/docs/en/mcp.md",
-      "sha256": "043e00453dd58a7458084dc275a13f69ac6d0da698972258c1ed8ccd8735cc72",
-      "bytes": 55376
+      "sha256": "cde1aed780535acfcb77ff04099201674a7606c44c3421327836a9503f2a9b5b",
+      "bytes": 55953
     },
     {
       "path": "en/memory.md",

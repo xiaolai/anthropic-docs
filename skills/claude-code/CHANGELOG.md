@@ -10,6 +10,9 @@ The newest entry is at the top.
 
 ---
 
+## 2026-05-19 (run 4 — success)
+- Sync to CC v2.1.144 — docs index content updated (105 pages, no add/remove); 11 new sandbox settings keys in SKILL-settings.md, `effort` field in SKILL-hooks.md, `mcpServers`/`servers` key rule in rules/mcp.md; all 11 gates passed, pushed to main
+
 ## 2026-05-19 (run 3 — success)
 - Sync to CC v2.1.144 — docs index updated (104 → 105 pages), added prompt-caching.md; all 11 gates passed, pushed to main
 

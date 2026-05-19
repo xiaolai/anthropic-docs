@@ -164,7 +164,7 @@ and `git pull`.
 
 | Date | Update | Research | Mending | Report | Total | Notes |
 |------|--------|----------|---------|--------|-------|-------|
-| 2026-05-19 | success | docs +1/-0 |
+| 2026-05-19 | success | research + report (no upstream change) |
 
 ## For maintainers
 

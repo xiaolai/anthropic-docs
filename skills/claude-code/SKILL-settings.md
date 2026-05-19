@@ -206,9 +206,20 @@ Configure OS-level bash sandboxing (macOS, Linux, WSL2). Sandbox settings nest i
 | `sandbox.filesystem.denyWrite` | Paths where sandboxed commands cannot write |
 | `sandbox.filesystem.denyRead` | Paths where sandboxed commands cannot read |
 | `sandbox.filesystem.allowRead` | Re-allow reading within `denyRead` regions |
+| `sandbox.filesystem.allowManagedReadPathsOnly` | (Managed only) Only `filesystem.allowRead` paths from managed settings are respected |
 | `sandbox.network.allowedDomains` | Domains to allow for outbound traffic |
 | `sandbox.network.deniedDomains` | Domains to block (takes precedence over allowedDomains) |
 | `sandbox.network.allowUnixSockets` | (macOS only) Unix socket paths accessible in sandbox |
+| `sandbox.network.allowAllUnixSockets` | Allow all Unix socket connections. On Linux/WSL2 this is the only way to permit Unix sockets (default: `false`) |
+| `sandbox.network.allowLocalBinding` | Allow binding to localhost ports (macOS only; default: `false`) |
+| `sandbox.network.allowMachLookup` | Additional XPC/Mach service names allowed (macOS only). Supports single trailing `*` — e.g. `"com.apple.coresimulator.*"` |
+| `sandbox.network.allowManagedDomainsOnly` | (Managed only) Only `allowedDomains` from managed settings are respected; user/project/local entries ignored |
+| `sandbox.network.httpProxyPort` | HTTP proxy port for bring-your-own-proxy |
+| `sandbox.network.socksProxyPort` | SOCKS5 proxy port for bring-your-own-proxy |
+| `sandbox.enableWeakerNestedSandbox` | Enable weaker sandbox for unprivileged Docker (Linux/WSL2 only). **Reduces security.** Default: `false` |
+| `sandbox.enableWeakerNetworkIsolation` | (macOS only) Allow TLS trust service access — needed by Go tools (e.g. `gh`, `gcloud`) with a MITM proxy + custom CA. **Reduces security.** Default: `false` |
+| `sandbox.bwrapPath` | (Managed only, Linux/WSL2) Absolute path to `bwrap` binary, overriding `PATH` lookup |
+| `sandbox.socatPath` | (Managed only, Linux/WSL2) Absolute path to `socat` binary for sandbox network proxy |
 
 ## `env` injection
 
