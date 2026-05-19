@@ -24,13 +24,16 @@ wraps it with skills. The decision guide:
 
 Salient axes:
 
-| If you need… | Build a… |
-|---|---|
-| Action-taking with external APIs | MCP server |
-| Reusable task recipes that compose actions | Plugin (with skills) |
-| Both — capability + how-to-use | Both — wrap the server in a plugin |
-| Distribution to Claude Code users specifically | Plugin |
-| Distribution across all Claude products | MCP server + plugin |
+|  | MCP server | Plugin |
+|---|---|---|
+| **What it is** | A live tool surface Claude calls over HTTP | An installable bundle of skills and connectors |
+| **Mental model** | "Claude can call your API" | "Claude knows how to *use* your product" |
+| **Contains** | Tools, prompts, resources, optionally MCP App UI | Skills, MCP connector refs, slash commands |
+| **Works in** | Claude.ai, Desktop, mobile, Cowork, Claude Code | Claude Code, Cowork |
+
+> **Note:** Plugins currently work in Claude Code and Cowork only — not on Claude.ai web or Mobile.
+
+**Skills are not a standalone directory type.** Skills are user-shared micro-workflows and must be distributed as part of a plugin — you cannot submit a skill to the directory on its own.
 
 ## Custom connector: building an MCP server
 
@@ -46,10 +49,9 @@ for the protocol details. The Claude-specific concerns are:
 - **Test credentials** — required for review (so Anthropic reviewers
   can validate end-to-end without acquiring production access).
 
-> **Tip:** Install the official `mcp-server-dev` plugin in Claude Code to
-> get an interactive build-test-package workflow using these docs as its
-> reference:
-> `https://github.com/anthropics/claude-plugins-official/tree/main/plugins/mcp-server-dev`
+> **Tip:** Install the official [`mcp-server-dev` plugin](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/mcp-server-dev)
+> in Claude Code and run `/mcp-server-dev:build-mcp-server` — it interviews you about your
+> use case, picks the right deployment model, and generates a working server.
 
 ### Key resources
 
@@ -78,7 +80,7 @@ supported.
 | `oauth_cimd` | OAuth 2.0 with Client ID Metadata Document (CIMD) | Supported out of the box |
 | `oauth_anthropic_creds` | OAuth 2.0 with Anthropic-held client credentials | Contact `mcp-review@anthropic.com` |
 | `custom_connection` | Custom URL or credentials supplied at connection time | Contact `mcp-review@anthropic.com` |
-| `none` | No authentication (authless server) | Supported |
+| `none` | No authentication (authless server) | Supported. An optional partial-auth mode is experimental. |
 
 **Not supported:**
 
@@ -89,10 +91,18 @@ Additional auth features:
 
 - Dynamic Client Registration (DCR) enabled.
 - OAuth callback: `https://claude.ai/api/mcp/auth_callback` (hosted surfaces); loopback redirect for Claude Code — see [callback URLs](https://claude.com/docs/connectors/building/authentication#callback-urls).
-- Token refresh and expiry supported.
+- Token refresh: reactive on `401`, plus proactive refresh up to **5 minutes** before stored expiry. Your `/token` endpoint must accept `Content-Type: application/x-www-form-urlencoded` (RFC 6749 §4.1.3) — registration uses `application/json`, but token exchange does not.
 - Custom credentials for non-DCR servers supported.
 - PKCE (S256) is included on every authorization request; your authorization server must support it.
 - **For high-traffic servers, prefer CIMD or `oauth_anthropic_creds` over DCR.** DCR registers a new client on every fresh connection — this creates large numbers of registered clients on your authorization server at scale. CIMD and Anthropic-held credentials avoid the registration call entirely.
+
+### Enterprise and custom connector auth
+
+**Directory connectors** use a single shared OAuth application per connector — no per-org client is issued. Enterprise customers connect to the same OAuth app as all other users; access is scoped by their own permissions on your service.
+
+**Custom connectors** differ: when a user (or admin) adds a connector by URL, the OAuth Client Secret field is **optional** — supply it only if your authorization server requires confidential-client authentication. Team/Enterprise admins can supply their own OAuth client credentials to scope the client to their organization.
+
+**Anthropic's outbound egress range:** `160.79.104.0/21` — allowlist this if you use WAF/firewall conditional access rules. See [IP address reference](https://platform.claude.com/docs/en/api/ip-addresses).
 
 Full details: [`authentication.md`](https://claude.com/docs/connectors/building/authentication.md).
 
@@ -145,8 +155,9 @@ Before submission, test against Claude:
 [`testing.md`](https://claude.com/docs/connectors/building/testing.md).
 
 Quick start:
-1. Add your server directly to Claude via **Settings → Connectors**.
-2. Use the [MCP inspector tool](https://github.com/modelcontextprotocol/inspector) to validate auth flows.
+1. Add your server directly to Claude via **Settings → Connectors** (any plan including Free).
+2. Use the [MCP Inspector](https://modelcontextprotocol.io/docs/tools/inspector) to validate auth flows and protocol compliance.
+3. For local servers, expose via a tunnel (Cloudflare Tunnel or ngrok) then add the tunnel URL as a custom connector.
 
 Coverage points:
 
@@ -156,11 +167,23 @@ Coverage points:
 - Idempotent tools behave correctly on retry.
 - Long-running tools surface progress / completion correctly.
 
+**Detecting Claude as the client:** Claude identifies itself in the MCP `initialize` handshake via `clientInfo` as `"claude-ai"`, `"Anthropic"`, or `"claude-code"` depending on surface and request path. **Do not gate authorization decisions on `clientInfo`** — it is unauthenticated and varies across surfaces. Use it for telemetry only.
+
+**Troubleshooting connection failures:** When a connection fails, Claude's error toast and the page URL include a reference ID starting with `ofid_` (e.g., `?flow_id=ofid_d32594c73257a651`). Include this when filing issues on [`anthropics/claude-ai-mcp`](https://github.com/anthropics/claude-ai-mcp/issues). See [`troubleshooting.md`](https://claude.com/docs/connectors/building/troubleshooting.md) for the full diagnostic flow (DNS, WAF, OAuth discovery).
+
 ## Pre-submission checklist
 
 [`review-criteria.md`](https://claude.com/docs/connectors/building/review-criteria.md)
-documents exactly what Anthropic reviewers test. Pass these on the
-first try by running through the checklist before submitting.
+documents exactly what Anthropic reviewers test. Key requirements:
+
+- **Separate read and write tools.** A catch-all `api_request` tool with a `method` parameter is rejected — split into distinct read and write tools.
+- **Reference API docs in custom query tools.** If a tool accepts freeform endpoint paths, its description must include a link to the target API.
+- **Tool names ≤ 64 characters.** Tool `title` is also required; `readOnlyHint: true` or `destructiveHint: true` must be set.
+- **No prompt-injection patterns** in tool descriptions (no instructions telling Claude to call external tools, pull instructions from external sources, or override system instructions).
+- **Unsupported use cases (automatic rejection):** money/crypto/asset transfers; AI-generated images, video, or audio.
+- **Allowed link URIs** are recommended if your server calls `ui/open-link`.
+
+Run `claude plugin validate` on plugins before submitting.
 
 ## Submission
 
@@ -168,6 +191,12 @@ first try by running through the checklist before submitting.
 covers the submission form, required materials (privacy policy URL,
 documentation URL, support contact, test credentials, working
 examples), and the review timeline.
+
+**Submission form URLs:**
+- Desktop extensions (MCPB): [clau.de/desktop-extention-submission](https://clau.de/desktop-extention-submission)
+- Remote MCPs (including MCP Apps): [clau.de/mcp-directory-submission](https://clau.de/mcp-directory-submission)
+
+MCP Apps require 3–5 carousel screenshots (PNG, ≥1000px wide, cropped to the app response only — no prompt visible). See [asset specifications](https://claude.com/docs/connectors/building/submission#asset-specifications).
 
 ## Troubleshooting
 

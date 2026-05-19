@@ -270,14 +270,20 @@ Reference: [`mcp-apps/cross-compatibility.md`](https://claude.com/docs/connector
 [`mcp-apps/getting-started.md`](https://claude.com/docs/connectors/building/mcp-apps/getting-started.md)
 walks through testing MCP Apps in Claude. Official example servers (all
 from `@modelcontextprotocol/ext-apps` repo): Customer Segmentation, Map,
-QR Code, ShaderToy, Sheet Music. Install via `npx -y @modelcontextprotocol/<name>-server --stdio`.
+QR Code, ShaderToy, Sheet Music, [and more](https://github.com/modelcontextprotocol/ext-apps/tree/main/examples).
+Install via `npx -y @modelcontextprotocol/<name>-server --stdio`.
 
-**MCP Apps skills for AI coding agents:** Install in Claude Code with:
+**MCP Apps skills for AI coding agents:** Works with Claude Code, Cursor, Gemini CLI,
+and any agent that supports the [Agent Skills](https://agentskills.io) standard.
+Install in Claude Code with:
 ```
 /plugin marketplace add modelcontextprotocol/ext-apps
 /plugin install mcp-apps@modelcontextprotocol-ext-apps
 ```
 Then ask the agent: "Create an MCP App" or "Add a UI to my MCP tool".
+
+**Migrating from OpenAI Apps SDK:** See the [migration reference](https://modelcontextprotocol.github.io/ext-apps/api/documents/Migrate_OpenAI_App.html)
+or ask an agent: "Migrate from OpenAI Apps SDK" / "Convert my OpenAI App to an MCP App".
 
 ### Troubleshooting
 
