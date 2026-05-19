@@ -164,15 +164,41 @@ happen to appear alongside.
 
 ### Display modes
 
-- **Inline card** — compact, embedded directly in conversation. Good
-  for summaries, confirmations, quick actions.
-- **Expanded view** — larger surface for richer interactions.
-- **Sidebar** — persistent context alongside the conversation.
+Three mode identifiers are passed in `appCapabilities.availableDisplayModes` (in `ui/initialize`); request a switch with `ui/request-display-mode`.
+
+| Mode | Enum value | Notes |
+|---|---|---|
+| **Inline card** | `inline` | Compact, embedded in conversation. Max height 500px, max 2 actions, max 4-5 data points; no nested scrolling |
+| **Inline carousel** | `inline` | Side-by-side items for browsing (3–8 items, consistent card dimensions); horizontal swipe on mobile |
+| **Full screen** | `fullscreen` | Immersive interface; app provides its own fullscreen button; a close button appears in the native header bar; no floating panels — use collapsible sidebars, tabs, or pagination; composer always visible |
+| **Picture-in-picture** | `pip` | Persists alongside conversation |
+
+Source: [`mcp-apps/design-guidelines.md`](https://claude.com/docs/connectors/building/mcp-apps/design-guidelines.md).
 
 ### Transparent theming
 
-Make your widget background transparent and style with Claude's
-style variables — blends seamlessly into the host UI across themes.
+Package: `@modelcontextprotocol/ext-apps` (React hooks in `/react` sub-path).
+
+During the `connect()` handshake the host passes a `hostContext` object:
+
+| Field | Value |
+|---|---|
+| `theme` | `"light"` or `"dark"` |
+| `styles.variables` | CSS custom properties: `--color-background-*`, `--color-text-*`, `--color-border-*`, `--color-ring-*`, `--font-*`, `--border-radius-*`, `--border-width-*` |
+| `styles.css.fonts` | `@font-face` rules for Anthropic Sans from `https://assets.claude.ai` |
+| `safeAreaInsets` | `{top, right, bottom, left}` in pixels — mobile safe-area clearances |
+
+SDK helpers: `applyDocumentTheme(theme)`, `applyHostStyleVariables(variables)`, `applyHostFonts(fontCss)`; React hooks: `useApp()`, `useHostStyles()`. Listen for `hostcontextchanged` event on the `App` instance for subsequent theme updates.
+
+`_meta.ui` fields on each `ui://` resource:
+
+| Field | Purpose |
+|---|---|
+| `prefersBorder` | `false` removes the host's outer card border |
+| `csp.connectDomains` | Allowlist for `fetch`/XHR origins |
+| `csp.resourceDomains` | Allowlist for scripts, styles, fonts (also adds to `script-src`, `style-src`) |
+| `csp.baseUriDomains` | Allowlist for `<base href>` origins |
+| `csp.frameDomains` | Third-party iframes — currently restricted pending security review |
 
 Reference: [`mcp-apps/transparent-theming.md`](https://claude.com/docs/connectors/building/mcp-apps/transparent-theming.md).
 

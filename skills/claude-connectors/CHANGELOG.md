@@ -3,6 +3,12 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-19
+
+*(pending review — see draft PR on branch `auto/2026-05-19-pending-review`)*
+
+- Docs content refresh: expanded `rules/mcp-apps-design.md` (+28%, display-mode API / CSP / touch-target rules), `SKILL-claude-skills.md` (+29%, availability section + skill types table), `SKILL-claude-plugins.md` (+33%, availability note + 11-plugin directory table); routed to draft PR due to diff-size gate failure
+
 ## [0.1.0] — 2026-05-17
 
 ### Added

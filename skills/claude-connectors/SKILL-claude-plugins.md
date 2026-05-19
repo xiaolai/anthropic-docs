@@ -30,12 +30,40 @@ commands that drive it.
 
 ## Where plugins are available
 
-- **Claude Code (CLI)** — `/plugin` commands, plugin marketplaces.
-- **Claude Cowork** — full plugin support (see
-  [`claude-cowork → SKILL-cowork.md`](../claude-cowork/SKILL-cowork.md)).
+| Platform | Plugin support |
+|---|---|
+| **Claude Code (CLI)** | Full plugin support — create, install, and use plugins |
+| **Claude Cowork** | Full plugin support (research preview for all paid users — see below) |
 
 Plugins are NOT available on Claude.ai web or Mobile (as of this
 snapshot — check upstream for current state).
+
+## Availability note (Cowork)
+
+Plugin support in Cowork is available as a **research preview for all
+paid Claude users**. Plugins are currently saved locally to the user's
+machine. Org-wide sharing and management are in development.
+
+Source: [`plugins/overview.md`](https://claude.com/docs/plugins/overview.md).
+
+## Anthropic open-source plugin directory
+
+Anthropic has open-sourced 11 plugins built and used internally,
+browsable at [claude.com/plugins-for/cowork](https://claude.com/plugins-for/cowork):
+
+| Plugin | Purpose |
+|---|---|
+| Productivity | Tasks, calendars, daily workflows |
+| Enterprise search | Find information across company tools and docs |
+| Sales | Prospect research, deal prep, sales process |
+| Finance | Financials, models, key metrics |
+| Data | Query, visualize, interpret datasets |
+| Legal | Document review, risk flagging, compliance |
+| Marketing | Content drafting, campaigns, launches |
+| Customer support | Triage, draft responses, surface solutions |
+| Product management | Specs, roadmaps, progress tracking |
+| Biology research | Literature search, results analysis, experiment planning |
+| Plugin Create | Create and customize new plugins from scratch |
 
 ## Plugin marketplaces
 

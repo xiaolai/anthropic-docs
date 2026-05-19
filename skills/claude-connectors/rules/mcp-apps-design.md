@@ -10,12 +10,13 @@ appliesTo:
 
 # MCP Apps Design Rules
 
-## Rule 1 — Inline cards max 500px height
+## Rule 1 — Inline cards max 500px height, 2 actions, 4-5 data points
 
 Inline cards embedded directly in conversation should fit content
-under 500px tall. Beyond that, prefer the expanded-view display mode.
+under 500px tall. Beyond that, prefer the full-screen display mode.
 Cards that try to scroll internally compete with the conversation
-scroll and produce a bad UX.
+scroll and produce a bad UX. Also: max 2 actions (at the bottom of
+the card); max 4-5 data points per card.
 
 ```tsx
 // WRONG — explicit large height
@@ -31,7 +32,7 @@ Inline cards should auto-fit content height. Internal scroll containers
 get clipped by the host's container boundaries — content disappears
 without a scrollbar the user can grab.
 
-If you need pagination / virtualization, use the expanded view, not
+If you need pagination / virtualization, use the full-screen mode, not
 an inline card.
 
 ## Rule 3 — No dropdowns, context menus, popovers
@@ -85,11 +86,38 @@ the user's confirmation modal and the directory's allowlist).
 <button onClick={() => mcpApp.openLink('https://external.com')}>Open</button>
 ```
 
-## Rule 8 — Test on mobile viewports
+## Rule 8 — Test on mobile viewports, honor safe-area insets
 
-Claude Mobile renders MCP Apps too. A card that's only laid out for
-desktop widths breaks on mobile. Test at 360px width minimum.
+Claude Mobile renders MCP Apps in a native WebView (WKWebView on iOS,
+WebView on Android) — NOT a sandboxed iframe. Design for 320pt minimum
+width. Read `hostContext.safeAreaInsets` (`{top, right, bottom, left}`
+in pixels) and respect notch / home-indicator clearances.
+
+Touch targets must be at least **44 × 44pt** (Apple HIG / Material
+guidelines). Space interactive elements to avoid mis-taps.
+
+## Rule 9 — Declare CSP origins via `_meta.ui.csp`, not inline script
+
+All external origins are blocked by default. Declare them per
+`ui://` resource in `_meta.ui.csp`:
+
+- `connectDomains` — `fetch` / XHR origins  
+- `resourceDomains` — scripts, styles, fonts (also added to `script-src`, `style-src`)  
+- `baseUriDomains` — `<base href>` origins  
+- `frameDomains` — third-party iframes (currently restricted pending security review)
+
+Never add `allow-same-origin` to a sandboxed iframe or inline scripts
+that reach external origins without a proper CSP declaration.
+
+## Rule 10 — Use `ui/request-display-mode` to switch display modes
+
+Available enum values: `inline`, `fullscreen`, `pip`.
+Declare your supported modes via `appCapabilities.availableDisplayModes`
+in `ui/initialize`. The host replies with what it supports; only
+then request a switch. Do not hard-code layout assumptions for a mode
+the host hasn't confirmed.
 
 ---
 
-*Source: claude.com/docs/connectors/building/mcp-apps/design-guidelines.md.*
+*Source: claude.com/docs/connectors/building/mcp-apps/design-guidelines.md
+and transparent-theming.md.*

@@ -16,6 +16,15 @@ source: https://claude.com/docs/skills/overview.md
 > [`anthropic-platform-features → SKILL-agents-and-tools.md`](../anthropic-platform-features/SKILL-agents-and-tools.md).
 > This surface covers what users see and do.*
 
+## Availability
+
+Skills are available on **Pro, Max, Team, and Enterprise** plans.
+The Skills feature requires **code execution to be enabled**.
+
+Skills follow the [Agent Skills specification](https://agentskills.io/specification),
+a platform-agnostic open standard. Skills you create can work across
+any platform adopting the standard.
+
 ## What Skills are (user view)
 
 Skills are reusable task recipes — packaged instructions that teach
@@ -29,6 +38,25 @@ Skills are the lightweight, scoped counterpart to plugins:
   security issues using my org's checklist").
 - A **plugin** bundles multiple skills, connectors, slash commands,
   and sub-agents (e.g., "the entire DevOps team's standard toolkit").
+
+## Skill types
+
+| Type | Description |
+|---|---|
+| **Anthropic skills** | Pre-built by Anthropic; activate automatically for document creation (Excel, Word, PowerPoint, PDF) |
+| **Partner skills** | From partners (Notion, Figma, Atlassian, etc.); designed for MCP connector integration |
+| **Organization-provisioned** | Deployed org-wide by Team and Enterprise admins |
+| **Custom skills** | User-created for specialized workflows; uploaded as ZIP packages |
+
+## SKILL.md schema (key constraints)
+
+| Field | Constraint |
+|---|---|
+| `name` | Lowercase, numbers, hyphens only; max 64 chars; must match directory name |
+| `description` | Max **200 characters** on Claude.ai (Agent Skills spec allows 1024 but Claude.ai enforces 200) |
+| `dependencies` | Declared in frontmatter e.g. `dependencies: python>=3.8, pandas>=1.5.0` — Claude installs from PyPI/npm |
+
+Source pages: [`skills/overview.md`](https://claude.com/docs/skills/overview.md), [`skills/how-to.md`](https://claude.com/docs/skills/how-to.md).
 
 ## Where users find skills
 
