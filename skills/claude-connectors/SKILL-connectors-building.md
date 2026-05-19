@@ -22,7 +22,15 @@ Most partners ship **both** a remote MCP server and a plugin that
 wraps it with skills. The decision guide:
 [`building/what-to-build.md`](https://claude.com/docs/connectors/building/what-to-build.md).
 
-Salient axes:
+Key distinction from the upstream doc:
+
+| | MCP server | Plugin |
+|---|---|---|
+| What it is | Live tool surface Claude calls over HTTP | Installable bundle of skills + connectors |
+| Mental model | "Claude can call your API" | "Claude knows how to *use* your product" |
+| Works in | Claude.ai, Desktop, Mobile, Cowork, Claude Code | Claude Code, Cowork |
+
+Salient decision axes:
 
 | If you need… | Build a… |
 |---|---|
@@ -31,6 +39,15 @@ Salient axes:
 | Both — capability + how-to-use | Both — wrap the server in a plugin |
 | Distribution to Claude Code users specifically | Plugin |
 | Distribution across all Claude products | MCP server + plugin |
+
+> **Scaffold with Claude:** Install the
+> [`mcp-server-dev` plugin](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/mcp-server-dev)
+> in Claude Code and run `/mcp-server-dev:build-mcp-server` to let
+> Claude scaffold the server for you.
+
+> **Skills need a plugin wrapper:** You cannot submit a skill to the
+> Connectors Directory on its own. Bundle skills inside a plugin and
+> submit the plugin. See [`SKILL-claude-plugins.md`](SKILL-claude-plugins.md).
 
 ## Custom connector: building an MCP server
 

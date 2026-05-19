@@ -18,10 +18,17 @@ source: https://claude.com/docs/skills/overview.md
 
 ## What Skills are (user view)
 
-Skills are reusable task recipes — packaged instructions that teach
-Claude how to perform a specific workflow. Once installed, a user
-can invoke a skill in any conversation by referring to it; Claude
-loads the skill's instructions and follows them.
+Skills are directories containing instructions, scripts, and resources
+that Claude dynamically loads to handle specific tasks. Each skill has
+a `SKILL.md` file that defines when it should be activated and what
+instructions Claude should follow.
+
+Skills use **progressive disclosure** to stay efficient:
+
+1. Claude reads skill names + descriptions at startup (~100 tokens each).
+2. When a task matches a skill's description, Claude loads the full
+   `SKILL.md` content.
+3. Additional files (scripts, references) are loaded only when needed.
 
 Skills are the lightweight, scoped counterpart to plugins:
 
@@ -29,6 +36,78 @@ Skills are the lightweight, scoped counterpart to plugins:
   security issues using my org's checklist").
 - A **plugin** bundles multiple skills, connectors, slash commands,
   and sub-agents (e.g., "the entire DevOps team's standard toolkit").
+- **Skills cannot be submitted to the Connectors Directory on their own**
+  — plugins are the distribution mechanism for skills.
+
+## Plan availability
+
+Skills require a **Pro, Max, Team, or Enterprise** plan. The Skills
+feature also requires **code execution to be enabled** in account
+settings. Skills are not available on Free plans.
+
+Source: [`skills/overview.md`](https://claude.com/docs/skills/overview.md).
+
+## Types of skills
+
+| Type | Description |
+|---|---|
+| **Anthropic skills** | Pre-built skills for document creation (Excel, Word, PowerPoint, PDF) — activate automatically when relevant |
+| **Partner skills** | Skills from partners like Notion, Figma, and Atlassian for seamless MCP connector integration |
+| **Organization-provisioned** | Skills deployed org-wide by Team / Enterprise admins |
+| **Custom skills** | Skills you create for specialized workflows |
+
+## Open standard
+
+Skills follow the [Agent Skills specification](https://agentskills.io/specification),
+a platform-agnostic standard. Skills created for Claude can work
+across any platform that adopts the standard.
+
+## Skill format quick-ref
+
+Source: [`skills/how-to.md`](https://claude.com/docs/skills/how-to.md).
+
+**Directory structure** (minimum `SKILL.md` required):
+
+```
+brand-guidelines/
+├── SKILL.md          # required — frontmatter + instructions
+├── scripts/          # optional — Python, JS, Bash
+├── references/       # optional — additional documentation
+└── assets/           # optional — templates, images, data
+```
+
+**`SKILL.md` required frontmatter fields:**
+
+| Field | Constraints |
+|---|---|
+| `name` | Lowercase, hyphens only; max 64 chars; **must match directory name** |
+| `description` | Max **200 chars** on Claude.ai (spec allows 1024) |
+
+**Optional `dependencies` frontmatter** (for scripts):
+
+```yaml
+---
+name: data-analysis
+description: Analyze CSV files and generate visualizations.
+dependencies: python>=3.8, pandas>=1.5.0, matplotlib
+---
+```
+
+**Packaging for upload:**
+
+```
+my-skill.zip
+└── my-skill/      ← skill directory INSIDE the zip
+    └── SKILL.md
+```
+
+Files directly in the zip root (without a wrapping directory) will be
+rejected. Validate before uploading with:
+```bash
+skills-ref validate ./my-skill
+```
+
+Example skills: [`github.com/anthropics/skills`](https://github.com/anthropics/skills/tree/main/skills).
 
 ## Where users find skills
 
@@ -60,6 +139,7 @@ user-facing semantics.
 
 ## Cross-product availability
 
+Requires Pro, Max, Team, or Enterprise plan plus code execution enabled.
 Skills work in:
 
 - **Claude.ai (web)** — installed skills available in conversations.
