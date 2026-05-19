@@ -164,25 +164,145 @@ happen to appear alongside.
 
 ### Display modes
 
-- **Inline card** — compact, embedded directly in conversation. Good
-  for summaries, confirmations, quick actions.
-- **Expanded view** — larger surface for richer interactions.
-- **Sidebar** — persistent context alongside the conversation.
+Declare which modes your app supports via `appCapabilities.availableDisplayModes`
+in the `ui/initialize` response. The host acknowledges which modes it
+supports; request a switch at runtime with `ui/request-display-mode`.
+Mode values: `"inline"`, `"fullscreen"`, `"pip"`.
+
+Three primary display modes (choose the one that matches your content's scope):
+
+**Inline Card** — compact, embedded directly in conversation.
+Constraints:
+
+- Max **500px** height; auto-fit content (no internal scroll).
+- Max **2 actions** visible; max **4–5 data points**.
+- No multi-view drill-in or horizontal scrolling.
+- Mobile tap targets ≥ 44pt.
+
+**Inline Carousel** — side-scrolling item browser embedded in the
+conversation. Use for browsing 3–8 comparable items (e.g., search
+results, product listings):
+
+- Each card: image + title + metadata (max 3 lines) + optional CTA.
+- All cards must have consistent dimensions.
+
+**Full Screen** — immersive interface for dashboards and complex
+tools. The app provides its own fullscreen button; a close button
+appears in the native header bar when fullscreen is active. The
+conversation composer remains available. Avoid floating panels —
+use collapsible sidebars or tabs instead.
+
+**PiP (Picture-in-Picture)** — a compact floating overlay. Declare
+`"pip"` in `appCapabilities.availableDisplayModes` to opt in.
+Use for persistent-status widgets or media controls that should
+remain visible while the user continues chatting.
+
+### Visual design standards
+
+- Use **host-provided tokens** (CSS custom properties) for all
+  structural colours; use brand colours only for accents.
+- Typography: three-level hierarchy (heading / body / caption) with
+  two weights maximum.
+- Icons: monochromatic, outlined.
+- Maintain consistent border radii and spacing for native integration.
+
+### Mobile-specific requirements
+
+MCP Apps render in native **WebViews** (WKWebView on iOS, WebView on
+Android — no iframe sandboxing) on Claude Mobile. Current mobile constraints:
+
+- Inline-only display modes (fullscreen not yet available on mobile).
+- No camera, microphone, or location access.
+- Design responsively from **320px minimum** width (no fixed breakpoints —
+  use container queries and `hostContext` CSS variables).
+- Honor `hostContext.safeAreaInsets` (`{top, right, bottom, left}` in px)
+  to keep content clear of notches and the home indicator.
+- Set `_meta.ui.prefersBorder: false` to remove the outer card border.
+- Support both light and dark themes automatically.
+
+### Interaction boundaries
+
+| Handle inside the MCP App | Route to Claude chat input |
+|---|---|
+| Direct manipulation (sliders, toggles, filtering) | Text entry and clarification requests |
+| Selection and confirmation | Context-switching requests |
+| In-app state transitions | Tasks that need Claude's language capabilities |
+
+### CSS style variables
+
+The host injects CSS custom properties (prefixed `--`) into every MCP App.
+Key token categories (all auto-adapt to light/dark):
+
+| Category | Examples |
+|---|---|
+| Background | `--color-background-primary`, `--color-background-secondary`, `-danger`, `-success`, `-warning` |
+| Text | `--color-text-primary`, `--color-text-secondary`, `--color-text-inverse`, `-info`, `-danger` |
+| Border | `--color-border-primary`, `--color-border-secondary`, `-info`, `-danger` |
+| Ring (focus) | `--color-ring-primary`, `--color-ring-inverse` |
+| Typography | `--font-sans`, `--font-mono`, `--font-weight-normal/medium/semibold/bold`, `--font-text-sm-size`, `--font-text-md-size` |
+| Radius | `--border-radius-xs` (4px) through `--border-radius-xl` (12px) and `--border-radius-full` (9999px) |
+| Border width | `--border-width-regular` (0.5px) |
+| Shadow | `--shadow-hairline`, `--shadow-sm`, `--shadow-md`, `--shadow-lg` |
+
+The full color table (light / dark hex values for each token) lives in
+[`mcp-apps/design-guidelines.md`](https://claude.com/docs/connectors/building/mcp-apps/design-guidelines.md).
 
 ### Transparent theming
 
-Make your widget background transparent and style with Claude's
-style variables — blends seamlessly into the host UI across themes.
-
 Reference: [`mcp-apps/transparent-theming.md`](https://claude.com/docs/connectors/building/mcp-apps/transparent-theming.md).
+
+Three required settings to blend seamlessly into the host UI:
+
+1. **Transparent backgrounds** — set both `<html>` and `<body>` to
+   `background: transparent`. Any opaque background hides the chat
+   surface behind it.
+2. **Color-scheme meta tag** — `<meta name="color-scheme" content="light dark" />`
+   prevents browsers from applying opaque backdrops.
+3. **Borderless frame** — pass `prefersBorder: false` in your UI
+   resource's `_meta.ui` object when calling `registerAppResource()`.
+
+SDK helper functions (preferred over manual DOM manipulation):
+
+| Function | Effect |
+|---|---|
+| `applyDocumentTheme(theme)` | Sets theme attributes |
+| `applyHostStyleVariables(variables)` | Applies CSS custom properties |
+| `applyHostFonts(fontCss)` | Injects `@font-face` rules |
+| `useHostStyles()` | React hook that calls all three |
+
+The `hostContext` object provides `theme` (`"light"` \| `"dark"`),
+`styles.variables` (all `--color-*`, `--font-*`, `--border-*`, etc.
+tokens), and `styles.css.fonts` (`@font-face` rules for Anthropic
+Sans). Register a `hostcontextchanged` listener before connecting to
+catch dark-mode toggles.
+
+**CSP**: add `https://assets.claude.ai` to `resourceDomains` in
+`_meta.ui.csp` to load Anthropic Sans fonts.
+
+```css
+/* Apply with fallbacks */
+color: var(--color-text-primary, light-dark(#141413, #faf9f5));
+```
 
 ### Instance supersession
 
-When a tool is called more than once in a conversation, keep only
-the newest copy of the widget active. Prevents stale widgets from
-piling up.
-
 Reference: [`mcp-apps/instance-supersession.md`](https://claude.com/docs/connectors/building/mcp-apps/instance-supersession.md).
+
+When a tool is called more than once in a conversation, multiple
+iframes mount. Use `BroadcastChannel` to disable older instances:
+
+1. **Server stamps each result** with `{ createdAt, seq }` in
+   `structuredContent`. This ordering key is written into the
+   transcript, so rehydrated widgets on any device recover the same
+   ordering.
+2. **Each widget announces its key** on a shared `BroadcastChannel`
+   (named for your app) after the `toolresult` event fires.
+3. **Widgets compare and self-disable** if a younger sibling exists —
+   grey out the UI and short-circuit any calls that mutate Claude's
+   context.
+
+Sort by `createdAt` (primary), `seq` (tiebreaker), `instanceId`
+(determinism). Never compare server and client timestamps directly.
 
 ### External links
 
@@ -193,8 +313,18 @@ Reference: [`mcp-apps/external-links.md`](https://claude.com/docs/connectors/bui
 
 ### Cross-platform compatibility (Claude + ChatGPT)
 
-Build MCP Apps that work with both Claude and ChatGPT using a
-single codebase. Worth the constraints if your audience spans both.
+Build MCP Apps that work with both Claude and ChatGPT from a single
+codebase. The SDK auto-detects the host and applies the correct
+transport — call `App.connect()` without specifying a transport.
+
+The one platform-specific concern is `Resource._meta.ui.domain`.
+For Claude, derive the value with a SHA-256 hash of your server URL:
+
+```bash
+node -e 'const url = "https://example.com/mcp"; \
+  console.log(require("crypto").createHash("sha256") \
+    .update(url).digest("hex").slice(0,32) + ".claudemcpcontent.com")'
+```
 
 Reference: [`mcp-apps/cross-compatibility.md`](https://claude.com/docs/connectors/building/mcp-apps/cross-compatibility.md).
 

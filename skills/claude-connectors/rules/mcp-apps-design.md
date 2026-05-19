@@ -10,12 +10,13 @@ appliesTo:
 
 # MCP Apps Design Rules
 
-## Rule 1 — Inline cards max 500px height
+## Rule 1 — Inline cards max 500px height, 2 actions, 4–5 data points
 
 Inline cards embedded directly in conversation should fit content
-under 500px tall. Beyond that, prefer the expanded-view display mode.
+under 500px tall. Beyond that, use the **Full Screen** display mode.
 Cards that try to scroll internally compete with the conversation
-scroll and produce a bad UX.
+scroll and produce a bad UX. Also limit visible actions to 2 and
+data points to 4–5 per card.
 
 ```tsx
 // WRONG — explicit large height
@@ -31,8 +32,9 @@ Inline cards should auto-fit content height. Internal scroll containers
 get clipped by the host's container boundaries — content disappears
 without a scrollbar the user can grab.
 
-If you need pagination / virtualization, use the expanded view, not
-an inline card.
+If you need pagination / virtualization, use the **Full Screen** mode
+(not an inline card). For browsing comparable items, use
+**Inline Carousel** instead.
 
 ## Rule 3 — No dropdowns, context menus, popovers
 
@@ -43,7 +45,7 @@ Prefer:
 - **Segmented buttons** for 2-5 mutually exclusive options
 - **Toggles** for boolean state
 - **Inline options** rendered visibly in the card
-- **Expanded view** for any UI that needs popups
+- **Full Screen** mode for any UI that needs popups
 
 ## Rule 4 — Don't render chat input or message lists
 
@@ -87,8 +89,12 @@ the user's confirmation modal and the directory's allowlist).
 
 ## Rule 8 — Test on mobile viewports
 
-Claude Mobile renders MCP Apps too. A card that's only laid out for
-desktop widths breaks on mobile. Test at 360px width minimum.
+Claude Mobile renders MCP Apps in native WebViews (WKWebView on iOS,
+WebView on Android). A card that's only laid out for desktop widths
+breaks on mobile. Design responsively from **320px minimum** width;
+there are no fixed breakpoints — use container queries and the
+`hostContext` CSS variables. Also honor `hostContext.safeAreaInsets`
+to keep content clear of notches and the home indicator.
 
 ---
 

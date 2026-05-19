@@ -15,7 +15,7 @@ A valid MCPB manifest MUST include: `name`, `version`, `description`,
 `runtime` (object), `entry_point`, and at minimum one of `tools` /
 `resources` / `prompts` arrays.
 
-```json
+```text
 {
   "name": "my-mcpb",
   "version": "1.0.0",
@@ -81,8 +81,8 @@ input.
 
 ## Rule 6 — Tool annotations are mandatory for directory submission
 
-Every tool you declare must carry `annotations: { ... }` describing
-its safety profile:
+Every tool you declare must carry `annotations: { ... }` with at minimum
+`title` and the applicable `readOnlyHint` or `destructiveHint`:
 
 ```json
 {
@@ -97,9 +97,26 @@ its safety profile:
 }
 ```
 
-The Connectors Directory review fails MCPBs that omit these. For
-internal-only MCPBs you can skip annotations, but they're still
+The Connectors Directory review fails MCPBs that omit `title` or the hint
+flags. For internal-only MCPBs you can skip annotations, but they're still
 strongly recommended (Claude uses them for permission prompts).
+
+## Rule 9 — `privacy_policies` array for directory-submitted MCPBs
+
+MCPBs submitted to the Connectors Directory must include a
+`privacy_policies` array in `manifest.json` (requires `manifest_version`
+0.2 or later) with HTTPS URLs, plus a "Privacy Policy" section in
+`README.md`. Missing or incomplete privacy policies result in immediate
+rejection.
+
+```json
+{
+  "manifest_version": "0.2",
+  "privacy_policies": [
+    { "url": "https://example.com/privacy" }
+  ]
+}
+```
 
 ## Rule 7 — `entry_point` is relative to the manifest's directory
 

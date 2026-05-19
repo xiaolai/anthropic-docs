@@ -18,17 +18,55 @@ source: https://claude.com/docs/skills/overview.md
 
 ## What Skills are (user view)
 
-Skills are reusable task recipes — packaged instructions that teach
-Claude how to perform a specific workflow. Once installed, a user
-can invoke a skill in any conversation by referring to it; Claude
-loads the skill's instructions and follows them.
+Skills are specialized capability extensions that Claude dynamically
+activates based on task requirements. They consist of directories
+with instructions, scripts, and resources organised around specific
+workflows. Once installed, Claude loads a skill's instructions when
+the task matches its activation criteria.
 
 Skills are the lightweight, scoped counterpart to plugins:
 
-- A **skill** is a single recipe (e.g., "review my pull requests for
-  security issues using my org's checklist").
+- A **skill** is a single workflow extension (e.g., document
+  generation via a spreadsheet tool, or a Notion integration).
 - A **plugin** bundles multiple skills, connectors, slash commands,
   and sub-agents (e.g., "the entire DevOps team's standard toolkit").
+
+## Plan availability
+
+Skills require a **Pro, Max, Team, or Enterprise** plan. Code
+execution must be enabled in your account settings.
+
+## Skill categories
+
+| Category | Description |
+|---|---|
+| **Anthropic** | Pre-built document-generation skills (spreadsheets, presentations, PDFs, word processors) |
+| **Partner** | Integrations from companies like Notion, Figma, and Atlassian |
+| **Organization-provisioned** | Administrator-deployed resources for Team and Enterprise users |
+| **Custom** | User-created workflows for specialised tasks |
+
+## Progressive loading model
+
+The runtime manages context efficiently:
+
+1. **Metadata only** (~100 tokens per skill) loaded at conversation start.
+2. Full `SKILL.md` content loaded when a task matches the skill's activation criteria.
+3. Additional resources loaded only as needed.
+
+For the authoring spec of the `.skill` / `SKILL.md` package format,
+see [`anthropic-platform-features → SKILL-agents-and-tools.md`](../anthropic-platform-features/SKILL-agents-and-tools.md).
+
+## SKILL.md authoring constraints
+
+Key limits enforced by Claude.ai (from [`skills/how-to.md`](https://claude.com/docs/skills/how-to.md)):
+
+| Field | Rule |
+|---|---|
+| `name` | Lowercase letters, numbers, and hyphens only; max **64 chars**; must match the directory name |
+| `description` | Max **200 chars** on Claude.ai (Agent Skills spec allows 1024) |
+| Body | Keep `SKILL.md` under **500 lines**; move reference material to separate files |
+
+The directory name must match the `name` field in `SKILL.md`.
 
 ## Where users find skills
 
@@ -43,27 +81,21 @@ cover the user-facing surface:
 - Per-conversation skill control (turn a skill on/off for a single
   conversation).
 
-## Activation model
+## Open standard
 
-Two activation patterns:
+Skills follow the [Agent Skills specification](https://agentskills.io/specification),
+a platform-agnostic open standard. Skills you create can work across any
+platform that adopts the standard — not just Claude.
 
-1. **Always-on** — the skill auto-loads when its trigger matches the
-   conversation (e.g., a file path, a keyword, a tool call). Author
-   configures this via the skill's frontmatter `appliesTo`.
-2. **User-invoked** — the skill loads only when the user explicitly
-   refers to it by name.
-
-The Skills format spec (in
-[`anthropic-platform-features`](../anthropic-platform-features/SKILL-agents-and-tools.md))
-documents the activation field schema. This surface covers the
-user-facing semantics.
+Source: [`skills/overview.md`](https://claude.com/docs/skills/overview.md).
 
 ## Cross-product availability
 
 Skills work in:
 
-- **Claude.ai (web)** — installed skills available in conversations.
-- **Claude Desktop** — same.
+- **Claude.ai (web)** — installed skills available in conversations
+  (Pro/Max/Team/Enterprise; code execution required).
+- **Claude Desktop** — same plan requirements.
 - **Claude Code (CLI)** — skills resolve from `~/.claude/skills/` or
   project-local `.claude/skills/`.
 - **Claude Cowork** — full skills support (see

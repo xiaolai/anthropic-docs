@@ -59,6 +59,26 @@ The lazy pattern is recommended: surface as much value as possible
 before forcing the user through OAuth. Users who never invoke a
 protected tool never need to authenticate.
 
+### Supported auth types (remote MCP)
+
+| Type | Description | Availability |
+|---|---|---|
+| `oauth_dcr` | OAuth 2.0 with Dynamic Client Registration (RFC 7591) | Supported |
+| `oauth_cimd` | OAuth 2.0 with Client ID Metadata Document | Supported |
+| `oauth_anthropic_creds` | OAuth 2.0 with Anthropic-held client credentials | Contact `mcp-review@anthropic.com` |
+| `custom_connection` | Custom URL/credentials at connection time | Contact `mcp-review@anthropic.com` |
+| `none` | No authentication (authless server) | Supported |
+
+**Not supported:** `static_bearer` (user-pasted tokens); API keys in URL
+query params (`?token=`, `?apiKey=`, `?userToken=`) — the MCP auth spec
+prohibits access tokens in the URI query string.
+
+For high-traffic directory servers, **prefer CIMD or `oauth_anthropic_creds`
+over DCR** — DCR creates a new client registration on every fresh connection,
+which can produce very large numbers of registered clients.
+
+Source: [`building/authentication.md`](https://claude.com/docs/connectors/building/authentication.md).
+
 ## Directory vs custom
 
 [`directory-vs-custom.md`](https://claude.com/docs/connectors/building/directory-vs-custom.md)
@@ -96,6 +116,20 @@ first try by running through the checklist before submitting.
 covers the submission form, required materials (privacy policy URL,
 documentation URL, support contact, test credentials, working
 examples), and the review timeline.
+
+Key requirements:
+
+- **Tool annotations**: every tool must include `title` and the applicable
+  `readOnlyHint` or `destructiveHint`.
+- **OAuth 2.0** for any authenticated services.
+- **Privacy policy**: local (MCPB) connectors must include a
+  `privacy_policies` array in `manifest.json` (manifest_version 0.2+)
+  with HTTPS URLs and a "Privacy Policy" section in `README.md`.
+- **MCP Apps**: must include screenshots for listing.
+- **Allowed link URIs** (optional): if your connector calls `ui/open-link`,
+  declare each HTTPS origin (e.g., `https://example.com`) or custom URI
+  scheme (e.g., `myapp:`) you own to suppress the confirmation modal for
+  those destinations. Only list origins and schemes you own.
 
 ## Troubleshooting
 

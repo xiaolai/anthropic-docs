@@ -30,12 +30,23 @@ commands that drive it.
 
 ## Where plugins are available
 
-- **Claude Code (CLI)** — `/plugin` commands, plugin marketplaces.
-- **Claude Cowork** — full plugin support (see
+- **Claude Code (CLI)** — `/plugin` commands, plugin marketplaces,
+  plugin creation and distribution.
+- **Claude Cowork** — research preview for paid users in agentic
+  workflows; full plugin support (see
   [`claude-cowork → SKILL-cowork.md`](../claude-cowork/SKILL-cowork.md)).
 
-Plugins are NOT available on Claude.ai web or Mobile (as of this
-snapshot — check upstream for current state).
+Plugins are NOT available on Claude.ai web or Mobile.
+
+> **Note**: Org-wide sharing and management is in active development
+> — plugins currently remain locally saved per user.
+
+## Pre-built plugins
+
+Anthropic has open-sourced **11 plugins** covering: productivity,
+sales, finance, legal, marketing, customer support, product
+management, biology research, and data analysis. Discoverable and
+installable from [claude.com/plugins-for/cowork](https://claude.com/plugins-for/cowork).
 
 ## Plugin marketplaces
 
@@ -46,9 +57,10 @@ a URL pointing at a `marketplace.json` file. Users can:
 - Install plugins from a marketplace with one command.
 - Update / remove installed plugins.
 
-Anthropic operates a public plugin marketplace for the broader
-community. Organizations can run their own private marketplaces for
-internal-only plugins (common in Cowork on 3P deployments — see
+Anthropic operates a public plugin marketplace at
+[claude.com/plugins-for/cowork](https://claude.com/plugins-for/cowork). Organizations can
+run their own private marketplaces for internal-only plugins (common
+in Cowork on 3P deployments — see
 [`claude-cowork`](../claude-cowork/SKILL-cowork.md) for the "org-plugins
 directory" pattern).
 
