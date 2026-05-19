@@ -126,6 +126,41 @@ Generate before rollout: `uuidgen` (macOS/Linux) or
 
 Source: [`cowork/3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
 
+## Rule 10 — Array/object keys must be JSON strings, not native plist/registry structures
+
+The most common configuration mistake: writing array- or object-typed keys as
+native plist `<array>` / `<dict>` or registry multi-value types instead of as
+a single JSON-encoded `<string>`.
+
+Affected keys: `inferenceModels`, `managedMcpServers`, `coworkEgressAllowedHosts`,
+`disabledBuiltinTools`, `allowedWorkspaceFolders`, `otlpHeaders`,
+`otlpResourceAttributes`, `inferenceGatewayOidc`.
+
+**Correct (macOS .mobileconfig / .plist):**
+
+```xml
+<key>inferenceModels</key>
+<string>["claude-sonnet-4","claude-opus-4"]</string>
+
+<key>managedMcpServers</key>
+<string>[{"name":"search","url":"https://mcp.corp","oauth":true}]</string>
+```
+
+**Wrong — silently ignored:**
+
+```xml
+<key>inferenceModels</key>
+<array>
+  <string>claude-sonnet-4</string>
+</array>
+```
+
+> **Common mistake:** never use dotted key names like
+> `inferenceGatewayOidc.clientId` — only the flat string-encoded JSON object
+> is supported.
+
+Source: [`cowork/3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md#value-types).
+
 ---
 
 *Source: claude.com/docs/cowork/3p/configuration.md + feature-matrix.md.*

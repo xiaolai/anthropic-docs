@@ -41,7 +41,16 @@ e.g., findings from an Outlook inbox triage can be referenced when
 drafting a PowerPoint summary, without re-uploading or repeating
 context.
 
-See [`work-across-apps.md`](https://claude.com/docs/office-agents/work-across-apps.md).
+> **3P limitation:** Work-across-apps is only available when users
+> sign in with their Claude accounts directly. It is **not supported**
+> when connecting through Amazon Bedrock, Google Cloud Vertex AI,
+> Azure AI Foundry, or an LLM gateway.
+
+Plan defaults: Pro and Max have cross-app mode **on** by default;
+Team and Enterprise have it **off** by default (enable per add-in
+under Settings → "Let Claude work across files").
+
+Source: [`work-across-apps.md`](https://claude.com/docs/office-agents/work-across-apps.md).
 
 ## Outlook setup: Microsoft Graph consent
 
@@ -97,11 +106,17 @@ analytics, and spend-tracking conventions live in
 
 Highlights:
 
-- Security architecture diagrams per app.
-- OpenTelemetry export for per-action audit trail (prompt, tool
-  calls, token counts).
-- Usage analytics surfaced both per-user and per-workspace.
-- Spend tracking by app, by user, by workspace.
+- Security architecture diagrams per app (first-party and 3P variants).
+- **Custom OTLP collector**: when configured, spans are exported
+  **unfiltered** — including the full audit trail: session IDs, surface,
+  tool inputs/outputs, and **prompt and response content**. Scope access
+  controls and retention accordingly. (Spans sent to Anthropic's own
+  collector are allowlist-filtered and never include prompt content.)
+- Usage analytics (per-user and per-workspace) and spend tracking via
+  Claude Enterprise Analytics API — **available only for 1P (Claude
+  account sign-in)**. On 3P platforms (Bedrock, Vertex, Foundry,
+  gateway), usage and spend are tracked through your cloud provider's
+  billing console and your gateway's logging instead.
 
 ## Network allowlist
 

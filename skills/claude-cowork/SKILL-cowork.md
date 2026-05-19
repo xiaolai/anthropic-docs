@@ -138,7 +138,9 @@ That page is the source of truth for:
   TTL, default 3600 s; applies to Bedrock/Foundry/gateway, not Vertex AI)
 - **Sandbox & workspace** — `disabledBuiltinTools` (JSON string[] of tool names
   to remove; valid: `Bash`, `Read`, `Write`, `Edit`, `Glob`, `Grep`,
-  `NotebookEdit`, `WebFetch`, `WebSearch`, `Task`, `TodoWrite`, and others),
+  `NotebookEdit`, `WebFetch`, `WebSearch`, `Task`, `TodoWrite`, `TaskCreate`,
+  `TaskUpdate`, `TaskGet`, `TaskList`, `TaskStop`, `Skill`, `REPL`,
+  `JavaScript`, `AskUserQuestion`, `ToolSearch`, `SendUserMessage`),
   `allowedWorkspaceFolders` (restrict attachable paths), `coworkEgressAllowedHosts`
   (agent egress allowlist; `["*"]` disables filtering), `isClaudeCodeForDesktopEnabled`
   (show/hide Code tab, default `true`), `disableDeepLinkRegistration`
@@ -173,9 +175,13 @@ Cowork on 3P does not process user data, prompts, or completions
 itself. PHI uploaded to Cowork on 3P is transmitted only to the
 customer's CSP and any remote MCP servers the customer chooses to
 configure. For HIPAA compliance: ensure a BAA with your CSP, review
-all MCP servers, disable Anthropic-bound telemetry if your audit
-posture requires it (telemetry itself does not collect user data —
-only redacted crash reports and aggregated metrics).
+all MCP servers. Disabling Anthropic-bound telemetry is **not
+required** for HIPAA compliance — Anthropic's telemetry never includes
+user data, prompts, or completions (only redacted crash reports and
+aggregated usage metrics). Disable it only if your audit posture
+demands zero Anthropic-bound network traffic.
+
+Source: [`cowork/3p/overview.md`](https://claude.com/docs/cowork/3p/overview.md#hipaa).
 
 ## Telemetry and egress
 
@@ -228,11 +234,46 @@ Features confirmed available in 3P that are sometimes assumed missing:
 - **Projects** — fully supported.
 - **Memory** — supported; stored on the user's device (not Anthropic
   infrastructure). Users can review, delete, or pause under
-  **Settings → Cowork → Memory**.
+  **Settings → Cowork → Memory**. Chat-history search and nightly
+  summary generation are Chat-tab features; not available in 3P.
 - **Scheduled tasks** — supported.
 - **Skills, plugins, and hooks** — full extension model supported.
 - **Remote MCP** — supported.
 - **Artifacts** — supported.
+
+## Web tools (3P)
+
+Cowork includes two web-access tools. Their availability and behaviour
+differ in 3P mode.
+
+| Tool | How it runs | Availability |
+|---|---|---|
+| **Web Search** | Server-side at your inference provider | Vertex AI ✓, Foundry ✓, Bedrock ✗, Gateway (if provider implements `web_search`) |
+| **Web Fetch** | Client-side on user's device | Gated by `coworkEgressAllowedHosts` |
+
+**Critical:** `coworkEgressAllowedHosts` does **not** restrict Web
+Search — searches execute server-side, outside the sandbox. To disable
+search, add `"WebSearch"` to `disabledBuiltinTools`.
+
+URLs returned in search results are **automatically allowed** for a
+follow-up Web Fetch even if they are not in your `coworkEgressAllowedHosts`
+list.
+
+Source: [`cowork/3p/web-tools.md`](https://claude.com/docs/cowork/3p/web-tools.md).
+
+## Desktop and filesystem access
+
+Users attach **workspace folders** to a session; the agent can read,
+create, and modify files anywhere inside those folders. Admins restrict
+attachable paths via `allowedWorkspaceFolders`.
+
+**Windows network drives:** Users can attach a mapped network drive
+(e.g. `Z:\`) through the folder picker. Raw UNC paths (`\\server\share`)
+are **not supported** — map the share to a drive letter first. Shell
+commands run in an isolated sandbox that cannot reach network shares;
+have the agent copy files to a local folder before running scripts.
+
+Source: [`cowork/3p/local-access.md`](https://claude.com/docs/cowork/3p/local-access.md).
 
 ## Cowork guide (standard mode)
 
