@@ -164,15 +164,24 @@ happen to appear alongside.
 
 ### Display modes
 
-- **Inline card** — compact, embedded directly in conversation. Good
-  for summaries, confirmations, quick actions.
-- **Expanded view** — larger surface for richer interactions.
-- **Sidebar** — persistent context alongside the conversation.
+| Mode | Description | Constraints |
+|---|---|---|
+| **Inline card** | Compact, embedded in conversation. Good for summaries, confirmations, quick actions | Max height 500px; no nested scrolling; max 2 actions at bottom; max 4–5 data points. Mobile: full-width, 44 pt min tap targets. |
+| **Inline carousel** | Side-by-side browsable cards for lists of items | 3–8 cards; each card: image + title + metadata (max 3 lines) + optional CTA. Mobile: horizontally swipeable with next-card peek. |
+| **Full screen** | Immersive interface for dashboards and complex tools | Composer always visible — design UX to work with it. No floating panels; use collapsible sidebars, tabs, or pagination. Mobile: not yet available. |
 
 ### Transparent theming
 
 Make your widget background transparent and style with Claude's
-style variables — blends seamlessly into the host UI across themes.
+CSS style variables — blends seamlessly into the host UI across
+themes. Never hardcode colors; support both light and dark modes.
+Maintain WCAG AA contrast minimum.
+
+Available token categories: color (backgrounds, text, borders,
+rings), typography, radius, shadows, border widths. Brand colors
+are acceptable for accents only; use a three-level typography
+scale (heading, body, caption) with two weights and monochromatic
+outlined icons.
 
 Reference: [`mcp-apps/transparent-theming.md`](https://claude.com/docs/connectors/building/mcp-apps/transparent-theming.md).
 
@@ -183,6 +192,35 @@ the newest copy of the widget active. Prevents stale widgets from
 piling up.
 
 Reference: [`mcp-apps/instance-supersession.md`](https://claude.com/docs/connectors/building/mcp-apps/instance-supersession.md).
+
+### Interaction model: handle in app vs push to chat
+
+**Handle inside the app:**
+- Direct manipulation (sliders, toggles)
+- Filtering and sorting
+- Expanding/collapsing sections
+- Confirming actions
+- Visualization interactions
+
+**Push to chat (let Claude handle):**
+- Text entry and follow-up questions
+- Modification requests
+- Navigation between contexts
+- Anything requiring language interpretation
+
+Prefer visible controls (segmented buttons, toggle chips) over
+hidden menus, dropdowns, and popovers — these get clipped by
+container boundaries or cause z-index conflicts.
+
+### Mobile-specific constraints
+
+- Inline card and carousel only (full screen not yet available).
+- No camera, microphone, or location access.
+- Connectors require initial setup on web or desktop.
+- Respect `hostContext.safeAreaInsets` for notches and home
+  indicator.
+- Responsive design from 320 px minimum width.
+- Show skeleton screens while loading; avoid spinners.
 
 ### External links
 
@@ -217,8 +255,8 @@ covers common rendering, theming, and link-handling issues.
 |---|---|
 | `mcpb.md` | Build a Desktop extension with MCPB |
 | `mcp-apps/getting-started.md` | Test MCP Apps in Claude |
-| `mcp-apps/design-guidelines.md` | Visual + interaction design |
-| `mcp-apps/transparent-theming.md` | Theme integration |
+| `mcp-apps/design-guidelines.md` | Visual + interaction design; display modes (inline card, carousel, full screen); mobile constraints |
+| `mcp-apps/transparent-theming.md` | Theme integration; CSS token categories; WCAG AA |
 | `mcp-apps/instance-supersession.md` | Keep only the newest widget |
 | `mcp-apps/external-links.md` | ui/open-link handling, allowlists |
 | `mcp-apps/cross-compatibility.md` | Claude + ChatGPT in one codebase |

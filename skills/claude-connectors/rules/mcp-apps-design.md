@@ -13,9 +13,10 @@ appliesTo:
 ## Rule 1 — Inline cards max 500px height
 
 Inline cards embedded directly in conversation should fit content
-under 500px tall. Beyond that, prefer the expanded-view display mode.
+under 500px tall. Beyond that, prefer the full-screen display mode.
 Cards that try to scroll internally compete with the conversation
-scroll and produce a bad UX.
+scroll and produce a bad UX. Cap at 4–5 data points and 2 actions
+at the bottom.
 
 ```tsx
 // WRONG — explicit large height
@@ -31,7 +32,7 @@ Inline cards should auto-fit content height. Internal scroll containers
 get clipped by the host's container boundaries — content disappears
 without a scrollbar the user can grab.
 
-If you need pagination / virtualization, use the expanded view, not
+If you need pagination / virtualization, use the full-screen mode, not
 an inline card.
 
 ## Rule 3 — No dropdowns, context menus, popovers
@@ -87,8 +88,11 @@ the user's confirmation modal and the directory's allowlist).
 
 ## Rule 8 — Test on mobile viewports
 
-Claude Mobile renders MCP Apps too. A card that's only laid out for
-desktop widths breaks on mobile. Test at 360px width minimum.
+Claude Mobile renders MCP Apps (inline card and carousel only — full
+screen is not yet available on mobile). A card that's only laid out
+for desktop widths breaks on mobile. Test at 320px width minimum.
+Use 44 pt minimum tap targets and respect `hostContext.safeAreaInsets`
+for notches and home indicators.
 
 ---
 
