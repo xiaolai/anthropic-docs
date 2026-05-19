@@ -1,7 +1,7 @@
-# Claude Agent SDK — Python Reference (v0.1.49)
+# Claude Agent SDK — Python Reference (v0.2.82)
 
-**Package**: `claude-agent-sdk==0.1.49` (PyPI)
-**Docs**: https://platform.claude.com/docs/en/agent-sdk/python
+**Package**: `claude-agent-sdk==0.2.82` (PyPI)
+**Docs**: https://code.claude.com/docs/en/agent-sdk/python
 **Repo**: https://github.com/anthropics/claude-agent-sdk-python
 **Requires**: Python 3.10+
 **Migration**: Renamed from `claude-code-sdk`. `ClaudeCodeOptions` is now `ClaudeAgentOptions`.
@@ -890,11 +890,10 @@ PermissionMode = Literal[
     "default",            # Prompt user for each action
     "acceptEdits",        # Auto-allow file edits, prompt for others
     "plan",               # Read-only planning mode — no writes/execution
+    "dontAsk",            # Deny anything not pre-approved instead of prompting
     "bypassPermissions",  # Skip all prompts (use with caution)
 ]
 ```
-
-**Note**: The Python SDK exposes 4 permission modes. The TypeScript SDK additionally has `"delegate"` and `"dontAsk"`.
 
 ### `can_use_tool`
 
@@ -1089,8 +1088,19 @@ class AgentDefinition:
     description: str                                         # When to use
     prompt: str                                              # System prompt
     tools: list[str] | None = None                           # Allowed tools (inherits if omitted)
-    model: Literal["sonnet", "opus", "haiku", "inherit"] | None = None
+    disallowedTools: list[str] | None = None                 # Tools to block
+    model: str | None = None                                 # Model ID or alias ("sonnet","opus","haiku","inherit")
+    skills: list[str] | None = None                          # Skill names to preload
+    memory: Literal["user", "project", "local"] | None = None
+    mcpServers: list[str | dict[str, Any]] | None = None     # Server name or inline {name: config}
+    initialPrompt: str | None = None                         # Auto-submitted as first user turn
+    maxTurns: int | None = None
+    background: bool | None = None                           # Run as non-blocking background task
+    effort: EffortLevel | int | None = None
+    permissionMode: PermissionMode | None = None
 ```
+
+> **⚠️ camelCase fields**: `AgentDefinition` fields use camelCase (`disallowedTools`, `permissionMode`, `maxTurns`) to match the wire format shared with TypeScript. This differs from `ClaudeAgentOptions` which uses `snake_case`. Passing snake_case kwargs raises `TypeError`.
 
 Include `Task` in parent's `allowed_tools` — subagents are invoked via the Task tool.
 
@@ -1748,14 +1758,9 @@ options = ClaudeAgentOptions()  # No thinking configured
 **Cause**: CLI-level issue — schema constraints are not re-applied when loading prior session context. Both SDK flags are passed correctly, but the CLI drops the schema requirement when resuming.
 **Workaround**: None currently. Avoid using `output_format` with `resume`/`continue_conversation`. Run structured output queries as fresh sessions.
 
-### #26: v0.1.49 PyPI Release Incomplete — Linux/Windows Unavailable
-**Error**: `pip install claude-agent-sdk==0.1.49` fails on Linux and Windows: only a `macosx_11_0_arm64` wheel was published to PyPI ([#687](https://github.com/anthropics/claude-agent-sdk-python/issues/687))
-**Cause**: The automated release workflow uploaded the macOS ARM64 wheel successfully, then encountered a 400 error on the second upload. The remaining wheels (Linux x86_64/aarch64, Windows amd64, macOS x86_64) and the source distribution were not published.
-**Fix**: Pin to v0.1.48 until a corrected release is published:
-```
-pip install "claude-agent-sdk>=0.1.48,<0.1.49"
-```
-Note: v0.1.49 includes new `AgentDefinition` fields (`skills`, `memory`, `mcpServers`), per-turn usage on `AssistantMessage`, `rename_session()`, `delete_session()`, `tag_session()`, and typed `RateLimitEvent` messages — these features are only available on macOS ARM64 until a corrected release lands.
+### #26: v0.1.49 PyPI Release Incomplete ✅ Resolved — upgrade to v0.2.82+
+**Error**: `pip install claude-agent-sdk==0.1.49` failed on Linux and Windows — only a `macosx_11_0_arm64` wheel was published ([#687](https://github.com/anthropics/claude-agent-sdk-python/issues/687))
+**Status**: The Python SDK is now at v0.2.82 with full platform coverage. All v0.1.49 features (new `AgentDefinition` fields, typed `RateLimitEvent`, session management functions) are available on all platforms. Upgrade with `pip install -U claude-agent-sdk`.
 
 ### #27: `can_use_tool` Callback Never Invoked (Issue #469)
 **Error**: `can_use_tool` callbacks are never called despite correct configuration — tools execute without triggering the permission handler. Confirmed across SDK versions 0.1.19–0.1.48+ and CLI versions 2.1.7–2.1.73+ ([#469](https://github.com/anthropics/claude-agent-sdk-python/issues/469))
@@ -1786,7 +1791,8 @@ options = ClaudeAgentOptions(
 
 | Version | Change |
 |---------|--------|
-| v0.1.49 | Added `skills`, `memory`, `mcpServers` to `AgentDefinition`; per-turn usage on `AssistantMessage`; `rename_session()`, `delete_session()`, `tag_session()`, typed `RateLimitEvent`; reverted Bedrock-breaking eager_input_streaming (PR #671). **Partial release** — only macOS ARM64 wheel published (see [#26](#26-v0149-pypi-release-incomplete-issue-687)) |
+| v0.2.x | Major version: `AgentDefinition` now has `skills`, `memory`, `mcpServers`, `initialPrompt`, `maxTurns`, `background`, `effort`, `permissionMode` (all camelCase); `PermissionMode` adds `"dontAsk"`; `ClaudeAgentOptions` adds `session_store`, `session_store_flush`; typed `RateLimitEvent` message class |
+| v0.1.49 | Added `skills`, `memory`, `mcpServers` to `AgentDefinition`; per-turn usage on `AssistantMessage`; `rename_session()`, `delete_session()`, `tag_session()`, typed `RateLimitEvent`; reverted Bedrock-breaking eager_input_streaming (PR #671). ✅ All platforms available in v0.2.82+ |
 | v0.1.48 | Introduced `eager_input_streaming` with `include_partial_messages=True` (breaks Bedrock/Vertex — see [#21](#21-include_partial_messagestrue-breaks-tool-input-streaming-on-bedrockvertex)) |
 | v0.1.44 | Fixed `rate_limit_event` crash in message parser — unknown CLI message types now skipped gracefully; bundled CLI updated to v2.1.59 |
 | v0.1.36 | Added `thinking` (`ThinkingConfig` types: adaptive/enabled/disabled) and `effort` options; deprecated `max_thinking_tokens` |
@@ -1795,4 +1801,4 @@ options = ClaudeAgentOptions(
 
 ---
 
-**Last verified**: 2026-03-18 | **SDK version**: 0.1.48 (v0.1.49 partially released — macOS ARM64 only)
+**Last verified**: 2026-05-19 | **SDK version**: 0.2.82

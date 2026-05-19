@@ -4,14 +4,18 @@
       {
         "manager": "npm",
         "name": "@anthropic-ai/claude-agent-sdk",
-        "version": "0.0.0",
-        "engines": {}
+        "version": "0.3.144",
+        "engines": {
+          "node": ">=18.0.0"
+        }
       },
       {
         "manager": "pypi",
         "name": "claude-agent-sdk",
-        "version": "0.0.0",
-        "engines": {}
+        "version": "0.2.82",
+        "engines": {
+          "python": ">=3.10"
+        }
       }
     ]
   },
@@ -20,17 +24,19 @@
       {
         "repo": "anthropics/claude-agent-sdk-typescript",
         "latestRelease": {
-          "tag": "",
-          "name": "",
-          "publishedAt": ""
+          "tag": "v0.3.144",
+          "name": "v0.3.144",
+          "body": "## What's changed\n\n- Assistant messages and `StopFailure` hooks now report `error: 'model_not_found'` when the selected model doesn't exist or isn't available, instead of the generic `'invalid_request'`. The `api_error_status` field on result messages is now documented.\n- Added `@anthropic-ai/claude-agent-sdk/extract` export for `bun build --compile` consumers: import the platform native binary with `with { type: 'file' }`, call `extractFromBunfs(binPath)` to copy it out of the compiled executable's virtual filesystem, and pass the result to `options.pathToClaudeCodeExecutable`\n\n## Update\n\n```sh\nnpm install @anthropic-ai/claude-agent-sdk@0.3.144\n# or\nyarn add @anthropic-ai/claude-agent-sdk@0.3.144\n# or\npnpm add @anthropic-ai/claude-agent-sdk@0.3.144\n# or\nbun add @anthropic-ai/claude-agent-sdk@0.3.144\n```",
+          "publishedAt": "2026-05-19T00:48:46Z"
         }
       },
       {
         "repo": "anthropics/claude-agent-sdk-python",
         "latestRelease": {
-          "tag": "",
-          "name": "",
-          "publishedAt": ""
+          "tag": "v0.2.82",
+          "name": "v0.2.82",
+          "body": "### Breaking\r\n\r\n- **Breaking:** MCP servers now connect in the background by default; sessions start immediately and slow servers report `status: \"pending\"` in `init` until ready. Set `MCP_CONNECTION_NONBLOCKING=0` to restore the old behavior of waiting up to 5s before the first query, or mark a server `alwaysLoad: true` to require it in turn 1.\r\n- **Breaking:** Headless and SDK sessions now use Task tools (`TaskCreate` / `TaskUpdate` / `TaskGet` / `TaskList`) instead of `TodoWrite`. Tool consumers should accumulate by task ID instead of replacing a snapshot list.\r\n\r\n### New Features\r\n\r\n- **`EffortLevel` type export**: Added a public `EffortLevel` type alias for Claude effort string levels (`\"low\"`, `\"medium\"`, `\"high\"`, `\"max\"`, `\"xhigh\"`) and exported it from the package root, making it available for downstream SDK wrappers and type annotations (#951)\r\n\r\n### Bug Fixes\r\n\r\n- **Stderr callback isolation**: Fixed an issue where a user-provided `stderr` callback that raises an exception would silently terminate the stderr reader loop, dropping all subsequent stderr lines for the rest of the session. Exceptions are now caught per-line so a failing callback does not prevent delivery of later lines (#932)\r\n- **CancelledError in eager-flush done callback**: Fixed noisy `Exception in callback` log messages on shutdown when pending eager-flush tasks were cancelled. The done callback now gracefully handles `CancelledError` instead of unconditionally calling `Task.exception()` (#931)\r\n- **Tighter `permission_suggestions` type**: Replaced `list[Any] | None` with `list[dict[str, Any]] | None` on `SDKControlPermissionRequest.permission_suggestions`, enabling proper type-checking on consumers of that field (#955)\r\n\r\n### Documentation\r\n\r\n- Clarified that `hooks` dispatch for a given event is concurrent (all matchers fire in parallel), not sequential, preventing incorrect assumptions about ordering-dependent hooks like rate limiters gating subsequent hooks (#956)\r\n\r\n### Internal/Other Changes\r\n\r\n- Bumped `mcp` dependency lower bound to `>=1.23.0` to address GHSA-9h52-p55h-vw2f (CVE-2025-66416), which disables DNS rebinding protection by default in older versions (#927)\r\n- Stabilized eager-flush transcript mirror tests with deterministic wait helpers instead of fixed `asyncio.sleep(0)` yields (#933)\r\n- Updated bundled Claude CLI to version 2.1.142\r\n\r\n---\r\n\r\n**PyPI:** https://pypi.org/project/claude-agent-sdk/0.2.82/\r\n\r\n```bash\r\npip install claude-agent-sdk==0.2.82\r\n```\r",
+          "publishedAt": "2026-05-15T03:47:00Z"
         }
       }
     ],
@@ -41,102 +47,103 @@
   },
   "docs": {
     "indexUrl": "https://code.claude.com/llms.txt",
-    "indexSha256": "0b1ca29a9d37e3e9e2f94a5b3f5da8b838c178aa1887f46316318fd1a8524323",
+    "indexSha256": "c8639f2e9dad6d710a0ba8fa81c04ea0a8bc8c29626e9e5053e7bd79ed4949d2",
     "pageCount": 29,
     "knownPages": {
       "https://code.claude.com/docs/en/agent-sdk/agent-loop.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-19T05:33:11Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/claude-code-features.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-19T05:33:11Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/cost-tracking.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-19T05:33:11Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/custom-tools.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-19T05:33:11Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/file-checkpointing.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-19T05:33:11Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/hooks.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-19T05:33:11Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/hosting.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-19T05:33:11Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/mcp.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-19T05:33:11Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/migration-guide.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-19T05:33:11Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/modifying-system-prompts.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-19T05:33:11Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/observability.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-19T05:33:11Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/overview.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-19T05:33:11Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/permissions.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-19T05:33:11Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/plugins.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-19T05:33:11Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/python.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-19T05:33:11Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/quickstart.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-19T05:33:11Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/secure-deployment.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-19T05:33:11Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/sessions.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-19T05:33:11Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/skills.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-19T05:33:11Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/slash-commands.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-19T05:33:11Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/streaming-output.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-19T05:33:11Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/streaming-vs-single-mode.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-19T05:33:11Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/structured-outputs.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-19T05:33:11Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/subagents.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-19T05:33:11Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/todo-tracking.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-19T05:33:11Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/tool-search.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-19T05:33:11Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/typescript-v2-preview.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-19T05:33:11Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/typescript.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-19T05:33:11Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/user-input.md": {
-        "lastSeen": "2026-05-17T14:11:09Z"
+        "lastSeen": "2026-05-19T05:33:11Z"
       }
     }
   },
   "trackedIssues": {},
   "researchedIssues": {},
-  "lastAuditedVersion": "none",
-  "lastUpdated": "",
+  "lastAuditedVersion": "0.3.144",
+  "lastUpdated": "2026-05-19T05:33:11Z",
   "scaffoldComplete": true,
-  "lastRunWarnings": []
+  "lastRunWarnings": [],
+  "lastScannedIssueNumber": null
 }

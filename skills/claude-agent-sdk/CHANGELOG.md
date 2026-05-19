@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-05-19
+*(pending review — see PR auto/2026-05-19-pending-review)* Research updated docs surfaces for TS v0.3.144; checkDocsDrift gate failed — changes on draft branch pending review
+
+
+
+- SDK TS v0.3.143 → v0.3.144; Python v0.2.82 unchanged; docs index hash updated (same 29 pages, content refresh)
+- Version bump propagated to SKILL.md version table and state.json
+
 ## 2026-03-18
 
 - Research only, no version change (TS v0.2.77, Python v0.1.49 unchanged)
