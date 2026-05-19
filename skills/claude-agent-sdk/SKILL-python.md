@@ -1,7 +1,7 @@
-# Claude Agent SDK — Python Reference (v0.1.49)
+# Claude Agent SDK — Python Reference (v0.2.82)
 
-**Package**: `claude-agent-sdk==0.1.49` (PyPI)
-**Docs**: https://platform.claude.com/docs/en/agent-sdk/python
+**Package**: `claude-agent-sdk==0.2.82` (PyPI)
+**Docs**: https://code.claude.com/docs/en/agent-sdk/python
 **Repo**: https://github.com/anthropics/claude-agent-sdk-python
 **Requires**: Python 3.10+
 **Migration**: Renamed from `claude-code-sdk`. `ClaudeCodeOptions` is now `ClaudeAgentOptions`.
@@ -314,6 +314,11 @@ options = ClaudeAgentOptions(
 | `max_buffer_size` | `int \| None` | `None` | Maximum bytes when buffering CLI stdout |
 | `stderr` | `Callable[[str], None] \| None` | `None` | stderr callback |
 | `debug_stderr` | `Any` | `sys.stderr` | **Deprecated** — use `stderr` callback instead |
+| `strict_mcp_config` | `bool` | `False` | Use only `mcp_servers` from options; ignore `.mcp.json`, user settings, plugin MCP servers |
+| `include_hook_events` | `bool` | `False` | Include hook lifecycle events as `HookEventMessage` objects in the message stream |
+| `skills` | `list[str] \| Literal["all"] \| None` | `None` | Skills available to the session; `"all"` enables every discovered skill |
+| `session_store` | `SessionStore \| None` | `None` | Mirror transcripts to external backend; any host can then resume the session |
+| `session_store_flush` | `Literal["batched", "eager"]` | `"batched"` | When to flush to `session_store`; `"eager"` flushes after every frame |
 
 ---
 
@@ -402,15 +407,15 @@ asyncio.run(main())
 
 ## Message Types
 
-The SDK emits 5 message types:
+The SDK emits 6 message types:
 
 ```python
 from claude_agent_sdk import (
-    UserMessage, AssistantMessage, SystemMessage, ResultMessage
+    UserMessage, AssistantMessage, SystemMessage, ResultMessage, RateLimitEvent
 )
 from claude_agent_sdk.types import StreamEvent  # not re-exported from main package
 
-Message = UserMessage | AssistantMessage | SystemMessage | ResultMessage | StreamEvent
+Message = UserMessage | AssistantMessage | SystemMessage | ResultMessage | StreamEvent | RateLimitEvent
 ```
 
 ### `UserMessage`
@@ -433,6 +438,8 @@ class AssistantMessage:
     model: str
     parent_tool_use_id: str | None = None
     error: AssistantMessageError | None = None
+    usage: dict[str, Any] | None = None    # Per-turn token usage (same keys as ResultMessage.usage)
+    message_id: str | None = None          # API message ID; multiple messages in one turn share the same ID
 
 # AssistantMessageError type
 AssistantMessageError = Literal[
@@ -441,6 +448,7 @@ AssistantMessageError = Literal[
     "rate_limit",
     "invalid_request",
     "server_error",
+    "max_output_tokens",
     "unknown",
 ]
 ```
@@ -471,11 +479,17 @@ class ResultMessage:
     is_error: bool
     num_turns: int
     session_id: str
-    stop_reason: str | None = None           # Raw stop reason from Anthropic API
+    stop_reason: str | None = None           # Raw stop reason from Anthropic API; 'tool_deferred' when PreToolUse returns 'defer'
     total_cost_usd: float | None = None
-    usage: dict[str, Any] | None = None
+    usage: dict[str, Any] | None = None      # Total session token usage
     result: str | None = None
     structured_output: Any = None
+    model_usage: dict[str, Any] | None = None  # Per-model usage dict (camelCase keys, matches TS ModelUsage)
+    permission_denials: list[Any] | None = None
+    deferred_tool_use: DeferredToolUse | None = None  # Set when stop_reason == 'tool_deferred'
+    errors: list[str] | None = None
+    api_error_status: int | None = None
+    uuid: str | None = None
 ```
 
 Result subtypes:
@@ -484,6 +498,26 @@ Result subtypes:
 - `error_max_budget_usd` — hit `max_budget_usd` limit
 - `error_during_execution` — runtime error
 - `error_max_structured_output_retries` — schema validation failed after retries
+
+### `RateLimitEvent`
+
+Emitted when rate limit status changes. Use to warn users before they hit a hard limit.
+
+```python
+from claude_agent_sdk import RateLimitEvent, RateLimitInfo
+
+@dataclass
+class RateLimitEvent:
+    rate_limit_info: RateLimitInfo
+    uuid: str
+    session_id: str
+
+@dataclass
+class RateLimitInfo:
+    # Rate limit state (e.g. 'allowed', 'allowed_warning', 'rejected')
+    # Fields vary by subscription type; check rate_limit_info.keys() at runtime
+    ...
+```
 
 ### `StreamEvent`
 
@@ -890,11 +924,10 @@ PermissionMode = Literal[
     "default",            # Prompt user for each action
     "acceptEdits",        # Auto-allow file edits, prompt for others
     "plan",               # Read-only planning mode — no writes/execution
+    "dontAsk",            # Deny anything not pre-approved instead of prompting
     "bypassPermissions",  # Skip all prompts (use with caution)
 ]
 ```
-
-**Note**: The Python SDK exposes 4 permission modes. The TypeScript SDK additionally has `"delegate"` and `"dontAsk"`.
 
 ### `can_use_tool`
 
@@ -1086,11 +1119,22 @@ options = ClaudeAgentOptions(
 ```python
 @dataclass
 class AgentDefinition:
-    description: str                                         # When to use
-    prompt: str                                              # System prompt
-    tools: list[str] | None = None                           # Allowed tools (inherits if omitted)
-    model: Literal["sonnet", "opus", "haiku", "inherit"] | None = None
+    description: str
+    prompt: str
+    tools: list[str] | None = None               # Allowed tools (inherits if omitted)
+    disallowedTools: list[str] | None = None     # Tools to block (note: camelCase, not snake_case!)
+    model: str | None = None                     # Alias ('sonnet','opus','haiku','inherit') or full model ID
+    skills: list[str] | None = None              # Skills to preload into agent context
+    memory: Literal["user", "project", "local"] | None = None
+    mcpServers: list[str | dict[str, Any]] | None = None
+    initialPrompt: str | None = None             # Auto-submitted as first user turn
+    maxTurns: int | None = None
+    background: bool | None = None               # Run as non-blocking background task
+    effort: EffortLevel | int | None = None
+    permissionMode: PermissionMode | None = None # Permission mode scoped to this subagent
 ```
+
+> ⚠️ `AgentDefinition` uses **camelCase** field names (e.g. `disallowedTools`, `permissionMode`, `maxTurns`) — unlike `ClaudeAgentOptions` which uses snake_case. Passing snake_case keyword args raises `TypeError` at construction time.
 
 Include `Task` in parent's `allowed_tools` — subagents are invoked via the Task tool.
 
@@ -1748,14 +1792,12 @@ options = ClaudeAgentOptions()  # No thinking configured
 **Cause**: CLI-level issue — schema constraints are not re-applied when loading prior session context. Both SDK flags are passed correctly, but the CLI drops the schema requirement when resuming.
 **Workaround**: None currently. Avoid using `output_format` with `resume`/`continue_conversation`. Run structured output queries as fresh sessions.
 
-### #26: v0.1.49 PyPI Release Incomplete — Linux/Windows Unavailable
-**Error**: `pip install claude-agent-sdk==0.1.49` fails on Linux and Windows: only a `macosx_11_0_arm64` wheel was published to PyPI ([#687](https://github.com/anthropics/claude-agent-sdk-python/issues/687))
-**Cause**: The automated release workflow uploaded the macOS ARM64 wheel successfully, then encountered a 400 error on the second upload. The remaining wheels (Linux x86_64/aarch64, Windows amd64, macOS x86_64) and the source distribution were not published.
-**Fix**: Pin to v0.1.48 until a corrected release is published:
+### #26: v0.1.49 PyPI Release Incomplete ✅ Resolved — upgrade to v0.2.82
+**Was**: `pip install claude-agent-sdk==0.1.49` failed on Linux/Windows — only a `macosx_11_0_arm64` wheel was published ([#687](https://github.com/anthropics/claude-agent-sdk-python/issues/687)).
+**Status**: Subsequent releases (v0.2.x+) published full cross-platform wheels. Upgrade to the current release:
 ```
-pip install "claude-agent-sdk>=0.1.48,<0.1.49"
+pip install --upgrade claude-agent-sdk
 ```
-Note: v0.1.49 includes new `AgentDefinition` fields (`skills`, `memory`, `mcpServers`), per-turn usage on `AssistantMessage`, `rename_session()`, `delete_session()`, `tag_session()`, and typed `RateLimitEvent` messages — these features are only available on macOS ARM64 until a corrected release lands.
 
 ### #27: `can_use_tool` Callback Never Invoked (Issue #469)
 **Error**: `can_use_tool` callbacks are never called despite correct configuration — tools execute without triggering the permission handler. Confirmed across SDK versions 0.1.19–0.1.48+ and CLI versions 2.1.7–2.1.73+ ([#469](https://github.com/anthropics/claude-agent-sdk-python/issues/469))
@@ -1786,13 +1828,14 @@ options = ClaudeAgentOptions(
 
 | Version | Change |
 |---------|--------|
-| v0.1.49 | Added `skills`, `memory`, `mcpServers` to `AgentDefinition`; per-turn usage on `AssistantMessage`; `rename_session()`, `delete_session()`, `tag_session()`, typed `RateLimitEvent`; reverted Bedrock-breaking eager_input_streaming (PR #671). **Partial release** — only macOS ARM64 wheel published (see [#26](#26-v0149-pypi-release-incomplete-issue-687)) |
-| v0.1.48 | Introduced `eager_input_streaming` with `include_partial_messages=True` (breaks Bedrock/Vertex — see [#21](#21-include_partial_messagestrue-breaks-tool-input-streaming-on-bedrockvertex)) |
-| v0.1.44 | Fixed `rate_limit_event` crash in message parser — unknown CLI message types now skipped gracefully; bundled CLI updated to v2.1.59 |
-| v0.1.36 | Added `thinking` (`ThinkingConfig` types: adaptive/enabled/disabled) and `effort` options; deprecated `max_thinking_tokens` |
-| v0.1.35 | Sub-agent registration via `@filepath` syntax fixed; agents now reliably registered |
-| v0.1.0 | Breaking: `ClaudeCodeOptions` renamed to `ClaudeAgentOptions`; no default system prompt; no filesystem settings loaded by default |
+| v0.2.82 | Current stable; full cross-platform wheels; `AgentDefinition` adds `background`, `effort`, `permissionMode`, `initialPrompt`; `PermissionMode` adds `"dontAsk"`; `EffortLevel` adds `"xhigh"`; new options `strict_mcp_config`, `include_hook_events`, `skills`, `session_store`; `AssistantMessage` adds `usage`, `message_id`; `ResultMessage` adds `model_usage`, `deferred_tool_use`, `permission_denials`; `RateLimitEvent` is now a proper typed `Message` |
+| v0.1.49 | Added `skills`, `memory`, `mcpServers` to `AgentDefinition`; per-turn usage on `AssistantMessage`; `rename_session()`, `delete_session()`, `tag_session()`; typed `RateLimitEvent`; reverted Bedrock-breaking eager_input_streaming. Partial release resolved in v0.2.x |
+| v0.1.48 | Introduced `eager_input_streaming` with `include_partial_messages=True` (broke Bedrock/Vertex — see [#21](#21-include_partial_messagestrue-breaks-tool-input-streaming-on-bedrockvertex)) |
+| v0.1.44 | Fixed `rate_limit_event` crash in message parser; bundled CLI v2.1.59 |
+| v0.1.36 | Added `thinking` (`ThinkingConfig`) and `effort` options; deprecated `max_thinking_tokens` |
+| v0.1.35 | Sub-agent registration via `@filepath` syntax fixed |
+| v0.1.0 | Breaking: `ClaudeCodeOptions` renamed to `ClaudeAgentOptions`; no default system prompt |
 
 ---
 
-**Last verified**: 2026-03-18 | **SDK version**: 0.1.48 (v0.1.49 partially released — macOS ARM64 only)
+**Last verified**: 2026-05-19 | **SDK version**: 0.2.82

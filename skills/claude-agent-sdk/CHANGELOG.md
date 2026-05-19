@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-05-19
+
+- SDK TS v0.3.143 → v0.3.144; docs index hash updated (content changed, page count unchanged at 29)
+- Version propagated to SKILL.md, SKILL-typescript.md, README.md, state.json; no new known issues
+- *(partial run)* Research agent crashed (sdk.mjs init failure, exit 1); update agent and all safety gates succeeded; research will retry on next run
+
 ## 2026-03-18
 
 - Research only, no version change (TS v0.2.77, Python v0.1.49 unchanged)

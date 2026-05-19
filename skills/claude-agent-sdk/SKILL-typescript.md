@@ -1,19 +1,19 @@
-# Claude Agent SDK — TypeScript Reference (v0.2.77)
+# Claude Agent SDK — TypeScript Reference (v0.3.144)
 
-**Package**: `@anthropic-ai/claude-agent-sdk@0.2.77`
-**Docs**: https://platform.claude.com/docs/en/agent-sdk/overview
+**Package**: `@anthropic-ai/claude-agent-sdk@0.3.144`
+**Docs**: https://code.claude.com/docs/en/agent-sdk/typescript
 **Repo**: https://github.com/anthropics/claude-agent-sdk-typescript
-**Migration**: Renamed from `@anthropic-ai/claude-code`. See [migration guide](https://platform.claude.com/docs/en/agent-sdk/migration-guide).
+**Migration**: Renamed from `@anthropic-ai/claude-code`. See [migration guide](https://code.claude.com/docs/en/agent-sdk/migration-guide).
 
 ---
 
 ## Table of Contents
 
 - [Breaking Changes](#breaking-changes-v010)
-- [Core API](#core-api) — `query()`, `tool()`, `createSdkMcpServer()`, `listSessions()`, `getSessionMessages()`, `getSessionInfo()`, `renameSession()`, `forkSession()`, `tagSession()`
+- [Core API](#core-api) — `query()`, `startup()`, `tool()`, `createSdkMcpServer()`, `listSessions()`, `getSessionMessages()`, `getSessionInfo()`, `renameSession()`, `forkSession()`, `tagSession()`, `resolveSettings()`
 - [Options](#options) — Core, Tools & Permissions, Models & Output, Sessions, MCP & Agents, Advanced
 - [Query Object Methods](#query-object-methods)
-- [Message Types](#message-types) — All 23 SDKMessage types
+- [Message Types](#message-types) — All 24 SDKMessage types
 - [Hooks](#hooks) — 22 hook events, matchers, return values, async hooks
 - [Permissions](#permissions) — 5 modes, `canUseTool` callback
 - [MCP Servers](#mcp-servers) — stdio, HTTP, SSE, SDK, claudeai-proxy
@@ -60,6 +60,47 @@ async function* promptStream(): AsyncIterable<SDKUserMessage> {
 const q = query({ prompt: promptStream() });
 for await (const msg of q) { ... }
 ```
+
+### `startup()`
+
+Pre-warms the CLI subprocess before a prompt is available, so the first `query()` call has no startup latency. Returns a `WarmQuery` handle.
+
+```typescript
+import { startup } from "@anthropic-ai/claude-agent-sdk";
+
+// Pay startup cost upfront (e.g. on application boot)
+const warm = await startup({ options: { maxTurns: 10 } });
+
+// Later, send a prompt to the already-initialized process
+for await (const message of warm.query("What files are here?")) {
+  if (message.type === 'result') console.log(message.result);
+}
+```
+
+```typescript
+function startup(params?: {
+  options?: Options;
+  initializeTimeoutMs?: number;  // Default: 60000ms
+}): Promise<WarmQuery>
+
+interface WarmQuery extends AsyncDisposable {
+  query(prompt: string | AsyncIterable<SDKUserMessage>): Query;  // Call once per WarmQuery
+  close(): void;  // Discard without sending a prompt
+}
+```
+
+`WarmQuery` supports `await using` for automatic cleanup (TC39 Explicit Resource Management).
+
+### `resolveSettings()` (alpha)
+
+Resolves the effective Claude Code settings for a directory using the same merge engine as the CLI, **without spawning the CLI**. Useful for inspecting what configuration a `query()` would see.
+
+```typescript
+import { resolveSettings } from "@anthropic-ai/claude-agent-sdk";
+const { effective, provenance } = await resolveSettings({ dir: process.cwd() });
+```
+
+⚠️ Alpha — API may change. Does not execute `policyHelper` subprocess or apply trust filters.
 
 ### `tool()`
 
@@ -292,13 +333,12 @@ await tagSession(sessionId, null);
 |--------|------|---------|-------------|
 | `outputFormat` | `{ type: 'json_schema', schema: JSONSchema }` | — | Structured output schema |
 | `thinking` | `ThinkingConfig` | — | `{ type: 'enabled', budgetTokens?: number } \| { type: 'disabled' } \| { type: 'adaptive' }` |
-| `effort` | `'low' \| 'medium' \| 'high' \| 'max'` | — | Controls response effort level |
+| `effort` | `'low' \| 'medium' \| 'high' \| 'xhigh' \| 'max'` | `'high'` (supported models) | Controls response effort level; `'xhigh'` is Opus 4.7+ only |
 | `maxThinkingTokens` | `number` | — | **Deprecated** — use `thinking` instead |
 | `fallbackModel` | `string` | — | Fallback model on failure |
 | `betas` | `SdkBeta[]` | `[]` | Beta features (e.g., `['context-1m-2025-08-07']`) |
 | `includePartialMessages` | `boolean` | `false` | Include streaming partial messages |
 | `promptSuggestions` | `boolean` | `false` | Emit `SDKPromptSuggestionMessage` after each turn with a predicted next user prompt (arrives after result; suppressed on first turn, after errors, in plan mode) |
-| `agentProgressSummaries` | `boolean` | `false` | Enable periodic AI-generated progress summaries for running subagents. Every ~30s, forks the subagent's conversation to produce a short present-tense description emitted on `task_progress` events via the `summary` field. Applies to foreground and background subagents. |
 
 ### Sessions
 
@@ -324,16 +364,25 @@ await tagSession(sessionId, null);
 | `plugins` | `SdkPluginConfig[]` | `[]` | `{ type: 'local', path: string }` |
 | `strictMcpConfig` | `boolean` | `false` | Strict MCP validation |
 
+### Sessions (additional)
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `sessionStore` | `SessionStore` | — | Mirror transcripts to external backend so any host can resume. See [session-storage docs](https://code.claude.com/docs/en/agent-sdk/session-storage) |
+
 ### Advanced
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `onElicitation` | `OnElicitation` | — | Callback for MCP elicitation requests (form fields, URL auth); auto-declines if not provided |
 | `sandbox` | `SandboxSettings` | — | Sandbox configuration |
 | `hooks` | `Partial<Record<HookEvent, HookCallbackMatcher[]>>` | `{}` | Hook callbacks |
 | `settings` | `string \| Settings` | — | Additional settings to apply (path to JSON file or inline object). Loaded into the highest-priority "flag settings" layer. Equivalent to `--settings` CLI flag. |
 | `toolConfig` | `ToolConfig` | — | Per-tool configuration for built-in tools (e.g., `{ askUserQuestion: { previewFormat: 'html' } }`) |
 | `additionalDirectories` | `string[]` | `[]` | Extra directories for Claude to access |
+| `skills` | `string[] \| 'all'` | — | Skills available to the session; `'all'` enables every discovered skill. SDK auto-enables the `Skill` tool |
+| `strictMcpConfig` | `boolean` | `false` | Use only `mcpServers` from SDK options; ignore `.mcp.json`, user settings, plugin MCP servers |
+| `outputStyle` | `string` | — | Name of an output style to activate; must exist in a loaded `settingSources` location |
+| `includeHookEvents` | `boolean` | `false` | Include hook lifecycle events (`SDKHookStartedMessage`, `SDKHookProgressMessage`, `SDKHookResponseMessage`) in the message stream |
 | `debug` | `boolean` | — | Enable debug logging (v0.2.30) |
 | `debugFile` | `string` | — | Debug log file path (v0.2.30) |
 | `stderr` | `(data: string) => void` | — | stderr callback |
@@ -425,53 +474,99 @@ type AccountInfo = {
 
 ## Message Types
 
-The SDK emits 23 message types through the async generator:
+The SDK emits 24 message types through the async generator:
 
 ```typescript
 type SDKMessage =
   // Core messages
   | SDKAssistantMessage           // type: 'assistant' — agent responses
-  | SDKUserMessage                // type: 'user' — user input
+  | SDKUserMessage                // type: 'user' — user input (new: shouldQuery?, origin?)
   | SDKUserMessageReplay          // type: 'user', isReplay: true — replayed messages on resume
-  | SDKResultMessage              // type: 'result' — final result
+  | SDKResultMessage              // type: 'result' — final result (new: origin?, deferred_tool_use?, permission_denials)
   | SDKSystemMessage              // type: 'system', subtype: 'init' — session init
   | SDKPartialAssistantMessage    // type: 'stream_event' (includePartialMessages)
   | SDKCompactBoundaryMessage     // type: 'system', subtype: 'compact_boundary'
   // Status & progress
   | SDKStatusMessage              // type: 'system', subtype: 'status' — status updates (e.g., 'compacting')
-  | SDKAPIRetryMessage            // type: 'system', subtype: 'api_retry' — transient API error being retried (v0.2.77)
   | SDKToolProgressMessage        // type: 'tool_progress' — tool execution progress with elapsed time
   | SDKToolUseSummaryMessage      // type: 'tool_use_summary' — summary of tool usage
   | SDKAuthStatusMessage          // type: 'auth_status' — authentication status
   | SDKLocalCommandOutputMessage  // type: 'system', subtype: 'local_command_output' — output from slash commands like /cost, /voice
-  // Hook messages
+  // Hook messages (require includeHookEvents: true)
   | SDKHookStartedMessage         // type: 'system', subtype: 'hook_started'
   | SDKHookProgressMessage        // type: 'system', subtype: 'hook_progress' — hook stdout/stderr
   | SDKHookResponseMessage        // type: 'system', subtype: 'hook_response' — hook outcome
   // Task & persistence
-  | SDKTaskStartedMessage         // type: 'system', subtype: 'task_started' — emitted when background task begins
-  | SDKTaskProgressMessage        // type: 'system', subtype: 'task_progress' — periodic progress updates for running tasks
+  | SDKTaskStartedMessage         // type: 'system', subtype: 'task_started' — background task begins
+  | SDKTaskProgressMessage        // type: 'system', subtype: 'task_progress' — periodic progress updates
+  | SDKTaskUpdatedMessage         // type: 'system', subtype: 'task_updated' — task state patch (NEW)
   | SDKTaskNotificationMessage    // type: 'system', subtype: 'task_notification' — background task events
   | SDKFilesPersistedEvent        // type: 'system', subtype: 'files_persisted'
-  // MCP Elicitation
-  | SDKElicitationCompleteMessage // type: 'system', subtype: 'elicitation_complete' — MCP elicitation finished
+  // Plugin & permissions
+  | SDKPluginInstallMessage       // type: 'system', subtype: 'plugin_install' — plugin install progress (NEW)
+  | SDKPermissionDeniedMessage    // type: 'system', subtype: 'permission_denied' — auto-denied tool call (NEW, CLI v2.1.136+)
   // Rate limiting & suggestions
   | SDKRateLimitEvent             // type: 'rate_limit_event' — rate limit status for claude.ai subscriptions
   | SDKPromptSuggestionMessage    // type: 'prompt_suggestion' — predicted next user prompt (requires promptSuggestions: true)
 ```
 
-### SDKAPIRetryMessage (v0.2.77)
+### SDKPluginInstallMessage (new in v0.3.x)
+
+Emitted when `CLAUDE_CODE_SYNC_PLUGIN_INSTALL` is set, so you can track marketplace plugin installation before the first turn. `started`/`completed` bracket the overall install; `installed`/`failed` report individual marketplaces.
 
 ```typescript
-{ type: 'system', subtype: 'api_retry', uuid, session_id,
-  attempt: number,             // Current attempt number (1-based)
-  max_retries: number,         // Maximum number of retries
-  retry_delay_ms: number,      // Delay before next attempt in ms
-  error_status: number | null, // HTTP status code, or null for connection errors (e.g. timeouts)
-  error: SDKAssistantMessageError }
+{ type: 'system', subtype: 'plugin_install',
+  status: 'started' | 'installed' | 'failed' | 'completed',
+  name?: string,   // marketplace name for 'installed'/'failed'
+  error?: string,  // error message for 'failed'
+  uuid, session_id }
 ```
 
-Emitted when a transient API error is automatically retried. Use to show retry indicators in UIs or log retry storms.
+### SDKPermissionDeniedMessage (new in v0.3.x, CLI v2.1.136+)
+
+Emitted when the permission system **auto-denies** a tool call (no interactive prompt shown). Use to render denials in your UI as they happen. Does not fire for hook-initiated denials.
+
+```typescript
+{ type: 'system', subtype: 'permission_denied',
+  tool_name: string,
+  tool_use_id: string,
+  agent_id?: string,              // set when denial originates inside a subagent
+  decision_reason_type?: string,  // 'rule' | 'mode' | 'classifier' | 'asyncAgent'
+  decision_reason?: string,       // human-readable reason
+  message: string,                // rejection message returned to model
+  uuid, session_id }
+```
+
+### SDKTaskUpdatedMessage (new in v0.3.x)
+
+Emitted when a background task's state changes. Merge `patch` into your local task map keyed by `task_id`.
+
+```typescript
+{ type: 'system', subtype: 'task_updated', task_id: string,
+  patch: {
+    status?: 'pending' | 'running' | 'completed' | 'failed' | 'killed',
+    description?: string,
+    end_time?: number,         // Unix epoch ms, compare with Date.now()
+    total_paused_ms?: number,
+    error?: string,
+    is_backgrounded?: boolean,
+  }, uuid, session_id }
+```
+
+### SDKMessageOrigin (new in v0.3.x)
+
+Provenance of a user-role message, forwarded onto the corresponding `SDKResultMessage.origin`. Use to distinguish results answering your prompt from results emitted for background-task follow-ups.
+
+```typescript
+type SDKMessageOrigin =
+  | { kind: 'human' }                              // Direct end-user input
+  | { kind: 'channel'; server: string }            // From MCP channel
+  | { kind: 'peer'; from: string; name?: string }  // From another agent session
+  | { kind: 'task-notification' }                  // Synthetic turn after background task
+  | { kind: 'coordinator' }                        // From team coordinator
+```
+
+`SDKUserMessage` and `SDKResultMessage` now both carry `origin?: SDKMessageOrigin`.
 
 ### SDKResultMessage
 
@@ -479,17 +574,23 @@ Emitted when a transient API error is automatically retried. Use to show retry i
 // Success
 { type: 'result', subtype: 'success', session_id, duration_ms, duration_api_ms,
   is_error: false, num_turns, result: string, total_cost_usd,
-  usage, modelUsage, permission_denials, structured_output?, stop_reason?,
-  fast_mode_state?: FastModeState }
+  usage, modelUsage, permission_denials: SDKPermissionDenial[], structured_output?, stop_reason?,
+  origin?: SDKMessageOrigin,
+  deferred_tool_use?: { id: string; name: string; input: Record<string, unknown> } }
+  // deferred_tool_use: set when PreToolUse hook returns permissionDecision: 'defer'
+  //   stop_reason will be 'tool_deferred'; resume same session_id to continue
 
 // Error variants
 { type: 'result', subtype: 'error_max_turns' | 'error_during_execution'
   | 'error_max_budget_usd' | 'error_max_structured_output_retries',
-  session_id, is_error: true, errors: string[], ...,
-  fast_mode_state?: FastModeState }
+  session_id, is_error: true, errors: string[], permission_denials: SDKPermissionDenial[],
+  origin?: SDKMessageOrigin }
+
+// SDKPermissionDenial (in permission_denials array)
+type SDKPermissionDenial = { tool_name: string; tool_use_id: string; tool_input: Record<string, unknown> }
 
 // Error codes (SDKAssistantMessageError)
-'authentication_failed' | 'billing_error' | 'rate_limit' |
+'authentication_failed' | 'oauth_org_not_allowed' | 'billing_error' | 'rate_limit' |
 'invalid_request' | 'server_error' | 'unknown' | 'max_output_tokens'
 ```
 
@@ -511,8 +612,22 @@ Emitted when a transient API error is automatically retried. Use to show retry i
 ### SDKAssistantMessage
 
 ```typescript
-{ type: 'assistant', uuid, session_id, message: APIAssistantMessage,
-  parent_tool_use_id: string | null }
+{ type: 'assistant', uuid, session_id, message: BetaMessage,  // Anthropic SDK type
+  parent_tool_use_id: string | null,
+  error?: SDKAssistantMessageError }
+```
+
+### SDKUserMessage (selected fields)
+
+Set `shouldQuery: false` to append a message to the transcript **without** triggering an assistant turn — useful for injecting context from an out-of-band command without spending a model call:
+
+```typescript
+{ type: 'user', uuid?, session_id?, message: MessageParam,
+  parent_tool_use_id: string | null,
+  isSynthetic?: boolean,
+  shouldQuery?: boolean,         // false = inject without triggering AI turn
+  tool_use_result?: unknown,
+  origin?: SDKMessageOrigin }    // absent = 'human' origin
 ```
 
 ### SDKUserMessageReplay
@@ -530,14 +645,15 @@ for await (const message of query({ prompt: "...", options })) {
   switch (message.type) {
     case 'system':
       if (message.subtype === 'init') sessionId = message.session_id;
-      if (message.subtype === 'status') console.log('Status:', message.status, message.permissionMode);  // permissionMode?: PermissionMode
-      if (message.subtype === 'api_retry') console.log(`Retrying (${message.attempt}/${message.max_retries}), delay ${message.retry_delay_ms}ms, http_status: ${message.error_status}`);
+      if (message.subtype === 'status') console.log('Status:', message.status, message.permissionMode);
       if (message.subtype === 'hook_progress') console.log('Hook:', message.output);  // also: .stdout, .stderr, .hook_name, .hook_event
       if (message.subtype === 'local_command_output') console.log('Slash cmd output:', message.content);
-      if (message.subtype === 'elicitation_complete') console.log('Elicitation done:', message.mcp_server_name, message.elicitation_id);
-      if (message.subtype === 'task_started') console.log('Task started:', message.task_id, message.description, message.task_type, message.prompt);  // task_type?: string; prompt?: string
-      if (message.subtype === 'task_progress') console.log('Task progress:', message.task_id, message.description, message.last_tool_name, message.usage, message.summary);  // usage: {total_tokens, tool_uses, duration_ms}; last_tool_name?: string; tool_use_id?: string; summary?: string (from agentProgressSummaries)
-      if (message.subtype === 'task_notification') console.log('Task done:', message.task_id, message.status, message.tool_use_id, message.output_file, message.summary);  // output_file: string, summary: string, usage?: {total_tokens, tool_uses, duration_ms}
+      if (message.subtype === 'plugin_install') console.log('Plugin:', message.status, message.name);
+      if (message.subtype === 'permission_denied') console.log('Denied:', message.tool_name, message.decision_reason);
+      if (message.subtype === 'task_started') console.log('Task started:', message.task_id, message.description, message.task_type);
+      if (message.subtype === 'task_updated') console.log('Task updated:', message.task_id, message.patch);
+      if (message.subtype === 'task_progress') console.log('Task progress:', message.task_id, message.description, message.last_tool_name, message.usage);
+      if (message.subtype === 'task_notification') console.log('Task done:', message.task_id, message.status, message.output_file, message.summary);
       break;
     case 'assistant':
       console.log(message.message);
@@ -576,7 +692,7 @@ Hooks use **callback matchers**: an optional regex `matcher` for tool names and 
 | `SubagentStart` | Subagent spawned | Yes | No |
 | `SubagentStop` | Subagent completed | Yes | Yes |
 | `PreCompact` | Before context compaction | Yes | Yes |
-| `PostCompact` | After context compaction completes | Yes | No |
+| `PostToolBatch` | After a batch of tool calls completes | Yes | No |
 | `PermissionRequest` | Permission dialog would show | Yes | No |
 | `SessionStart` | Session begins | Yes | No |
 | `SessionEnd` | Session ends | Yes | No |
@@ -586,9 +702,6 @@ Hooks use **callback matchers**: an optional regex `matcher` for tool names and 
 | `ConfigChange` | Settings file changed (user/project/local/policy/skills) | Yes | No |
 | `WorktreeCreate` | Git worktree created | Yes | No |
 | `WorktreeRemove` | Git worktree removed | Yes | No |
-| `Elicitation` | MCP server requests user input (form or URL auth) | Yes | No |
-| `ElicitationResult` | MCP elicitation completed (result available) | Yes | No |
-| `InstructionsLoaded` | CLAUDE.md / instructions file loaded into context | Yes | No |
 
 ### Hook Callback Signature
 
@@ -716,9 +829,6 @@ Common fields on all hooks: `session_id`, `transcript_path`, `cwd`, `permission_
 | `source` (`'user_settings' \| 'project_settings' \| 'local_settings' \| 'policy_settings' \| 'skills'`), `file_path?` | ConfigChange |
 | `name` | WorktreeCreate (worktree name) |
 | `worktree_path` | WorktreeRemove (path of removed worktree) |
-| `mcp_server_name`, `message`, `mode?`, `url?`, `elicitation_id?`, `requested_schema?` | Elicitation |
-| `mcp_server_name`, `elicitation_id?`, `mode?`, `action`, `content?` | ElicitationResult |
-| `file_path`, `memory_type` (`'User' \| 'Project' \| 'Local' \| 'Managed'`), `load_reason` (`'session_start' \| 'nested_traversal' \| 'path_glob_match' \| 'include' \| 'compact'`), `globs?`, `trigger_file_path?`, `parent_file_path?` | InstructionsLoaded |
 
 ---
 
@@ -852,10 +962,15 @@ type AgentDefinition = {
   prompt: string;             // System prompt
   tools?: string[];           // Allowed tools (inherits if omitted) — NOT enforced, see warning
   disallowedTools?: string[]; // Tools to block — NOT enforced, see warning
-  model?: 'sonnet' | 'opus' | 'haiku' | 'inherit';
+  model?: string;             // Alias ('sonnet'|'opus'|'haiku'|'inherit') or full model ID
   mcpServers?: AgentMcpServerSpec[];  // Per-agent MCP servers
   skills?: string[];          // Skill names to preload
+  initialPrompt?: string;     // Auto-submitted as first user turn when agent runs as main thread
   maxTurns?: number;          // Max turns for this subagent
+  background?: boolean;       // Run as non-blocking background task when invoked
+  memory?: 'user' | 'project' | 'local';  // Memory source for this agent
+  effort?: 'low' | 'medium' | 'high' | 'xhigh' | 'max' | number;
+  permissionMode?: PermissionMode;  // Permission mode scoped to this subagent
   criticalSystemReminder_EXPERIMENTAL?: string;  // Critical reminder added to system prompt
 }
 ```
@@ -1517,25 +1632,22 @@ sandbox: {
 
 ---
 
-## Changelog Highlights (v0.2.12 → v0.2.77)
+## Changelog Highlights (v0.2.77 → v0.3.144)
 
 | Version | Change |
 |---------|--------|
-| v0.2.77 | Added `SDKAPIRetryMessage` (`type: 'system', subtype: 'api_retry'`) — emitted when a transient API error is automatically retried; exposes attempt count, max retries, delay, and error status; fixed `SubagentStart`/`SubagentStop` hook `agent_type` always reporting `"general-purpose"` — now correctly reports the agent key from the `agents` map ([#226](https://github.com/anthropics/claude-agent-sdk-typescript/issues/226)); fixed missing `./sdk-tools` entry in `package.json` exports map ([#222](https://github.com/anthropics/claude-agent-sdk-typescript/issues/222)) |
-| v0.2.71 | Fixed `Agent` tool returning `"Unknown tool: Agent"` in `query()` mode — subagent invocation via `tools: ['Agent']` + `agents` map now works ([#210](https://github.com/anthropics/claude-agent-sdk-typescript/issues/210)) |
-| v0.2.63 | Fixed `SDKRateLimitEvent` and `SDKPromptSuggestionMessage` missing from `sdk.d.ts` — `SDKMessage` now has full type safety ([#196](https://github.com/anthropics/claude-agent-sdk-typescript/issues/196), [#206](https://github.com/anthropics/claude-agent-sdk-typescript/issues/206)) |
-| v0.2.58 | Version bump |
-| v0.2.57 | `getSessionMessages()` exported — reads transcript messages by session ID; `SessionMessage` type exported |
-| v0.2.51 | Fixed `close()` breaking session persistence in v2 session API ([#177](https://github.com/anthropics/claude-agent-sdk-typescript/issues/177)) |
-| v0.2.43 | Previous release (2026-02-14) |
+| v0.3.x  | `startup()` / `WarmQuery` — pre-warm CLI before prompt available; `resolveSettings()` (alpha); new `SDKPermissionDeniedMessage`, `SDKPluginInstallMessage`, `SDKTaskUpdatedMessage` types; `SDKMessageOrigin` on user/result messages; new `AgentDefinition` fields: `background`, `memory`, `effort`, `permissionMode`, `initialPrompt`; new options: `skills`, `strictMcpConfig`, `outputStyle`, `includeHookEvents`, `sessionStore`; `effort` adds `'xhigh'` level; `SDKAPIRetryMessage` and `SDKElicitationCompleteMessage` removed from `SDKMessage` union |
+| v0.2.77 | `SDKAPIRetryMessage` added (now removed in v0.3.x); fixed `./sdk-tools` exports map ([#222](https://github.com/anthropics/claude-agent-sdk-typescript/issues/222)) |
+| v0.2.71 | Fixed `Agent` tool returning `"Unknown tool: Agent"` in `query()` mode |
+| v0.2.63 | Fixed `SDKRateLimitEvent` and `SDKPromptSuggestionMessage` missing from `sdk.d.ts` |
+| v0.2.57 | `getSessionMessages()` exported; `SessionMessage` type exported |
+| v0.2.51 | Fixed `close()` breaking session persistence in v2 session API |
 | v0.2.33 | `TeammateIdle`/`TaskCompleted` hook events; custom `sessionId` option |
-| v0.2.31 | `stop_reason` field on result messages |
-| v0.2.30 | `debug`/`debugFile` options; PDF page reading |
+| v0.2.30 | `debug`/`debugFile` options |
 | v0.2.27 | MCP tool `annotations` support |
-| v0.2.23 | Structured output validation fix |
-| v0.2.21 | `reconnectMcpServer()`, `toggleMcpServer()`, `disabled` MCP status |
-| v0.2.15 | `close()` method on Query; notification hooks |
+| v0.2.21 | `reconnectMcpServer()`, `toggleMcpServer()` |
+| v0.2.15 | `close()` method on Query |
 
 ---
 
-**Last verified**: 2026-03-18 | **SDK version**: 0.2.77
+**Last verified**: 2026-05-19 | **SDK version**: 0.3.144
