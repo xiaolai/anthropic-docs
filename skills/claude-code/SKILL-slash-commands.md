@@ -82,7 +82,7 @@ Commands marked **[Skill]** are bundled skills — prompts handed to Claude that
 | `/remote-control` | Make this session available for remote control from claude.ai. Alias: `/rc` |
 | `/remote-env` | Configure the default remote environment for web sessions started with `--remote` |
 | `/rename [name]` | Rename the current session |
-| `/resume [session]` | Resume a conversation by ID or name, or open the session picker. As of v2.1.144, [background sessions](SKILL-cli.md) appear in the picker marked with `bg`. Alias: `/continue` |
+| `/resume [session]` | Resume a conversation by ID or name, or open the session picker. As of v2.1.145, [background sessions](SKILL-cli.md) appear in the picker marked with `bg`. Alias: `/continue` |
 | `/review [PR]` | Review a pull request locally |
 | `/rewind` | Rewind conversation and/or code to a previous point. Aliases: `/checkpoint`, `/undo` |
 | `/sandbox` | Toggle sandbox mode |

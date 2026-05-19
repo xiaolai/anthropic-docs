@@ -10,9 +10,12 @@ The newest entry is at the top.
 
 ---
 
+## 2026-05-19 (run 8 — success)
+- Re-audit at CC v2.1.145 — research agent confirmed all surface files current (105 pages); 1 mend run required before verify passed; all 11 gates passed, pushed to main
+
 ## v2.1.145 — 2026-05-19
 
-GitHub release (npm package `@anthropic-ai/claude-code` at v2.1.144 at time of writing).
+npm package `@anthropic-ai/claude-code` confirmed at v2.1.145.
 
 - Added `claude agents --json` to list live Claude sessions as JSON for scripting (tmux-resurrect, status bars, session pickers)
 - Added `agent_id` and `parent_agent_id` attributes to `claude_code.tool` OTEL spans; background subagent spans now nest under the dispatching Agent tool span
