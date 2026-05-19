@@ -150,8 +150,11 @@ That page is the source of truth for:
 - **MCP & extensions** — `managedMcpServers` (JSON array; each server supports
   `transport` (`"http"` (default) | `"sse"` | `"stdio"`), `headers`,
   `headersHelper`/`headersHelperTtlSec` (default 300 s), `oauth` object
-  for pre-registered OAuth clients, `toolPolicy`; `stdio` transport also takes
-  `command`, `args`, `env`); `orgPluginSettings` (per-tool policy for
+  for pre-registered OAuth clients (`clientId`, `tenantId`, `scope`,
+  `callbackPort` (default `53280`), `callbackHost` (`"127.0.0.1"` default |
+  `"localhost"`); redirect URI is `http://<callbackHost>:<callbackPort>/callback`),
+  `toolPolicy`; `stdio` transport also takes `command`, `args`, `env`);
+  `orgPluginSettings` (per-tool policy for
   org-plugin servers, keyed as `{"mcpServers":{"<name>":{"toolPolicy":{...}}}}`);
   `isLocalDevMcpEnabled`; `isDesktopExtensionEnabled`;
   `isDesktopExtensionSignatureRequired`
@@ -256,6 +259,7 @@ Salient gaps in 3P (versus full Claude Enterprise):
 - No mobile dispatch (Dispatch/mobile feature absent).
 - No voice mode.
 - No Claude in Chrome.
+- No computer use (also absent on Claude Enterprise).
 - No web-based admin console — admin functions delivered via MDM.
 - Per-user spend caps are blanket-only (not differentiated by role);
   token-based and device-enforced via `inferenceMaxTokensPerWindow`.
@@ -339,18 +343,24 @@ event produced while processing a single user prompt.
 `service.version`, `host.arch`, `os.type`, `os.version`.
 
 **Notable per-event attributes:**
-- `user_prompt` — `prompt_length`, `prompt` (content), `event.sequence`
-- `tool_result` — `tool_input` (JSON-serialized args, strings >512 chars
-  truncated, total ≤ ~4 KB), `tool_parameters`, `decision_type`
-  (`"accept"` / `"reject"`), `decision_source` (`"config"` | `"hook"` |
-  `"user_permanent"` | `"user_temporary"` | `"user_abort"` | `"user_reject"`),
-  `tool_result_size_bytes`, `mcp_server_scope` (MCP tools only)
-- `api_request` — `speed` (`"fast"` or `"normal"`), `cost_usd`,
-  `input_tokens`, `output_tokens`, `cache_read_tokens`, `cache_creation_tokens`,
-  `duration_ms`
-- `api_error` — `speed`, `status_code` (HTTP code or `"undefined"` for
-  non-HTTP), `attempt` (retry count), `duration_ms`
-- `tool_decision` — `decision` (`"accept"` / `"reject"`), `source`
+- `user_prompt` — `event.timestamp`, `event.sequence`, `prompt_length`,
+  `prompt` (content)
+- `tool_result` — `event.timestamp`, `event.sequence`, `tool_name`,
+  `success` (`"true"` | `"false"`), `duration_ms`, `error` (if failed),
+  `decision_type` (`"accept"` / `"reject"`), `decision_source` (`"config"` |
+  `"hook"` | `"user_permanent"` | `"user_temporary"` | `"user_abort"` |
+  `"user_reject"`), `tool_result_size_bytes`, `tool_input` (JSON-serialized
+  args, strings >512 chars truncated, total ≤ ~4 KB), `tool_parameters`
+  (incl. `mcp_server_name` + `mcp_tool_name` for MCP tools),
+  `mcp_server_scope` (MCP tools only)
+- `api_request` — `event.timestamp`, `event.sequence`, `model`,
+  `speed` (`"fast"` or `"normal"`), `cost_usd`, `input_tokens`,
+  `output_tokens`, `cache_read_tokens`, `cache_creation_tokens`, `duration_ms`
+- `api_error` — `event.timestamp`, `event.sequence`, `model`, `error`,
+  `speed`, `status_code` (HTTP code or `"undefined"` for non-HTTP),
+  `attempt` (retry count), `duration_ms`
+- `tool_decision` — `event.timestamp`, `event.sequence`, `tool_name`,
+  `decision` (`"accept"` / `"reject"`), `source`
 
 ---
 
