@@ -107,13 +107,21 @@ There are two classes of tools in `tools`:
 
 Known server tool types (specify in `tools` array):
 
-| Tool type string | Description |
-|---|---|
-| `web_search_20250305` / `web_search_20260209` | Web search. Supports `allowed_domains`, `blocked_domains`, `user_location`, `max_uses`. |
-| `web_fetch_20250910` | Fetch a URL. Supports `allowed_domains`, `blocked_domains`, `max_content_tokens`, `citations`. |
-| `code_execution_20250825` / `code_execution_20260120` | Execute code in a sandbox. |
+| Tool type string | Name | Description |
+|---|---|---|
+| `web_search_20250305` / `web_search_20260209` | `"web_search"` | Web search. Supports `allowed_domains`, `blocked_domains`, `user_location`, `max_uses`. |
+| `web_fetch_20250910` / `web_fetch_20260209` | `"web_fetch"` | Fetch a URL. Supports `allowed_domains`, `blocked_domains`, `max_content_tokens`, `citations`. |
+| `web_fetch_20260309` | `"web_fetch"` | Fetch a URL — adds `use_cache: boolean` param; set to `false` to bypass cached content and force fresh fetch. |
+| `code_execution_20250825` / `code_execution_20260120` | `"code_execution"` | Execute code in a sandbox. |
+| `memory_20250818` | `"memory"` | Memory server tool for persistent key/value storage across sessions. |
+| `bash_20250124` | `"bash"` | Bash shell execution (computer use). |
+| `text_editor_20250124` / `text_editor_20250429` / `text_editor_20250728` | `"str_replace_editor"` / `"str_replace_based_edit_tool"` | File text editing (computer use). `20250728` adds an additional field. |
+| `tool_search_tool_bm25_20251119` | `"tool_search_tool_bm25"` | BM25-based tool search (for `tool_reference` content blocks). |
+| `tool_search_tool_regex_20251119` | `"tool_search_tool_regex"` | Regex-based tool search (for `tool_reference` content blocks). |
 
 Server tools also support `defer_loading: true` to exclude from the initial system prompt (loaded on demand) and `strict: true` for schema validation.
+
+Source: [`messages/create.md`](https://platform.claude.com/docs/en/api/messages/create.md) (updated 2026-05-19).
 
 #### Tool definition — additional fields (client tools)
 
