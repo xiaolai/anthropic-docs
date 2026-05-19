@@ -10,6 +10,18 @@ The newest entry is at the top.
 
 ---
 
+## 2026-05-19 *(pending review — see draft PR auto/2026-05-19-pending-review)*
+- Sync to CC v2.1.144 — docs index hash changed; validateExamples gate failed, changes held in draft PR pending fix
+
+## 2026-05-19 — v2.1.144 version bump + docs index refresh
+
+- **npm bump**: `@anthropic-ai/claude-code` updated from v2.1.143 to v2.1.144.
+  SKILL.md router table and README version line updated.
+- **Docs index**: upstream `code.claude.com/llms.txt` hash changed
+  (same 103-page count; no pages added or removed). State refreshed.
+
+---
+
 ## 2026-05-17 — codex audit-fix pass 4 (8 findings → CLEAN in 2 rounds)
 
 Sanity-check audit re-run after the push-to-100 pass. Codex surfaced

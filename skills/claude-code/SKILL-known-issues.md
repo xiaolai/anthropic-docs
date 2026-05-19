@@ -37,20 +37,7 @@ Each entry uses this structure:
 
 ## Active issues
 
-<!-- seed: replace on first real research pass -->
-
-*No active known issues recorded yet. The research agent populates this section daily from `anthropics/claude-code` issues labeled `bug`. Entries are auto-pruned when the agent observes an issue close plus a confirmed fix-version release.*
-
-### Example entry (template — the agent overwrites this with real issues)
-
-**KI 0 — Example bug title**
-
-- **Affects:** v0.0.0 – v0.0.0
-- **Symptom:** Brief description of what the user observes.
-- **Reproduction:** Minimal steps to trigger.
-- **Workaround:** What to do until the bug is fixed.
-- **Status:** open
-- **Source:** [#0](https://github.com/anthropics/claude-code/issues/0)
+*No active known issues recorded. The `anthropics/claude-code` repository uses GitHub primarily for pull requests and does not use issue labels (including `bug` labels). No bug-labeled issues were found as of the 2026-05-19 research run. This section will be populated if/when labeled bug issues appear.*
 
 ## Recently resolved
 

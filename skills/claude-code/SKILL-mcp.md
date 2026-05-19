@@ -18,8 +18,16 @@ source: https://code.claude.com/docs/en/mcp.md
 
 ## File scope
 
-> *Populated by the research agent.* Project `.mcp.json` vs user-level
-> MCP config.
+| Scope | Location | Command |
+|---|---|---|
+| Project (shared) | `.mcp.json` in repo root | `claude mcp add --scope project ...` |
+| Local (per-user, per-project) | `~/.claude.json` project section | `claude mcp add --scope local ...` (default) |
+| User (global) | `~/.claude.json` global section | `claude mcp add --scope user ...` |
+| Managed | `managed-mcp.json` in system dir | Admin-deployed, cannot be overridden |
+
+`local` was called `project` and `user` was called `global` in older CLI versions.
+
+Source: `code.claude.com/docs/en/mcp.md`.
 
 ## Top-level shape
 
@@ -48,34 +56,99 @@ Source: `code.claude.com/docs/en/mcp.md`.
 
 ## Transport: `stdio`
 
-> *Populated by the research agent.* Local subprocess transport.
+Local subprocess. Use when the server runs on the same machine.
+
+```json
+{
+  "mcpServers": {
+    "my-server": {
+      "command": "npx",
+      "args": ["-y", "@scope/server@1.2.3", "--config", "path/to/config.json"],
+      "env": {
+        "MY_API_KEY": "your-key"
+      }
+    }
+  }
+}
+```
+
+CLI: `claude mcp add --transport stdio --env KEY=value myserver -- npx -y @scope/server@1.2.3`
+
+**Pin versions.** The bare `npx -y @scope/server` (no version) resolves latest on every startup — a supply-chain risk.
+
+`CLAUDE_PROJECT_DIR` is set in the spawned server's environment to the project root.
 
 ## Transport: `http`
 
-> *Populated by the research agent.* Remote HTTP transport, headers,
-> auth.
+Remote HTTP (recommended for cloud services). Also accepts `streamable-http` as alias for the `type` field.
+
+```json
+{
+  "mcpServers": {
+    "notion": {
+      "type": "http",
+      "url": "https://mcp.notion.com/mcp",
+      "headers": {
+        "Authorization": "Bearer your-token"
+      }
+    }
+  }
+}
+```
+
+CLI: `claude mcp add --transport http --header "Authorization: Bearer token" notion https://mcp.notion.com/mcp`
+
+HTTP servers support automatic reconnection with exponential backoff (up to 5 attempts). Use `/mcp` inside a session to authenticate servers requiring OAuth 2.0.
 
 ## Transport: `sse`
 
-> *Populated by the research agent.* Server-Sent Events transport.
+Server-Sent Events. **Deprecated** — use HTTP where available.
+
+```json
+{
+  "mcpServers": {
+    "asana": {
+      "type": "sse",
+      "url": "https://mcp.asana.com/sse"
+    }
+  }
+}
+```
+
+CLI: `claude mcp add --transport sse asana https://mcp.asana.com/sse`
 
 ## Tool naming convention
 
-> *Populated by the research agent.* `mcp__<server>__<tool>` —
-> double-underscore separator.
+MCP tools appear as `mcp__<server-name>__<tool-name>` in permission rules and hook matchers. Double-underscore separates each component.
 
-## Capabilities declaration
+Examples:
+- `mcp__memory__create_entities` — Memory server's `create_entities` tool
+- `mcp__filesystem__read_file` — Filesystem server's `read_file` tool
+- `mcp__github__search_repositories` — GitHub server's `search_repositories` tool
 
-> *Populated by the research agent.*
+To match all tools from a server in a hook matcher or permission rule, use `mcp__<server>__.*` (the `.*` is required since a bare server name like `mcp__memory` is treated as an exact string and matches nothing).
 
-## Worked examples
+The server name `workspace` is reserved; Claude Code skips a server with that name and shows a warning.
 
-> *Populated by the research agent.* See also:
-> [`templates/.mcp.json`](templates/.mcp.json).
+## Managing servers
+
+```bash
+claude mcp list             # List all configured servers
+claude mcp get github       # Details for a specific server
+claude mcp remove github    # Remove a server
+```
+
+In-session: `/mcp` shows server status, tool count, OAuth flows.
+
+**Dynamic tool updates:** Claude Code supports MCP `list_changed` notifications — servers can update their tools without reconnecting.
+
+**Output size:** Claude Code warns when MCP tool output exceeds 10,000 tokens. Override with `MAX_MCP_OUTPUT_TOKENS` env var.
+
+**Timeout:** Set `MCP_TIMEOUT` env var for server startup timeout (e.g. `MCP_TIMEOUT=10000` for 10 seconds).
 
 ## Common mistakes (auto-corrected by `rules/mcp.md`)
 
-> *Populated by the research agent.*
+> *Populated by the research agent from issue tracker.*
 
 ---
 
