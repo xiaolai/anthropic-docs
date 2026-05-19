@@ -9,7 +9,7 @@ description: |
   enterprise admin setup (OpenTelemetry audit, usage analytics,
   spend tracking), and the one-time Microsoft Graph consent required
   for Outlook.
-source: https://claude.com/docs/office-agents/overview.md
+source: https://claude.com/docs/office-agents/excel.md
 ---
 
 # Claude for M365 (Office Agents)
@@ -87,6 +87,27 @@ supported by [Cowork on 3P](SKILL-cowork.md). This decouples M365
 deployment from Anthropic's API for organizations with the same
 residency / regulatory drivers.
 
+**Deployment wizard.** Use the `claude-for-msft-365-install` plugin
+from the financial-services marketplace to provision cloud resources,
+generate the add-in manifest, and obtain Microsoft Graph admin consent
+in a single guided flow:
+
+```bash
+claude plugin marketplace add anthropics/financial-services
+claude plugin install claude-for-msft-365-install@financial-services
+```
+
+Then from inside Claude: `/claude-for-msft-365-install:setup`
+
+**Foundry direct note.** Deployment names must use default model IDs
+(e.g. `claude-opus-4-6`), not custom names. The resource API key
+comes from Azure Portal → Foundry resource → Keys and Endpoint → KEY 1.
+
+**Network allowlist.** `pivot.claude.ai` is required in all configurations.
+For 3P also allow `login.microsoftonline.com` and your provider's inference
+endpoint. Full per-path table in [`third-party-platforms.md` §
+Network allowlist](https://claude.com/docs/office-agents/third-party-platforms.md).
+
 See [`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md).
 
 ## Enterprise readiness
@@ -97,20 +118,23 @@ analytics, and spend-tracking conventions live in
 
 Highlights:
 
-- Security architecture diagrams per app.
-- OpenTelemetry export for per-action audit trail (prompt, tool
-  calls, token counts).
-- Usage analytics surfaced both per-user and per-workspace.
-- Spend tracking by app, by user, by workspace.
+- Security architecture diagrams per app (1P and 3P paths), published
+  on the Anthropic Trust Center.
+- OpenTelemetry export: a **custom collector endpoint** receives
+  **unfiltered** spans — full prompt/response content, session IDs,
+  tool inputs/outputs (only Anthropic's own collector is filtered).
+- Usage analytics (1P / Claude accounts only): per-user, per-surface
+  aggregates via the Enterprise Analytics API. For 3P, use your cloud
+  provider's billing console.
+- Spend tracking: CSV export from admin console for chargeback.
 
 ## Page index
 
-All 11 source pages mirrored under
+All 10 source pages mirrored under
 [`https://claude.com/docs/office-agents/`](https://claude.com/docs/office-agents/):
 
 | Page | Topic |
 |---|---|
-| `overview.md` | What's available, deployment overview |
 | `excel.md` | Claude for Excel |
 | `powerpoint.md` | Claude for PowerPoint |
 | `word.md` | Claude for Word |
@@ -124,4 +148,4 @@ All 11 source pages mirrored under
 
 ---
 
-*Source pages: 11 under `claude.com/docs/office-agents/`.*
+*Source pages: 10 under `claude.com/docs/office-agents/`.*

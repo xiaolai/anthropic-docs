@@ -134,6 +134,14 @@ That page is the source of truth for:
 - Plugin / skill / hook distribution settings
 - Per-user spend caps
 - Auto-update policy
+- `disableDeepLinkRegistration` (boolean) — prevent `claude://` URL
+  handler registration so external apps cannot deep-link into Cowork
+- `isDesktopExtensionSignatureRequired` (boolean, default `false`) —
+  reject unsigned `.mcpb` desktop extensions
+- `managedMcpServers[].headersHelper` (string) — absolute path to an
+  executable that prints a JSON `{header: value}` object on stdout;
+  use for short-lived auth tokens instead of static `headers`.
+  Cache TTL controlled by `headersHelperTtlSec` (default 300 s).
 
 ## Data residency
 
@@ -192,9 +200,10 @@ Full comparison: [`3p/feature-matrix.md`](https://claude.com/docs/cowork/3p/feat
 Salient gaps in 3P (versus full Claude Enterprise):
 
 - No Chat tab (Cowork + Code tabs only).
-- No Anthropic 1P connectors (except M365).
+- No Anthropic 1P connectors (except M365; Google Workspace planned).
 - No Project / plugin sharing across orgs.
-- No public plugin marketplace.
+- No public Anthropic plugin marketplace. (The org-plugins directory
+  functions as an organization-internal marketplace.)
 - No mobile dispatch.
 - No voice mode.
 - No Claude in Chrome.
@@ -202,6 +211,11 @@ Salient gaps in 3P (versus full Claude Enterprise):
 - Per-user spend caps are blanket-only (not differentiated by role).
 - Compliance / Analytics APIs are not exposed; equivalent capability
   via OpenTelemetry export.
+- Computer use: not available in 3P **or** Claude Enterprise.
+- Memory available in 3P, stored on device (not Anthropic); users
+  manage under **Settings → Cowork → Memory**.
+
+Source: [`3p/feature-matrix.md`](https://claude.com/docs/cowork/3p/feature-matrix.md).
 
 ## Cowork guide (standard mode)
 
@@ -214,8 +228,39 @@ User-facing how-to pages for standard Cowork (non-3P):
 ## Monitoring
 
 [`monitoring.md`](https://claude.com/docs/cowork/monitoring.md)
-covers OpenTelemetry export, usage analytics, spend tracking, and the
-session-activity event schema.
+covers OpenTelemetry export and the session-activity event schema.
+Requires Claude Desktop **1.1.4173+**. Configure the OTLP endpoint
+from **Admin settings → Cowork** (Team/Enterprise plans).
+
+**OTel event names** (logs/events protocol):
+
+| Event | Fired when |
+|---|---|
+| `user_prompt` | User submits a prompt |
+| `tool_result` | A tool completes execution |
+| `api_request` | Each API call to Claude |
+| `api_error` | An API call fails |
+| `tool_decision` | A tool permission decision is made |
+
+**Correlation:** every event carries `prompt.id` (UUID v4) linking all
+events produced while processing a single user prompt.
+
+**Standard attributes** on every event: `session.id`,
+`organization.id`, `user.account_uuid`, `user.account_id` (tagged
+format, e.g. `user_01BWBeN28…`), `user.email`,
+`workspace.host_paths`.
+
+**Key per-event attributes:**
+- `tool_result`: `tool_input` (JSON args, ~4 KB total; 512 chars per
+  string, then truncated), `decision_type`, `decision_source`,
+  `mcp_server_scope`, `tool_parameters`.
+- `api_request`: `cache_read_tokens`, `cache_creation_tokens`,
+  `cost_usd`, `speed` (`"fast"` or `"normal"`).
+- `api_error`: `status_code`, `attempt` (retry counter), `speed`.
+- `tool_decision`: `decision` (`"accept"` / `"reject"`), `source`.
+
+**Service resource attributes**: `service.name = cowork`,
+`service.version`, `host.arch`, `os.type`, `os.version`.
 
 ---
 
