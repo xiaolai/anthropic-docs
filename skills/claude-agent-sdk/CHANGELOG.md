@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-05-19 (run 23:52Z — review)
+
+- *(pending review — see draft PR on `auto/2026-05-19-pending-review`)* Research-only run (TS v0.3.145, Python v0.2.82 unchanged); check-docs-drift failed; no surface-file edits (state.json internal corrections only: indexSha256 and lastScannedIssueNumber); 43 research turns, $0.75
+
 ## 2026-05-19 (run 23:04Z — success)
 - SDK TS v0.3.144 → v0.3.145 (parity with Claude Code v2.1.145); 27/27 verify checks pass; 1 mending run; 29 pages audited; TodoWrite→Task tools migration, subagent tool rename Task→Agent, `updatedToolOutput` hook field, `auto` permissionMode, `xhigh` effort level, OAuth2 Bearer MCP auth documented across SKILL files
 
