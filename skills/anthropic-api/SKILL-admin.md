@@ -36,8 +36,15 @@ source: https://platform.claude.com/docs/en/api/admin/
 - **Archived workspaces:** archive (not delete) is reversible. Once
   archived, no new requests bill against the workspace.
 - **Member roles:** workspace members have a `workspace_role` field
-  distinct from org-level role; set on create, mutable via the members
-  endpoint.
+  distinct from org-level role; set on create, mutable via the Update
+  Workspace Member endpoint. Valid values: `workspace_user`,
+  `workspace_developer`, `workspace_restricted_developer`,
+  `workspace_admin`, `workspace_billing`.
+- **Workspace data residency:** the `Workspace` object includes a
+  `data_residency` field with `allowed_inference_geos` (array of strings
+  or `"unrestricted"`), `default_inference_geo` (string), and
+  `workspace_geo` (string, immutable after creation). Update via
+  `POST /v1/organizations/workspaces/{id}`.
 - **Idempotency:** mutating endpoints (create / update / delete) do
   NOT currently support an `Idempotency-Key` header. Build retry
   logic with caller-side de-duplication.
@@ -59,6 +66,8 @@ Workspaces partition an organization for cost / quota / member scope.
 |---|---|
 | `POST /v1/organizations/workspaces` | [`admin/workspaces/create.md`](https://platform.claude.com/docs/en/api/admin/workspaces/create.md) |
 | `GET /v1/organizations/workspaces` | [`admin/workspaces/list.md`](https://platform.claude.com/docs/en/api/admin/workspaces/list.md) |
+| `GET /v1/organizations/workspaces/{id}` | [`admin/workspaces/retrieve.md`](https://platform.claude.com/docs/en/api/admin/workspaces/retrieve.md) |
+| `POST /v1/organizations/workspaces/{id}` | [`admin/workspaces/update.md`](https://platform.claude.com/docs/en/api/admin/workspaces/update.md) — update name or `data_residency` |
 | `POST /v1/organizations/workspaces/{id}/archive` | [`admin/workspaces/archive.md`](https://platform.claude.com/docs/en/api/admin/workspaces/archive.md) |
 
 Workspace members:
@@ -66,7 +75,9 @@ Workspace members:
 | Endpoint | Page |
 |---|---|
 | `POST /v1/organizations/workspaces/{id}/members` | [`admin/workspaces/members/create.md`](https://platform.claude.com/docs/en/api/admin/workspaces/members/create.md) |
-| `GET /v1/organizations/workspaces/{id}/members` | [`admin/workspaces/members.md`](https://platform.claude.com/docs/en/api/admin/workspaces/members.md) |
+| `GET /v1/organizations/workspaces/{id}/members` | [`admin/workspaces/members/list.md`](https://platform.claude.com/docs/en/api/admin/workspaces/members/list.md) |
+| `GET /v1/organizations/workspaces/{id}/members/{user_id}` | [`admin/workspaces/members/retrieve.md`](https://platform.claude.com/docs/en/api/admin/workspaces/members/retrieve.md) |
+| `POST /v1/organizations/workspaces/{id}/members/{user_id}` | [`admin/workspaces/members/update.md`](https://platform.claude.com/docs/en/api/admin/workspaces/members/update.md) — update `workspace_role` |
 | `DELETE /v1/organizations/workspaces/{id}/members/{user_id}` | [`admin/workspaces/members/delete.md`](https://platform.claude.com/docs/en/api/admin/workspaces/members/delete.md) |
 
 ## Users
@@ -110,10 +121,23 @@ Workspace members:
 
 ## Rate limits
 
+### Organization-level
+
 | Endpoint | Page |
 |---|---|
 | `GET /v1/organizations/rate_limits` | [`admin/rate_limits/list.md`](https://platform.claude.com/docs/en/api/admin/rate_limits/list.md) |
 
+### Workspace-level
+
+| Endpoint | Page |
+|---|---|
+| `GET /v1/organizations/workspaces/{id}/rate_limits` | [`admin/workspaces/rate_limits/list.md`](https://platform.claude.com/docs/en/api/admin/workspaces/rate_limits/list.md) |
+
+Returns only groups with a workspace-level override (not the org-default
+groups). Filter by `group_type`: `model_group`, `batch`, `token_count`,
+`files`, `skills`, `web_search`. Uses opaque-cursor pagination (`page`
+query param + `next_page` in response).
+
 ---
 
-*Source pages: 23 under `platform.claude.com/docs/en/api/admin/`.*
+*Source pages: 37 under `platform.claude.com/docs/en/api/admin/`.*
