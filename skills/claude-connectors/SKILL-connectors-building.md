@@ -37,7 +37,43 @@ Salient axes:
 The foundation: [`building/index.md`](https://claude.com/docs/connectors/building/index.md).
 
 Connector authoring is MCP server authoring — see [`mcp-spec`](../mcp-spec/SKILL.md)
-for the protocol details. The Claude-specific concerns are:
+for the protocol details.
+
+> **Tip:** Install the official [`mcp-server-dev` plugin](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/mcp-server-dev) in Claude Code — it walks you through building, testing, and packaging an MCP server interactively.
+
+### Transport
+
+Claude supports **Streamable HTTP** (preferred) and the legacy
+**HTTP+SSE** transport. HTTP+SSE is being deprecated; new servers
+should use Streamable HTTP.
+
+### Authentication
+
+| Feature | Detail |
+|---|---|
+| Supported auth specs | [2025-03-26](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization), [2025-06-18](https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization), [2025-11-25](https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization) |
+| Dynamic Client Registration | Enabled |
+| OAuth callback URL (hosted surfaces) | `https://claude.ai/api/mcp/auth_callback` |
+| OAuth callback URL (Claude Code) | Loopback redirect — see [callback URLs](https://claude.com/docs/connectors/building/authentication#callback-urls) |
+| Token refresh / expiry | Supported |
+| Custom credentials (non-DCR) | Supported |
+
+### Protocol features
+
+**Supported:** [tools](https://modelcontextprotocol.io/specification/latest/server/tools), [prompts](https://modelcontextprotocol.io/specification/latest/server/prompts), [resources](https://modelcontextprotocol.io/specification/latest/server/resources), text + image tool results, text + binary resources.
+
+**Not yet supported:** resource subscriptions, sampling, advanced/draft capabilities.
+
+### Technical limits
+
+| Constraint | Limit |
+|---|---|
+| Claude.ai / Desktop max tool result size | ~150,000 characters |
+| Claude Code max tool result size | 25,000 tokens (configurable via `MAX_MCP_OUTPUT_TOKENS`) |
+| Claude Code timeout | Configurable via `MCP_TOOL_TIMEOUT` |
+| Claude.ai / Desktop timeout | 300 seconds (5 minutes) |
+
+### Directory-submission requirements
 
 - **Tool annotations** are *mandatory* for directory submission (every
   tool must declare its destructive / idempotent / read-only nature).
@@ -132,7 +168,8 @@ read the full spec. For the full spec, see [`mcp-spec`](../mcp-spec/SKILL.md).
 
 10 source pages under [`https://claude.com/docs/connectors/building/`](https://claude.com/docs/connectors/building/):
 
-- `index.md`, `mcp.md` — MCP primer for connector authors
+- `index.md` — transport, auth specs, protocol features, technical limits, testing quickstart
+- `mcp.md` — MCP protocol primer for connector authors
 - `what-to-build.md`, `directory-vs-custom.md` — decision guides
 - `authentication.md`, `lazy-authentication.md` — OAuth + token handling
 - `testing.md`, `review-criteria.md`, `submission.md` — pre-publish workflow

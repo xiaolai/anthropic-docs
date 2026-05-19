@@ -2,9 +2,11 @@
 name: claude-plugins-user-facing
 description: |
   Deep reference for user-facing Plugins in the Claude app — how
-  users discover, install, manage, and configure plugins, and how
-  plugin marketplaces work. Plugins bundle MCP connectors, Skills,
-  slash commands, and sub-agents into shareable capability packages.
+  users discover, install, manage, and configure plugins. Plugins
+  bundle MCP connectors, Skills, slash commands, and sub-agents into
+  shareable capability packages. Covers the Anthropic open-sourced
+  plugin library, the plugin directory, Cowork availability, and
+  how each plugin component contributes.
 source: https://claude.com/docs/plugins/overview.md
 ---
 
@@ -17,12 +19,15 @@ source: https://claude.com/docs/plugins/overview.md
 
 ## What plugins are (user view)
 
-A plugin is a bundled package that combines:
+A plugin is a reusable capability package that extends Claude with
+custom functionality. Plugins bundle together:
 
-- **MCP connectors** — action-taking integrations with external services.
-- **Skills** — reusable task recipes.
-- **Slash commands** — user-invocable shortcut commands.
-- **Sub-agents** — specialized agents the plugin makes available.
+| Component | What it adds | Example |
+|---|---|---|
+| **MCP connectors** | Access to external tools and data | A connector to a CRM that lets Claude read and update deal records |
+| **Skills** | Specialized instructions Claude follows when relevant tasks arise | A "brand voice" skill that activates when drafting external communications |
+| **Slash commands** | Explicit, user-triggered workflows | `/sales:prospect-research` to kick off a structured research workflow |
+| **Sub-agents** | Delegated workstreams that run in parallel | A sub-agent that handles competitive analysis while another drafts the proposal |
 
 Once installed, all four are wired together — a single install
 gives the user the connector + the skills that compose it + the
@@ -30,35 +35,67 @@ commands that drive it.
 
 ## Where plugins are available
 
-- **Claude Code (CLI)** — `/plugin` commands, plugin marketplaces.
-- **Claude Cowork** — full plugin support (see
-  [`claude-cowork → SKILL-cowork.md`](../claude-cowork/SKILL-cowork.md)).
+| Platform | Plugin support |
+|---|---|
+| **Claude Code** | Full plugin support — create, install, and use plugins |
+| **Claude Cowork** | Full plugin support — plugins extend agentic, multi-step workflows |
 
-Plugins are NOT available on Claude.ai web or Mobile (as of this
-snapshot — check upstream for current state).
+Plugins are **not** available on Claude.ai web or Claude Mobile
+(as of this snapshot — check upstream for current state).
 
-## Plugin marketplaces
+Plugin support in Cowork is available as a **research preview**
+for all paid Claude users. Plugins are currently saved locally to
+your machine. Org-wide sharing and management are coming.
 
-A marketplace is a directory of installable plugins, identified by
-a URL pointing at a `marketplace.json` file. Users can:
+## Plugin directory
 
-- Browse plugins from any marketplace they trust.
-- Install plugins from a marketplace with one command.
-- Update / remove installed plugins.
+Anthropic has open-sourced **11 plugins** built and used internally,
+available at [claude.com/plugins-for/cowork](https://claude.com/plugins-for/cowork):
 
-Anthropic operates a public plugin marketplace for the broader
-community. Organizations can run their own private marketplaces for
-internal-only plugins (common in Cowork on 3P deployments — see
-[`claude-cowork`](../claude-cowork/SKILL-cowork.md) for the "org-plugins
-directory" pattern).
+| Plugin | What it does |
+|---|---|
+| **Productivity** | Manage tasks, calendars, and daily workflows |
+| **Enterprise search** | Find information across your company's tools and docs |
+| **Sales** | Research prospects, prep deals, and follow your sales process |
+| **Finance** | Analyze financials, build models, and track key metrics |
+| **Data** | Query, visualize, and interpret datasets |
+| **Legal** | Review documents, flag risks, and track compliance |
+| **Marketing** | Draft content, plan campaigns, and manage launches |
+| **Customer support** | Triage issues, draft responses, and surface solutions |
+| **Product management** | Write specs, prioritize roadmaps, and track progress |
+| **Biology research** | Search literature, analyze results, and plan experiments |
+| **Plugin Create** | Create and customize new plugins from scratch |
 
-## Installation scope
+## Origins in Claude Code
 
-| Scope | Where | When to use |
-|---|---|---|
-| **User-global** | `~/.claude/plugins/` | Plugins you use across all projects |
-| **Project-local** | `<project>/.claude/plugins/` | Plugins specific to one codebase, committed to repo |
-| **Org-managed** | MDM-distributed | Cowork on 3P deployments |
+Plugins originated in [Claude Code](https://code.claude.com/docs/en/plugins),
+where developers create and distribute them as versioned, shareable
+directories. A Claude Code plugin lives in a directory with a manifest
+(`plugin.json`) that defines its identity, version, and available
+components.
+
+For technical details on plugin structure, manifests, and
+configuration, see the
+[Claude Code plugins reference](https://code.claude.com/docs/en/plugins-reference)
+or [`claude-code → SKILL-plugins.md`](../claude-code/SKILL-plugins.md).
+
+## Plugins in Cowork
+
+Plugins are fully supported in
+[Cowork](https://support.claude.com/en/articles/13345190-getting-started-with-cowork),
+Anthropic's agentic workspace for complex multi-step knowledge work.
+In Cowork, Claude runs inside an isolated VM, executes tasks in
+parallel workstreams, and writes outputs directly to your file
+system — plugins extend all of that capability.
+
+A sales plugin, for example, could connect Claude to your CRM and
+knowledge base, teach it your sales process, and give you slash
+commands for everything from prospect research to call follow-ups.
+
+## Submitting your plugin
+
+See [`plugins/submit.md`](https://claude.com/docs/plugins/submit) for
+the plugin submission process and requirements.
 
 ## Related surfaces
 
@@ -72,9 +109,13 @@ directory" pattern).
 
 ## Page index
 
-All source pages under
-[`https://claude.com/docs/plugins/`](https://claude.com/docs/plugins/)
-— see the directory listing for the current set.
+Source pages under
+[`https://claude.com/docs/plugins/`](https://claude.com/docs/plugins/):
+
+| Page | Topic |
+|---|---|
+| `overview.md` | This surface's source |
+| `submit.md` | Plugin submission process |
 
 ---
 

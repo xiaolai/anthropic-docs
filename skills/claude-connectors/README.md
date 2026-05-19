@@ -6,6 +6,8 @@ packaging), **MCP Apps for Claude Desktop** (with visual + interaction
 design guidelines), the directory of pre-built integrations, and the
 user-facing **Skills** and **Plugins** surfaces.
 
+**Last updated**: 2026-05-19
+
 Part of the [anthropic-docs](../../README.md) plugin.
 
 ## Surfaces
@@ -28,4 +30,10 @@ Part of the [anthropic-docs](../../README.md) plugin.
 ```bash
 SKILL_NAME=claude-connectors npm run update
 ```
+
+## Recent activity
+
+| Date | Update | Research | Mending | Report | Total | Notes |
+|------|--------|----------|---------|--------|-------|-------|
+| 2026-05-19 | review | research + report (no upstream change) |
 
