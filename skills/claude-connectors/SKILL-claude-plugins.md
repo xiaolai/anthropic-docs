@@ -44,10 +44,23 @@ snapshot — check upstream for current state).
 Anthropic's public plugin directory is browsable at
 [**claude.com/plugins-for/cowork**](https://claude.com/plugins-for/cowork)
 and via the plugin settings in Claude Code / Cowork. Anthropic has also
-open-sourced **11 internally-developed plugins** spanning
-productivity, search, sales, finance, data analysis, legal,
-marketing, customer support, product management, biology research,
-and a **Plugin Create** plugin for authoring new plugins.
+open-sourced **11 internally-developed plugins**:
+
+| Plugin | What it does |
+|---|---|
+| **Productivity** | Manage tasks, calendars, and daily workflows |
+| **Enterprise search** | Find information across your company's tools and docs |
+| **Sales** | Research prospects, prep deals, and follow your sales process |
+| **Finance** | Analyze financials, build models, and track key metrics |
+| **Data** | Query, visualize, and interpret datasets |
+| **Legal** | Review documents, flag risks, and track compliance |
+| **Marketing** | Draft content, plan campaigns, and manage launches |
+| **Customer support** | Triage issues, draft responses, and surface solutions |
+| **Product management** | Write specs, prioritize roadmaps, and track progress |
+| **Biology research** | Search literature, analyze results, and plan experiments |
+| **Plugin Create** | Create and customize new plugins from scratch |
+
+Source: [`plugins/overview.md`](https://claude.com/docs/plugins/overview.md).
 
 Directory tiers:
 
@@ -113,12 +126,32 @@ To submit a plugin to the Claude plugin directory:
 Plugins must comply with Anthropic's Software Directory Terms and
 Policy. Source: [`plugins/submit.md`](https://claude.com/docs/plugins/submit.md).
 
+## MCP configuration in plugins (`.mcp.json`)
+
+Plugins configure their bundled MCP connectors via a `.mcp.json` file
+inside the plugin directory. A plugin can include any MCP type — remote
+MCPs, local MCPs, and MCPBs. Anthropic recommends using connectors already
+in the [Connectors Directory](https://claude.com/docs/connectors/directory)
+or from well-known developers; this increases the likelihood of Verified
+status and reduces warnings shown to users.
+
+Source: [`plugins/submit.md`](https://claude.com/docs/plugins/submit.md).
+
 ## SETUP.md — guided MCP configuration
 
 Plugins can include a `SETUP.md` skill to guide Claude through
 configuring and connecting any MCP servers bundled in the plugin. This
 lets you define step-by-step setup instructions that Claude follows when
 a user installs or activates your plugin.
+
+Source: [`plugins/submit.md`](https://claude.com/docs/plugins/submit.md).
+
+## Post-publication auto-updates
+
+After a plugin is published to the directory, updates pushed to the
+plugin's **public GitHub repo are picked up automatically** — CI mirrors
+changes to the public marketplace and runs automated screening on each
+update. Re-submitting the form is not required for updates.
 
 Source: [`plugins/submit.md`](https://claude.com/docs/plugins/submit.md).
 

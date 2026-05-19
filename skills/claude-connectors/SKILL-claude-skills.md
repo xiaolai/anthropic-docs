@@ -34,6 +34,18 @@ Skills are the lightweight, scoped counterpart to plugins:
 - A **plugin** bundles multiple skills, connectors, slash commands,
   and sub-agents (e.g., "the entire DevOps team's standard toolkit").
 
+### Skills vs. other features
+
+| Feature | Purpose |
+|---|---|
+| **Skills** | Task-specific procedures that load dynamically |
+| **[Plugins](SKILL-claude-plugins.md)** | Shareable packages that bundle skills, connectors, slash commands, and sub-agents |
+| **Projects** | Static background knowledge always loaded in specific chats |
+| **MCP** | Connects Claude to external services |
+| **Custom Instructions** | Broad preferences applied to all conversations |
+
+Source: [`skills/overview.md`](https://claude.com/docs/skills/overview.md).
+
 ## Plan availability
 
 Skills are available to **Pro, Max, Team, and Enterprise** plan
@@ -138,6 +150,24 @@ examples, templates, and edge-case handling. Keep the main file under
 
 Skills can declare executable dependencies for Python, JavaScript, or
 Bash. Example: `python>=3.8, pandas>=1.5.0`.
+
+### Packaging for upload
+
+To upload to Claude, create a ZIP where the skill directory is nested
+inside — **not** files directly at the ZIP root:
+
+```
+# CORRECT
+my-skill.zip
+└── my-skill/
+    ├── SKILL.md
+    └── scripts/
+
+# INCORRECT (fails at import)
+my-skill.zip
+├── SKILL.md   ← files at ZIP root
+└── scripts/
+```
 
 Before uploading, validate with:
 ```bash
