@@ -1,16 +1,15 @@
 {
   "indexUrl": "https://platform.claude.com/llms.txt",
-  "indexSha256": "c037e8136d42bb3e6f9ced4b388d09a7320c617658a6617a15f2d76fb44a4f85",
-  "indexBytes": 166613,
+  "indexSha256": "4537a29223635c7ee8e2baa89dcfc14b089026065d16a3b43c590d788c4d5994",
+  "indexBytes": 166612,
   "pageCount": 225,
-  "refreshedAt": "2026-05-19T18:48:07Z",
+  "refreshedAt": "2026-05-19T20:45:31Z",
   "pages": [
     {
-      "path": "en/api/admin",
-      "url": "https://platform.claude.com/docs/en/api/admin",
-      "sha256": null,
-      "bytes": null,
-      "addedAt": "2026-05-19T00:00:00Z"
+      "path": "en/api/admin.md",
+      "url": "https://platform.claude.com/docs/en/api/admin.md",
+      "sha256": "d108b357811794c6a0b3c1dbaae9732ffba3f84f29aec0d6f958909af2b54f8a",
+      "bytes": 90896
     },
     {
       "path": "en/api/admin/api_keys.md",
@@ -301,11 +300,10 @@
       "bytes": 2644
     },
     {
-      "path": "en/api/beta",
-      "url": "https://platform.claude.com/docs/en/api/beta",
-      "sha256": null,
-      "bytes": null,
-      "addedAt": "2026-05-19T00:00:00Z"
+      "path": "en/api/beta.md",
+      "url": "https://platform.claude.com/docs/en/api/beta.md",
+      "sha256": "60ddc79fb3a92ee5f28e35976420934c5fe05c603cd01d57e5b67fe63e9dc3c0",
+      "bytes": 2885977
     },
     {
       "path": "en/api/beta/agents.md",
@@ -1010,11 +1008,10 @@
       "bytes": 30566
     },
     {
-      "path": "en/api/completions",
-      "url": "https://platform.claude.com/docs/en/api/completions",
-      "sha256": null,
-      "bytes": null,
-      "addedAt": "2026-05-19T00:00:00Z"
+      "path": "en/api/completions.md",
+      "url": "https://platform.claude.com/docs/en/api/completions.md",
+      "sha256": "fc18c4d169189685299e3d130fa9afe50623cf2cb146d0e8e12f07b118607877",
+      "bytes": 12189
     },
     {
       "path": "en/api/completions/create.md",
@@ -1023,55 +1020,52 @@
       "bytes": 9402
     },
     {
-      "path": "en/api/compliance",
-      "url": "https://platform.claude.com/docs/en/api/compliance",
-      "sha256": null,
-      "bytes": null,
-      "addedAt": "2026-05-19T00:00:00Z"
+      "path": "en/api/compliance.md",
+      "url": "https://platform.claude.com/docs/en/api/compliance.md",
+      "sha256": "64ced51754b835a7e79205472de9b623e52b24c73459dff13d62d1ba2df85188",
+      "bytes": 852129
     },
     {
       "path": "en/api/compliance/activities.md",
       "url": "https://platform.claude.com/docs/en/api/compliance/activities.md",
-      "sha256": "13e183b773e3526f9d08f1eefafecd3b84bbdcd9e92de8265ca6854626691d88",
-      "bytes": 12897
+      "sha256": "be75651328baf6090d9ec8f3609f34baac9fc65bc5459db8f868948e0828c4bf",
+      "bytes": 795825
     },
     {
       "path": "en/api/compliance/activities/list.md",
       "url": "https://platform.claude.com/docs/en/api/compliance/activities/list.md",
-      "sha256": "cebfd8630df9d9f353629239ecffce962c4190fec2e690d320224ddf45b5dd12",
-      "bytes": 12797
+      "sha256": "1e5e27976dbe5e14a0b240443202e4cd317afa77e9b467a4e6265dbe109aecc8",
+      "bytes": 412576
     },
     {
       "path": "en/api/compliance/apps.md",
       "url": "https://platform.claude.com/docs/en/api/compliance/apps.md",
-      "sha256": "87736fda99e891797b036295a609b3106c551c7e9f41c568aebf196c533340a5",
-      "bytes": 34153
+      "sha256": "b8049d758ab2f1e37b889679e82c58f25ad68e5ba7e848471a711f80f7e35a19",
+      "bytes": 42466
     },
     {
       "path": "en/api/compliance/apps/artifacts.md",
       "url": "https://platform.claude.com/docs/en/api/compliance/apps/artifacts.md",
-      "sha256": "1da721d08763952094446d0e41df1c43e990a931af622f8bfe22434dca953f2e",
-      "bytes": 673
+      "sha256": "d9056319413bf847156486ee18402109bcd92b3b85904fb095c92793938c472b",
+      "bytes": 2947
     },
     {
       "path": "en/api/compliance/apps/artifacts/download.md",
       "url": "https://platform.claude.com/docs/en/api/compliance/apps/artifacts/download.md",
-      "sha256": null,
-      "bytes": null,
-      "addedAt": "2026-05-19T00:00:00Z"
+      "sha256": "d38d1dab2594b19e48f13039c447f739fdfbb9e94e2fb87983348d6815fc93e9",
+      "bytes": 574
     },
     {
       "path": "en/api/compliance/apps/artifacts/retrieve.md",
       "url": "https://platform.claude.com/docs/en/api/compliance/apps/artifacts/retrieve.md",
-      "sha256": null,
-      "bytes": null,
-      "addedAt": "2026-05-19T00:00:00Z"
+      "sha256": "4f53c32049ee0cf1928941c9a12f7952577f7ed5c97cf4f6f87c22a5d7d8789f",
+      "bytes": 1380
     },
     {
       "path": "en/api/compliance/apps/chats.md",
       "url": "https://platform.claude.com/docs/en/api/compliance/apps/chats.md",
-      "sha256": "440ba75d31081fd6fbf4b72fa1ccc8701f772161a2c23e3bc0923cdc992fdaa6",
-      "bytes": 18636
+      "sha256": "84a051ddeae7fbbd8bf6a2b224fe2f455f566577b6e7627f1f6d55b264545f2f",
+      "bytes": 21674
     },
     {
       "path": "en/api/compliance/apps/chats/delete.md",
@@ -1082,8 +1076,8 @@
     {
       "path": "en/api/compliance/apps/chats/files.md",
       "url": "https://platform.claude.com/docs/en/api/compliance/apps/chats/files.md",
-      "sha256": "6b1f8794ecf50893cea42e6e8db91db7e0e37a6d13d75cb0d2c9449a8590e957",
-      "bytes": 3507
+      "sha256": "324c3b59789a271f2905e77acda52dd29700491fd5513f726fe5ad5dc8091879",
+      "bytes": 4106
     },
     {
       "path": "en/api/compliance/apps/chats/files/delete.md",
@@ -1094,35 +1088,32 @@
     {
       "path": "en/api/compliance/apps/chats/files/download.md",
       "url": "https://platform.claude.com/docs/en/api/compliance/apps/chats/files/download.md",
-      "sha256": null,
-      "bytes": null,
-      "addedAt": "2026-05-19T00:00:00Z"
+      "sha256": "abaa731262ead993c76282832ccbecaeec2d4c7524f9f71dbefbdecb529e0156",
+      "bytes": 482
     },
     {
       "path": "en/api/compliance/apps/chats/files/retrieve.md",
       "url": "https://platform.claude.com/docs/en/api/compliance/apps/chats/files/retrieve.md",
-      "sha256": "04ad412afbf4fc176a8d324b0eef4a54fd21b7bae0cfdaaa42fbf4050488b658",
-      "bytes": 1117
+      "sha256": "06e0afd5931e66c6468f5ab7e89dd5c61d5464359ccc9f440985d5863539fc99",
+      "bytes": 1445
     },
     {
       "path": "en/api/compliance/apps/chats/generated_files.md",
       "url": "https://platform.claude.com/docs/en/api/compliance/apps/chats/generated_files.md",
-      "sha256": "b2666457b768023085d3bfc0a1be2399dd23f9b04702ade4984ebb6ca7caa60a",
-      "bytes": 744
+      "sha256": "057c71755583b65dd5e5b6c2c056e5b27fed2e4ef7b2221cc6507e582c16edbf",
+      "bytes": 3315
     },
     {
       "path": "en/api/compliance/apps/chats/generated_files/download.md",
       "url": "https://platform.claude.com/docs/en/api/compliance/apps/chats/generated_files/download.md",
-      "sha256": null,
-      "bytes": null,
-      "addedAt": "2026-05-19T00:00:00Z"
+      "sha256": "8f0c86ba47d22a553e4eb69ff7df60838a5eff7f8659ecaeab68ab1e078887b6",
+      "bytes": 628
     },
     {
       "path": "en/api/compliance/apps/chats/generated_files/retrieve.md",
       "url": "https://platform.claude.com/docs/en/api/compliance/apps/chats/generated_files/retrieve.md",
-      "sha256": null,
-      "bytes": null,
-      "addedAt": "2026-05-19T00:00:00Z"
+      "sha256": "1cf85dce955c29cbe244eaee39e92408a954fc88d83d88a2df86afb2cfa768ef",
+      "bytes": 1443
     },
     {
       "path": "en/api/compliance/apps/chats/list.md",
@@ -1133,34 +1124,32 @@
     {
       "path": "en/api/compliance/apps/chats/messages.md",
       "url": "https://platform.claude.com/docs/en/api/compliance/apps/chats/messages.md",
-      "sha256": "752f1137e6dacfb79ac4217bed084bd33e417bb07ddeaf6c7af4926277ee94fe",
-      "bytes": 4730
+      "sha256": "f580fa660a1f6a5168a43d8c6db8e524aa5eaf7bcd83bff3cf421eb418725085",
+      "bytes": 8340
     },
     {
       "path": "en/api/compliance/apps/chats/messages/list.md",
       "url": "https://platform.claude.com/docs/en/api/compliance/apps/chats/messages/list.md",
-      "sha256": null,
-      "bytes": null,
-      "addedAt": "2026-05-19T00:00:00Z"
+      "sha256": "9750dc57b912b6fb9db020331b28712d283301bdc142b0a93883e09da45b8307",
+      "bytes": 6078
     },
     {
       "path": "en/api/compliance/apps/projects.md",
       "url": "https://platform.claude.com/docs/en/api/compliance/apps/projects.md",
-      "sha256": "c82389e98a4c89699125bad3172f691a8a4779baab259b1ea3cde63f84cca72c",
-      "bytes": 14832
+      "sha256": "68173374a3c019822ea21dc69cb65d7f7e3f9bc86977024930b13f3b88261c01",
+      "bytes": 17833
     },
     {
       "path": "en/api/compliance/apps/projects/attachments.md",
       "url": "https://platform.claude.com/docs/en/api/compliance/apps/projects/attachments.md",
-      "sha256": "e8d24fa0d9c6ddaf8385cb360852daafec7a3eb314c268af60e37cb49eeedc96",
-      "bytes": 3053
+      "sha256": "8db84c0675476bb2795fd161b108cc4b19fdfb47595123c50f7689122c2a5335",
+      "bytes": 4491
     },
     {
       "path": "en/api/compliance/apps/projects/attachments/list.md",
       "url": "https://platform.claude.com/docs/en/api/compliance/apps/projects/attachments/list.md",
-      "sha256": null,
-      "bytes": null,
-      "addedAt": "2026-05-19T00:00:00Z"
+      "sha256": "8cc0383d6375db8b683792d030235930c42a92f605b1dcc3e1f00fb5e4ecd792",
+      "bytes": 3046
     },
     {
       "path": "en/api/compliance/apps/projects/delete.md",
@@ -1171,8 +1160,8 @@
     {
       "path": "en/api/compliance/apps/projects/documents.md",
       "url": "https://platform.claude.com/docs/en/api/compliance/apps/projects/documents.md",
-      "sha256": "f41ac7be30e07f6055eb338c53ab283069b242f19a0a0c6b35b7463068498354",
-      "bytes": 2692
+      "sha256": "63977de37210a7b0ab4f9d61c527a9bad53b8ceff017d1218bb87c079340d98d",
+      "bytes": 5357
     },
     {
       "path": "en/api/compliance/apps/projects/documents/delete.md",
@@ -1183,9 +1172,8 @@
     {
       "path": "en/api/compliance/apps/projects/documents/metadata.md",
       "url": "https://platform.claude.com/docs/en/api/compliance/apps/projects/documents/metadata.md",
-      "sha256": null,
-      "bytes": null,
-      "addedAt": "2026-05-19T00:00:00Z"
+      "sha256": "e7b92bc83d336cab9819353c10ea570a5f392b8e75dc7e323c7e7aa21f787c14",
+      "bytes": 1543
     },
     {
       "path": "en/api/compliance/apps/projects/documents/retrieve.md",
@@ -1196,14 +1184,14 @@
     {
       "path": "en/api/compliance/apps/projects/list.md",
       "url": "https://platform.claude.com/docs/en/api/compliance/apps/projects/list.md",
-      "sha256": "bb1c3f6609d0f29a30e890543054a6f4cd1f07d1a5af54fb3f437ac1fbaf3a48",
-      "bytes": 2483
+      "sha256": "c5330c90f70b117c978c8bc6ff8dfbb31ce3ea9b0d6141943d405d01bf832ec1",
+      "bytes": 2667
     },
     {
       "path": "en/api/compliance/apps/projects/retrieve.md",
       "url": "https://platform.claude.com/docs/en/api/compliance/apps/projects/retrieve.md",
-      "sha256": "e569ebe523e811bda89f9b11fe88f1d5eed3409a60e006aa99d692908824e9af",
-      "bytes": 1430
+      "sha256": "fa7ec945246139a049c257b4f036cfa95876169dea112008767d8ee8f6f4daab",
+      "bytes": 1606
     },
     {
       "path": "en/api/compliance/groups.md",
@@ -1238,8 +1226,8 @@
     {
       "path": "en/api/compliance/organizations.md",
       "url": "https://platform.claude.com/docs/en/api/compliance/organizations.md",
-      "sha256": "f3b813669cbc27367db14f626a32c1e3cac452819c06590c47707a558a312cff",
-      "bytes": 7860
+      "sha256": "03564949781a72fa9bfcc6836f13af182fa0329320fb7a357b1fc41c76287bf1",
+      "bytes": 8637
     },
     {
       "path": "en/api/compliance/organizations/list.md",
@@ -1280,21 +1268,20 @@
     {
       "path": "en/api/compliance/organizations/users.md",
       "url": "https://platform.claude.com/docs/en/api/compliance/organizations/users.md",
-      "sha256": "757923f5af40b3522388f8a0ce60238cd2d40eb48317ee5627c7c72c931af1ad",
-      "bytes": 1814
+      "sha256": "f81519ac04a610d416b70737de58c66d09414bc5aacb830fb4b6378b5abc9460",
+      "bytes": 2591
     },
     {
       "path": "en/api/compliance/organizations/users/list.md",
       "url": "https://platform.claude.com/docs/en/api/compliance/organizations/users/list.md",
-      "sha256": "f2a6a429fa5a5cc553b2003a1056c61dcba3952ba361facd865f07429c0859ff",
-      "bytes": 1419
+      "sha256": "77a3e18f15f613ebb668bba1d1d0f5c9eb62e75a8244506e8ea6e9293c6b53d1",
+      "bytes": 1808
     },
     {
-      "path": "en/api/messages",
-      "url": "https://platform.claude.com/docs/en/api/messages",
-      "sha256": null,
-      "bytes": null,
-      "addedAt": "2026-05-19T00:00:00Z"
+      "path": "en/api/messages.md",
+      "url": "https://platform.claude.com/docs/en/api/messages.md",
+      "sha256": "e2bb1a23711495835a39af2d476d8fe931f1f6576e85d56c8446fc9812790aaa",
+      "bytes": 1018419
     },
     {
       "path": "en/api/messages/batches.md",
@@ -1351,11 +1338,10 @@
       "bytes": 139001
     },
     {
-      "path": "en/api/models",
-      "url": "https://platform.claude.com/docs/en/api/models",
-      "sha256": null,
-      "bytes": null,
-      "addedAt": "2026-05-19T00:00:00Z"
+      "path": "en/api/models.md",
+      "url": "https://platform.claude.com/docs/en/api/models.md",
+      "sha256": "7c6035e77ce3e68424a1a8aa3387ed25c5e3c800aca35a842726b9e662d26074",
+      "bytes": 24331
     },
     {
       "path": "en/api/models/list.md",
