@@ -143,14 +143,14 @@ for (const [src, schemaPath] of Object.entries(MAP)) {
   }
 
   const md = fs.readFileSync(srcAbs, "utf8");
-  // Match ```json … ``` blocks. Multiline, non-greedy.
-  // Surfaces legitimately contain JSON blocks of multiple shapes — e.g.,
-  // SKILL-plugins.md has plugin manifests AND marketplace manifests AND
-  // settings snippets; SKILL-hooks.md has hook INPUT and hook OUTPUT.
-  // The script's surface→schema mapping only fits one of them. Use an
-  // opt-out marker — \`\`\`<!-- skip-validate -->\` on the line immediately
-  // before the fence — to mark blocks that intentionally use a different
-  // shape than the surface's primary schema.
+  // NOTE Comments here avoid apostrophes — the entire JS body lives
+  // inside a single-quoted shell string. The opt-out marker is the
+  // HTML comment <!-- skip-validate --> placed on its own line
+  // immediately before a json fence. Blocks marked this way are
+  // skipped from schema validation because they intentionally use a
+  // different shape than the surfaces primary schema (e.g., a
+  // marketplace manifest in SKILL-plugins.md, a hook OUTPUT in
+  // SKILL-hooks.md, a settings snippet in SKILL-plugins.md).
   const re = /^```json\s*\n([\s\S]*?)\n^```\s*$/gm;
   let m, idx = 0;
   let blocksInFile = 0;
@@ -158,7 +158,7 @@ for (const [src, schemaPath] of Object.entries(MAP)) {
   while ((m = re.exec(md)) !== null) {
     idx++;
     // Detect opt-out: is the fence preceded immediately by the marker?
-    // matchStart is the position of the first backtick of ```json.
+    // matchStart is the position of the first backtick of the json fence.
     const matchStart = m.index;
     const precedingLine = md.slice(Math.max(0, matchStart - 60), matchStart);
     if (/<!--\s*skip-validate\s*-->\s*\n$/.test(precedingLine)) {
