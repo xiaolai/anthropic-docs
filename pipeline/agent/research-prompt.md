@@ -120,13 +120,15 @@ After Parts A and B, verify:
 
 1. **Version consistency.** Every `v<X.Y.Z>` reference across {{ROUTER}}, `README.md`, `plugin.json`, `CHANGELOG.md` matches the skill's primary package version in `state.json.registry.packages[0].version` (or `state.json.registry.version` for legacy single-package skills).
 2. **No dangling links.** Every URL you added in this run should resolve (spot-check via `curl -sI <url> | head -1`). Sample 5 pre-existing URLs as a sanity check.
-3. **Schema integrity.** Every fenced JSON example you added in `SKILL-*.md` validates against its schema (`pipeline/scripts/validate-examples.sh` is the source of truth; **run it yourself before exiting** — `SKILL_NAME={{SKILL_NAME}} bash pipeline/scripts/validate-examples.sh`). **JSON examples must be full-file shape, not snippets.** Required root keys per schema:
-   - **MCP servers** (`pipeline/schema/mcp.schema.json`): wrap in `{"mcpServers": {"name": {...}}}`, never just the inner `{...}`.
-   - **Plugins** (`pipeline/schema/plugin.schema.json`): root must have both `name` AND `version`. Missing `version` is the most common failure.
-   - **Hook inputs** (`pipeline/schema/hook-input.schema.json`): root must have `hook_event_name`.
-   - **Settings** (`pipeline/schema/settings.schema.json`): root may have any combination of `model`/`permissions`/`env`/`hooks`/etc — full settings.json shape.
+3. **Schema integrity.** Every fenced JSON example you add in `SKILL-*.md` validates against the surface's primary schema by default (`pipeline/scripts/validate-examples.sh` is the source of truth; **run it yourself before exiting** — `SKILL_NAME={{SKILL_NAME}} bash pipeline/scripts/validate-examples.sh`). Each schema-mapped surface has one **primary schema**:
+   - `SKILL-mcp.md` → `mcp.schema.json` (root must wrap in `{"mcpServers": {"name": {...}}}`)
+   - `SKILL-plugins.md` → `plugin.schema.json` (root must have both `name` AND `version`)
+   - `SKILL-hooks.md` → `hook-input.schema.json` (root must have `hook_event_name`)
+   - `SKILL-settings.md` → `settings.schema.json` (any combination of top-level settings keys)
 
-   If you want to show a partial pattern that wouldn't validate as a full file, use a ```text fence or inline backticks instead of ```json — the validator only runs against ```json fences.
+   **For blocks that intentionally use a different shape** (e.g., a marketplace manifest in SKILL-plugins.md, a hook OUTPUT example in SKILL-hooks.md, a settings snippet in SKILL-plugins.md), precede the ```json fence with `<!-- skip-validate -->` on its own line. The validator will print `SKIP` for those blocks instead of running schema checks.
+
+   Use the skip-validate marker only when the block is genuinely a different schema, not as a workaround for malformed JSON. The primary canonical example in each schema-mapped file should still validate.
 4. **No duplicate facts.** A given schema field, event name, or flag should appear in exactly one SKILL-*.md. Use `grep -l` to confirm.
 5. **Cross-reference integrity.** Every `[\`SKILL-*.md\`]` link points to an existing file.
 6. **Rules glob coverage.** Every glob in `rules/*.md` matches at least one real file pattern documented in `SKILL-*.md`. No orphan rules.

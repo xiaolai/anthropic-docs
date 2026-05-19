@@ -144,12 +144,27 @@ for (const [src, schemaPath] of Object.entries(MAP)) {
 
   const md = fs.readFileSync(srcAbs, "utf8");
   // Match ```json … ``` blocks. Multiline, non-greedy.
-  const re = /^```json\s*\n([\s\S]*?)\n^```\s*$/gm;
+  // Surfaces legitimately contain JSON blocks of multiple shapes — e.g.,
+  // SKILL-plugins.md has plugin manifests AND marketplace manifests AND
+  // settings snippets; SKILL-hooks.md has hook INPUT and hook OUTPUT.
+  // The script's surface→schema mapping only fits one of them. Use an
+  // opt-out marker — \`\`\`<!-- skip-validate -->\` on the line immediately
+  // before the fence — to mark blocks that intentionally use a different
+  // shape than the surface's primary schema.
+  const re = /(?:^<!--\s*skip-validate\s*-->\s*\n)?^```json\s*\n([\s\S]*?)\n^```\s*$/gm;
+  const skipRe = /^<!--\s*skip-validate\s*-->\s*\n```json/gm;
   let m, idx = 0;
   let blocksInFile = 0;
 
   while ((m = re.exec(md)) !== null) {
     idx++;
+    // Detect opt-out: is the match preceded immediately by the marker?
+    const matchStart = m.index;
+    const precedingLine = md.slice(Math.max(0, matchStart - 40), matchStart);
+    if (/<!--\s*skip-validate\s*-->\s*\n$/.test(precedingLine)) {
+      console.log(`SKIP ${src} block #${idx} (marked skip-validate)`);
+      continue;
+    }
     blocksInFile++;
     total++;
     const body = m[1];
