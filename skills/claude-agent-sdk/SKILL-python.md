@@ -228,7 +228,7 @@ class SdkMcpTool(Generic[T]):
 | `cwd` | `str \| Path \| None` | `None` | Working directory |
 | `system_prompt` | `str \| SystemPromptPreset \| None` | `None` | System prompt or preset dict (see [`SystemPromptPreset`](#systempromptsettings)) |
 | `setting_sources` | `list[SettingSource] \| None` | `None` | `"user" \| "project" \| "local"` |
-| `env` | `dict[str, str]` | `{}` | Environment variables |
+| `env` | `dict[str, str]` | `{}` | Environment variables (merged on top of the inherited process environment — unlike TypeScript where `env` replaces entirely) |
 | `cli_path` | `str \| Path \| None` | `None` | Custom path to Claude Code CLI |
 
 #### `SystemPromptPreset` / `ToolsPreset`
@@ -1779,6 +1779,45 @@ options = ClaudeAgentOptions(
     hooks={"PreToolUse": [HookMatcher(hooks=[permission_hook])]}
 )
 ```
+
+---
+
+## Tool Search
+
+Tool search is configured the same way in Python as in TypeScript — via the `ENABLE_TOOL_SEARCH` environment variable in `options.env`. In Python, `env` is merged on top of the inherited process environment (no need to spread `os.environ`).
+
+```python
+options = ClaudeAgentOptions(
+    mcp_servers={"enterprise-tools": {"type": "http", "url": "https://tools.example.com/mcp"}},
+    allowed_tools=["mcp__enterprise-tools__*"],
+    env={"ENABLE_TOOL_SEARCH": "auto:5"}  # Python env merges with process env
+)
+```
+
+See [`SKILL-typescript.md` § Tool Search](SKILL-typescript.md#tool-search) for the full `ENABLE_TOOL_SEARCH` value table, model requirements (Sonnet 4+ / Opus 4+ only), and limits.
+
+---
+
+## Observability
+
+OpenTelemetry configuration is identical across Python and TypeScript — set the env vars listed in [`SKILL-typescript.md` § Observability](SKILL-typescript.md#observability).
+
+Key Python-specific note: Python's `env` option **merges** on top of the inherited process environment. You do not need to spread `os.environ`:
+
+```python
+OTEL_ENV = {
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "1",
+    "CLAUDE_CODE_ENHANCED_TELEMETRY_BETA": "1",
+    "OTEL_TRACES_EXPORTER": "otlp",
+    "OTEL_METRICS_EXPORTER": "otlp",
+    "OTEL_LOGS_EXPORTER": "otlp",
+    "OTEL_EXPORTER_OTLP_ENDPOINT": "http://collector.example.com:4318",
+    "OTEL_EXPORTER_OTLP_HEADERS": "Authorization=Bearer your-token",
+}
+options = ClaudeAgentOptions(env=OTEL_ENV)
+```
+
+For span names, content opt-in variables, and export interval overrides, see [`SKILL-typescript.md` § Observability](SKILL-typescript.md#observability).
 
 ---
 

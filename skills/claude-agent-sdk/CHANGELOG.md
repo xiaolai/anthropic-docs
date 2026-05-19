@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-05-19
+
+*(pending review — checkDiffSize gate failed; see draft PR on branch `auto/2026-05-19-pending-review`)*
+
+- SDK TS v0.0.0 → v0.3.143 (npm `@anthropic-ai/claude-agent-sdk`); docs index hash updated (29 pages, no pages added/removed — existing page content updated)
+- Updated `SKILL-typescript.md` header and package version string to v0.3.143
+- Updated `state.json`: npm version, docs index hash, `lastAuditedVersion`, `lastUpdated`
+- Added KI #296: Linux musl binary preferred over glibc in v0.3.143 CLI auto-discovery
+
 ## 2026-03-18
 
 - Research only, no version change (TS v0.2.77, Python v0.1.49 unchanged)

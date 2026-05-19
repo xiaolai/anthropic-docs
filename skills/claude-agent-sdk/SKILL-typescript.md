@@ -1,6 +1,6 @@
-# Claude Agent SDK — TypeScript Reference (v0.2.77)
+# Claude Agent SDK — TypeScript Reference (v0.3.143)
 
-**Package**: `@anthropic-ai/claude-agent-sdk@0.2.77`
+**Package**: `@anthropic-ai/claude-agent-sdk@0.3.143`
 **Docs**: https://platform.claude.com/docs/en/agent-sdk/overview
 **Repo**: https://github.com/anthropics/claude-agent-sdk-typescript
 **Migration**: Renamed from `@anthropic-ai/claude-code`. See [migration guide](https://platform.claude.com/docs/en/agent-sdk/migration-guide).
@@ -17,10 +17,12 @@
 - [Hooks](#hooks) — 22 hook events, matchers, return values, async hooks
 - [Permissions](#permissions) — 5 modes, `canUseTool` callback
 - [MCP Servers](#mcp-servers) — stdio, HTTP, SSE, SDK, claudeai-proxy
+- [Tool Search](#tool-search) — `ENABLE_TOOL_SEARCH` env var, scaling to thousands of tools
 - [Subagents](#subagents) — AgentDefinition, tool enforcement workaround
 - [Structured Outputs](#structured-outputs)
 - [Sandbox](#sandbox)
 - [Sessions](#sessions)
+- [Observability](#observability) — OpenTelemetry env vars, span names, content opt-ins
 - [V2 Session API (Preview)](#v2-session-api-preview) — `unstable_v2_createSession`, `unstable_v2_prompt`
 - [Debugging & Error Handling](#debugging--error-handling)
 - [Known Issues](#known-issues)
@@ -842,6 +844,45 @@ myTool.annotations = { destructiveHint: true, readOnlyHint: false };
 
 ---
 
+## Tool Search
+
+Tool search dynamically discovers and loads only the tools needed for each task, letting agents scale to thousands of tools without context bloat. When active, tool definitions are withheld from the context window; the agent searches on demand and loads the 3–5 most relevant tools per search. Discovered tools remain loaded for the rest of that turn and are re-discovered after compaction if needed.
+
+> **Source**: https://code.claude.com/docs/en/agent-sdk/tool-search.md
+
+### `ENABLE_TOOL_SEARCH` values
+
+Set this via `options.env` (note: `options.env` replaces the process environment entirely — always spread `...process.env`).
+
+| Value | Behavior |
+|-------|----------|
+| (unset) | On by default except on Vertex AI and when `ANTHROPIC_BASE_URL` points to a non-first-party host |
+| `true` | Always on, even on Vertex AI / third-party proxies (fails on unsupported models) |
+| `auto` | Activates when combined tool definitions exceed 10% of the context window |
+| `auto:N` | Activates when tool definitions exceed N% of the context window |
+| `false` | Off — all tool definitions loaded into context upfront every turn |
+
+```typescript
+for await (const msg of query({
+  prompt: "Find and run the appropriate database query",
+  options: {
+    mcpServers: {
+      "enterprise-tools": { type: "http", url: "https://tools.example.com/mcp" }
+    },
+    allowedTools: ["mcp__enterprise-tools__*"],  // wildcard pre-approves all tools
+    env: { ...process.env, ENABLE_TOOL_SEARCH: "auto:5" }
+  }
+})) { ... }
+```
+
+**Model support**: Requires Claude Sonnet 4+ or Opus 4+. Haiku models do not support tool search.
+
+**Limits**: Up to 10,000 tools in a catalog; 3–5 results per search query.
+
+**Tip**: Tool names like `search_slack_messages` and descriptions with specific keywords ("Search Slack messages by keyword, channel, or date range") improve discovery accuracy vs generic names.
+
+---
+
 ## Subagents
 
 ### AgentDefinition
@@ -1031,6 +1072,58 @@ for await (const msg of query({
 - Use `maxBudgetUsd` to limit costs per session
 - Fork proactively before context gets too large ([Known Issue #2](#2-context-length-exceeded-session-breaking))
 - `persistSession: false` disables writing session state to disk
+
+---
+
+## Observability
+
+The SDK passes OpenTelemetry configuration to the Claude Code CLI subprocess. The CLI exports traces, metrics, and structured log events to any OTLP-compatible backend (Honeycomb, Datadog, Grafana, Langfuse, etc.).
+
+> **Source**: https://code.claude.com/docs/en/agent-sdk/observability.md
+
+**⚠️ TypeScript `env` replaces the entire process environment** — always spread `...process.env` when setting telemetry env vars. Python's `env` merges on top of the inherited environment.
+
+### Enable telemetry
+
+| Variable | Purpose |
+|----------|---------|
+| `CLAUDE_CODE_ENABLE_TELEMETRY=1` | Master switch (off by default) |
+| `CLAUDE_CODE_ENHANCED_TELEMETRY_BETA=1` | Required for traces (beta); metrics and log events don't need this |
+| `OTEL_TRACES_EXPORTER=otlp` | Enable trace export |
+| `OTEL_METRICS_EXPORTER=otlp` | Enable metrics export |
+| `OTEL_LOGS_EXPORTER=otlp` | Enable structured log event export |
+| `OTEL_EXPORTER_OTLP_ENDPOINT` | OTLP collector URL (e.g. `http://collector.example.com:4318`) |
+| `OTEL_EXPORTER_OTLP_HEADERS` | Auth header (e.g. `Authorization=Bearer your-token`) |
+
+⚠️ Do **not** set `console` as an exporter value — the SDK uses stdout as its JSON message channel; console telemetry output corrupts it.
+
+### Span names (beta traces)
+
+| Span | Description |
+|------|-------------|
+| `claude_code.interaction` | One agent loop turn — prompt to response |
+| `claude_code.llm_request` | Each Claude API call (model, latency, token counts) |
+| `claude_code.tool` | Each tool invocation; child spans: `claude_code.tool.blocked_on_user` (permission wait) and `claude_code.tool.execution` |
+| `claude_code.hook` | Each hook execution (requires `ENABLE_BETA_TRACING_DETAILED=1`) |
+
+Subagent spans nest under the parent's `claude_code.tool` span. All spans carry `session.id` by default.
+
+### Content opt-in variables
+
+| Variable | Adds |
+|----------|------|
+| `OTEL_LOG_USER_PROMPTS=1` | Prompt text on `claude_code.interaction` spans and `claude_code.user_prompt` events |
+| `OTEL_LOG_TOOL_DETAILS=1` | Tool input arguments on `claude_code.tool_result` events |
+| `OTEL_LOG_TOOL_CONTENT=1` | Full tool input/output bodies as span events on `claude_code.tool` (requires traces; truncated at 60 KB) |
+| `OTEL_LOG_RAW_API_BODIES` | Full API request/response JSON (`1` = inline at 60 KB; `file:<dir>` = untruncated on disk) |
+
+### Export interval defaults
+
+Metrics: 60 s. Traces/logs: 5 s. Override with `OTEL_METRIC_EXPORT_INTERVAL`, `OTEL_TRACES_EXPORT_INTERVAL`, `OTEL_LOGS_EXPORT_INTERVAL` (values in milliseconds).
+
+### Tagging
+
+Use `OTEL_SERVICE_NAME` and `OTEL_RESOURCE_ATTRIBUTES` to tag spans by agent, deployment environment, or end user. Percent-encode values in `OTEL_RESOURCE_ATTRIBUTES` (commas, spaces, and `=` are reserved).
 
 ---
 
