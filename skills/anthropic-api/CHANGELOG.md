@@ -4,7 +4,7 @@ All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
 ## 2026-05-19
-- Research-only run: no upstream version change detected; research agent audited surfaces (71 turns, $1.06); all 8 quality gates passed.
+- Research-only run: no upstream version change detected; research agent audited all surfaces (90 turns, $1.14); all 8 quality gates passed.
 
 ## 2026-05-18
 

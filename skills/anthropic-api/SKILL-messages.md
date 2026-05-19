@@ -41,8 +41,27 @@ single queries or stateless multi-turn conversations.
 | `tool_choice` | `auto` / `any` / `tool` / `none` |
 | `metadata` | `{ user_id: "..." }` for abuse signaling |
 | `service_tier` | `auto` / `standard_only` |
-| `thinking` | `{ type: "enabled", budget_tokens: N }` for extended thinking |
+| `thinking` | Extended thinking config — see below |
 | `output_config` | Output configuration — see below |
+| `container` | `string` — Container ID to reuse across requests (code execution) |
+| `inference_geo` | `string` — Geographic region for inference (default: workspace `default_inference_geo`) |
+| `cache_control` | `{ type: "ephemeral", ttl?: "5m"\|"1h" }` — Top-level shorthand; applies cache breakpoint at the last cacheable block |
+
+### `thinking` parameter
+
+Three variants (all optional):
+
+| Variant | Shape | Notes |
+|---|---|---|
+| `ThinkingConfigEnabled` | `{ type: "enabled", budget_tokens: N, display?: "summarized"\|"omitted" }` | Enables thinking; `budget_tokens` ≥ 1024, counts toward `max_tokens`. |
+| `ThinkingConfigDisabled` | `{ type: "disabled" }` | Explicitly disables thinking. |
+| `ThinkingConfigAdaptive` | `{ type: "adaptive", display?: "summarized"\|"omitted" }` | Model decides whether and how much to think. |
+
+`display` field:
+- `"summarized"` (default) — thinking content is returned normally.
+- `"omitted"` — thinking content is redacted; a `signature` is still returned so multi-turn continuity is preserved.
+
+Source: [`messages/create.md`](https://platform.claude.com/docs/en/api/messages/create.md) (updated 2026-05-19).
 
 ### `output_config` parameter
 
@@ -76,6 +95,8 @@ block) or an array of typed blocks:
 | `server_tool_use` | Assistant turn: model invoked a **server** tool (e.g. web_search, web_fetch, code_execution). Different return path — see server tools below. |
 | `thinking` | Extended-thinking output (when `thinking` enabled) |
 | `redacted_thinking` | Thinking content the API redacted before returning |
+| `tool_reference` | Assistant: reference to a tool returned by the tool-search server tool. |
+| `container_upload` | Assistant: file uploaded to the code-execution container. `{ file_id, type: "container_upload" }` |
 
 ### Server tools vs. client tools
 
@@ -93,6 +114,16 @@ Known server tool types (specify in `tools` array):
 | `code_execution_20250825` / `code_execution_20260120` | Execute code in a sandbox. |
 
 Server tools also support `defer_loading: true` to exclude from the initial system prompt (loaded on demand) and `strict: true` for schema validation.
+
+#### Tool definition — additional fields (client tools)
+
+| Field | Type | Notes |
+|---|---|---|
+| `allowed_callers` | `array` | Which callers can use this tool: `"direct"`, `"code_execution_20250825"`, `"code_execution_20260120"`. Defaults to all. |
+| `eager_input_streaming` | `boolean` | When `true`, tool inputs are streamed incrementally before the full JSON is buffered. `false` disables per-tool. `null` (default) follows the beta header setting. |
+| `input_examples` | `array` | Optional example inputs (for documentation / prompting). |
+
+Source: [`messages/create.md`](https://platform.claude.com/docs/en/api/messages/create.md) (updated 2026-05-19).
 
 ### Prompt caching: `cache_control`
 
@@ -148,6 +179,13 @@ in the platform-features skill for caching strategy.
   }
 }
 ```
+
+#### New top-level response fields (2026-05-19)
+
+| Field | Type | Notes |
+|---|---|---|
+| `container` | object | Present when code execution was used. `{ id: string, expires_at: string }` — identifier and expiry of the reusable container. |
+| `stop_details` | object | Present when `stop_reason == "refusal"`. `{ type: "refusal", category: "cyber"\|"bio", explanation: string }` |
 
 #### `usage` object fields
 

@@ -27,13 +27,26 @@ hardcoding model IDs.
 
 ## Current model family (Claude 4.X)
 
-Per the latest snapshot:
+Per the upstream API (`messages/create.md`, updated 2026-05-19):
 
-| Tier | ID | Notes |
-|---|---|---|
-| **Opus** | `claude-opus-4-7` | Most capable; fast mode available |
-| **Sonnet** | `claude-sonnet-4-6` | Balanced cost/capability |
-| **Haiku** | `claude-haiku-4-5-20251001` | Cheapest, fastest; the `-20251001` suffix is the snapshot date |
+| ID | Description |
+|---|---|
+| `claude-opus-4-7` | Frontier intelligence for long-running agents and coding (latest Opus) |
+| `claude-mythos-preview` | New class of intelligence, strongest in coding and cybersecurity (preview) |
+| `claude-opus-4-6` | Frontier intelligence for long-running agents and coding |
+| `claude-sonnet-4-6` | Best combination of speed and intelligence (latest Sonnet) |
+| `claude-haiku-4-5` | Fastest model with near-frontier intelligence (family alias) |
+| `claude-haiku-4-5-20251001` | Same as above, pinned snapshot |
+| `claude-opus-4-5` / `claude-opus-4-5-20251101` | Premium model combining maximum intelligence with practical performance |
+| `claude-sonnet-4-5` / `claude-sonnet-4-5-20250929` | High-performance model for agents and coding |
+| `claude-opus-4-1` / `claude-opus-4-1-20250805` | Exceptional model for specialized complex tasks |
+| `claude-opus-4-0` / `claude-opus-4-20250514` | Powerful model for complex tasks |
+| `claude-sonnet-4-0` / `claude-sonnet-4-20250514` | High-performance model with extended thinking |
+| `claude-3-haiku-20240307` | Fast and cost-effective (Claude 3 generation) |
+
+> **Naming conventions:** family ID (e.g., `claude-opus-4-7`) is a stable alias
+> tracking the latest snapshot; dated ID (e.g., `claude-haiku-4-5-20251001`) pins
+> to a specific snapshot for reproducibility. Use family IDs for most apps.
 
 When building new applications, default to the latest and most
 capable model unless cost / latency dictates otherwise.
