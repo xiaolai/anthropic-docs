@@ -10,6 +10,34 @@ The newest entry is at the top.
 
 ---
 
+## v2.1.145 — 2026-05-19
+
+GitHub release (npm package `@anthropic-ai/claude-code` at v2.1.144 at time of writing).
+
+- Added `claude agents --json` to list live Claude sessions as JSON for scripting (tmux-resurrect, status bars, session pickers)
+- Added `agent_id` and `parent_agent_id` attributes to `claude_code.tool` OTEL spans; background subagent spans now nest under the dispatching Agent tool span
+- Status line JSON input now includes GitHub repo and PR information when detected
+- `/plugin` Discover and Browse screens now show a plugin's commands, agents, skills, hooks, and MCP/LSP servers before installation
+- `claude agents` terminal tab title now shows the awaiting-input count
+- Slash command and @-mention suggestion list now supports mouse hover and click in fullscreen mode
+- Stop and SubagentStop hook input now includes `background_tasks` and `session_crons` fields
+- Fixed permission-prompt bypass where bare variable assignments to non-allowlisted env vars in Bash commands were auto-approved
+- Fixed MCP prompt slash commands showing raw server validation errors — error now names the missing argument and shows expected usage
+- Fixed spinner and elapsed-time display freezing until a keypress after terminal resize or refocus
+- Fixed cross-project resume hint in default Windows PowerShell 5.1 (now uses `;` as command separator)
+- Fixed voice push-to-talk not working in the agent view reply pane
+- Fixed task lists rendering in random order when several tasks are created at once
+- Fixed stale "Failed to install Anthropic marketplace" banner showing when marketplace is already installed
+- Fixed PR badge in footer not updating immediately after `gh pr create` and other PR-state-changing commands
+- Fixed Agent Teams teammates with non-ASCII names failing every API call due to invalid header encoding
+- Fixed `/review` using a deprecated `projectCards` GraphQL query that errored on repos with Classic Projects
+- Fixed `claude plugin validate` not flagging `skills:` entries pointing at a file instead of a directory
+- Fixed infinite loop where a skill using `context: fork` could repeatedly re-invoke itself
+- Improved Read tool to return a truncated first page with a "PARTIAL view" notice instead of a hard error when a whole-file read exceeds the token limit
+
+## 2026-05-19 (run 7 — success)
+- Sync to CC v2.1.145 — integrated release: `claude agents --json`, Stop/SubagentStop hook fields (`background_tasks`, `session_crons`), plugin preview-before-install, `context: fork` loop fix; all 11 gates passed, pushed to main
+
 ## 2026-05-19 (run 6 — success)
 - Routine audit pass at CC v2.1.144 — no upstream change detected; SKILL-cli.md added 2 new flags (`--dangerously-load-development-channels`, `--remote-control-session-name-prefix`), SKILL-settings.md expanded `policyHelper` sub-fields (`path`/`timeoutMs`/`refreshIntervalMs`), SKILL-mcp.md added `alwaysLoad` field and `ENABLE_TOOL_SEARCH` value table, SKILL-hooks.md added MCP tool hook fields (`server`/`tool`/`input`); all 8 gates passed, pushed to main
 

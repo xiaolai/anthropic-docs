@@ -188,6 +188,8 @@ Claude Code writes a JSON object to stdin (or POST body for HTTP hooks). Common 
 | `prompt` | UserPromptSubmit | The user's just-submitted prompt text |
 | `source` | SessionStart | `"startup"`, `"resume"`, or `"compact"` |
 | `effort` | `PreToolUse`, `PostToolUse`, `Stop`, `SubagentStop` (when model supports it) | Object `{"level": "low"\|"medium"\|"high"\|"xhigh"\|"max"}` — the active effort level. Also available as `$CLAUDE_EFFORT` env var in command hooks |
+| `background_tasks` | `Stop`, `SubagentStop` | Array of background task objects still running when the turn ended. Each object has `id`, `status`, and `command` fields |
+| `session_crons` | `Stop`, `SubagentStop` | Array of active session-scoped cron entries. Each object has `id`, `schedule`, and `command` fields |
 
 Example payload for `PreToolUse` on a Bash call:
 

@@ -96,6 +96,8 @@ claude plugin install my-plugin@my-marketplace
 
 After enabling/disabling a plugin mid-session, run `/reload-plugins` to connect/disconnect its components.
 
+> **Plugin preview before install:** The `/plugin` Discover and Browse screens show a plugin's commands, agents, skills, hooks, and MCP/LSP servers before you install it (as of v2.1.145).
+
 ## Marketplace manifest: `marketplace.json`
 
 A marketplace is a collection of plugins. The `marketplace.json` file at the marketplace root:
@@ -217,6 +219,8 @@ See [`rules/plugins.md`](rules/plugins.md). Key pitfalls:
 - Do NOT put component directories inside `.claude-plugin/` — they go at plugin root
 - `enabledPlugins` keys use `<plugin>@<marketplace>` format (not bare plugin name)
 - Plugin skills are namespaced (`/plugin-name:skill`); standalone `.claude/` skills are bare (`/skill`)
+- `skills:` entries in the manifest must point at a **directory**, not a file — `claude plugin validate` flags file paths and suggests the parent directory
+- Skills using `context: fork` must not invoke themselves; doing so causes an infinite re-invocation loop
 
 ---
 

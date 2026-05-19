@@ -32,7 +32,7 @@ source: https://code.claude.com/docs/en/cli-reference.md
 | `claude auth login` | Sign in. Flags: `--email`, `--sso`, `--console` | `claude auth login --console` |
 | `claude auth logout` | Log out | `claude auth logout` |
 | `claude auth status` | Show auth status as JSON (`--text` for human-readable); exits 0 if logged in, 1 if not | `claude auth status` |
-| `claude agents` | Open agent view (research preview). Flags: `--cwd`, `--add-dir`, `--settings`, `--mcp-config`, `--plugin-dir`, `--permission-mode`, `--model`, `--effort`, `--dangerously-skip-permissions`. `--cwd <path>` scopes the session list to a directory. | `claude agents --cwd ~/projects/my-app` |
+| `claude agents` | Open agent view (research preview). Flags: `--cwd`, `--add-dir`, `--settings`, `--mcp-config`, `--plugin-dir`, `--permission-mode`, `--model`, `--effort`, `--dangerously-skip-permissions`. `--cwd <path>` scopes the session list to a directory. `--json` prints live sessions as JSON for scripting (tmux-resurrect, status bars, session pickers). | `claude agents --cwd ~/projects/my-app` |
 | `claude attach <id>` | Attach to a background session | `claude attach 7c5dcf5d` |
 | `claude auto-mode defaults` | Print built-in auto mode classifier rules as JSON | `claude auto-mode defaults > rules.json` |
 | `claude daemon status` | Print background-session supervisor state | `claude daemon status` |

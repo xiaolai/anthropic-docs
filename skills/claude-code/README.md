@@ -14,7 +14,7 @@ changes that affect the reference surface (schema fields, event
 names, flags, env vars) flow in.
 
 <!-- The two stamps below are auto-filled by the pipeline. -->
-**Claude Code version**: v2.1.144
+**Claude Code version**: v2.1.145
 **Last updated**: 2026-05-19
 **Pipeline status**: see [`reports/`](reports/) for per-run records.
 
