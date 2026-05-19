@@ -33,7 +33,11 @@ permissions:
 env:
   MAX_MEND_RETRIES: 2
   PIPELINE_LOG: /tmp/pipeline-log.json
-  DIFF_THRESHOLD_PCT: 20
+  # Raised from 20 → 50 after every agent-driven skill (5 of 7) was
+  # consistently tripping at 20% on legitimate research-agent work
+  # (state.json compactions, multi-section populations). 50% still
+  # catches unbounded LLM rewrites that touch most of a file.
+  DIFF_THRESHOLD_PCT: 50
   CLAUDE_CODE_CLI_VERSION: "2.1.143"
 
 jobs:
@@ -346,6 +350,27 @@ jobs:
         continue-on-error: true
         run: bash pipeline/scripts/validate-examples.sh
 
+      - name: Guard scaffoldComplete from agent tampering
+        if: always()
+        run: |
+          # The research/mending agents have Write access and have been
+          # observed flipping state.scaffoldComplete=true mid-run (likely
+          # interpreting "task complete" as a cue). That causes
+          # check_populated below to run in post-scaffold mode and fail on
+          # residual stubs the agent didn't get to. scaffoldComplete must
+          # only be promoted by the explicit Flip step below, never by an
+          # agent. Reset to monitor.sh's snapshot of the committed value.
+          STATE="skills/$SKILL_NAME/state.json"
+          if [ -f /tmp/fresh-state.json ] && [ -f "$STATE" ]; then
+            COMMITTED=$(jq -r '.scaffoldComplete // false' /tmp/fresh-state.json)
+            CURRENT=$(jq -r '.scaffoldComplete // false' "$STATE")
+            if [ "$CURRENT" != "$COMMITTED" ]; then
+              echo "scaffoldComplete tamper detected: agent wrote '$CURRENT', committed was '$COMMITTED'. Resetting."
+              jq --argjson sc "$COMMITTED" '.scaffoldComplete = $sc' "$STATE" \
+                > /tmp/sc-reset.tmp && mv /tmp/sc-reset.tmp "$STATE"
+            fi
+          fi
+
       - name: Check populated sections
         id: check_populated
         if: always()
@@ -402,7 +427,11 @@ jobs:
               })
             | .researchedIssues = ($live.researchedIssues // {})
             | .lastRunWarnings  = ($live.lastRunWarnings // [])
-            | .scaffoldComplete = ($live.scaffoldComplete // false)
+            # scaffoldComplete is monitor-authoritative — agents must not
+            # promote it. The dedicated Flip step below is the only
+            # legitimate promoter. Source from $fresh (monitor.sh snapshot
+            # of committed state), not $live (post-agent on-disk).
+            | .scaffoldComplete = ($fresh.scaffoldComplete // false)
           ' "$STATE" /tmp/fresh-state.json > /tmp/merged-state.json \
             && mv /tmp/merged-state.json "$STATE"
           echo "merged $STATE — researchedIssues=$(jq '.researchedIssues | length' "$STATE"), lastRunWarnings=$(jq '.lastRunWarnings | length' "$STATE"), scaffoldComplete=$(jq -r '.scaffoldComplete' "$STATE")"

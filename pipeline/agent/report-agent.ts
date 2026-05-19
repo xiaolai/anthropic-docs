@@ -162,7 +162,7 @@ for await (const message of query({
   options: {
     systemPrompt,
     maxTurns: 10,
-    maxBudgetUsd: 0.25,
+    maxBudgetUsd: 0.50,
     permissionMode: "bypassPermissions",
     allowDangerouslySkipPermissions: true,
     pathToClaudeCodeExecutable: resolveClaudeCodeExecutable(),
