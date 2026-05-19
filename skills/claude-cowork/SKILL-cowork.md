@@ -124,16 +124,21 @@ APJ, and other sovereign regions).
 
 Every managed-configuration key lives in
 [`3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
-That page is the source of truth for:
+That page is the source of truth. Key groups:
 
-- Inference provider selection (`inferenceProvider`)
-- Region pinning (`inferenceVertexRegion`, `inferenceBedrockRegion`)
-- Feature toggles (web search, local MCP, etc.)
-- Telemetry toggles
-- MCP server allowlist
-- Plugin / skill / hook distribution settings
-- Per-user spend caps
-- Auto-update policy
+- **Activation:** `inferenceProvider` (enum: `vertex`, `bedrock`, `foundry`, `gateway`); `deploymentOrganizationUuid` (required for telemetry attribution — generate one UUID per fleet)
+- **Region pinning:** `inferenceVertexRegion`, `inferenceBedrockRegion`
+- **Credential helper:** `inferenceCredentialHelper` (path to executable), `inferenceCredentialHelperTtlSec` (cache TTL, default 3600 s) — for environments that require short-lived tokens
+- **Models:** `inferenceModels` — JSON array of model IDs or objects with optional `labelOverride` and `supports1m: true`
+- **Sandbox / workspace:** `allowedWorkspaceFolders`, `coworkEgressAllowedHosts`, `disabledBuiltinTools`, `isClaudeCodeForDesktopEnabled`, `disableDeepLinkRegistration`
+- **Connectors / extensions:** `managedMcpServers`, `orgPluginSettings`, `isLocalDevMcpEnabled`, `isDesktopExtensionEnabled`, `isDesktopExtensionSignatureRequired`
+- **Telemetry toggles:** `disableEssentialTelemetry`, `disableNonessentialTelemetry`, `disableNonessentialServices`, `disableAutoUpdates`, `autoUpdaterEnforcementHours`
+- **OTLP export:** `otlpEndpoint`, `otlpProtocol`, `otlpHeaders`, `otlpResourceAttributes`
+- **Usage limits:** `inferenceMaxTokensPerWindow`, `inferenceTokenWindowHours` (token-window model — no USD key)
+- **Appearance:** `banner` (JSON object with `text`, `backgroundColor`, `textColor`, `linkUrl`)
+
+> See [`rules/mdm-config.md`](../rules/mdm-config.md) for common MDM
+> authoring mistakes and the correct telemetry key names.
 
 ## Data residency
 
@@ -177,6 +182,26 @@ marketplace is not available in 3P.
 
 See [`3p/extensions.md`](https://claude.com/docs/cowork/3p/extensions.md)
 for the per-extension distribution mechanics.
+
+## Code tab (3P)
+
+The Code tab in Cowork on 3P is the embedded Claude Code engine
+(same as the standalone CLI, with a graphical session manager).
+It inherits all 3P configuration automatically — no separate Claude
+Code deployment needed.
+
+Key propagation notes (source: [`3p/code.md`](https://claude.com/docs/cowork/3p/code.md)):
+
+- **Inference, credentials, models, MCP servers, OTLP, telemetry toggles,
+  and token caps** are passed directly — they cannot be overridden by
+  user or project settings.
+- **Egress allowlist, workspace folder restrictions, and MCP server list**
+  are translated into Claude Code managed-settings policy. If a
+  separate `managed-settings.json` already exists on the device,
+  Cowork's policy is ignored by default — add `"parentSettingsBehavior":
+  "merge"` to your Claude Code managed settings to layer them.
+- To **remove the Code tab entirely**, set `isClaudeCodeForDesktopEnabled:
+  false` in the Cowork 3P configuration.
 
 ## M365 connector (3P-specific)
 

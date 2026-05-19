@@ -3,6 +3,9 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-19
+- *(pending review — see PR auto/2026-05-19-pending-review)* Docs index sync — removed `office-agents/overview.md` (35 → 34 pages); 19 verify checks passed; check-diff-size gate triggered review
+
 ## [0.1.0] — 2026-05-17
 
 ### Added

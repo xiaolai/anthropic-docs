@@ -1,9 +1,9 @@
 {
   "indexUrl": "https://claude.com/docs/llms.txt",
-  "indexSha256": "84b7d4e7bcfe2b16ec93d8935e1ef5b700a087c2c2071f43755c9b0c1ef5afd0",
-  "indexBytes": 12252,
-  "pageCount": 35,
-  "refreshedAt": "2026-05-17T23:08:58Z",
+  "indexSha256": "33c21db31a258cebb454c9b3edb618c3666fd971935861ea26d75b32c3874374",
+  "indexBytes": 12122,
+  "pageCount": 34,
+  "refreshedAt": "2026-05-19T03:22:25Z",
   "pages": [
     {
       "path": "cowork/3p/bedrock-aws-sign-in.md",
@@ -170,14 +170,14 @@
     {
       "path": "office-agents/excel.md",
       "url": "https://claude.com/docs/office-agents/excel.md",
-      "sha256": "8cc4de0fa464f3ca97d8ee443e35d38f33940802f5ba83f0106be02acea1fafe",
-      "bytes": 9320
+      "sha256": "2af0a4c0b2642ae45b2e7fc5ec2470c3795b6aa296dd9a0ee518030d68b14ce3",
+      "bytes": 9289
     },
     {
       "path": "office-agents/fsi-plugins.md",
       "url": "https://claude.com/docs/office-agents/fsi-plugins.md",
-      "sha256": "db969369104c733770d6ed306e878906568473450abcb314f743d40623b5b1c5",
-      "bytes": 5780
+      "sha256": "498576a683587431956942312d62f81e05cb0fffcec754f3f7e246153f75669f",
+      "bytes": 5764
     },
     {
       "path": "office-agents/outlook.md",
@@ -186,28 +186,22 @@
       "bytes": 15550
     },
     {
-      "path": "office-agents/overview.md",
-      "url": "https://claude.com/docs/office-agents/overview.md",
-      "sha256": "48f29300bd37ad31b4cdf1f557eeec1a789cff4264238bb7706de1fa1d418fa7",
-      "bytes": 2124
-    },
-    {
       "path": "office-agents/powerpoint.md",
       "url": "https://claude.com/docs/office-agents/powerpoint.md",
-      "sha256": "4265af55038f4070fb9a8ef680aade9c5e29eec3c041ae0f53c07d035bed96a4",
-      "bytes": 11533
+      "sha256": "6800f04a2229ef815ae3438d4ae8a5e986b126d423aaa7afb25d0554f7f4e263",
+      "bytes": 11502
     },
     {
       "path": "office-agents/third-party-platforms.md",
       "url": "https://claude.com/docs/office-agents/third-party-platforms.md",
-      "sha256": "94e5ff6895a1e4d1d7ea6fc6537cf1bdf5f470ca854e6fab08a1c99265600302",
-      "bytes": 33632
+      "sha256": "66e77f7464b5679818f8f55fdcc0fbaf2e0ebb2f8725e4228b163a3e9ab64eff",
+      "bytes": 33729
     },
     {
       "path": "office-agents/word.md",
       "url": "https://claude.com/docs/office-agents/word.md",
-      "sha256": "172ec49f712b4a918617e2115c990a99b94c01cff5b5704d3fff63d8ba39512b",
-      "bytes": 14436
+      "sha256": "74925de8277ddf48f78fa264255f40938999b2848284a4d5c0a80cd85b9e8a6b",
+      "bytes": 14405
     },
     {
       "path": "office-agents/work-across-apps.md",

@@ -47,18 +47,32 @@ MDM profile should explicitly NOT set `inferenceProvider: foundry`.
 
 ## Rule 4 — Telemetry kill switches
 
-Three independent telemetry toggles:
+Four independent telemetry/update toggles (all `false` by default = telemetry
+enabled):
 
-- `disableCrashReporting`: boolean, scrubs and disables crash reports
-- `disableProductAnalytics`: boolean, disables usage telemetry
-- `disableAutoUpdate`: boolean, disables auto-update checks
+| Key | What it disables |
+|---|---|
+| `disableEssentialTelemetry` | Crash reports and error telemetry to Anthropic. Opting in means your team must collect and forward logs manually. |
+| `disableNonessentialTelemetry` | Product-usage analytics to Anthropic. |
+| `disableNonessentialServices` | Non-critical third-party services: connector favicons, artifact-preview iframe. |
+| `disableAutoUpdates` | Auto-update checks and downloads. Your IT team must push new builds. |
 
-All three are off-by-default (telemetry enabled). For air-gapped or
-compliance-hardened deployments, set all three to `true`.
+> **Old key names are broken.** Earlier versions of this rule listed
+> `disableCrashReporting`, `disableProductAnalytics`, and `disableAutoUpdate`
+> — these keys do nothing. Use the names above.
+
+For air-gapped or maximally restricted deployments, also set:
+
+```xml
+<key>disabledBuiltinTools</key>
+<string>["WebSearch","WebFetch"]</string>
+<key>coworkEgressAllowedHosts</key>
+<string>[]</string>
+```
 
 Telemetry NEVER contains user prompts or completions, but if your
 audit posture requires zero Anthropic-bound network traffic, disable
-all three.
+all four.
 
 ## Rule 5 — Don't mix per-user and admin profiles
 
@@ -85,11 +99,19 @@ JSON file your org publishes. **Pin plugin versions** in that
 manifest; bare references resolve to "latest" and inherit any
 breaking change immediately.
 
-## Rule 8 — Spend caps are workspace-monthly, not per-request
+## Rule 8 — Usage limits are token-window, not USD
 
-`workspaceSpendCapUSD` caps monthly usage per workspace. When hit,
-requests return 429 `cap_exceeded` until the next billing month.
-Set to a value above your monthly forecast, with a buffer.
+Usage caps in Cowork on 3P are **token-based**, not dollar-based. The
+`workspaceSpendCapUSD` key no longer exists. Use:
+
+| Key | Type | Description |
+|---|---|---|
+| `inferenceMaxTokensPerWindow` | integer | Total input + output tokens permitted per device per rolling window. Enforced locally; requests block when hit. |
+| `inferenceTokenWindowHours` | integer (1–720) | Rolling window length in hours. |
+
+These are enforced locally (not by the cloud provider) and persist
+across restarts. Set the window to match your billing cycle if you
+want to approximate a monthly cap: `inferenceTokenWindowHours: 720`.
 
 ---
 
