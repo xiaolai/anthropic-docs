@@ -31,7 +31,7 @@ user-invocable: true
 | **GitHub** | [anthropics/claude-code](https://github.com/anthropics/claude-code) |
 | **npm** | [`@anthropic-ai/claude-code`](https://www.npmjs.com/package/@anthropic-ai/claude-code) |
 
-> **This skill is auto-updated every 30 min.** A matrix pipeline reads
+> **This skill is auto-updated hourly.** A matrix pipeline reads
 > the upstream docs and rewrites the per-surface files below. Section
 > structure is stable; content drifts to track upstream.
 
@@ -73,7 +73,7 @@ Path-scoped correction rules live in `rules/`:
 
 ---
 
-*This skill is auto-updated every 30 minutes by a maintainer-run pipeline. If you
+*This skill is auto-updated hourly by a maintainer-run pipeline. If you
 spot a bug in this content, file an issue at
 [xiaolai/anthropic-docs](https://github.com/xiaolai/anthropic-docs) —
 SKILL.md fixes flow back through the next research run, not via PRs.*

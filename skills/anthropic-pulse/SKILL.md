@@ -2,7 +2,7 @@
 name: anthropic-pulse
 description: |
   Router skill for Anthropic's news + research feeds — auto-refreshed
-  every 30 minutes from anthropic.com/news and anthropic.com/research.
+  hourly from anthropic.com/news and anthropic.com/research.
 
   Use when the user asks about TIME-SENSITIVE Anthropic content: model
   launches ("did Claude X just release?"), product announcements,
@@ -24,10 +24,10 @@ user-invocable: true
 |---|---|
 | **News index** | [anthropic.com/news](https://www.anthropic.com/news) |
 | **Research index** | [anthropic.com/research](https://www.anthropic.com/research) |
-| **Refresh cadence** | every 30 minutes (matrix workflow) |
+| **Refresh cadence** | hourly (matrix workflow) |
 | **Content model** | digest only — title + date + URL + 1-2 sentence summary. Click through for full content. |
 
-> **This skill is auto-updated every 30 min.** The pipeline scrapes
+> **This skill is auto-updated hourly.** The pipeline scrapes
 > the two index pages, extracts the most recent ~20 items each, and
 > rewrites the surface files below. Unlike the other 7 skills, this
 > one has no docs-snapshot (the upstream is HTML, not markdown), no
@@ -54,6 +54,6 @@ user-invocable: true
 
 ---
 
-*Auto-updated every 30 minutes from anthropic.com/news and
+*Auto-updated hourly from anthropic.com/news and
 anthropic.com/research. File issues at
 [xiaolai/anthropic-docs](https://github.com/xiaolai/anthropic-docs).*

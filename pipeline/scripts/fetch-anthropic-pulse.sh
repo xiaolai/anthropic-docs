@@ -260,9 +260,9 @@ render_surface() {
 
   local FRONTMATTER_DESC
   if [[ "$SLUG" == "news" ]]; then
-    FRONTMATTER_DESC="Digest of the most recent ~15-20 Anthropic news posts — product launches, partnerships, region openings, model releases, policy updates, business announcements. Auto-refreshed every 30 minutes from anthropic.com/news. Use when the user asks: \"did X just launch?\", \"what did Anthropic announce?\", \"is model Y out yet?\", \"any partnership news?\". Skip: deep technical content (digest only has title + URL + summary; for body, WebFetch the linked URL)."
+    FRONTMATTER_DESC="Digest of the most recent ~15-20 Anthropic news posts — product launches, partnerships, region openings, model releases, policy updates, business announcements. Auto-refreshed hourly from anthropic.com/news. Use when the user asks: \"did X just launch?\", \"what did Anthropic announce?\", \"is model Y out yet?\", \"any partnership news?\". Skip: deep technical content (digest only has title + URL + summary; for body, WebFetch the linked URL)."
   else
-    FRONTMATTER_DESC="Digest of the most recent ~15-20 Anthropic research papers/posts — alignment research, evaluations, benchmarks, interpretability, the Anthropic Institute, the Anthropic Economic Index. Auto-refreshed every 30 minutes from anthropic.com/research. Use when the user asks: \"any recent Anthropic research on X?\", \"is there a paper on Y?\". Skip: production model docs (use anthropic-api etc.); deep paper content (digest only — Claude WebFetches the paper for depth)."
+    FRONTMATTER_DESC="Digest of the most recent ~15-20 Anthropic research papers/posts — alignment research, evaluations, benchmarks, interpretability, the Anthropic Institute, the Anthropic Economic Index. Auto-refreshed hourly from anthropic.com/research. Use when the user asks: \"any recent Anthropic research on X?\", \"is there a paper on Y?\". Skip: production model docs (use anthropic-api etc.); deep paper content (digest only — Claude WebFetches the paper for depth)."
   fi
 
   {
@@ -276,7 +276,7 @@ render_surface() {
     echo ""
     echo "# Anthropic — Recent $TITLE"
     echo ""
-    echo "> *Auto-refreshed every 30 minutes.* This is a rolling digest of the"
+    echo "> *Auto-refreshed hourly.* This is a rolling digest of the"
     echo "> most recent items from [$SOURCE_URL]($SOURCE_URL). For the full"
     echo "> body of any item, WebFetch its URL — that's the design."
     echo ""
@@ -304,7 +304,7 @@ render_surface() {
     echo ""
     echo "---"
     echo ""
-    echo "*Auto-updated every 30 minutes from $SOURCE_URL. If a digest entry"
+    echo "*Auto-updated hourly from $SOURCE_URL. If a digest entry"
     echo "doesn't answer the question, WebFetch the linked URL.*"
   } > "$OUT_FILE"
 

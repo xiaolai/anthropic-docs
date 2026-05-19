@@ -5,7 +5,7 @@
 A self-updating **Claude Code plugin** bundling 8 skills that mirror the
 official Anthropic + MCP documentation surfaces (~624 pages across 4 doc
 portals) plus a rolling news/research digest, and present them to Claude at
-intent-match time. Refreshed every 30 minutes.
+intent-match time. Refreshed hourly.
 
 ## What this gives you
 
@@ -97,7 +97,7 @@ anthropic-docs/
 │       └── CHANGELOG.md       ← per-skill history
 ├── .github/
 │   └── workflows/
-│       └── pipeline.yml       ← matrix-runs the pipeline across all skills every 30 min
+│       └── pipeline.yml       ← matrix-runs the pipeline across all skills hourly
 ├── package.json + lockfile    ← devDeps for shared scripts
 ├── LICENSE
 └── README.md (this file) + CHANGELOG.md
@@ -116,7 +116,7 @@ SKILL_NAME=claude-code bash pipeline/agent/monitor.sh
 SKILL_NAME=claude-code npx tsx pipeline/agent/research-agent.ts
 ```
 
-The CI workflow at `.github/workflows/pipeline.yml` matrix-iterates over `skills/*/` every 30 minutes (GitHub free-tier coalesces under load — typical end-to-end latency is sub-hour). Most runs are no-ops because `monitor.sh` exits cheaply when upstream hasn't changed.
+The CI workflow at `.github/workflows/pipeline.yml` matrix-iterates over `skills/*/` hourly (GitHub free-tier coalesces under load — typical end-to-end latency is sub-hour). Most runs are no-ops because `monitor.sh` exits cheaply when upstream hasn't changed.
 
 ## Local development — first-clone bootstrap
 

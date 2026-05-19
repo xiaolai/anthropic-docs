@@ -1,4 +1,4 @@
-name: Multi-skill update (every 30 min)
+name: Multi-skill update (hourly)
 
 # Multi-skill fan-out over every skill in skills/*. Each matrix entry runs
 # the full pipeline for one skill: monitor → optional snapshot-refresh +
@@ -15,7 +15,7 @@ name: Multi-skill update (every 30 min)
 
 on:
   schedule:
-    - cron: "*/30 * * * *"  # Every 30 minutes. GH free-tier coalesces under load.
+    - cron: "0 * * * *"  # Hourly at :00. GH free-tier coalesces under load.
   workflow_dispatch:
     inputs:
       skill_filter:
@@ -678,8 +678,8 @@ jobs:
             fi
           else
             git commit -F /tmp/commit-message.txt
-            # Cron runs take ~1h but fire every 30min, so they overlap. If
-            # another concurrent matrix entry (or another cron run) pushed
+            # Concurrent matrix entries (and the rare back-to-back cron tick
+            # when a previous run overran) can both try to push to main. If
             # to main while we were working, `git push` fails with
             # "rejected (fetch first)". Try a rebase + retry once.
             if ! git push 2>/tmp/push-err; then
