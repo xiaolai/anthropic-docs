@@ -3,6 +3,9 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-19 (run 7)
+*(pending review — see branch `auto/2026-05-19-pending-review`)* Research agent re-ran (43 turns, 170 s, $0.43); check-docs-drift still failing — surface edits from research agent pending human review before merge.
+
 ## 2026-05-19 (run 6)
 *(pending review — see branch `auto/2026-05-19-pending-review`)* Research agent re-ran (69 turns, 376 s, $1.07); check-docs-drift still failing — surface edits from research agent pending human review before merge.
 
