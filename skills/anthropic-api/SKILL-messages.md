@@ -43,6 +43,8 @@ single queries or stateless multi-turn conversations.
 | `service_tier` | `auto` / `standard_only` |
 | `thinking` | `{ type: "enabled", budget_tokens: N }` for extended thinking |
 | `output_config` | Output configuration — see below |
+| `container` | Container ID (string) to reuse across requests when using the `code_execution` server tool. Preserves the sandbox filesystem between turns. |
+| `inference_geo` | Geographic region for inference processing (e.g. `"us"`, `"eu"`). If unset, the workspace's `default_inference_geo` is used. |
 
 ### `output_config` parameter
 
@@ -76,6 +78,7 @@ block) or an array of typed blocks:
 | `server_tool_use` | Assistant turn: model invoked a **server** tool (e.g. web_search, web_fetch, code_execution). Different return path — see server tools below. |
 | `thinking` | Extended-thinking output (when `thinking` enabled) |
 | `redacted_thinking` | Thinking content the API redacted before returning |
+| `container_upload` | User turn: file uploaded to the code-execution container. Carries `file_id`. Files are placed in the container's input directory. |
 
 ### Server tools vs. client tools
 
@@ -93,6 +96,8 @@ Known server tool types (specify in `tools` array):
 | `code_execution_20250825` / `code_execution_20260120` | Execute code in a sandbox. |
 
 Server tools also support `defer_loading: true` to exclude from the initial system prompt (loaded on demand) and `strict: true` for schema validation.
+
+Client tools in the `tools` array also accept an optional `eager_input_streaming: boolean` field. When `true`, tool input parameters are streamed incrementally as they are generated (types inferred on-the-fly); when `false`, streaming is disabled for that tool even if the `fine-grained-tool-streaming` beta is active. Default (`null`) inherits from the beta header setting. Source: [`messages/create.md`](https://platform.claude.com/docs/en/api/messages/create.md).
 
 ### Prompt caching: `cache_control`
 
@@ -135,8 +140,16 @@ in the platform-features skill for caching strategy.
     "cache_creation_input_tokens": 0,
     "cache_read_input_tokens": 0,
     "output_tokens": 100
-  }
+  },
+  "container": {
+    "id": "container_...",
+    "expires_at": "2026-05-18T12:00:00Z"
+  },
+  "inference_geo": "us"
 }
+```
+
+> `container` is present only when the `code_execution` server tool was used. Pass `container.id` as `container` in the next request to reuse the same sandbox. **See KI 1 in [`SKILL-known-issues.md`](SKILL-known-issues.md) — `toolRunner` does not currently propagate `container.id` automatically.**
 ```
 
 ### Stop reasons
@@ -229,4 +242,4 @@ tool use, vision, or structured outputs. Migrate to Messages.
 
 ---
 
-*Source pages: 9 under `platform.claude.com/docs/en/api/messages*` (Messages family) + 2 legacy completions.*
+*Source pages: 9 under `platform.claude.com/docs/en/api/messages*` (Messages family) + 2 legacy completions. Last audited: 2026-05-18.*
