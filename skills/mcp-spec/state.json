@@ -4,14 +4,18 @@
       {
         "manager": "npm",
         "name": "@modelcontextprotocol/sdk",
-        "version": "0.0.0",
-        "engines": {}
+        "version": "1.29.0",
+        "engines": {
+          "node": ">=18"
+        }
       },
       {
         "manager": "pypi",
         "name": "mcp",
-        "version": "0.0.0",
-        "engines": {}
+        "version": "1.27.1",
+        "engines": {
+          "python": ">=3.10"
+        }
       }
     ]
   },
@@ -20,25 +24,28 @@
       {
         "repo": "modelcontextprotocol/modelcontextprotocol",
         "latestRelease": {
-          "tag": "",
-          "name": "",
-          "publishedAt": ""
+          "tag": "2025-11-25",
+          "name": "2025-11-25",
+          "body": "This release marks the **stable release** of the `2025-11-25` revision of the Model Context Protocol.\r\n\r\nThe specification is available on the [official Model Context Protocol website](https://modelcontextprotocol.io/specification/2025-11-25).\r\n\r\nFor a detailed overview of changes, see [2025-11-25 changelog](https://modelcontextprotocol.io/specification/2025-11-25/changelog).",
+          "publishedAt": "2025-11-25T21:17:42Z"
         }
       },
       {
         "repo": "modelcontextprotocol/typescript-sdk",
         "latestRelease": {
-          "tag": "",
-          "name": "",
-          "publishedAt": ""
+          "tag": "v1.29.0",
+          "name": "v1.29.0",
+          "body": "## What's Changed\r\n* fix: treat v1.x as primary branch for npm latest tag (backport #1577) by @felixweinberger in https://github.com/modelcontextprotocol/typescript-sdk/pull/1749\r\n* [v1.x] fix: disallow null (infinite) requested TTL by @LucaButBoring in https://github.com/modelcontextprotocol/typescript-sdk/pull/1339\r\n* [v1.x] fix: add missing size field to ResourceSchema by @olaservo in https://github.com/modelcontextprotocol/typescript-sdk/pull/1575\r\n* Add typings exports by @tdraier in https://github.com/modelcontextprotocol/typescript-sdk/pull/1623\r\n* v1.x npm audit fix by @KKonstantinov in https://github.com/modelcontextprotocol/typescript-sdk/pull/1780\r\n* v1.x #1623 follow up -add missing types to package.json by @KKonstantinov in https://github.com/modelcontextprotocol/typescript-sdk/pull/1773\r\n* [v1.x backport] Allow servers / clients to advertise extensions in the capability object by @localden in https://github.com/modelcontextprotocol/typescript-sdk/pull/1811\r\n* fix(stdio): always set windowsHide on Windows, not just in Electron by @jnMetaCode in https://github.com/modelcontextprotocol/typescript-sdk/pull/1640\r\n* chore: bump version to 1.29.0 by @felixweinberger in https://github.com/modelcontextprotocol/typescript-sdk/pull/1820\r\n\r\n## New Contributors\r\n* @tdraier made their first contribution in https://github.com/modelcontextprotocol/typescript-sdk/pull/1623\r\n* @jnMetaCode made their first contribution in https://github.com/modelcontextprotocol/typescript-sdk/pull/1640\r\n\r\n**Full Changelog**: https://github.com/modelcontextprotocol/typescript-sdk/compare/v1.28.0...v1.29.0",
+          "publishedAt": "2026-03-30T16:49:30Z"
         }
       },
       {
         "repo": "modelcontextprotocol/python-sdk",
         "latestRelease": {
-          "tag": "",
-          "name": "",
-          "publishedAt": ""
+          "tag": "v1.27.1",
+          "name": "v1.27.1",
+          "body": "## What's Changed\r\n* [v1.x] fix: catch PydanticUserError when generating output schema (pydantic 2.13 compat) by @maxisbey in https://github.com/modelcontextprotocol/python-sdk/pull/2435\r\n* [v1.x] fix(auth): coerce empty-string optional URL fields to None in OAuthClientMetadata by @felixweinberger in https://github.com/modelcontextprotocol/python-sdk/pull/2405\r\n* [v1.x] build: restrict httpx to <1.0.0 by @maxisbey in https://github.com/modelcontextprotocol/python-sdk/pull/2559\r\n* [v1.x] refactor: import SSEError from httpx_sse public API by @maxisbey in https://github.com/modelcontextprotocol/python-sdk/pull/2561\r\n\r\n\r\n**Full Changelog**: https://github.com/modelcontextprotocol/python-sdk/compare/v1.27.0...v1.27.1",
+          "publishedAt": "2026-05-08T16:44:58Z"
         }
       }
     ],
@@ -49,363 +56,373 @@
   },
   "docs": {
     "indexUrl": "https://modelcontextprotocol.io/llms.txt",
-    "indexSha256": "66c1db82f1594bee0fcd0e3259404fa93029a9ccfbcecbc7d7cb485aac4a11b5",
-    "pageCount": 116,
+    "indexSha256": "2a3dc7cff742a97809e44f71b140d50fb43b02d90d2808192f008fec522206f6",
+    "pageCount": 119,
     "knownPages": {
       "https://modelcontextprotocol.io/clients.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/community/antitrust.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/community/charter-template.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/community/communication.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/community/contributing.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/community/contributor-ladder.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/community/design-principles.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/community/file-uploads/charter.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/community/governance.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/community/inspector-v2/charter.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/community/interceptors/charter.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/community/sdk-tiers.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/community/sdk/charter.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/community/sep-guidelines.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/community/server-card/charter.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/community/skills-over-mcp/charter.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/community/triggers-events/charter.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/community/working-interest-groups.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/development/roadmap.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/docs/develop/build-client.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/docs/develop/build-server.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/docs/develop/build-with-agent-skills.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/docs/develop/clients/client-best-practices.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/docs/develop/connect-local-servers.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/docs/develop/connect-remote-servers.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/docs/getting-started/intro.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/docs/learn/architecture.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/docs/learn/client-concepts.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/docs/learn/server-concepts.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/docs/learn/versioning.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/docs/sdk.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/docs/tools/debugging.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/docs/tools/inspector.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/docs/tutorials/security/authorization.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/examples.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/extensions/apps/build.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/extensions/apps/overview.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/extensions/auth/enterprise-managed-authorization.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/extensions/auth/oauth-client-credentials.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/extensions/auth/overview.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/extensions/client-matrix.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/extensions/overview.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/extensions/tasks/overview.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/registry/about.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/registry/authentication.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/registry/faq.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/registry/github-actions.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/registry/moderation-policy.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/registry/package-types.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/registry/quickstart.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/registry/registry-aggregators.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/registry/remote-servers.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/registry/terms-of-service.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/registry/versioning.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/1024-mcp-client-security-requirements-for-local-server-.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/1034--support-default-values-for-all-primitive-types-in.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/1036-url-mode-elicitation-for-secure-out-of-band-intera.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/1046-support-oauth-client-credentials-flow-in-authoriza.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/1302-formalize-working-groups-and-interest-groups-in-mc.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/1303-input-validation-errors-as-tool-execution-errors.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/1319-decouple-request-payload-from-rpc-methods-definiti.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/1330-elicitation-enum-schema-improvements-and-standards.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/1577--sampling-with-tools.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/1613-establish-json-schema-2020-12-as-default-dialect-f.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/1686-tasks.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/1699-support-sse-polling-via-server-side-disconnect.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/1730-sdks-tiering-system.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/1850-pr-based-sep-workflow.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/1865-mcp-apps-interactive-user-interfaces-for-mcp.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/2085-governance-succession-and-amendment.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
+      },
+      "https://modelcontextprotocol.io/seps/2106-json-schema-2020-12.md": {
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/2133-extensions.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/2148-contributor-ladder.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
+      },
+      "https://modelcontextprotocol.io/seps/2164-resource-not-found-error.md": {
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/2149-working-group-charter-template.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/2207-oidc-refresh-token-guidance.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/2243-http-standardization.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/2260-Require-Server-requests-to-be-associated-with-Client-requests.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/2322-MRTR.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/2468-recommend-issuer-claim-for-auth.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/2484-conformance-tests-required-for-final-seps.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/2549-TTL-for-list-results.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/2567-sessionless-mcp.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/2575-stateless-mcp.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/2577-deprecate-roots-sampling-and-logging.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
+      },
+      "https://modelcontextprotocol.io/seps/2596-spec-feature-lifecycle-and-deprecation.md": {
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/2663-tasks-extension.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/414-request-meta.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/932-model-context-protocol-governance.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/973-expose-additional-metadata-for-implementations-res.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/985-align-oauth-20-protected-resource-metadata-with-rf.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/986-specify-format-for-tool-names.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/990-enable-enterprise-idp-policy-controls-during-mcp-o.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/991-enable-url-based-client-registration-using-oauth-c.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/994-shared-communication-practicesguidelines.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/seps/index.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/specification/2025-11-25/architecture/index.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/specification/2025-11-25/basic/index.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/specification/2025-11-25/basic/lifecycle.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/specification/2025-11-25/basic/transports.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/cancellation.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/ping.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/progress.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/tasks.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/specification/2025-11-25/changelog.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/specification/2025-11-25/client/elicitation.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/specification/2025-11-25/client/roots.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/specification/2025-11-25/client/sampling.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/specification/2025-11-25/index.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/specification/2025-11-25/schema.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/specification/2025-11-25/server/index.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/specification/2025-11-25/server/prompts.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/specification/2025-11-25/server/resources.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/specification/2025-11-25/server/tools.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/completion.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/logging.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       },
       "https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/pagination.md": {
-        "lastSeen": "2026-05-17T23:09:36Z"
+        "lastSeen": "2026-05-19T06:27:04Z"
       }
     }
   },
   "trackedIssues": {},
   "researchedIssues": {},
-  "lastAuditedVersion": "none",
-  "lastUpdated": "2026-05-18T00:00:00Z",
+  "lastAuditedVersion": "1.29.0",
+  "lastUpdated": "2026-05-19T06:27:05Z",
   "scaffoldComplete": true,
-  "lastRunWarnings": []
+  "lastRunWarnings": [],
+  "lastScannedIssueNumber": null
 }

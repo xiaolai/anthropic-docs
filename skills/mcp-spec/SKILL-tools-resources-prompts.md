@@ -55,13 +55,23 @@ A tool is a callable function the server exposes to the host LLM.
 }
 ```
 
-- `inputSchema` — JSON Schema, used by the LLM and the client to
-  validate arguments.
+- `inputSchema` — JSON Schema object (must have `type: "object"`), used by the LLM and the client to
+  validate arguments. Currently limited to `type`, `properties`, `required` in the 2025-11-25 spec.
 - `outputSchema` — optional. When present, the response's
-  `structuredContent` should match it.
+  `structuredContent` should match it. Currently restricted to `type: "object"` schemas.
 - `annotations` — *non-binding* hints for clients (UI rendering,
   permission prompts). All Boolean fields default to safe-pessimistic
   values when absent.
+
+> **Draft SEP — JSON Schema 2020-12:** [SEP-2106](https://modelcontextprotocol.io/seps/2106-json-schema-2020-12.md)
+> proposes loosening these restrictions:
+> - `inputSchema` — keep `type: "object"` but allow any additional JSON Schema keywords
+>   (`anyOf`, `oneOf`, `allOf`, `$ref`, `$defs`, etc.)
+> - `outputSchema` — allow any valid JSON Schema 2020-12 (arrays, primitives, compositions)
+> - `structuredContent` — allow any JSON value (object, array, or primitive), not just objects
+>
+> Until this SEP is Final, the 2025-11-25 spec restrictions apply. Clients that want maximum
+> compatibility SHOULD wrap array `structuredContent` in an object property for now.
 
 ### Calling
 

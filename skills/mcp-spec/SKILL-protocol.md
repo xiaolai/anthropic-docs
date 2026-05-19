@@ -53,6 +53,21 @@ All MCP messages are JSON-RPC 2.0:
 - **Response** — `{jsonrpc: "2.0", id, result}` or
   `{jsonrpc: "2.0", id, error: {code, message, data?}}`.
 
+### The `_meta` field
+
+Requests and notifications MAY include a `_meta` key in `params` for
+out-of-band metadata. The key is reserved — its values are not part of
+the core message semantics.
+
+**OpenTelemetry trace context** ([SEP-414](https://modelcontextprotocol.io/seps/414-request-meta.md) — Final):
+W3C Trace Context keys `traceparent`, `tracestate`, and `baggage` MAY
+appear directly in `_meta` (exception to the usual DNS-prefix convention
+for `_meta` keys, for compatibility with existing OTel implementations).
+
+```text
+"_meta": { "traceparent": "00-0af7651916cd43dd8448eb211c80319c-00f067aa0ba902b7-01" }
+```
+
 ## Initialization handshake
 
 1. Client sends `initialize` request with its `protocolVersion`,
@@ -111,6 +126,12 @@ Standard JSON-RPC error codes plus MCP-specific extensions:
 MCP-defined error semantics live in the spec under
 [`specification/2025-11-25/basic/`](https://modelcontextprotocol.io/specification/2025-11-25/basic/).
 
+> **Draft SEP — resource not found:** [SEP-2164](https://modelcontextprotocol.io/seps/2164-resource-not-found-error.md)
+> proposes standardising `-32602` (Invalid Params) as the canonical JSON-RPC error code when a
+> requested resource URI does not exist. Current SDK implementations are inconsistent (TypeScript
+> uses `-32602`, most others use `-32002`). Until SEP-2164 is Final, clients SHOULD tolerate both
+> `-32602` and `-32002` as resource-not-found indicators.
+
 ## Protocol versioning
 
 Version string format: `YYYY-MM-DD` — the date of the last
@@ -130,6 +151,15 @@ appropriate error.
 
 Reference: [`learn/versioning.md`](https://modelcontextprotocol.io/docs/learn/versioning.md).
 
+> **Draft SEP — feature lifecycle:** [SEP-2596](https://modelcontextprotocol.io/seps/2596-spec-feature-lifecycle-and-deprecation.md)
+> proposes a formal lifecycle for individual spec features — **Active**, **Deprecated**, **Removed**
+> — separate from the spec-revision lifecycle (Draft / Current / Final). Key points:
+> - Deprecation requires a SEP; a minimum 12-month window before a feature is eligible for removal.
+> - Removal is a Core Maintainer decision at release time (no second SEP needed).
+> - Grandfathers the HTTP+SSE transport and `includeContext: "thisServer"/"allServers"` as already
+>   Deprecated with a 3-month grace period once the SEP reaches Final.
+> - Tier 1 SDKs must surface deprecated markers and runtime warnings within their next release.
+
 ## Specification subtree
 
 | Path | Topic |
@@ -147,6 +177,22 @@ Protocol evolution happens via SEPs — Specification Enhancement
 Proposals. The process is documented at
 [`community/sep-guidelines.md`](https://modelcontextprotocol.io/community/sep-guidelines.md).
 Active SEPs live under [`seps/`](https://modelcontextprotocol.io/seps/).
+
+Notable SEPs as of 2026-05-19:
+
+**Final (normative):**
+
+| SEP | Title | Topic |
+|---|---|---|
+| [SEP-414](https://modelcontextprotocol.io/seps/414-request-meta.md) | Document OpenTelemetry Trace Context Propagation Conventions | `traceparent`/`tracestate`/`baggage` in `_meta`; exception to DNS-prefix rule |
+
+**Draft (not yet normative):**
+
+| SEP | Title | Topic |
+|---|---|---|
+| [SEP-2596](https://modelcontextprotocol.io/seps/2596-spec-feature-lifecycle-and-deprecation.md) | Specification Feature Lifecycle and Deprecation Policy | Formal Active/Deprecated/Removed states for spec features; 12-month minimum window |
+| [SEP-2164](https://modelcontextprotocol.io/seps/2164-resource-not-found-error.md) | Standardize Resource Not Found Error Code | Proposes `-32602` as canonical code; currently inconsistent across SDKs |
+| [SEP-2106](https://modelcontextprotocol.io/seps/2106-json-schema-2020-12.md) | Tools `inputSchema` & `outputSchema` Conform to JSON Schema 2020-12 | Loosens schema restrictions; allows composition keywords and non-object `structuredContent` |
 
 ---
 
