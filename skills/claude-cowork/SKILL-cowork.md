@@ -148,10 +148,20 @@ That page is the source of truth for:
   `disableNonessentialServices`, `disableAutoUpdates`; `autoUpdaterEnforcementHours`
   (force pending update after N hours, 1–72, default 72)
 - **MCP & extensions** — `managedMcpServers` (JSON array; each server supports
-  `transport`, `headers`, `headersHelper`/`headersHelperTtlSec`, `oauth` object
-  for pre-registered OAuth clients, `toolPolicy`); `orgPluginSettings` (per-tool
-  policy for org-plugin servers); `isLocalDevMcpEnabled`; `isDesktopExtensionEnabled`;
+  `transport` (`"http"` (default) | `"sse"` | `"stdio"`), `headers`,
+  `headersHelper`/`headersHelperTtlSec` (default 300 s), `oauth` object
+  for pre-registered OAuth clients, `toolPolicy`; `stdio` transport also takes
+  `command`, `args`, `env`); `orgPluginSettings` (per-tool policy for
+  org-plugin servers, keyed as `{"mcpServers":{"<name>":{"toolPolicy":{...}}}}`);
+  `isLocalDevMcpEnabled`; `isDesktopExtensionEnabled`;
   `isDesktopExtensionSignatureRequired`
+- **OTLP export** — `otlpEndpoint` (OTLP collector base URL; endpoint host is
+  auto-added to sandbox allowlist), `otlpProtocol` (`"http/protobuf"` (default)
+  | `"http/json"` | `"grpc"`), `otlpHeaders` (JSON object of header→value pairs),
+  `otlpResourceAttributes` (JSON object of extra resource attributes; built-in
+  keys such as `service.name` are dropped if they collide)
+- **Appearance** — `banner` (JSON object: `enabled`, `text` (≤ 200 chars),
+  `backgroundColor` (`#RRGGBB`), `textColor` (`#RRGGBB`), `linkUrl` (HTTPS URL))
 - **Token spend caps** — `inferenceMaxTokensPerWindow`, `inferenceTokenWindowHours`
 
 ## Data residency
@@ -197,6 +207,29 @@ provider.
 and MCP servers (local + remote). The org-plugins directory acts as
 an organization-internal marketplace; the public Anthropic plugin
 marketplace is not available in 3P.
+
+**Org-plugins directory paths:**
+
+| Platform | Path |
+|---|---|
+| macOS | `/Library/Application Support/Claude/org-plugins/` |
+| Windows | `C:\Program Files\Claude\org-plugins\` |
+
+Each subdirectory is one plugin and must contain `.claude-plugin/plugin.json`.
+Use `version.json` (`{"version":"<string>"}`) to trigger re-sync on next launch.
+Set `installationPreference` in `plugin.json` to control rollout:
+- `"required"` — auto-installs; Uninstall action hidden
+- `"auto_install"` — auto-installs; users can uninstall
+- `"available"` (default) — users install manually
+
+End users **cannot add remote MCP servers** — only local ones (when
+`isLocalDevMcpEnabled` is `true`). Remote servers come only via
+`managedMcpServers` or org-plugins.
+
+Every connector in the [Claude connector directory](https://claude.com/connectors)
+not labeled "Made by Anthropic" is accessible in 3P via `managedMcpServers` or
+user install. Connectors labeled "Made by Anthropic" require Anthropic
+infrastructure and are not available.
 
 See [`3p/extensions.md`](https://claude.com/docs/cowork/3p/extensions.md)
 for the per-extension distribution mechanics.
@@ -251,9 +284,12 @@ differ in 3P mode.
 | **Web Search** | Server-side at your inference provider | Vertex AI ✓, Foundry ✓, Bedrock ✗, Gateway (if provider implements `web_search`) |
 | **Web Fetch** | Client-side on user's device | Gated by `coworkEgressAllowedHosts` |
 
-**Critical:** `coworkEgressAllowedHosts` does **not** restrict Web
-Search — searches execute server-side, outside the sandbox. To disable
-search, add `"WebSearch"` to `disabledBuiltinTools`.
+**Critical:** `coworkEgressAllowedHosts` governs only the **Cowork tab's
+sandbox** (web fetch, shell commands, package installs). It does **not**
+restrict Web Search (server-side at your provider — add `"WebSearch"` to
+`disabledBuiltinTools` to block it) and does **not** restrict the Code tab,
+which runs on the host with normal network access. To remove the Code tab,
+set `isClaudeCodeForDesktopEnabled` to `false`.
 
 URLs returned in search results are **automatically allowed** for a
 follow-up Web Fetch even if they are not in your `coworkEgressAllowedHosts`
@@ -296,13 +332,24 @@ event produced while processing a single user prompt.
 
 **Standard attributes on all events:** `session.id`, `organization.id`,
 `user.account_uuid`, `user.account_id` (tagged format, e.g.
-`user_01BWBeN28…`), `user.email`, `workspace.host_paths`, `terminal.type`.
+`user_01BWBeN28…`), `user.id` (anonymous device/install identifier),
+`user.email`, `workspace.host_paths`, `terminal.type`.
+
+**Service resource attributes (on all spans):** `service.name` (`"cowork"`),
+`service.version`, `host.arch`, `os.type`, `os.version`.
 
 **Notable per-event attributes:**
+- `user_prompt` — `prompt_length`, `prompt` (content), `event.sequence`
 - `tool_result` — `tool_input` (JSON-serialized args, strings >512 chars
-  truncated), `tool_parameters`, `decision_source`, `tool_result_size_bytes`
-- `api_request` / `api_error` — `speed` (`"fast"` or `"normal"`),
-  `cost_usd`, cache token counts
+  truncated, total ≤ ~4 KB), `tool_parameters`, `decision_type`
+  (`"accept"` / `"reject"`), `decision_source` (`"config"` | `"hook"` |
+  `"user_permanent"` | `"user_temporary"` | `"user_abort"` | `"user_reject"`),
+  `tool_result_size_bytes`, `mcp_server_scope` (MCP tools only)
+- `api_request` — `speed` (`"fast"` or `"normal"`), `cost_usd`,
+  `input_tokens`, `output_tokens`, `cache_read_tokens`, `cache_creation_tokens`,
+  `duration_ms`
+- `api_error` — `speed`, `status_code` (HTTP code or `"undefined"` for
+  non-HTTP), `attempt` (retry count), `duration_ms`
 - `tool_decision` — `decision` (`"accept"` / `"reject"`), `source`
 
 ---
