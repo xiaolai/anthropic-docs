@@ -1,9 +1,9 @@
 {
   "indexUrl": "https://claude.com/docs/llms.txt",
-  "indexSha256": "84b7d4e7bcfe2b16ec93d8935e1ef5b700a087c2c2071f43755c9b0c1ef5afd0",
-  "indexBytes": 12252,
+  "indexSha256": "33c21db31a258cebb454c9b3edb618c3666fd971935861ea26d75b32c3874374",
+  "indexBytes": 12122,
   "pageCount": 34,
-  "refreshedAt": "2026-05-17T23:08:07Z",
+  "refreshedAt": "2026-05-19T00:35:26Z",
   "pages": [
     {
       "path": "connectors/building/after-publishing.md",

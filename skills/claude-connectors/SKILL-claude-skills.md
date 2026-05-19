@@ -2,91 +2,209 @@
 name: claude-skills-user-facing
 description: |
   Deep reference for user-facing Agent Skills in Claude — how
-  users discover, install, manage, and invoke Skills inside the
-  Claude app. Includes the skill directory, per-conversation
-  control, and the relationship between user-facing Skills and the
-  Skills format spec (which lives in anthropic-platform-features).
+  users discover, install, manage, and create Skills inside the
+  Claude app. Covers the Agent Skills spec, skill directory
+  structure (SKILL.md frontmatter, description limit, packaging
+  as ZIP), types of skills (Anthropic, Partner, org-provisioned,
+  custom), testing workflow, and the skills-ref validate tool.
 source: https://claude.com/docs/skills/overview.md
 ---
 
 # Claude Skills — User-Facing
 
-> *Router lives in [`SKILL.md`](SKILL.md). For the *authoring* spec
-> of the .skill package format, see
-> [`anthropic-platform-features → SKILL-agents-and-tools.md`](../anthropic-platform-features/SKILL-agents-and-tools.md).
-> This surface covers what users see and do.*
+> *Router lives in [`SKILL.md`](SKILL.md). This surface covers
+> the product-level Skills feature on claude.com (Pro, Max,
+> Team, Enterprise plans). For the Claude Code CLI skills
+> mechanism (`~/.claude/skills/`), see
+> [`claude-code → SKILL-plugins.md`](../claude-code/SKILL-plugins.md).*
 
-## What Skills are (user view)
+## What Skills are
 
-Skills are reusable task recipes — packaged instructions that teach
-Claude how to perform a specific workflow. Once installed, a user
-can invoke a skill in any conversation by referring to it; Claude
-loads the skill's instructions and follows them.
+Skills are directories containing instructions, scripts, and
+resources that Claude dynamically loads to handle specific tasks.
+Each skill has a `SKILL.md` file that defines when the skill
+should be activated and what instructions Claude should follow.
 
-Skills are the lightweight, scoped counterpart to plugins:
+Skills use **progressive disclosure** to manage context
+efficiently:
 
-- A **skill** is a single recipe (e.g., "review my pull requests for
-  security issues using my org's checklist").
-- A **plugin** bundles multiple skills, connectors, slash commands,
-  and sub-agents (e.g., "the entire DevOps team's standard toolkit").
+1. **Metadata loading** — Claude reads skill names and
+   descriptions at startup (~100 tokens each).
+2. **Activation** — When a task matches a skill's description,
+   Claude loads the full `SKILL.md` content.
+3. **Resource loading** — Additional files (scripts, references)
+   are loaded only when needed.
 
-## Where users find skills
+Source: [`skills/overview.md`](https://claude.com/docs/skills/overview.md).
 
-Source pages under
-[`https://claude.com/docs/skills/`](https://claude.com/docs/skills/)
-cover the user-facing surface:
+## Availability
 
-- Browsing the skill directory.
-- Installing a skill from the directory.
-- Installing a custom skill from a URL or file.
-- Managing installed skills (enable/disable, update, remove).
-- Per-conversation skill control (turn a skill on/off for a single
-  conversation).
+Skills are available for users on **Pro, Max, Team, and
+Enterprise** plans. The Skills feature requires **code
+execution** to be enabled.
 
-## Activation model
+## Types of skills
 
-Two activation patterns:
+| Type | Description |
+|---|---|
+| **Anthropic skills** | Pre-built skills for document creation (Excel, Word, PowerPoint, PDF) — activate automatically when relevant |
+| **Partner skills** | Skills from partners such as Notion, Figma, and Atlassian, designed for seamless MCP connector integration |
+| **Organization-provisioned** | Skills deployed organization-wide by Team/Enterprise admins |
+| **Custom skills** | Skills you create for specialized workflows (emails, brand guidelines, JIRA/Linear integration, etc.) |
 
-1. **Always-on** — the skill auto-loads when its trigger matches the
-   conversation (e.g., a file path, a keyword, a tool call). Author
-   configures this via the skill's frontmatter `appliesTo`.
-2. **User-invoked** — the skill loads only when the user explicitly
-   refers to it by name.
+## Skills vs. other features
 
-The Skills format spec (in
-[`anthropic-platform-features`](../anthropic-platform-features/SKILL-agents-and-tools.md))
-documents the activation field schema. This surface covers the
-user-facing semantics.
+| Feature | Purpose |
+|---|---|
+| **Skills** | Task-specific procedures that load dynamically |
+| **[Plugins](SKILL-claude-plugins.md)** | Shareable packages that bundle skills, connectors, slash commands, and sub-agents |
+| **Projects** | Static background knowledge always loaded in specific chats |
+| **MCP** | Connects Claude to external services |
+| **Custom Instructions** | Broad preferences applied to all conversations |
 
-## Cross-product availability
+## Open standard
 
-Skills work in:
+Skills follow the [Agent Skills specification](https://agentskills.io/specification),
+a platform-agnostic standard. Skills you create can work across
+any platform that adopts the standard.
 
-- **Claude.ai (web)** — installed skills available in conversations.
-- **Claude Desktop** — same.
-- **Claude Code (CLI)** — skills resolve from `~/.claude/skills/` or
-  project-local `.claude/skills/`.
-- **Claude Cowork** — full skills support (see
-  [`claude-cowork`](../claude-cowork/SKILL.md)).
+## Skill directory structure
 
-For Cowork on 3P, skill distribution happens via MDM — see
-[`claude-cowork → SKILL-cowork.md`](../claude-cowork/SKILL-cowork.md).
+A skill is a directory containing at minimum a `SKILL.md` file:
+
+```
+brand-guidelines/
+├── SKILL.md
+├── scripts/        # Optional: executable code
+├── references/     # Optional: additional documentation
+└── assets/         # Optional: templates, images, data files
+```
+
+The directory name must match the `name` field in `SKILL.md`.
+
+## SKILL.md format
+
+`SKILL.md` must start with YAML frontmatter followed by markdown
+instructions.
+
+### Required frontmatter fields
+
+```markdown
+---
+name: brand-guidelines
+description: Apply Acme Corp brand guidelines to presentations and documents, including official colors, fonts, and logo usage.
+---
+```
+
+| Field | Notes |
+|---|---|
+| `name` | Lowercase letters, numbers, and hyphens only. Max 64 characters. Must match the directory name. |
+| `description` | Explains what the skill does and when to use it. Claude uses this to decide when to invoke the skill. |
+
+> **Description length limit**: Claude.ai enforces a **200-character** maximum on skill descriptions. The [Agent Skills spec](https://agentskills.io/specification) allows up to 1024 characters, but skills uploaded to Claude.ai must use the shorter limit.
+
+### Optional frontmatter: dependencies
+
+Skills can declare package dependencies (installed at load time):
+
+```markdown
+---
+name: data-analysis
+description: Analyze CSV files and generate visualizations.
+dependencies: python>=3.8, pandas>=1.5.0, matplotlib
+---
+```
+
+## Packaging and uploading
+
+To upload a skill to Claude:
+
+1. Ensure the directory name matches the skill's `name` field.
+2. Create a ZIP file with the **skill directory** inside (not files at the root):
+
+```
+# Correct
+my-skill.zip
+└── my-skill/
+    ├── SKILL.md
+    └── scripts/
+
+# Incorrect — files at ZIP root won't install
+my-skill.zip
+├── SKILL.md
+└── scripts/
+```
+
+3. Enable the skill in **Settings → Capabilities** after upload.
+
+## Testing your skill
+
+### Before uploading
+
+- Review `SKILL.md` for clarity.
+- Verify the description accurately reflects when Claude should
+  use the skill.
+- Check that all referenced files exist.
+- Validate with the reference tool:
+
+```bash
+skills-ref validate ./my-skill
+```
+
+([skills-ref validation tool](https://github.com/agentskills/agentskills/tree/main/skills-ref))
+
+### After uploading
+
+1. Enable the skill in **Settings → Capabilities**.
+2. Try prompts that should trigger it.
+3. Review Claude's thinking to confirm it loads the skill.
+4. Iterate on the description if Claude doesn't invoke it when
+   expected.
+
+## Best practices
+
+- **Keep it focused**: Create separate skills for different
+  workflows. Multiple focused skills compose better than one
+  large skill.
+- **Write clear descriptions**: Be specific about when the
+  skill applies. Include keywords that help Claude identify
+  relevant tasks.
+- **Start simple**: Begin with markdown instructions before
+  adding scripts.
+- **Use examples**: Include example inputs and outputs.
+- **Test incrementally**: Test after each significant change.
+- **Leverage composability**: Claude can use multiple skills
+  together automatically.
+
+## Security
+
+- Don't hardcode sensitive information (API keys, passwords).
+- Review downloaded skills before enabling them.
+- Use MCP connections for external service access.
+
+## Example skills
+
+See [github.com/anthropics/skills](https://github.com/anthropics/skills/tree/main/skills)
+for example skills you can use as templates.
 
 ## Related surfaces
 
-- [`SKILL-claude-plugins.md`](SKILL-claude-plugins.md) — plugins
-  (which bundle skills + connectors + more).
+- [`SKILL-claude-plugins.md`](SKILL-claude-plugins.md) —
+  plugins (which bundle skills + connectors + more).
 - [`SKILL-connectors-overview.md`](SKILL-connectors-overview.md) —
   connectors (the action-taking layer that skills compose).
-- [`anthropic-platform-features → SKILL-agents-and-tools.md`](../anthropic-platform-features/SKILL-agents-and-tools.md)
-  — the `.skill` package format spec.
+- [Agent Skills specification](https://agentskills.io/specification) —
+  platform-agnostic spec for the `.skill` format.
 
 ## Page index
 
-All source pages under
-[`https://claude.com/docs/skills/`](https://claude.com/docs/skills/)
-— see the directory listing for the current set.
+Source pages under
+[`https://claude.com/docs/skills/`](https://claude.com/docs/skills/):
+
+- `skills/overview.md` — availability, types, how skills work
+- `skills/how-to.md` — creating custom skills
 
 ---
 
-*Source pages: under `claude.com/docs/skills/`.*
+*Source pages: `claude.com/docs/skills/overview.md` and
+`claude.com/docs/skills/how-to.md`.*
