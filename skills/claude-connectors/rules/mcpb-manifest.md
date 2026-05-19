@@ -11,31 +11,35 @@ appliesTo:
 
 ## Rule 1 — Required top-level fields
 
-A valid MCPB manifest MUST include: `name`, `version`, `description`,
-`runtime` (object), `entry_point`, and at minimum one of `tools` /
-`resources` / `prompts` arrays.
+A valid MCPB manifest MUST include: `manifest_version`, `name`,
+`version`, `description`, `author` (object with `name`), and `server`
+(object with `type`, `entry_point`, and `mcp_config`).
 
 ```json
 {
+  "manifest_version": "0.3",
   "name": "my-mcpb",
   "version": "1.0.0",
   "description": "What this MCPB does, one sentence.",
-  "runtime": { "name": "node", "version": ">=18" },
-  "entry_point": "dist/server.js",
-  "tools": [ /* ... */ ]
+  "author": { "name": "Your Name" },
+  "server": {
+    "type": "node",
+    "entry_point": "dist/server.js",
+    "mcp_config": { "command": "node", "args": ["${__dirname}/dist/server.js"] }
+  }
 }
 ```
 
 Missing any of these blocks the install in Claude Desktop with a
 manifest-validation error.
 
-## Rule 2 — `runtime.name` is currently `node` or `python`
+## Rule 2 — `server.type` is currently `node`, `python`, or `binary`
 
-The MCPB runtime spec supports `node` (with bundled Node) and
-`python` (requires user to have Python installed). Other values
-(`go`, `bun`, `deno`, custom binaries) require packaging the runtime
-yourself as a binary entry_point — they are NOT supported under the
-`runtime.name` field.
+The MCPB server spec supports `node` (with bundled Node), `python`
+(requires user to have Python installed), and `binary` (for
+pre-compiled executables). Other values (`go`, `bun`, `deno`) must
+be packaged as a `binary` type — they are NOT valid `server.type`
+values on their own.
 
 ## Rule 3 — `version` must be SemVer
 
@@ -101,19 +105,19 @@ The Connectors Directory review fails MCPBs that omit these. For
 internal-only MCPBs you can skip annotations, but they're still
 strongly recommended (Claude uses them for permission prompts).
 
-## Rule 7 — `entry_point` is relative to the manifest's directory
+## Rule 7 — `server.entry_point` is relative to the manifest's directory
 
-Path must be relative, must point at a file that exists in the
-bundle. Absolute paths and `..` traversal are rejected at install
-time.
+The path (nested under the `server` object) must be relative and
+must point at a file that exists in the bundle. Absolute paths and
+`..` traversal are rejected at install time.
 
 ## Rule 8 — Pin your dependencies
 
-If your `entry_point` runs `npx <package>`, **pin the version**:
-`npx -y @scope/server@0.6.2`. The bare `npx -y @scope/server`
-re-resolves to the latest on every launch — a supply-chain
-compromise of any future release runs immediately with whatever
-capabilities your MCPB requests.
+If your `server.entry_point` or `mcp_config.args` runs
+`npx <package>`, **pin the version**: `npx -y @scope/server@0.6.2`.
+The bare `npx -y @scope/server` re-resolves to the latest on every
+launch — a supply-chain compromise of any future release runs
+immediately with whatever capabilities your MCPB requests.
 
 ---
 

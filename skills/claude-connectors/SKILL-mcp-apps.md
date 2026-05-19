@@ -96,12 +96,16 @@ Required metadata: what the MCPB does, how to run it, which tools
 it provides, what configuration it needs. Full schema:
 [MCPB Manifest Spec](https://github.com/modelcontextprotocol/mcpb/blob/main/MANIFEST.md).
 
-Key fields:
+Key fields (see [MCPB Manifest Spec](https://github.com/modelcontextprotocol/mcpb/blob/main/MANIFEST.md) for full schema):
 
+- `manifest_version` — spec version (currently `"0.3"`); required.
 - `name`, `version`, `description` — discoverability.
-- `runtime` — Node version requirements (default: bundled runtime).
-- `compatibility` — supported OS list.
-- `entry` — path to your MCP server's entrypoint.
+- `author` — required object; must include `name` string.
+- `server` — required object containing:
+  - `type` — `"node"` or `"python"` (or `"binary"` for other runtimes).
+  - `entry_point` — relative path to your MCP server's entrypoint.
+  - `mcp_config` — launch config: `command`, `args`, optional `env`.
+- `compatibility` — supported OS list; valid platforms: `darwin`, `win32`.
 - `tools` — declared tool list with annotations.
 - `icons` — icon paths, optionally per theme (light/dark) and size.
 - `user_config` — generates a settings UI in Claude Desktop.
