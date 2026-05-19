@@ -11,20 +11,20 @@
   },
   "docs": {
     "indexUrl": "https://www.anthropic.com/news",
-    "indexSha256": "30418ef01794a85c2a503925a6325ca6b21eb909231b4e2a57e34af9a98efe38",
+    "indexSha256": "c232f706a51995673277eb5fc4cd5e7063363b83a1655cbf111ac24105ce501e",
     "pageCount": 0,
     "knownPages": {}
   },
   "trackedIssues": {},
   "researchedIssues": {},
   "lastAuditedVersion": "n/a",
-  "lastUpdated": "2026-05-19T17:24:03Z",
+  "lastUpdated": "2026-05-19T19:06:49Z",
   "scaffoldComplete": true,
   "lastRunWarnings": [],
   "pulse": {
     "newsItemsTracked": 15,
     "researchItemsTracked": 13,
-    "lastFetchedAt": "2026-05-19T17:24:03Z"
+    "lastFetchedAt": "2026-05-19T19:06:49Z"
   },
   "lastScannedIssueNumber": null
 }
