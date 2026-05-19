@@ -624,7 +624,26 @@ jobs:
             fi
           else
             git commit -F /tmp/commit-message.txt
-            git push
+            # Cron runs take ~1h but fire every 30min, so they overlap. If
+            # another concurrent matrix entry (or another cron run) pushed
+            # to main while we were working, `git push` fails with
+            # "rejected (fetch first)". Try a rebase + retry once.
+            if ! git push 2>/tmp/push-err; then
+              if grep -q 'rejected\|fetch first\|non-fast-forward' /tmp/push-err; then
+                echo "Push race detected — rebasing onto origin/main and retrying once..."
+                git fetch origin main
+                git rebase origin/main || {
+                  echo "Rebase failed — likely a real conflict from concurrent edits to skills/$SKILL_NAME. Aborting; rerun next cron tick will retry."
+                  git rebase --abort 2>/dev/null || true
+                  cat /tmp/push-err
+                  exit 1
+                }
+                git push
+              else
+                cat /tmp/push-err
+                exit 1
+              fi
+            fi
           fi
 
       - name: Check for failures
