@@ -126,15 +126,31 @@ Every managed-configuration key lives in
 [`3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
 That page is the source of truth for:
 
-- Inference provider selection (`inferenceProvider`)
-- Region pinning (`inferenceVertexRegion`, `inferenceBedrockRegion`)
-- Feature toggles (web search, local MCP, Code tab, etc.)
-- Telemetry toggles (`disableEssentialTelemetry`, `disableNonessentialTelemetry`,
-  `disableNonessentialServices`, `disableAutoUpdates`)
-- MCP server allowlist (`managedMcpServers`)
-- Plugin / skill / hook distribution settings
-- Token-based spend caps (`inferenceMaxTokensPerWindow`, `inferenceTokenWindowHours`)
-- Auto-update policy (`disableAutoUpdates`)
+- **Deployment identity** — `deploymentOrganizationUuid` (UUID to attribute
+  your fleet's telemetry; shared placeholder used if unset), `disableDeploymentModeChooser`
+  (hides Anthropic sign-in option on launch screen)
+- **Inference provider** — `inferenceProvider` (`vertex` | `bedrock` | `foundry` | `gateway`)
+- **Region pinning** — `inferenceVertexRegion`, `inferenceBedrockRegion`
+- **Model picker** — `inferenceModels` (JSON array; each entry may be a plain
+  string ID or `{"name":"<id>","labelOverride":"<label>","supports1m":true}`)
+- **Credential helper** — `inferenceCredentialHelper` (path to executable whose
+  stdout becomes the API credential), `inferenceCredentialHelperTtlSec` (cache
+  TTL, default 3600 s; applies to Bedrock/Foundry/gateway, not Vertex AI)
+- **Sandbox & workspace** — `disabledBuiltinTools` (JSON string[] of tool names
+  to remove; valid: `Bash`, `Read`, `Write`, `Edit`, `Glob`, `Grep`,
+  `NotebookEdit`, `WebFetch`, `WebSearch`, `Task`, `TodoWrite`, and others),
+  `allowedWorkspaceFolders` (restrict attachable paths), `coworkEgressAllowedHosts`
+  (agent egress allowlist; `["*"]` disables filtering), `isClaudeCodeForDesktopEnabled`
+  (show/hide Code tab, default `true`), `disableDeepLinkRegistration`
+- **Telemetry toggles** — `disableEssentialTelemetry`, `disableNonessentialTelemetry`,
+  `disableNonessentialServices`, `disableAutoUpdates`; `autoUpdaterEnforcementHours`
+  (force pending update after N hours, 1–72, default 72)
+- **MCP & extensions** — `managedMcpServers` (JSON array; each server supports
+  `transport`, `headers`, `headersHelper`/`headersHelperTtlSec`, `oauth` object
+  for pre-registered OAuth clients, `toolPolicy`); `orgPluginSettings` (per-tool
+  policy for org-plugin servers); `isLocalDevMcpEnabled`; `isDesktopExtensionEnabled`;
+  `isDesktopExtensionSignatureRequired`
+- **Token spend caps** — `inferenceMaxTokensPerWindow`, `inferenceTokenWindowHours`
 
 ## Data residency
 
@@ -230,7 +246,23 @@ User-facing how-to pages for standard Cowork (non-3P):
 
 [`monitoring.md`](https://claude.com/docs/cowork/monitoring.md)
 covers OpenTelemetry export, usage analytics, spend tracking, and the
-session-activity event schema.
+session-activity event schema. Available for Team and Enterprise plans
+(requires Claude desktop app ≥ 1.1.4173).
+
+**Event types:** `user_prompt`, `tool_result`, `api_request`, `api_error`,
+`tool_decision`. All events share a `prompt.id` UUID that correlates every
+event produced while processing a single user prompt.
+
+**Standard attributes on all events:** `session.id`, `organization.id`,
+`user.account_uuid`, `user.account_id` (tagged format, e.g.
+`user_01BWBeN28…`), `user.email`, `workspace.host_paths`, `terminal.type`.
+
+**Notable per-event attributes:**
+- `tool_result` — `tool_input` (JSON-serialized args, strings >512 chars
+  truncated), `tool_parameters`, `decision_source`, `tool_result_size_bytes`
+- `api_request` / `api_error` — `speed` (`"fast"` or `"normal"`),
+  `cost_usd`, cache token counts
+- `tool_decision` — `decision` (`"accept"` / `"reject"`), `source`
 
 ---
 

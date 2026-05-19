@@ -103,6 +103,29 @@ Highlights:
 - Usage analytics surfaced both per-user and per-workspace.
 - Spend tracking by app, by user, by workspace.
 
+## Network allowlist
+
+Claude for M365 add-ins require access to domains that differ between
+standard (1P, Claude accounts) and third-party (3P, Entra ID) deployments.
+Full tables are in
+[`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md).
+
+Always required (both 1P and 3P):
+
+- `pivot.claude.ai` — task pane UI, telemetry
+- `appsforoffice.microsoft.com` — Office.js runtime
+- `login.microsoftonline.com` — Entra ID sign-in / token issuance
+
+3P adds provider-specific domains: `sts.amazonaws.com` +
+`bedrock-runtime.<region>.amazonaws.com` (Bedrock); Google OAuth +
+`aiplatform.googleapis.com` + regional Vertex endpoint (Vertex AI);
+`<resource>.services.ai.azure.com` (Foundry); your gateway URL.
+Outlook always needs `graph.microsoft.com` regardless of 1P/3P.
+
+> **Prompts/responses never travel through `pivot.claude.ai`.** That
+> domain serves only the add-in's task-pane UI, feature config, and
+> telemetry — inference goes directly to your chosen provider.
+
 ## Page index
 
 All 10 source pages mirrored under

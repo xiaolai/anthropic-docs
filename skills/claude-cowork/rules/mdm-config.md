@@ -108,6 +108,24 @@ length. Both keys are enforced locally and persist across restarts.
 
 Source: [`cowork/3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
 
+## Rule 9 — Set `deploymentOrganizationUuid` before rollout
+
+`deploymentOrganizationUuid` is a UUID **you generate** to identify your
+deployment in telemetry. Without it, all events from your fleet are tagged
+with a shared placeholder UUID (`00000000-0000-4000-8000-000000000001`) that
+every unconfigured deployment also uses — Anthropic cannot distinguish your
+organization's crash reports when you open a support case.
+
+Generate before rollout: `uuidgen` (macOS/Linux) or
+`[System.Guid]::NewGuid()` (PowerShell).
+
+> **Common mistake:** `disabledBuiltinTools` silently ignores any entry
+> whose value doesn't exactly match a recognized tool name (e.g. `"bash"`
+> instead of `"Bash"`). Check names against the full list in
+> [`cowork/3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md#sandbox--workspace).
+
+Source: [`cowork/3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
+
 ---
 
 *Source: claude.com/docs/cowork/3p/configuration.md + feature-matrix.md.*
