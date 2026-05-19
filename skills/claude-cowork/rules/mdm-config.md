@@ -47,18 +47,20 @@ MDM profile should explicitly NOT set `inferenceProvider: foundry`.
 
 ## Rule 4 — Telemetry kill switches
 
-Three independent telemetry toggles:
+Four independent telemetry/update toggles (all boolean, all default `false`):
 
-- `disableCrashReporting`: boolean, scrubs and disables crash reports
-- `disableProductAnalytics`: boolean, disables usage telemetry
-- `disableAutoUpdate`: boolean, disables auto-update checks
+- `disableEssentialTelemetry`: crash reports and error telemetry. **Disabling opts you into a manual support model** — your team must collect and send logs.
+- `disableNonessentialTelemetry`: product-usage analytics.
+- `disableNonessentialServices`: non-critical third-party services (connector favicons, artifact-preview iframe).
+- `disableAutoUpdates`: update checks and downloads. When disabled, IT must redistribute new builds manually. Companion key `autoUpdaterEnforcementHours` (integer, default `72`) forces a pending update to install after that many hours (ignored when updates are disabled).
 
-All three are off-by-default (telemetry enabled). For air-gapped or
-compliance-hardened deployments, set all three to `true`.
+> **Common mistake:** the old names `disableCrashReporting`, `disableProductAnalytics`, and `disableAutoUpdate` are **not recognised** — use the names above or the keys will be silently ignored and telemetry will remain enabled.
+
+For air-gapped or compliance-hardened deployments, set `disableEssentialTelemetry`, `disableNonessentialTelemetry`, `disableNonessentialServices`, and `disableAutoUpdates` all to `true`.
 
 Telemetry NEVER contains user prompts or completions, but if your
 audit posture requires zero Anthropic-bound network traffic, disable
-all three.
+all four.
 
 ## Rule 5 — Don't mix per-user and admin profiles
 
@@ -90,6 +92,42 @@ breaking change immediately.
 `workspaceSpendCapUSD` caps monthly usage per workspace. When hit,
 requests return 429 `cap_exceeded` until the next billing month.
 Set to a value above your monthly forecast, with a buffer.
+
+For token-level rate-limiting use the per-device token window keys
+instead: `inferenceMaxTokensPerWindow` (integer, total input+output tokens)
+and `inferenceTokenWindowHours` (integer, 1–720, length of the tumbling
+window). The token cap is enforced locally and persists across restarts.
+
+## Rule 9 — Set `deploymentOrganizationUuid` before rollout
+
+`deploymentOrganizationUuid` is a UUID **you generate** to identify your
+deployment. Without it, all telemetry from your fleet is tagged with a
+shared placeholder UUID (`00000000-0000-4000-8000-000000000001`) that
+every unconfigured deployment also uses — making it impossible for
+Anthropic to isolate your organization's events when opening a support
+case.
+
+Generate once, set in the admin MDM profile, and keep it stable. Format:
+`xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`.
+
+## Rule 10 — Credential helper for short-lived tokens
+
+When static API keys are not permitted (e.g. by a secrets-management
+policy), use `inferenceCredentialHelper` instead:
+
+```xml
+<key>inferenceCredentialHelper</key>
+<string>/usr/local/bin/corp-credential-helper</string>
+<key>inferenceCredentialHelperTtlSec</key>
+<string>3600</string>
+```
+
+The helper is an executable the app runs outside the sandbox. Its
+**stdout** replaces the static credential. `inferenceCredentialHelperTtlSec`
+(default `3600`) caches the output to avoid re-running on every request.
+
+Supported for Bedrock, Foundry, and gateway providers. **Not invoked for
+Vertex AI**, which uses file-based credentials or per-user Google sign-in.
 
 ---
 

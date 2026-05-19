@@ -2,14 +2,23 @@
 <!--
   Example Cowork on 3P MDM profile for macOS (Jamf / Workspace ONE / generic).
   See rules/mdm-config.md for correctness rules.
+  Source: https://claude.com/docs/cowork/3p/configuration.md
 
   Deploy via your MDM as a Configuration Profile targeting the bundle
   identifier com.anthropic.cowork. Per-user keys merge with admin keys;
   admin keys win on conflict.
+
+  IMPORTANT: array- and object-typed keys (inferenceModels, managedMcpServers,
+  coworkEgressAllowedHosts, otlpHeaders) MUST be JSON strings, not plist
+  <array> or <dict> structures. See the configuration reference.
 -->
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+  <!-- DEPLOYMENT IDENTITY — generate once, keep stable; used for support attribution -->
+  <key>deploymentOrganizationUuid</key>
+  <string>xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</string>
+
   <!-- INFERENCE PROVIDER — required for 3P mode -->
   <key>inferenceProvider</key>
   <string>bedrock</string>  <!-- enum: vertex | bedrock | foundry | gateway -->
@@ -18,41 +27,73 @@
   <key>inferenceBedrockRegion</key>
   <string>eu-west-1</string>
 
-  <!-- FEATURE TOGGLES — what users can/can't do -->
-  <key>enableLocalMcp</key>
-  <true/>
-  <key>enableWebSearch</key>
-  <false/>          <!-- disable web search for stricter data control -->
-  <key>enableM365Connector</key>
-  <true/>           <!-- requires Microsoft Graph admin consent — see /cowork/3p/connectors-m365 -->
+  <!-- MODEL LIST — provider model IDs; first entry is default (JSON string) -->
+  <!-- <key>inferenceModels</key> -->
+  <!-- <string>["us.anthropic.claude-sonnet-4-20250514-v1:0"]</string> -->
 
-  <!-- TELEMETRY KILL SWITCHES — all three off-by-default; set for hardened deployments -->
-  <key>disableCrashReporting</key>
-  <false/>
-  <key>disableProductAnalytics</key>
-  <false/>
-  <key>disableAutoUpdate</key>
-  <false/>
+  <!-- SANDBOX / WORKSPACE -->
+  <!-- Allow only specific workspace folders (JSON string; ~ expands to home) -->
+  <!-- <key>allowedWorkspaceFolders</key> -->
+  <!-- <string>["~/Documents/Claude"]</string> -->
 
-  <!-- MCP SERVER ALLOWLIST — only these can be loaded (omit to allow all org-installed) -->
-  <key>mcpServerAllowlist</key>
-  <array>
-    <string>https://mcp.internal.example.com/calendar</string>
-    <string>https://mcp.internal.example.com/wiki</string>
-  </array>
+  <!-- Egress allowlist for Cowork tab agent (JSON string; ["*"] = unrestricted) -->
+  <!-- <key>coworkEgressAllowedHosts</key> -->
+  <!-- <string>["*.your-org.com","api.example.com"]</string> -->
 
-  <!-- ORG PLUGINS DIRECTORY — URL to your org-internal marketplace.json -->
-  <key>orgPluginsDirectory</key>
-  <string>https://plugins.internal.example.com/marketplace.json</string>
+  <!-- Disable the Code tab entirely -->
+  <!-- <key>isClaudeCodeForDesktopEnabled</key> -->
+  <!-- <false/> -->
 
-  <!-- SPEND CAPS — monthly USD per workspace (blanket only in 3P) -->
-  <key>workspaceSpendCapUSD</key>
-  <integer>5000</integer>
+  <!-- CONNECTORS & EXTENSIONS -->
+  <!-- Managed MCP servers deployed to all users (JSON string) -->
+  <!-- <key>managedMcpServers</key> -->
+  <!-- <string>[{"name":"internal-search","url":"https://mcp.example.corp","oauth":true}]</string> -->
+
+  <!-- Prevent users from adding their own local MCP servers -->
+  <!-- <key>isLocalDevMcpEnabled</key> -->
+  <!-- <false/> -->
+
+  <!-- Prevent installing local desktop extensions (.mcpb) -->
+  <!-- <key>isDesktopExtensionEnabled</key> -->
+  <!-- <false/> -->
+
+  <!-- Require desktop extensions to be signed -->
+  <!-- <key>isDesktopExtensionSignatureRequired</key> -->
+  <!-- <true/> -->
+
+  <!-- TELEMETRY — all boolean, all default false (= telemetry ON) -->
+  <!-- For hardened deployments set the four below to true -->
+  <key>disableEssentialTelemetry</key>
+  <false/>   <!-- crash reports / error telemetry; disabling = manual support model -->
+  <key>disableNonessentialTelemetry</key>
+  <false/>   <!-- product-usage analytics -->
+  <key>disableNonessentialServices</key>
+  <false/>   <!-- connector favicons, artifact-preview iframe -->
+  <key>disableAutoUpdates</key>
+  <false/>   <!-- when true, IT must redistribute new builds -->
+  <key>autoUpdaterEnforcementHours</key>
+  <integer>72</integer>  <!-- force pending update after N hours; ignored if autoUpdates disabled -->
 
   <!-- OPENTELEMETRY EXPORT — send session activity to your own collector -->
-  <key>otelEndpoint</key>
+  <key>otlpEndpoint</key>
   <string>https://otel.internal.example.com:4318</string>
-  <key>otelExportPromptsAndCompletions</key>
-  <false/>          <!-- keep prompt/completion content out of exports -->
+  <!-- <key>otlpProtocol</key> -->
+  <!-- <string>http/protobuf</string>  enum: http/protobuf (default) | http/json | grpc -->
+  <!-- <key>otlpHeaders</key> -->
+  <!-- <string>{"Authorization":"Bearer your-token"}</string>  JSON string -->
+
+  <!-- USAGE LIMITS — per-device rolling token window -->
+  <!-- <key>inferenceMaxTokensPerWindow</key> -->
+  <!-- <integer>1000000</integer> -->
+  <!-- <key>inferenceTokenWindowHours</key> -->
+  <!-- <integer>24</integer>  1–720 -->
+
+  <!-- ORG PLUGINS — URL to org-internal marketplace manifest -->
+  <!-- <key>orgPluginsDirectory</key> -->
+  <!-- <string>https://plugins.internal.example.com/marketplace.json</string> -->
+
+  <!-- SPEND CAPS — monthly USD per workspace (blanket only in 3P) -->
+  <!-- <key>workspaceSpendCapUSD</key> -->
+  <!-- <integer>5000</integer> -->
 </dict>
 </plist>

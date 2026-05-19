@@ -126,14 +126,16 @@ Every managed-configuration key lives in
 [`3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
 That page is the source of truth for:
 
-- Inference provider selection (`inferenceProvider`)
-- Region pinning (`inferenceVertexRegion`, `inferenceBedrockRegion`)
-- Feature toggles (web search, local MCP, etc.)
-- Telemetry toggles
-- MCP server allowlist
-- Plugin / skill / hook distribution settings
-- Per-user spend caps
-- Auto-update policy
+- **Activation** — `inferenceProvider` (enum: `vertex`, `bedrock`, `foundry`, `gateway`); `deploymentOrganizationUuid` (required for support attribution); `disableDeploymentModeChooser` (hides Anthropic sign-in option)
+- **Region pinning** — `inferenceVertexRegion`, `inferenceBedrockRegion`
+- **Model list** — `inferenceModels` (JSON array; supports `supports1m` and `labelOverride` per-entry)
+- **Credential helper** — `inferenceCredentialHelper` (path to executable returning short-lived credential), `inferenceCredentialHelperTtlSec` (default `3600`)
+- **Sandbox & workspace** — `disabledBuiltinTools`, `allowedWorkspaceFolders`, `coworkEgressAllowedHosts`, `isClaudeCodeForDesktopEnabled`, `disableDeepLinkRegistration`
+- **Connectors & extensions** — `managedMcpServers` (JSON array, deployed to all users), `orgPluginSettings`, `isLocalDevMcpEnabled`, `isDesktopExtensionEnabled`, `isDesktopExtensionSignatureRequired`
+- **Telemetry toggles** — `disableEssentialTelemetry`, `disableNonessentialTelemetry`, `disableNonessentialServices`, `disableAutoUpdates`, `autoUpdaterEnforcementHours` (default `72`h)
+- **OpenTelemetry export** — `otlpEndpoint`, `otlpProtocol`, `otlpHeaders`, `otlpResourceAttributes`
+- **Usage limits** — `inferenceMaxTokensPerWindow`, `inferenceTokenWindowHours` (per-device rolling window)
+- **Appearance** — `banner` (persistent top-of-window banner with text, colors, link)
 
 ## Data residency
 
@@ -189,12 +191,18 @@ Google Workspace connector is not currently supported in 3P (planned).
 
 Full comparison: [`3p/feature-matrix.md`](https://claude.com/docs/cowork/3p/feature-matrix.md).
 
+Notable 3P feature availability:
+
+- ✓ Memory (device-local; stored on user's machine, not Anthropic infrastructure — users manage under **Settings → Cowork → Memory**; Chat-tab features like history search and nightly summaries are unavailable in 3P).
+- ✓ Scheduled tasks.
+- ✓ Code tab, Projects, local & remote MCP, Skills, Plugins, Hooks, Artifacts.
+
 Salient gaps in 3P (versus full Claude Enterprise):
 
 - No Chat tab (Cowork + Code tabs only).
-- No Anthropic 1P connectors (except M365).
+- No Anthropic 1P connectors (except M365; Google Workspace coming soon).
 - No Project / plugin sharing across orgs.
-- No public plugin marketplace.
+- No public plugin marketplace (org-plugins directory acts as internal marketplace).
 - No mobile dispatch.
 - No voice mode.
 - No Claude in Chrome.
