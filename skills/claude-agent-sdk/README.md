@@ -71,4 +71,4 @@ SKILL_NAME=claude-agent-sdk npm run verify:all                       # gate
 
 | Date | Update | Research | Mending | Report | Total | Notes |
 |------|--------|----------|---------|--------|-------|-------|
-| 2026-05-19 | partial | CC v0.0.0 → v0.3.144 |
+| 2026-05-19 | success | research + report (no upstream change) |

@@ -1,9 +1,9 @@
 {
   "indexUrl": "https://code.claude.com/llms.txt",
-  "indexSha256": "c8639f2e9dad6d710a0ba8fa81c04ea0a8bc8c29626e9e5053e7bd79ed4949d2",
-  "indexBytes": 27749,
+  "indexSha256": "616c053c9d93ffeccc827973fc170e80586c07bdcf077772afd3116e604330aa",
+  "indexBytes": 27750,
   "pageCount": 29,
-  "refreshedAt": "2026-05-19T05:46:47Z",
+  "refreshedAt": "2026-05-19T07:15:00Z",
   "pages": [
     {
       "path": "en/agent-sdk/agent-loop.md",
@@ -128,8 +128,8 @@
     {
       "path": "en/agent-sdk/streaming-output.md",
       "url": "https://code.claude.com/docs/en/agent-sdk/streaming-output.md",
-      "sha256": "c821dcb885806df755ade3d6da4eaf1da091ddbb16d2271cdfdbc50aee8b0f15",
-      "bytes": 15625
+      "sha256": "c7a5c316f33354d7d4a41461dfce8f1fd8cc5ed44084b1b7db5664a49a4e2bd9",
+      "bytes": 15626
     },
     {
       "path": "en/agent-sdk/streaming-vs-single-mode.md",

@@ -637,6 +637,36 @@ Set `shouldQuery: false` to append a message to the transcript **without** trigg
 { type: 'user', ..., isReplay: true }
 ```
 
+### SDKPartialAssistantMessage
+
+Only emitted when `includePartialMessages: true`. Contains raw Anthropic API streaming events as they arrive.
+
+```typescript
+// Source: https://code.claude.com/docs/en/agent-sdk/streaming-output.md
+type SDKPartialAssistantMessage = {
+  type: "stream_event";
+  event: BetaRawMessageStreamEvent; // From @anthropic-ai/sdk
+  parent_tool_use_id: string | null;
+  uuid: UUID;
+  session_id: string;
+};
+```
+
+Common `event.type` values:
+
+| Event type | Description |
+|---|---|
+| `message_start` | Start of a new message |
+| `content_block_start` | New content block begins (`text` or `tool_use`) |
+| `content_block_delta` | Incremental update — `delta.type` is `text_delta` or `input_json_delta` |
+| `content_block_stop` | Content block complete |
+| `message_delta` | Message-level update (stop reason, usage) |
+| `message_stop` | Message complete |
+
+**Streaming limitations** ([source](https://code.claude.com/docs/en/agent-sdk/streaming-output.md#known-limitations)):
+- Setting the deprecated `maxThinkingTokens` disables `StreamEvent` emission for that turn; use `thinking` + `effort` instead.
+- Structured output JSON appears only in the final `SDKResultMessage.structured_output`, not as streaming deltas.
+
 ### Streaming Pattern
 
 ```typescript
