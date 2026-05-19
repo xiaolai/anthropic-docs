@@ -183,13 +183,71 @@ Supported mode values: `inline`, `fullscreen`, `pip`.
 
 Source: [`mcp-apps/design-guidelines.md`](https://claude.com/docs/connectors/building/mcp-apps/design-guidelines.md).
 
+### Mobile rendering
+
+On mobile Claude renders MCP Apps in a **native WebView** (WKWebView
+on iOS, WebView on Android) — NOT a sandboxed iframe. Current mobile
+constraints:
+
+- **Inline display only** — fullscreen mode is not yet available on
+  mobile (coming soon).
+- No camera/mic/location access on mobile.
+- Connectors must be added via web or desktop before appearing on mobile.
+- Inline apps max height: 500px; apps fill container width (no fixed
+  breakpoints — design responsively from 320px up).
+
+Key `hostContext` fields for mobile layout:
+
+| Field | Contents |
+|---|---|
+| `hostContext.safeAreaInsets` | `{top, right, bottom, left}` in pixels — honor to clear notches and home indicator |
+
+Remove the outer card border on mobile by setting
+`_meta.ui.prefersBorder: false` on the resource's `_meta.ui` object.
+
+Declare external origins per `ui://` resource via `_meta.ui.csp`:
+
+```json
+{
+  "_meta": {
+    "ui": {
+      "csp": {
+        "connectDomains": ["https://api.example.com"],
+        "resourceDomains": ["https://cdn.example.com"],
+        "baseUriDomains": []
+      }
+    }
+  }
+}
+```
+
+All external origins are blocked by default. `frameDomains` (embedding
+third-party iframes) is currently restricted pending security review.
+Source: [`mcp-apps/design-guidelines.md#mobile-guidelines`](https://claude.com/docs/connectors/building/mcp-apps/design-guidelines.md).
+
 ### Transparent theming
 
 Make your widget background transparent and style with Claude's
 CSS custom properties — blends seamlessly into the host UI across themes.
-The host injects color tokens (`color-background-*`, `color-text-*`,
-`color-border-*`), typography (`font-sans`, `font-mono`, `font-weight-*`),
-and spacing variables. All tokens adapt automatically to light/dark mode.
+The host provides color tokens (`color-background-*`, `color-text-*`,
+`color-border-*`, `color-ring-*`), typography (`font-sans`, `font-mono`,
+`font-weight-*`, `font-text-*-size`, `font-heading-*-size`), radius
+(`border-radius-*`), border-width, and shadow tokens. All tokens adapt
+automatically to light/dark mode.
+
+SDK package: `@modelcontextprotocol/ext-apps` (server helpers +
+React hooks). Key building blocks:
+
+- `registerAppResource(server, name, uri, {}, handler)` — register a
+  UI resource; pass `_meta.ui.prefersBorder: false` to remove host
+  card border; pass `_meta.ui.csp.resourceDomains: ["https://assets.claude.ai"]`
+  to allow Anthropic Sans font loading.
+- `App` class — call `app.connect()` then `app.getHostContext()` to
+  read `{ theme, styles: { variables, css: { fonts } } }`.
+- `hostcontextchanged` event — fires when user toggles dark/light mode.
+- Helpers: `applyDocumentTheme(theme)`, `applyHostStyleVariables(variables)`,
+  `applyHostFonts(fontCss)`.
+- React hooks: `useApp(options)`, `useHostStyles(app, hostContext)`.
 
 Reference: [`mcp-apps/transparent-theming.md`](https://claude.com/docs/connectors/building/mcp-apps/transparent-theming.md).
 Full CSS token table: [`mcp-apps/design-guidelines.md#style-variables`](https://claude.com/docs/connectors/building/mcp-apps/design-guidelines.md).

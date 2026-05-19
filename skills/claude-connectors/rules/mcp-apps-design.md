@@ -87,8 +87,12 @@ the user's confirmation modal and the directory's allowlist).
 
 ## Rule 8 — Test on mobile viewports
 
-Claude Mobile renders MCP Apps too. A card that's only laid out for
-desktop widths breaks on mobile. Test at 360px width minimum.
+Claude Mobile renders MCP Apps in a native WebView (WKWebView on iOS,
+WebView on Android) — NOT a sandboxed iframe. Inline display only on
+mobile; fullscreen is coming soon. A card that is only laid out for
+desktop widths breaks on mobile. Test at 320px width minimum; ensure
+all tap targets are at least 44x44pt. Honor `hostContext.safeAreaInsets`
+to keep content clear of notches and the home indicator.
 
 ---
 
