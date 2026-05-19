@@ -1,15 +1,15 @@
 {
   "indexUrl": "https://platform.claude.com/llms.txt",
-  "indexSha256": "c037e8136d42bb3e6f9ced4b388d09a7320c617658a6617a15f2d76fb44a4f85",
-  "indexBytes": 166613,
+  "indexSha256": "4537a29223635c7ee8e2baa89dcfc14b089026065d16a3b43c590d788c4d5994",
+  "indexBytes": 166612,
   "pageCount": 225,
-  "refreshedAt": "2026-05-19T00:00:00Z",
+  "refreshedAt": "2026-05-19T22:38:31Z",
   "pages": [
     {
       "path": "en/api/admin.md",
       "url": "https://platform.claude.com/docs/en/api/admin.md",
-      "sha256": "e39f996f9c045e99b88a4588627108952b67e03601fa5df137835a208580af0c",
-      "bytes": 90897
+      "sha256": "d108b357811794c6a0b3c1dbaae9732ffba3f84f29aec0d6f958909af2b54f8a",
+      "bytes": 90896
     },
     {
       "path": "en/api/admin/api_keys.md",
@@ -302,8 +302,8 @@
     {
       "path": "en/api/beta.md",
       "url": "https://platform.claude.com/docs/en/api/beta.md",
-      "sha256": "d4337d74061935e28721b3aebb123ceacc06c8734744dc0f7766264cbfd78191",
-      "bytes": 2885978
+      "sha256": "60ddc79fb3a92ee5f28e35976420934c5fe05c603cd01d57e5b67fe63e9dc3c0",
+      "bytes": 2885977
     },
     {
       "path": "en/api/beta/agents.md",
@@ -1328,14 +1328,14 @@
     {
       "path": "en/api/messages/count_tokens.md",
       "url": "https://platform.claude.com/docs/en/api/messages/count_tokens.md",
-      "sha256": "341c0bc900b114e1299c58126c363ccc7cde9c4b53a75687b98477c71cc3a88d",
-      "bytes": 111650
+      "sha256": "90d2cbf75ebdd77e8aa9584f9b712462a8ce4d3c4ea227de3e604faf50a451a7",
+      "bytes": 111649
     },
     {
       "path": "en/api/messages/create.md",
       "url": "https://platform.claude.com/docs/en/api/messages/create.md",
-      "sha256": "8da8c9822130417df137ad8d9aae78e13e6d7cac71c17e856b486a4a115fdce1",
-      "bytes": 139002
+      "sha256": "b0690ff5a59a9c318068ab1a836c5d7eaf919dc96fde0d765bcbf843fc187329",
+      "bytes": 139001
     },
     {
       "path": "en/api/models.md",
@@ -1346,8 +1346,8 @@
     {
       "path": "en/api/models/list.md",
       "url": "https://platform.claude.com/docs/en/api/models/list.md",
-      "sha256": "807f0bbde884b379adc51b274facfc40bbcb3737938a54c0105f17fc4677c57c",
-      "bytes": 6763
+      "sha256": "33e7bf1be70ab008123d3e4df5652a4dbf329d09239fc956962ca6b1443b89e1",
+      "bytes": 6762
     },
     {
       "path": "en/api/models/retrieve.md",
