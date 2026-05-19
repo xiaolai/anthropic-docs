@@ -3,7 +3,7 @@
   "indexSha256": "03734ba75aaa9f563c8368c08f3c68e25b7df62ee422e55fdf0fbe89ae9131f5",
   "indexBytes": 152396,
   "pageCount": 109,
-  "refreshedAt": "2026-05-18T20:46:08Z",
+  "refreshedAt": "2026-05-19T05:29:08Z",
   "pages": [
     {
       "path": "en/agents-and-tools/agent-skills/best-practices.md",
@@ -68,8 +68,8 @@
     {
       "path": "en/agents-and-tools/tool-use/computer-use-tool.md",
       "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool.md",
-      "sha256": "743dd483db718fb9ecd701e61fbed0b552999b26bdb83049f5e13abe29f8c796",
-      "bytes": 40646
+      "sha256": "6e6432a606b5d58285d7749cb299e2e0f7dcafe349c6ed16ebdbd613affbad3c",
+      "bytes": 44176
     },
     {
       "path": "en/agents-and-tools/tool-use/define-tools.md",
@@ -248,8 +248,8 @@
     {
       "path": "en/build-with-claude/compaction.md",
       "url": "https://platform.claude.com/docs/en/build-with-claude/compaction.md",
-      "sha256": "ad53ee925f3fea56ffe5ae231fff3537d4bba00afcebdd874442e8f00b06ddcd",
-      "bytes": 100053
+      "sha256": "a0fa9a595b4256e3dcbdacfddbea6325ee3e2452b5c1d961500b1695bec28ff6",
+      "bytes": 100726
     },
     {
       "path": "en/build-with-claude/context-editing.md",
