@@ -46,6 +46,26 @@ for the protocol details. The Claude-specific concerns are:
 - **Test credentials** — required for review (so Anthropic reviewers
   can validate end-to-end without acquiring production access).
 
+> **Build with Claude.** Install the official [`mcp-server-dev` plugin](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/mcp-server-dev)
+> in Claude Code — it walks you through building, testing, and packaging an
+> MCP server interactively, using these docs as its reference.
+
+### Supported transports
+
+Claude supports **Streamable HTTP** (preferred) and the legacy **HTTP+SSE** transport.
+The legacy HTTP+SSE transport is being deprecated in favour of Streamable HTTP.
+
+### Technical limits
+
+| Constraint | Limit |
+|---|---|
+| Claude.ai / Desktop max tool result size | ~150,000 characters |
+| Claude Code max tool result size | 25,000 tokens (configurable via `MAX_MCP_OUTPUT_TOKENS`) |
+| Claude Code timeout | Configurable via `MCP_TOOL_TIMEOUT` |
+| Claude.ai / Desktop timeout | 300 seconds (5 minutes) |
+
+Source: [`building/index.md`](https://claude.com/docs/connectors/building/index.md).
+
 ## Authentication
 
 Two pages cover auth:
@@ -58,6 +78,23 @@ Two pages cover auth:
 The lazy pattern is recommended: surface as much value as possible
 before forcing the user through OAuth. Users who never invoke a
 protected tool never need to authenticate.
+
+### Auth spec support
+
+Claude supports MCP auth specifications
+[2025-03-26](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization),
+[2025-06-18](https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization), and
+[2025-11-25](https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization).
+
+| Feature | Notes |
+|---|---|
+| Dynamic Client Registration (DCR) | Enabled |
+| OAuth callback (hosted surfaces) | `https://claude.ai/api/mcp/auth_callback` |
+| OAuth callback (Claude Code) | Loopback redirect — see [`authentication.md#callback-urls`](https://claude.com/docs/connectors/building/authentication.md) |
+| Token refresh + expiry | Supported |
+| Custom credentials | Available for non-DCR servers |
+
+Source: [`building/index.md`](https://claude.com/docs/connectors/building/index.md).
 
 ## Directory vs custom
 

@@ -45,9 +45,19 @@ A connector can do two things:
 
 The [Connectors Directory](https://claude.com/docs/connectors/directory.md)
 is the open catalog of Anthropic-vetted third-party MCP servers,
-available across all Claude products. Each entry has been reviewed
-for tool annotations, privacy policy, working examples, and test
-credentials (where applicable).
+available across all Claude products (Claude.ai, Desktop, Mobile, Code, Cowork).
+Each entry has been reviewed for tool annotations, privacy policy, working
+examples, and test credentials (where applicable).
+
+Key directory properties:
+- **Suggested Connectors** — every directory entry is eligible for in-chat
+  recommendations when relevant to the user's task. Ranking is usage-based.
+- **No DNS ownership proof** required (that applies only to the open MCP Registry,
+  not the Anthropic Directory).
+- Directory connectors run on the same infrastructure as custom connectors.
+
+Browse via **Settings → Connectors** on Claude.ai, or **Admin Settings → Connectors**
+for Team/Enterprise admins.
 
 To submit your own: see [`building/submission.md`](https://claude.com/docs/connectors/building/submission.md).
 
