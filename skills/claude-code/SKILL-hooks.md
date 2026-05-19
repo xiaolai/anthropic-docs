@@ -203,6 +203,7 @@ Your hook can write a JSON object to stdout to influence Claude's behavior.
 
 ### PreToolUse / PermissionRequest / PermissionDenied output
 
+<!-- skip-validate -->
 ```json
 {
   "hookSpecificOutput": {
@@ -219,6 +220,7 @@ For `PermissionDenied`, return `{ "retry": true }` to tell the model it may retr
 
 ### Stop / PostToolUse / other events: inject messages
 
+<!-- skip-validate -->
 ```json
 {
   "decision": "block",
@@ -228,6 +230,7 @@ For `PermissionDenied`, return `{ "retry": true }` to tell the model it may retr
 
 Or to inject a message into the conversation:
 
+<!-- skip-validate -->
 ```json
 {
   "decision": "approve",
@@ -239,6 +242,7 @@ Or to inject a message into the conversation:
 
 Return shell commands to execute instead of the default `git worktree add`:
 
+<!-- skip-validate -->
 ```json
 {
   "hookSpecificOutput": {

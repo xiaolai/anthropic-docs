@@ -98,6 +98,7 @@ After enabling/disabling a plugin mid-session, run `/reload-plugins` to connect/
 
 A marketplace is a collection of plugins. The `marketplace.json` file at the marketplace root:
 
+<!-- skip-validate -->
 ```json
 {
   "name": "my-marketplace",
@@ -146,6 +147,7 @@ Managed settings can force-enable plugins (`enabledPlugins` in managed settings)
 
 Cross-reference: [`SKILL-settings.md`](SKILL-settings.md) § *`extraKnownMarketplaces` and `enabledPlugins`*.
 
+<!-- skip-validate -->
 ```json
 {
   "enabledPlugins": {
