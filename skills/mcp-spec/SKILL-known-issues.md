@@ -38,8 +38,46 @@ upstream repos. For each:
 
 ## Entries
 
-> *No confirmed user-impacting bugs surfaced yet via the research
-> agent.*
+### KI 1 — `outputSchema` type restriction interop: TypeScript/C# require `type:"object"`, Python/prose do not
+
+**Symptom:** Tools using the Python `mcp` SDK can define an `outputSchema` with a
+root type other than `object` (e.g. `type: "array"` for list operations). When
+such a tool connects to a client using the TypeScript or C# SDK, the client
+rejects the schema with a validation error because those SDKs enforce
+`type: "object"` at the root.
+
+**Reproduction:** Define a tool in Python with
+```python
+output_schema = {"type": "array", "items": {"type": "string"}}
+```
+and connect via a TypeScript-SDK-based client → schema validation fails.
+
+**Root cause:** The JSON Schema definition in `schema/draft/schema.json` sets
+`"const": "object"` on the `outputSchema.type` field, but the prose
+specification does not require `type: "object"`. This prose/schema
+disagreement caused the Python and C# SDKs to implement contradictory
+behaviours.
+
+**Workaround:** Until the spec is resolved, always wrap results in an object
+schema to ensure cross-SDK compatibility:
+```json
+{
+  "outputSchema": {
+    "type": "object",
+    "properties": {
+      "results": { "type": "array", "items": { "type": "string" } }
+    }
+  }
+}
+```
+
+**Status:** Open — being tracked for spec clarification via an SEP
+(sponsored by @olaservo). Monitor
+[issue #1906](https://github.com/modelcontextprotocol/modelcontextprotocol/issues/1906)
+for resolution.
+
+**Affects:** All servers using `outputSchema` with non-object root types;
+cross-SDK interoperability (Python ↔ TypeScript/C# clients).
 
 ---
 

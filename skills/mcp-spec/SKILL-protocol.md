@@ -62,7 +62,19 @@ All MCP messages are JSON-RPC 2.0:
 3. Client sends `notifications/initialized` (a notification, no
    response expected) — operation phase begins.
 
-See [`specification/2025-11-25/basic/`](https://modelcontextprotocol.io/specification/2025-11-25/basic/)
+**`clientInfo` / `serverInfo` metadata fields** (as of `2025-11-25`):
+- `name` — machine-friendly identifier (required).
+- `version` — implementation version string (required).
+- `title` — optional human-readable display name for UI.
+- `description` — optional description of the implementation.
+- `icons` — optional array of `{ src, mimeType, sizes[] }` icon objects.
+- `websiteUrl` — optional URL for the implementation's website.
+
+> **HTTP transport note:** After initialization, the client MUST include the
+> `MCP-Protocol-Version: <negotiated-version>` HTTP header on all subsequent
+> requests (e.g. `MCP-Protocol-Version: 2025-11-25`). See [SKILL-transport.md](SKILL-transport.md).
+
+See [`specification/2025-11-25/basic/lifecycle.md`](https://modelcontextprotocol.io/specification/2025-11-25/basic/lifecycle.md)
 for the formal lifecycle spec.
 
 ## Capability negotiation
@@ -71,16 +83,20 @@ Each side advertises what it supports. The other side only invokes
 features that the peer advertised. Typical capabilities:
 
 **Server capabilities** (subset):
-- `tools` — provides callable tools.
-- `resources` — provides readable resources, optionally with `subscribe`.
-- `prompts` — provides prompt templates.
+- `tools` — provides callable tools; `listChanged` sub-field enables list-change notifications.
+- `resources` — provides readable resources; optional sub-fields: `subscribe`, `listChanged`.
+- `prompts` — provides prompt templates; `listChanged` sub-field for notifications.
 - `logging` — accepts client log messages.
 - `completions` — provides argument completion for prompts/resource URIs.
+- `tasks` — supports task-augmented server requests; sub-capabilities: `list` (list active tasks), `cancel` (cancel tasks), `requests.tools.call` (tools can run as tasks).
 
 **Client capabilities** (subset):
 - `sampling` — server may request the client to sample from the host LLM.
 - `roots` — server may request the list of filesystem roots, optionally with `listChanged`.
-- `elicitation` — server may request structured input from the user.
+- `elicitation` — server may request structured input from the user; sub-capabilities: `form` (standard form UI), `url` (URL-mode out-of-band interaction per [SEP-1036](https://modelcontextprotocol.io/seps/1036-url-mode-elicitation-for-secure-out-of-band-intera.md)).
+- `tasks` — support for task-augmented client requests; sub-capabilities: `requests.elicitation.create`, `requests.sampling.createMessage`.
+
+Source: [`specification/2025-11-25/basic/lifecycle.md`](https://modelcontextprotocol.io/specification/2025-11-25/basic/lifecycle.md)
 
 ## Lifecycle
 

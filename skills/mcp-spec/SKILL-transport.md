@@ -92,6 +92,22 @@ Source: [`specification/2025-11-25/basic/transports.md`](https://modelcontextpro
   with framed events, each event being one JSON-RPC notification or
   the final response.
 
+### MCP-Protocol-Version header (required for HTTP)
+
+After a successful `initialize` handshake, clients using Streamable HTTP **MUST**
+include the `MCP-Protocol-Version` HTTP header on every subsequent request:
+
+```
+MCP-Protocol-Version: 2025-11-25
+```
+
+The value SHOULD be the protocol version negotiated during initialization.
+If the server receives an invalid or unsupported version it MUST respond
+with `400 Bad Request`. Servers that receive no header SHOULD assume protocol
+version `2025-03-26` for backwards compatibility.
+
+Source: [`specification/2025-11-25/basic/transports.md#protocol-version-header`](https://modelcontextprotocol.io/specification/2025-11-25/basic/transports.md)
+
 ### Auth
 
 Standard HTTP authentication methods:

@@ -3,6 +3,9 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-19 (run 3)
+- *(pending review — see PR auto/2026-05-19-pending-review)* Research pass added 1 known issue (outputSchema cross-SDK type mismatch, #1906); checkDocsDrift + checkDiffSize gates failed
+
 ## 2026-05-19 (run 2)
 - Routine research pass — no version change; @modelcontextprotocol/sdk v1.29.0 / mcp v1.27.1 stable; all gates pass
 
