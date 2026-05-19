@@ -120,7 +120,13 @@ After Parts A and B, verify:
 
 1. **Version consistency.** Every `v<X.Y.Z>` reference across {{ROUTER}}, `README.md`, `plugin.json`, `CHANGELOG.md` matches the skill's primary package version in `state.json.registry.packages[0].version` (or `state.json.registry.version` for legacy single-package skills).
 2. **No dangling links.** Every URL you added in this run should resolve (spot-check via `curl -sI <url> | head -1`). Sample 5 pre-existing URLs as a sanity check.
-3. **Schema integrity.** Every fenced JSON example you added in `SKILL-*.md` validates against its schema (`pipeline/scripts/validate-examples.sh` is the source of truth; you can run it yourself before exiting). **JSON examples must be full-file shape, not snippets** — for example, an MCP server example must be wrapped in `{"mcpServers": {"name": {...}}}`, not just the inner `{...}`. A plugin example needs `name` + `version` at the root. A hook-input example needs `hook_event_name` at the root. If you want to show a partial pattern that won't validate as a full file, use a ```text fence or inline backticks instead of ```json — the validator only runs against ```json fences.
+3. **Schema integrity.** Every fenced JSON example you added in `SKILL-*.md` validates against its schema (`pipeline/scripts/validate-examples.sh` is the source of truth; **run it yourself before exiting** — `SKILL_NAME={{SKILL_NAME}} bash pipeline/scripts/validate-examples.sh`). **JSON examples must be full-file shape, not snippets.** Required root keys per schema:
+   - **MCP servers** (`pipeline/schema/mcp.schema.json`): wrap in `{"mcpServers": {"name": {...}}}`, never just the inner `{...}`.
+   - **Plugins** (`pipeline/schema/plugin.schema.json`): root must have both `name` AND `version`. Missing `version` is the most common failure.
+   - **Hook inputs** (`pipeline/schema/hook-input.schema.json`): root must have `hook_event_name`.
+   - **Settings** (`pipeline/schema/settings.schema.json`): root may have any combination of `model`/`permissions`/`env`/`hooks`/etc — full settings.json shape.
+
+   If you want to show a partial pattern that wouldn't validate as a full file, use a ```text fence or inline backticks instead of ```json — the validator only runs against ```json fences.
 4. **No duplicate facts.** A given schema field, event name, or flag should appear in exactly one SKILL-*.md. Use `grep -l` to confirm.
 5. **Cross-reference integrity.** Every `[\`SKILL-*.md\`]` link points to an existing file.
 6. **Rules glob coverage.** Every glob in `rules/*.md` matches at least one real file pattern documented in `SKILL-*.md`. No orphan rules.

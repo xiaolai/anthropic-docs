@@ -361,14 +361,19 @@ jobs:
           # only be promoted by the explicit Flip step below, never by an
           # agent. Reset to monitor.sh's snapshot of the committed value.
           STATE="skills/$SKILL_NAME/state.json"
-          if [ -f /tmp/fresh-state.json ] && [ -f "$STATE" ]; then
-            COMMITTED=$(jq -r '.scaffoldComplete // false' /tmp/fresh-state.json)
-            CURRENT=$(jq -r '.scaffoldComplete // false' "$STATE")
-            if [ "$CURRENT" != "$COMMITTED" ]; then
-              echo "scaffoldComplete tamper detected: agent wrote '$CURRENT', committed was '$COMMITTED'. Resetting."
-              jq --argjson sc "$COMMITTED" '.scaffoldComplete = $sc' "$STATE" \
-                > /tmp/sc-reset.tmp && mv /tmp/sc-reset.tmp "$STATE"
-            fi
+          if [ ! -f /tmp/fresh-state.json ] || [ ! -f "$STATE" ]; then
+            echo "Missing /tmp/fresh-state.json or $STATE — skipping guard."
+            exit 0
+          fi
+          COMMITTED=$(jq -r '.scaffoldComplete // false' /tmp/fresh-state.json 2>/dev/null || echo "false")
+          CURRENT=$(jq -r '.scaffoldComplete // false' "$STATE" 2>/dev/null || echo "false")
+          # Normalise — anything that isn't literally "true" or "false" becomes "false"
+          [ "$COMMITTED" = "true" ] || COMMITTED="false"
+          [ "$CURRENT" = "true" ] || CURRENT="false"
+          if [ "$CURRENT" != "$COMMITTED" ]; then
+            echo "scaffoldComplete tamper detected: agent wrote '$CURRENT', committed was '$COMMITTED'. Resetting."
+            jq --argjson sc "$COMMITTED" '.scaffoldComplete = $sc' "$STATE" \
+              > /tmp/sc-reset.tmp && mv /tmp/sc-reset.tmp "$STATE"
           fi
 
       - name: Check populated sections
@@ -381,7 +386,16 @@ jobs:
         id: check_docs_drift
         if: always()
         continue-on-error: true
-        run: bash pipeline/scripts/check-docs-drift.sh
+        run: |
+          # Skip when we just refreshed in this job — by definition the
+          # MANIFEST is current. The drift gate exists to catch stale
+          # snapshots between refreshes; checking immediately after one
+          # creates a race with upstream that pushes ~minutely.
+          if [ "${{ steps.refresh.outcome }}" = "success" ]; then
+            echo "Refresh ran successfully in this job — MANIFEST is current. Skipping drift gate."
+            exit 0
+          fi
+          bash pipeline/scripts/check-docs-drift.sh
 
       - name: Check sanitizer parity
         id: check_sanitizer_parity
