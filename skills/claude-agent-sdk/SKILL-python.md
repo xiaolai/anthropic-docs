@@ -479,7 +479,10 @@ class ResultMessage:
     is_error: bool
     num_turns: int
     session_id: str
-    stop_reason: str | None = None           # Raw stop reason from Anthropic API; 'tool_deferred' when PreToolUse returns 'defer'
+    stop_reason: str | None = None           # Raw stop reason from Anthropic API; common values:
+    # 'end_turn' (finished normally), 'max_tokens' (hit output limit),
+    # 'refusal' (model declined), 'tool_deferred' (PreToolUse returned 'defer')
+    # To detect model refusals: stop_reason == "refusal"
     total_cost_usd: float | None = None
     usage: dict[str, Any] | None = None      # Total session token usage
     result: str | None = None
@@ -939,6 +942,8 @@ PermissionMode = Literal[
 ]
 ```
 
+**Subagent inheritance**: When the parent session uses `bypassPermissions` or `acceptEdits`, all subagents inherit that mode and it cannot be overridden per-subagent. Inheriting `bypassPermissions` grants subagents full system access without approval prompts. Source: [permissions.md](https://code.claude.com/docs/en/agent-sdk/permissions.md)
+
 ### `can_use_tool`
 
 > **⚠️ Known Issue**: The `can_use_tool` callback is currently non-functional — callbacks are never invoked by the CLI even when correctly configured. See [KI #27](#27-can_use_tool-callback-never-invoked-issue-469). Use `PreToolUse` hooks instead for permission enforcement.
@@ -1050,8 +1055,10 @@ from claude_agent_sdk.types import (
 # stdio (type field optional, defaults to 'stdio')
 {"command": "npx", "args": ["@playwright/mcp@latest"], "env": {"KEY": "val"}}
 
-# HTTP (type required)
+# HTTP (type required; programmatic option uses "http" only)
 {"type": "http", "url": "https://api.example.com/mcp", "headers": {"Authorization": "Bearer ..."}}
+# Note: In .mcp.json and JSON config files, "streamable-http" is accepted as an alias for "http".
+# The programmatic mcp_servers option only accepts "http" (not "streamable-http").
 
 # SSE (type required)
 {"type": "sse", "url": "https://api.example.com/mcp/sse", "headers": {}}

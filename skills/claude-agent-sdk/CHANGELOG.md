@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-05-19 (run 21:06Z)
+- *(pending review — see draft PR on `auto/2026-05-19-pending-review`)* Research agent crashed (sdk.mjs init, exit 1); check-docs-drift failed — surface diff from earlier today's runs queued for manual review
+
 ## 2026-05-19 (run 19:54Z)
 - *(pending review — see draft PR on `auto/2026-05-19-pending-review`)* Research-only run (no version bump); check-docs-drift failed — surface file diff queued for manual review (83 turns, $1.12)
 

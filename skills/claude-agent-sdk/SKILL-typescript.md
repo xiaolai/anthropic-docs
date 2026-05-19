@@ -600,6 +600,12 @@ type TerminalReason = 'completed' | 'max_turns' | 'tool_deferred' | 'aborted_str
 // SDKPermissionDenial (in permission_denials array)
 type SDKPermissionDenial = { tool_name: string; tool_use_id: string; tool_input: Record<string, unknown> }
 
+// stop_reason — why the model stopped on its final turn
+// Common values: 'end_turn' (finished normally), 'max_tokens' (hit output limit),
+// 'refusal' (model declined the request), 'tool_deferred' (PreToolUse hook deferred)
+// Check stop_reason === 'refusal' to detect model refusals.
+// On error result subtypes, stop_reason carries the value from the last assistant response.
+
 // Error codes (SDKAssistantMessageError) — also emitted by StopFailure hooks
 'authentication_failed' | 'oauth_org_not_allowed' | 'billing_error' | 'rate_limit' |
 'invalid_request' | 'model_not_found' | 'server_error' | 'unknown' | 'max_output_tokens'
@@ -895,10 +901,13 @@ type PermissionMode =
   | 'acceptEdits'        // Auto-allow file edits, prompt for others
   | 'bypassPermissions'  // Skip all prompts (requires allowDangerouslySkipPermissions)
   | 'plan'               // Read-only planning mode — no writes/execution
-  | 'dontAsk';           // Don't prompt — deny if not pre-approved
+  | 'dontAsk'            // Don't prompt — deny if not pre-approved
+  | 'auto';              // TypeScript only: model classifier approves/denies each tool call
 ```
 
 **Note**: `allowedTools` is ignored when `permissionMode: 'bypassPermissions'` — Claude can use any tool.
+
+**Subagent inheritance**: When the parent session uses `bypassPermissions`, `acceptEdits`, or `auto`, all subagents inherit that mode and it cannot be overridden per-subagent. Inheriting `bypassPermissions` grants subagents full system access without approval prompts. Source: [permissions.md](https://code.claude.com/docs/en/agent-sdk/permissions.md)
 
 ### canUseTool
 
@@ -948,8 +957,14 @@ canUseTool: async (toolName, input, { signal, toolUseID, agentID }) => {
 // stdio (type field optional, defaults to 'stdio')
 { command: "npx", args: ["@playwright/mcp@latest"], env?: Record<string, string> }
 
-// HTTP (type required)
+// HTTP (type required; programmatic option uses "http" only)
 { type: "http", url: "https://api.example.com/mcp", headers?: Record<string, string> }
+// Note: In .mcp.json and JSON config files, "streamable-http" is accepted as an alias for "http".
+// The programmatic mcpServers option only accepts "http" (not "streamable-http").
+
+// HTTP with Bearer auth (OAuth2 pattern — pass token after completing OAuth flow in your app)
+{ type: "http", url: "https://api.example.com/mcp",
+  headers: { Authorization: `Bearer ${accessToken}` } }
 
 // SSE (type required)
 { type: "sse", url: "https://api.example.com/mcp/sse", headers?: Record<string, string> }
