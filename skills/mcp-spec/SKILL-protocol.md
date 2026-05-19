@@ -155,11 +155,11 @@ Proposals. The process is documented at
 [`community/sep-guidelines.md`](https://modelcontextprotocol.io/community/sep-guidelines.md).
 Active SEPs live under [`seps/`](https://modelcontextprotocol.io/seps/).
 
-Notable recently-added Draft SEPs (added 2026-05-19):
+Notable recently-tracked SEPs (as of 2026-05-19):
 
 | SEP | Title | Status | Affects |
 |---|---|---|---|
-| [SEP-2106](https://modelcontextprotocol.io/seps/2106-json-schema-2020-12.md) | Tools `inputSchema` & `outputSchema` conform to JSON Schema 2020-12 | Draft | Tools primitive — `inputSchema`, `outputSchema`, `structuredContent` |
+| [SEP-2106](https://modelcontextprotocol.io/seps/2106-json-schema-2020-12.md) | JSON Schema 2020-12 as default dialect — now incorporated in spec `2025-11-25` | Final (incorporated) | Tools primitive — `inputSchema`, `outputSchema`, `structuredContent` |
 | [SEP-2164](https://modelcontextprotocol.io/seps/2164-resource-not-found-error.md) | Standardize resource-not-found error code to `-32602` | Draft | Error codes, Resources error handling |
 | [SEP-2596](https://modelcontextprotocol.io/seps/2596-spec-feature-lifecycle-and-deprecation.md) | Specification feature lifecycle and deprecation policy | Draft | Governance process; grandfathers HTTP+SSE transport and `includeContext: "thisServer"/"allServers"` as formally Deprecated |
 

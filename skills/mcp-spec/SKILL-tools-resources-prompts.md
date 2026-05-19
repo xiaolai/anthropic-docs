@@ -27,6 +27,7 @@ A tool is a callable function the server exposes to the host LLM.
 ```json
 {
   "name": "search_files",
+  "title": "Search Files",
   "description": "Search files matching a query",
   "inputSchema": {
     "type": "object",
@@ -46,37 +47,32 @@ A tool is a callable function the server exposes to the host LLM.
     }
   },
   "annotations": {
-    "title": "Search Files",
     "readOnlyHint": true,
     "destructiveHint": false,
     "idempotentHint": true,
     "openWorldHint": false
+  },
+  "execution": {
+    "taskSupport": "optional"
   }
 }
 ```
 
-- `inputSchema` — JSON Schema, used by the LLM and the client to
-  validate arguments.
-- `outputSchema` — optional. When present, the response's
-  `structuredContent` should match it.
-- `annotations` — *non-binding* hints for clients (UI rendering,
-  permission prompts). All Boolean fields default to safe-pessimistic
-  values when absent.
+- `name` — unique identifier within the server (1–128 chars; allowed: `A-Za-z0-9_-.`; no spaces).
+- `title` — optional human-readable display name for UI (distinct from `annotations.title`, which is deprecated in favor of this field).
+- `description` — human-readable description for the LLM.
+- `icons` — optional array of `{ src, mimeType, sizes[] }` objects for client UI display.
+- `inputSchema` — JSON Schema defining expected parameters. Defaults to JSON Schema 2020-12 when no `$schema` field is present. For tools with no parameters, use `{ "type": "object", "additionalProperties": false }`.
+- `outputSchema` — optional JSON Schema for the `structuredContent` field of the response.
+- `annotations` — *non-binding* hints for clients (UI rendering, permission prompts). All Boolean fields default to safe-pessimistic values when absent.
+- `execution.taskSupport` — optional. Values: `"forbidden"` (default), `"optional"`, `"required"`. Indicates whether this tool supports [task-augmented execution](https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/tasks) (experimental feature in `2025-11-25`).
 
-> **Pending SEP:** [SEP-2106](https://modelcontextprotocol.io/seps/2106-json-schema-2020-12.md)
-> (Draft, Standards Track) proposes aligning `inputSchema`, `outputSchema`, and
-> `structuredContent` with JSON Schema 2020-12:
->
-> - **`inputSchema`** — keeps `type: "object"` required but allows any additional JSON Schema
->   keywords (`anyOf`, `oneOf`, `allOf`, `$ref`, etc.).
-> - **`outputSchema`** — removes the `type: "object"` restriction; any valid JSON Schema
->   (including array or primitive schemas) becomes valid.
-> - **`structuredContent`** — widens from `{ [key: string]: unknown }` to `unknown`, so arrays
->   and primitives can be returned directly without an object wrapper.
->
-> Until SEP-2106 is Final, keep `inputSchema.type = "object"` and wrap non-object
-> `structuredContent` in an object for maximum client compatibility. Always include a
-> `TextContent` fallback in `content` regardless.
+> **JSON Schema 2020-12 is now the spec default** (as of `2025-11-25`):
+> When no `$schema` field is present, `inputSchema` and `outputSchema` are interpreted
+> as JSON Schema 2020-12. Servers that need draft-07 behaviour must include
+> `"$schema": "http://json-schema.org/draft-07/schema#"` explicitly.
+> Always include a `TextContent` fallback in `content` for backwards compatibility
+> with clients that do not yet process `structuredContent`.
 
 ### Calling
 
@@ -90,7 +86,8 @@ A tool is a callable function the server exposes to the host LLM.
 - `{type: "text", text: "..."}`
 - `{type: "image", data: "<base64>", mimeType: "image/png"}`
 - `{type: "audio", data: "<base64>", mimeType: "audio/wav"}`
-- `{type: "resource", resource: {...}}` — embed a resource by reference.
+- `{type: "resource_link", uri, name?, description?, mimeType?}` — a *reference* to a resource (URI only; client fetches via `resources/read` if needed). Not guaranteed to appear in `resources/list`.
+- `{type: "resource", resource: {...}}` — an *embedded* resource (full contents inline).
 
 Errors at the *tool* level set `isError: true` with an error
 description in `content` (client surfaces to LLM). Errors at the
@@ -108,10 +105,20 @@ optionally subscribes, and reads.
 {
   "uri": "file:///path/to/data.json",
   "name": "Data file",
+  "title": "Application Data File",
   "description": "Application configuration",
-  "mimeType": "application/json"
+  "mimeType": "application/json",
+  "size": 4096
 }
 ```
+
+- `uri` — absolute URI (required).
+- `name` — machine-friendly identifier.
+- `title` — optional human-readable display name for UI.
+- `description` — optional human-readable description.
+- `mimeType` — optional MIME type.
+- `size` — optional size in bytes.
+- `icons` — optional array of `{ src, mimeType, sizes[] }` objects for client UI.
 
 ### Schema (resource template)
 
@@ -119,10 +126,13 @@ optionally subscribes, and reads.
 {
   "uriTemplate": "github://repos/{owner}/{repo}/issues/{number}",
   "name": "GitHub issue",
+  "title": "GitHub Issue Viewer",
   "description": "Fetch an issue by owner/repo/number",
   "mimeType": "application/json"
 }
 ```
+
+Resource templates also support `title` and `icons` fields.
 
 Clients use templates with argument completion (see Completion below)
 to construct concrete URIs.
@@ -294,6 +304,6 @@ Plus the conceptual overviews:
 ---
 
 *Source pages: `specification/2025-11-25/{client,server}/*`,
+`specification/2025-11-25/basic/utilities/tasks.md`,
 `docs/learn/{client,server}-concepts.md`,
-`seps/2106-json-schema-2020-12.md`,
 `seps/2164-resource-not-found-error.md`.*

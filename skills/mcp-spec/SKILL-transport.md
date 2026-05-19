@@ -71,6 +71,18 @@ A single HTTP endpoint per server. Clients send messages via HTTP
 POST; responses can be plain JSON (single response) or a Server-Sent
 Events stream (for streaming responses, e.g., long-running tool calls).
 
+### Security (DNS rebinding)
+
+Streamable HTTP servers MUST implement these protections to prevent DNS rebinding attacks:
+
+1. **Validate the `Origin` header** on all incoming connections. If the `Origin` header is present and does not match an expected value, respond with HTTP 403 Forbidden.
+2. **Bind locally to 127.0.0.1**, not 0.0.0.0, when running on a local machine.
+3. **Implement authentication** for all connections.
+
+Without these protections, a remote website can use DNS rebinding to reach and interact with a locally running MCP server.
+
+Source: [`specification/2025-11-25/basic/transports.md`](https://modelcontextprotocol.io/specification/2025-11-25/basic/transports.md)
+
 ### Framing
 
 - **Request**: `POST <endpoint>` with `Content-Type: application/json`

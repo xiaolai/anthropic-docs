@@ -55,19 +55,23 @@ from mcp.server import Server
 from mcp.server.stdio import stdio_server
 ```
 
-## Rule 3 — Tool annotations: declare safety properties explicitly
+## Rule 3 — Tool annotations and display name: declare safety properties explicitly
 
 Tool annotations default to safe-pessimistic when absent (`destructive`
 treated as true, `readOnly` treated as false). Clients use these to
-decide permission prompts. Set them explicitly for accurate UX:
+decide permission prompts. Set them explicitly for accurate UX.
+
+Since spec `2025-11-25`, use the top-level `title` field (not
+`annotations.title`) as the human-readable display name:
 
 ```typescript
 tools: [{
   name: "search_files",
+  title: "Search Files",            // ← top-level title (spec-preferred, 2025-11-25+)
   description: "Search files by name",
   inputSchema: { type: "object", properties: { query: { type: "string" } } },
   annotations: {
-    title: "Search Files",
+    // annotations.title is deprecated in favour of the top-level title field
     readOnlyHint: true,
     destructiveHint: false,
     idempotentHint: true,
