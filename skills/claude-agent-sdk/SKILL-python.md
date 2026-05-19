@@ -29,7 +29,14 @@
 
 ---
 
-## Breaking Changes (v0.1.0)
+## Breaking Changes
+
+### v0.2.82
+
+4. **MCP background connections** — MCP servers now connect in the background by default; sessions start immediately. Set `MCP_CONNECTION_NONBLOCKING=0` to restore the old blocking behavior, or mark a server `alwaysLoad: True` to require it before turn 1. See [MCP Connection Mode](#mcp-connection-mode-v0282).
+5. **Task tools replace `TodoWrite`** — Headless and SDK sessions now use `TaskCreate` / `TaskUpdate` / `TaskGet` / `TaskList` instead of `TodoWrite`. If you monitor `ToolUseBlock` events, match `block.name in ("TaskCreate", "TaskUpdate")` instead of `block.name == "TodoWrite"`, and accumulate by task ID instead of replacing a snapshot list. Set `env={"CLAUDE_CODE_ENABLE_TASKS": "0"}` to restore the old `TodoWrite` behavior.
+
+### v0.1.0
 
 1. **No default system prompt** — SDK uses minimal prompt. Use `system_prompt={"type": "preset", "preset": "claude_code"}` for old behavior. Add `"append": "extra text"` to extend the preset.
 2. **No filesystem settings loaded** — `setting_sources` defaults to `None`. Add `setting_sources=["project"]` to load CLAUDE.md.
@@ -665,6 +672,8 @@ asyncio.run(main())
 
 Hooks use **callback matchers**: an optional regex `matcher` for tool names and a list of `hooks` callbacks. Hooks work with both `query()` and `ClaudeSDKClient` via `ClaudeAgentOptions.hooks`.
 
+> **Dispatch is concurrent**: all matchers for a given event fire **in parallel**, not sequentially. Do not rely on one hook completing before another starts — for example, a rate-limiter hook cannot gate a subsequent hook in the same event batch. (Source: v0.2.82 release notes)
+
 ### Hook Events
 
 | Event | Fires When | Supported |
@@ -1103,6 +1112,28 @@ options = ClaudeAgentOptions(
     mcp_servers="/path/to/mcp-config.json"
 )
 ```
+
+### MCP Connection Mode (v0.2.82+)
+
+MCP servers connect in the **background by default** — sessions start immediately and slow servers report `status: "pending"` in the `init` message until ready.
+
+- **To restore blocking startup** (wait up to 5s before first query): set `MCP_CONNECTION_NONBLOCKING=0` in `env`
+- **To require a server before turn 1** (always-load): set `alwaysLoad: true` on the server config
+
+```python
+options = ClaudeAgentOptions(
+    mcp_servers={
+        "critical_tool": {
+            "type": "stdio",
+            "command": "my-mcp-server",
+            "alwaysLoad": True,   # Wait for this server before accepting the first turn
+        }
+    },
+    env={"MCP_CONNECTION_NONBLOCKING": "0"}  # or restore blocking globally
+)
+```
+
+Source: https://code.claude.com/docs/en/agent-sdk/mcp.md
 
 ### MCP Gotchas
 
@@ -1828,7 +1859,7 @@ options = ClaudeAgentOptions(
 
 | Version | Change |
 |---------|--------|
-| v0.2.82 | Current stable; full cross-platform wheels; `AgentDefinition` adds `background`, `effort`, `permissionMode`, `initialPrompt`; `PermissionMode` adds `"dontAsk"`; `EffortLevel` adds `"xhigh"`; new options `strict_mcp_config`, `include_hook_events`, `skills`, `session_store`; `AssistantMessage` adds `usage`, `message_id`; `ResultMessage` adds `model_usage`, `deferred_tool_use`, `permission_denials`; `RateLimitEvent` is now a proper typed `Message` |
+| v0.2.82 | **Breaking**: MCP servers connect in background by default (`MCP_CONNECTION_NONBLOCKING=0` restores blocking; `alwaysLoad: True` per server); **Breaking**: Task tools (`TaskCreate`/`TaskUpdate`/`TaskGet`/`TaskList`) replace `TodoWrite` (set `CLAUDE_CODE_ENABLE_TASKS=0` to revert); concurrent hooks dispatch (all matchers fire in parallel); `permission_suggestions` type tightened to `list[dict[str, Any]] \| None`; `EffortLevel` type exported; stderr callback exceptions isolated per-line; full cross-platform wheels; `AgentDefinition` adds `background`, `effort`, `permissionMode`, `initialPrompt`; `PermissionMode` adds `"dontAsk"`; `EffortLevel` adds `"xhigh"`; new options `strict_mcp_config`, `include_hook_events`, `skills`, `session_store`; `AssistantMessage` adds `usage`, `message_id`; `ResultMessage` adds `model_usage`, `deferred_tool_use`, `permission_denials`; `RateLimitEvent` is now a proper typed `Message` |
 | v0.1.49 | Added `skills`, `memory`, `mcpServers` to `AgentDefinition`; per-turn usage on `AssistantMessage`; `rename_session()`, `delete_session()`, `tag_session()`; typed `RateLimitEvent`; reverted Bedrock-breaking eager_input_streaming. Partial release resolved in v0.2.x |
 | v0.1.48 | Introduced `eager_input_streaming` with `include_partial_messages=True` (broke Bedrock/Vertex — see [#21](#21-include_partial_messagestrue-breaks-tool-input-streaming-on-bedrockvertex)) |
 | v0.1.44 | Fixed `rate_limit_event` crash in message parser; bundled CLI v2.1.59 |

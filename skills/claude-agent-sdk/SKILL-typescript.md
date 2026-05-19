@@ -584,6 +584,7 @@ type SDKMessageOrigin =
 { type: 'result', subtype: 'error_max_turns' | 'error_during_execution'
   | 'error_max_budget_usd' | 'error_max_structured_output_retries',
   session_id, is_error: true, errors: string[], permission_denials: SDKPermissionDenial[],
+  api_error_status?: number,    // HTTP status code from the API error that caused this result (documented in v0.3.144)
   origin?: SDKMessageOrigin }
 
 // SDKPermissionDenial (in permission_denials array)
@@ -591,7 +592,8 @@ type SDKPermissionDenial = { tool_name: string; tool_use_id: string; tool_input:
 
 // Error codes (SDKAssistantMessageError)
 'authentication_failed' | 'oauth_org_not_allowed' | 'billing_error' | 'rate_limit' |
-'invalid_request' | 'server_error' | 'unknown' | 'max_output_tokens'
+'invalid_request' | 'model_not_found' | 'server_error' | 'unknown' | 'max_output_tokens'
+// 'model_not_found' added in v0.3.144 — fired when the selected model is unavailable instead of 'invalid_request'
 ```
 
 ### SDKSystemMessage (init)
@@ -1291,7 +1293,7 @@ This opaque error ([#106](https://github.com/anthropics/claude-agent-sdk-typescr
 2. **Invalid model ID** — verify model string (e.g., `claude-sonnet-4-5-20250929`, not `claude-3.5-sonnet`)
 3. **CLI not installed** — run `npm install -g @anthropic-ai/claude-code`
 4. **`ANTHROPIC_LOG=debug` set** — unset it, use `debug: true` instead
-5. **Bundled with esbuild/bun** — set `pathToClaudeCodeExecutable` explicitly
+5. **Bundled with esbuild/bun** — set `pathToClaudeCodeExecutable` explicitly. For `bun build --compile`, use the `/extract` subpath: `import binPath from "@anthropic-ai/claude-agent-sdk-<platform>/bin/claude" with { type: "file" }; import { extractFromBunfs } from "@anthropic-ai/claude-agent-sdk/extract"; options.pathToClaudeCodeExecutable = await extractFromBunfs(binPath);` (v0.3.144)
 6. **`OTEL_*_EXPORTER=none`** — remove or change OpenTelemetry env vars ([#136](https://github.com/anthropics/claude-agent-sdk-typescript/issues/136))
 7. **Enable debug mode** — add `debug: true` to see actual error
 
@@ -1666,6 +1668,7 @@ sandbox: {
 
 | Version | Change |
 |---------|--------|
+| v0.3.144 | `SDKAssistantMessageError` adds `'model_not_found'` (replaces `'invalid_request'` when model is unavailable; same for `StopFailure` hooks); `api_error_status` (HTTP status code) added to error `SDKResultMessage` variants; `@anthropic-ai/claude-agent-sdk/extract` subpath export with `extractFromBunfs()` for `bun build --compile` consumers |
 | v0.3.x  | `startup()` / `WarmQuery` — pre-warm CLI before prompt available; `resolveSettings()` (alpha); new `SDKPermissionDeniedMessage`, `SDKPluginInstallMessage`, `SDKTaskUpdatedMessage` types; `SDKMessageOrigin` on user/result messages; new `AgentDefinition` fields: `background`, `memory`, `effort`, `permissionMode`, `initialPrompt`; new options: `skills`, `strictMcpConfig`, `outputStyle`, `includeHookEvents`, `sessionStore`; `effort` adds `'xhigh'` level; `SDKAPIRetryMessage` and `SDKElicitationCompleteMessage` removed from `SDKMessage` union |
 | v0.2.77 | `SDKAPIRetryMessage` added (now removed in v0.3.x); fixed `./sdk-tools` exports map ([#222](https://github.com/anthropics/claude-agent-sdk-typescript/issues/222)) |
 | v0.2.71 | Fixed `Agent` tool returning `"Unknown tool: Agent"` in `query()` mode |
