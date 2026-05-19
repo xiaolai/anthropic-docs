@@ -575,6 +575,7 @@ type SDKMessageOrigin =
 { type: 'result', subtype: 'success', session_id, duration_ms, duration_api_ms,
   is_error: false, num_turns, result: string, total_cost_usd,
   usage, modelUsage, permission_denials: SDKPermissionDenial[], structured_output?, stop_reason?,
+  api_error_status?: number,          // HTTP status code of last API error (e.g. 400, 429, 529)
   origin?: SDKMessageOrigin,
   deferred_tool_use?: { id: string; name: string; input: Record<string, unknown> } }
   // deferred_tool_use: set when PreToolUse hook returns permissionDecision: 'defer'
@@ -589,9 +590,11 @@ type SDKMessageOrigin =
 // SDKPermissionDenial (in permission_denials array)
 type SDKPermissionDenial = { tool_name: string; tool_use_id: string; tool_input: Record<string, unknown> }
 
-// Error codes (SDKAssistantMessageError)
+// Error codes (SDKAssistantMessageError) — also emitted by StopFailure hooks
 'authentication_failed' | 'oauth_org_not_allowed' | 'billing_error' | 'rate_limit' |
-'invalid_request' | 'server_error' | 'unknown' | 'max_output_tokens'
+'invalid_request' | 'model_not_found' | 'server_error' | 'unknown' | 'max_output_tokens'
+// 'model_not_found' — since v0.3.144: replaces generic 'invalid_request' when the selected
+//   model ID doesn't exist or isn't available on the account/region
 ```
 
 ### SDKSystemMessage (init)
@@ -709,6 +712,8 @@ for await (const message of query({ prompt: "...", options })) {
 
 Hooks use **callback matchers**: an optional regex `matcher` for tool names and an array of `hooks` callbacks.
 
+> **Dispatch order**: When an event fires, all matching hooks for that event run **in parallel** (concurrently). For `PreToolUse` permission decisions, deny takes precedence over defer, which takes precedence over ask, which takes precedence over allow — a single `deny` blocks the operation regardless of other hooks. Write each hook to act independently rather than assuming a particular execution order.
+
 ### Hook Events
 
 | Event | Fires When | TS | Py |
@@ -716,17 +721,17 @@ Hooks use **callback matchers**: an optional regex `matcher` for tool names and 
 | `Setup` | On init or maintenance trigger | Yes | No |
 | `PreToolUse` | Before tool execution | Yes | Yes |
 | `PostToolUse` | After tool execution | Yes | Yes |
-| `PostToolUseFailure` | Tool execution failed | Yes | No |
+| `PostToolUseFailure` | Tool execution failed | Yes | Yes |
 | `UserPromptSubmit` | User prompt received | Yes | Yes |
 | `Stop` | Agent stopping | Yes | Yes |
-| `SubagentStart` | Subagent spawned | Yes | No |
+| `SubagentStart` | Subagent spawned | Yes | Yes |
 | `SubagentStop` | Subagent completed | Yes | Yes |
 | `PreCompact` | Before context compaction | Yes | Yes |
 | `PostToolBatch` | After a batch of tool calls completes | Yes | No |
-| `PermissionRequest` | Permission dialog would show | Yes | No |
+| `PermissionRequest` | Permission dialog would show | Yes | Yes |
 | `SessionStart` | Session begins | Yes | No |
 | `SessionEnd` | Session ends | Yes | No |
-| `Notification` | Agent status message | Yes | No |
+| `Notification` | Agent status message | Yes | Yes |
 | `TeammateIdle` | Teammate agent is idle (v0.2.33) | Yes | No |
 | `TaskCompleted` | Background task completed (v0.2.33) | Yes | No |
 | `ConfigChange` | Settings file changed (user/project/local/policy/skills) | Yes | No |
@@ -783,6 +788,14 @@ return {
     hookEventName: input.hook_event_name,
     permissionDecision: 'allow',  // Use 'allow' with modified input instead of 'deny'
     updatedInput: { command: `echo "BLOCKED: ${reason}"` }
+  }
+};
+
+// Defer tool execution (PreToolUse only) — ends the query; ResultMessage.stop_reason === 'tool_deferred'
+return {
+  hookSpecificOutput: {
+    hookEventName: input.hook_event_name,
+    permissionDecision: 'defer'
   }
 };
 
@@ -1425,8 +1438,19 @@ return {
 
 ### #17: SDK fails to discover CLI when bundled with bun build
 **Error**: `Claude Code executable not found at /$bunfs/root/cli.js` ([#150](https://github.com/anthropics/claude-agent-sdk-typescript/issues/150))
-**Cause**: `import.meta.url` resolves to virtual filesystem path when bundled, where CLI binary doesn't physically exist.
-**Workaround**: Set `pathToClaudeCodeExecutable` option explicitly to the physical CLI path, or avoid bundling the SDK.
+**Cause**: `import.meta.url` resolves to virtual filesystem path when bundled with `bun build --compile`, where the CLI binary doesn't physically exist.
+**Fix** (v0.3.144+): Use the new `@anthropic-ai/claude-agent-sdk/extract` subpath export:
+```typescript
+import { extractFromBunfs } from "@anthropic-ai/claude-agent-sdk/extract";
+import nativeBinary from "@anthropic-ai/claude-agent-sdk/claude-code-native" with { type: "file" };
+
+const executablePath = await extractFromBunfs(nativeBinary);
+const q = query({ prompt: "...", options: { pathToClaudeCodeExecutable: executablePath } });
+```
+`extractFromBunfs(binPath)` copies the binary out of the compiled executable's virtual filesystem
+and returns a real filesystem path. Only needed for `bun build --compile` consumers.
+**Legacy workaround** (pre-v0.3.144): Set `pathToClaudeCodeExecutable` explicitly to the physical
+CLI path, or avoid bundling the SDK.
 
 ### #18: unstable_v2_createSession() doesn't support plugins option
 **Error**: Plugins silently ignored when using v2 session API ([#171](https://github.com/anthropics/claude-agent-sdk-typescript/issues/171))
@@ -1666,6 +1690,7 @@ sandbox: {
 
 | Version | Change |
 |---------|--------|
+| v0.3.144 | `SDKAssistantMessageError.error` now reports `'model_not_found'` (instead of generic `'invalid_request'`) when the model ID doesn't exist/isn't available; `api_error_status` field added to `SDKResultMessage` (HTTP status of last API error); new `@anthropic-ai/claude-agent-sdk/extract` subpath with `extractFromBunfs()` for `bun build --compile` consumers |
 | v0.3.x  | `startup()` / `WarmQuery` — pre-warm CLI before prompt available; `resolveSettings()` (alpha); new `SDKPermissionDeniedMessage`, `SDKPluginInstallMessage`, `SDKTaskUpdatedMessage` types; `SDKMessageOrigin` on user/result messages; new `AgentDefinition` fields: `background`, `memory`, `effort`, `permissionMode`, `initialPrompt`; new options: `skills`, `strictMcpConfig`, `outputStyle`, `includeHookEvents`, `sessionStore`; `effort` adds `'xhigh'` level; `SDKAPIRetryMessage` and `SDKElicitationCompleteMessage` removed from `SDKMessage` union |
 | v0.2.77 | `SDKAPIRetryMessage` added (now removed in v0.3.x); fixed `./sdk-tools` exports map ([#222](https://github.com/anthropics/claude-agent-sdk-typescript/issues/222)) |
 | v0.2.71 | Fixed `Agent` tool returning `"Unknown tool: Agent"` in `query()` mode |

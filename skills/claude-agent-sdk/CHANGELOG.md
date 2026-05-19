@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-05-19 (third run)
+- Docs-index content updated (hash changed, page count unchanged at 29, no version bump); all 11 gates pass; 21 verify checks pass
+
 ## 2026-05-19 (second run)
 - *(pending review — see draft PR on `auto/2026-05-19-pending-review`)* Research-only run (no version bump); check-docs-drift failed — surface file diff queued for manual review
 

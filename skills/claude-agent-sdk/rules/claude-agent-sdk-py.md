@@ -227,6 +227,34 @@ options = ClaudeAgentOptions(
 
 Issue [#571](https://github.com/anthropics/claude-agent-sdk-python/issues/571).
 
+### Task tracking changed from `TodoWrite` to Task tools in v0.2.82
+
+Since v0.2.82, headless and SDK sessions use `TaskCreate` / `TaskUpdate` / `TaskGet` /
+`TaskList` tool calls instead of `TodoWrite` to track agent tasks. Code that watches
+the message stream for `TodoWrite` calls will miss task updates.
+
+```python
+# WRONG — TodoWrite no longer emitted in headless/SDK sessions
+for msg in messages:
+    if msg.type == "assistant":
+        for block in msg.message.content:
+            if block.type == "tool_use" and block.name == "TodoWrite":
+                todos = block.input.get("todos", [])  # MISSES UPDATES
+
+# CORRECT — accumulate by task ID from TaskCreate / TaskUpdate
+tasks = {}  # keyed by task_id
+
+for msg in messages:
+    if msg.type == "assistant":
+        for block in msg.message.content:
+            if block.type == "tool_use":
+                if block.name == "TaskCreate":
+                    tasks[block.input["id"]] = block.input
+                elif block.name == "TaskUpdate":
+                    if block.input["id"] in tasks:
+                        tasks[block.input["id"]].update(block.input)
+```
+
 ---
 
 *This file lists edit-time correctable patterns. Background, full

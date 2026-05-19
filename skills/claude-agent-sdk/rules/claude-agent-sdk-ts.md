@@ -209,6 +209,26 @@ env: { ANTHROPIC_LOG: 'debug' }
 options: { debug: true, debugFile: '/tmp/agent.log' }
 ```
 
+### `bun build --compile`: use `extractFromBunfs` instead of hardcoding `pathToClaudeCodeExecutable`
+
+When bundling with `bun build --compile`, the CLI binary lives in the virtual filesystem
+(`$bunfs`). Setting `pathToClaudeCodeExecutable` to a literal path fails. Use the dedicated
+extract export instead (available since v0.3.144):
+
+```typescript
+// WRONG — path points to virtual bunfs, not a real file
+options: { pathToClaudeCodeExecutable: "/bunfs/root/cli.js" }
+
+// CORRECT — extract native binary at runtime
+import { extractFromBunfs } from "@anthropic-ai/claude-agent-sdk/extract";
+import nativeBin from "@anthropic-ai/claude-agent-sdk/claude-code-native" with { type: "file" };
+
+const execPath = await extractFromBunfs(nativeBin);
+const q = query({ prompt: "...", options: { pathToClaudeCodeExecutable: execPath } });
+```
+
+See KI #17 in [`SKILL-typescript.md`](../SKILL-typescript.md#17-sdk-fails-to-discover-cli-when-bundled-with-bun-build).
+
 ---
 
 *This file lists edit-time correctable patterns. Background, full

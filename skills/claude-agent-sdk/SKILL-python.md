@@ -665,6 +665,8 @@ asyncio.run(main())
 
 Hooks use **callback matchers**: an optional regex `matcher` for tool names and a list of `hooks` callbacks. Hooks work with both `query()` and `ClaudeSDKClient` via `ClaudeAgentOptions.hooks`.
 
+> **Dispatch order**: When an event fires, all matching hooks for that event run **in parallel** (concurrently). For `PreToolUse` permission decisions, deny takes precedence over defer, which takes precedence over ask, which takes precedence over allow — a single `deny` blocks the operation regardless of other hooks. Write each hook to act independently rather than assuming a particular execution order.
+
 ### Hook Events
 
 | Event | Fires When | Supported |
@@ -774,6 +776,14 @@ return {
         "hookEventName": "PreToolUse",
         "permissionDecision": "deny",
         "permissionDecisionReason": "Dangerous command blocked",
+    }
+}
+
+# Defer tool execution (PreToolUse only) — ends the query; ResultMessage.stop_reason == 'tool_deferred'
+return {
+    "hookSpecificOutput": {
+        "hookEventName": "PreToolUse",
+        "permissionDecision": "defer",
     }
 }
 
@@ -1103,6 +1113,22 @@ options = ClaudeAgentOptions(
     mcp_servers="/path/to/mcp-config.json"
 )
 ```
+
+### MCP Connection Mode (v0.2.82+)
+
+**Breaking change in v0.2.82**: MCP servers now connect in the background by default. Sessions
+start immediately and slow servers report `status: "pending"` in the `init` message until they
+are ready, instead of blocking session start.
+
+- To restore the old blocking behavior (wait up to 5 s before the first query):
+  ```python
+  import os; os.environ["MCP_CONNECTION_NONBLOCKING"] = "0"
+  ```
+- To require a specific server to be connected before turn 1:
+  ```python
+  mcp_servers={"my-server": {"command": "...", "alwaysLoad": True}}
+  ```
+  With `alwaysLoad: True`, the session will wait for that server before proceeding.
 
 ### MCP Gotchas
 
@@ -1828,7 +1854,7 @@ options = ClaudeAgentOptions(
 
 | Version | Change |
 |---------|--------|
-| v0.2.82 | Current stable; full cross-platform wheels; `AgentDefinition` adds `background`, `effort`, `permissionMode`, `initialPrompt`; `PermissionMode` adds `"dontAsk"`; `EffortLevel` adds `"xhigh"`; new options `strict_mcp_config`, `include_hook_events`, `skills`, `session_store`; `AssistantMessage` adds `usage`, `message_id`; `ResultMessage` adds `model_usage`, `deferred_tool_use`, `permission_denials`; `RateLimitEvent` is now a proper typed `Message` |
+| v0.2.82 | **Breaking (2):** (1) MCP servers connect in background by default — sessions start immediately; `status: "pending"` in `init` until ready; set `MCP_CONNECTION_NONBLOCKING=0` or `alwaysLoad=True` on a server to restore blocking. (2) Headless/SDK sessions now use `TaskCreate`/`TaskUpdate`/`TaskGet`/`TaskList` tools instead of `TodoWrite` — tool consumers must accumulate by task ID instead of replacing a snapshot list. Other: full cross-platform wheels; `AgentDefinition` adds `background`, `effort`, `permissionMode`, `initialPrompt`; `PermissionMode` adds `"dontAsk"`; `EffortLevel` adds `"xhigh"`; new options `strict_mcp_config`, `include_hook_events`, `skills`, `session_store`; `AssistantMessage` adds `usage`, `message_id`; `ResultMessage` adds `model_usage`, `deferred_tool_use`, `permission_denials`; `RateLimitEvent` is now a proper typed `Message` |
 | v0.1.49 | Added `skills`, `memory`, `mcpServers` to `AgentDefinition`; per-turn usage on `AssistantMessage`; `rename_session()`, `delete_session()`, `tag_session()`; typed `RateLimitEvent`; reverted Bedrock-breaking eager_input_streaming. Partial release resolved in v0.2.x |
 | v0.1.48 | Introduced `eager_input_streaming` with `include_partial_messages=True` (broke Bedrock/Vertex — see [#21](#21-include_partial_messagestrue-breaks-tool-input-streaming-on-bedrockvertex)) |
 | v0.1.44 | Fixed `rate_limit_event` crash in message parser; bundled CLI v2.1.59 |
