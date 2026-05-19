@@ -7,6 +7,8 @@ enterprise SSO, telemetry, M365 connector, policy controls) and
 
 Part of the [anthropic-docs](../../README.md) plugin.
 
+**Last updated**: 2026-05-19
+
 ## Surfaces
 
 | File | Topic |
@@ -24,4 +26,10 @@ Part of the [anthropic-docs](../../README.md) plugin.
 ```bash
 SKILL_NAME=claude-cowork npm run update
 ```
+
+## Recent activity
+
+| Date | Update | Research | Mending | Report | Total | Notes |
+|------|--------|----------|---------|--------|-------|-------|
+| 2026-05-19 | review | docs +0/-1 |
 

@@ -9,7 +9,7 @@ description: |
   enterprise admin setup (OpenTelemetry audit, usage analytics,
   spend tracking), and the one-time Microsoft Graph consent required
   for Outlook.
-source: https://claude.com/docs/office-agents/overview.md
+source: https://claude.com/docs/office-agents/excel.md
 ---
 
 # Claude for M365 (Office Agents)
@@ -105,12 +105,11 @@ Highlights:
 
 ## Page index
 
-All 11 source pages mirrored under
+All 10 source pages mirrored under
 [`https://claude.com/docs/office-agents/`](https://claude.com/docs/office-agents/):
 
 | Page | Topic |
 |---|---|
-| `overview.md` | What's available, deployment overview |
 | `excel.md` | Claude for Excel |
 | `powerpoint.md` | Claude for PowerPoint |
 | `word.md` | Claude for Word |
@@ -124,4 +123,4 @@ All 11 source pages mirrored under
 
 ---
 
-*Source pages: 11 under `claude.com/docs/office-agents/`.*
+*Source pages: 10 under `claude.com/docs/office-agents/`. The `overview.md` page was removed from the docs index on 2026-05-19.*
