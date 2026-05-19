@@ -49,19 +49,29 @@ every property optional — the model can skip them, which surfaces as
 
 If a tool needs a required field, list it in `required: [...]`.
 
-## Rule 3 — `cache_control` is per-block, not per-message
+## Rule 3 — `cache_control` placement: two valid modes
 
-A `cache_control: { type: "ephemeral" }` breakpoint lives on a content
-block, not on the message object. Up to **4 breakpoints per request**.
-Placing one on the system role's string form is also wrong — convert
-`system` to the array form first.
+There are two valid placements for `cache_control: { type: "ephemeral" }`:
 
-**WRONG (cache_control on message):**
+**Mode A — Automatic caching (top-level request body):**
+Place `cache_control` at the top level of the request body. The system automatically
+applies it to the last cacheable block and advances it as the conversation grows.
+Best for multi-turn conversations — no block-level edits needed.
+
 ```json
-{ "role": "user", "cache_control": { "type": "ephemeral" }, "content": "..." }
+{
+  "model": "claude-opus-4-7",
+  "max_tokens": 1024,
+  "cache_control": { "type": "ephemeral" },
+  "messages": [...]
+}
 ```
 
-**RIGHT (on the block):**
+**Mode B — Explicit breakpoints (on content blocks):**
+Place `cache_control` directly on individual content blocks. Up to **4 breakpoints
+per request**. Placing one on the system role's string form is wrong — convert
+`system` to the array form first.
+
 ```json
 {
   "role": "user",
@@ -71,6 +81,13 @@ Placing one on the system role's string form is also wrong — convert
   ]
 }
 ```
+
+**WRONG (cache_control on the message object, not on a content block):**
+```json
+{ "role": "user", "cache_control": { "type": "ephemeral" }, "content": "..." }
+```
+
+Source: [`prompt-caching.md`](https://platform.claude.com/docs/en/build-with-claude/prompt-caching.md).
 
 ## Rule 4 — Extended thinking needs `budget_tokens` and counts against `max_tokens`
 

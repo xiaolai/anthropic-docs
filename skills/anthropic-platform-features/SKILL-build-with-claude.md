@@ -27,11 +27,18 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
   `thinking: { type: "enabled", budget_tokens: N }`. Tokens used in
   thinking blocks are billed at input-token rates and **count against
   `max_tokens`** for the final response.
-- **Prompt caching has 4-breakpoint limit per request.** Each
-  `cache_control: { type: "ephemeral" }` is one breakpoint. Default TTL
-  is `5m`; `1h` is also available. The whole prefix up to the
-  breakpoint is cached, so place breakpoints at stable boundaries
-  (system prompt → tools → static context → user turn).
+- **Prompt caching — two modes:**
+  - **Automatic caching (simpler):** add `cache_control: { type: "ephemeral" }` at
+    the **top level of the request body** (not on any content block). The system
+    automatically applies the breakpoint to the last cacheable block and advances it
+    as the conversation grows. Best for multi-turn conversations. Source:
+    [`prompt-caching.md`](https://platform.claude.com/docs/en/build-with-claude/prompt-caching.md).
+  - **Explicit breakpoints (fine-grained):** place `cache_control` on individual content
+    blocks. Up to **4 breakpoints per request**. Place at stable boundaries (system
+    prompt → tools → static context → user turn). Default TTL is `5m`; `1h` is also
+    available (at 2× base input-token price).
+  - **Constraint when mixing TTLs:** longer-TTL entries must appear before shorter-TTL
+    entries in the prompt ordering (`tools → system → messages`).
 - **Cache diagnostics (beta):** When cache hits drop unexpectedly, pass
   `diagnostics: { previous_message_id: <prev_id> }` with beta header
   `cache-diagnosis-2026-04-07`. The response's `diagnostics.cache_miss_reason`
