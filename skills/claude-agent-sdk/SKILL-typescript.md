@@ -102,6 +102,21 @@ const { effective, provenance } = await resolveSettings({ dir: process.cwd() });
 
 ⚠️ Alpha — API may change. Does not execute `policyHelper` subprocess or apply trust filters.
 
+### `extractFromBunfs()` (Bun compile)
+
+For `bun build --compile` consumers only. Extracts the bundled native CLI binary from Bun's virtual filesystem into a temp path usable by the SDK.
+
+```typescript
+import binPath from "@anthropic-ai/claude-agent-sdk/extract" with { type: "file" };
+import { extractFromBunfs } from "@anthropic-ai/claude-agent-sdk/extract";
+
+// Call before query(); pass the result as pathToClaudeCodeExecutable
+const executablePath = await extractFromBunfs(binPath);
+const result = query({ prompt: "...", options: { pathToClaudeCodeExecutable: executablePath } });
+```
+
+Added in v0.3.144. Only required when bundling with `bun build --compile`; normal Node/Bun installations do not need this.
+
 ### `tool()`
 
 Creates type-safe MCP tool definitions with Zod schemas.
@@ -591,7 +606,8 @@ type SDKPermissionDenial = { tool_name: string; tool_use_id: string; tool_input:
 
 // Error codes (SDKAssistantMessageError)
 'authentication_failed' | 'oauth_org_not_allowed' | 'billing_error' | 'rate_limit' |
-'invalid_request' | 'server_error' | 'unknown' | 'max_output_tokens'
+'invalid_request' | 'model_not_found' | 'server_error' | 'unknown' | 'max_output_tokens'
+// 'model_not_found': added v0.3.144 — distinct from 'invalid_request' when model doesn't exist/isn't available
 ```
 
 ### SDKSystemMessage (init)
@@ -1666,6 +1682,7 @@ sandbox: {
 
 | Version | Change |
 |---------|--------|
+| v0.3.144 | `SDKAssistantMessageError` adds `'model_not_found'` (was `'invalid_request'` when model unavailable); `@anthropic-ai/claude-agent-sdk/extract` + `extractFromBunfs()` for `bun build --compile` users |
 | v0.3.x  | `startup()` / `WarmQuery` — pre-warm CLI before prompt available; `resolveSettings()` (alpha); new `SDKPermissionDeniedMessage`, `SDKPluginInstallMessage`, `SDKTaskUpdatedMessage` types; `SDKMessageOrigin` on user/result messages; new `AgentDefinition` fields: `background`, `memory`, `effort`, `permissionMode`, `initialPrompt`; new options: `skills`, `strictMcpConfig`, `outputStyle`, `includeHookEvents`, `sessionStore`; `effort` adds `'xhigh'` level; `SDKAPIRetryMessage` and `SDKElicitationCompleteMessage` removed from `SDKMessage` union |
 | v0.2.77 | `SDKAPIRetryMessage` added (now removed in v0.3.x); fixed `./sdk-tools` exports map ([#222](https://github.com/anthropics/claude-agent-sdk-typescript/issues/222)) |
 | v0.2.71 | Fixed `Agent` tool returning `"Unknown tool: Agent"` in `query()` mode |

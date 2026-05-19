@@ -35,6 +35,11 @@
 2. **No filesystem settings loaded** — `setting_sources` defaults to `None`. Add `setting_sources=["project"]` to load CLAUDE.md.
 3. **`ClaudeCodeOptions` renamed** — Now `ClaudeAgentOptions`.
 
+## Breaking Changes (v0.2.82)
+
+1. **MCP servers connect in background by default** — Sessions start immediately; slow servers report `status: "pending"` in `init`. Set `MCP_CONNECTION_NONBLOCKING=0` to restore the old blocking behavior, or set `alwaysLoad: True` on a server config to require it before turn 1. See [MCP Background Connection](#mcp-background-connection-v0282).
+2. **Task tools replace `TodoWrite`** — SDK sessions now use `TaskCreate` / `TaskUpdate` / `TaskGet` / `TaskList` instead of `TodoWrite`. Consumers that accumulate todos by snapshotting the full list need to switch to accumulating by task ID. Set `CLAUDE_CODE_ENABLE_TASKS=0` to revert to `TodoWrite`.
+
 ---
 
 ## Core API
@@ -866,7 +871,7 @@ Common fields on all hooks: `session_id`, `transcript_path`, `cwd`, `permission_
 | `trigger` (`"manual" \| "auto"`) | PreCompact |
 | `custom_instructions` | PreCompact |
 | `message`, `title`, `notification_type` | Notification |
-| `permission_suggestions` | PermissionRequest |
+| `permission_suggestions` (`list[dict[str, Any]] \| None`) | PermissionRequest |
 
 ### Full Hook Example
 
@@ -1101,6 +1106,22 @@ The Python SDK can load MCP configs from a file path:
 ```python
 options = ClaudeAgentOptions(
     mcp_servers="/path/to/mcp-config.json"
+)
+```
+
+### MCP Background Connection (v0.2.82+)
+
+MCP servers now connect in the background by default. Sessions start immediately and slow servers report `status: "pending"` in the `init` message until ready. Previously the SDK waited up to 5 s before the first query.
+
+- **Restore old behavior**: set `MCP_CONNECTION_NONBLOCKING=0` in the environment
+- **Require a server before turn 1**: mark the server config with `alwaysLoad: true`
+
+```python
+options = ClaudeAgentOptions(
+    mcp_servers={
+        "critical": {"command": "npx", "args": ["my-server"], "alwaysLoad": True},
+        "optional": {"command": "npx", "args": ["slow-server"]},   # may be "pending" on turn 1
+    }
 )
 ```
 
@@ -1828,7 +1849,7 @@ options = ClaudeAgentOptions(
 
 | Version | Change |
 |---------|--------|
-| v0.2.82 | Current stable; full cross-platform wheels; `AgentDefinition` adds `background`, `effort`, `permissionMode`, `initialPrompt`; `PermissionMode` adds `"dontAsk"`; `EffortLevel` adds `"xhigh"`; new options `strict_mcp_config`, `include_hook_events`, `skills`, `session_store`; `AssistantMessage` adds `usage`, `message_id`; `ResultMessage` adds `model_usage`, `deferred_tool_use`, `permission_denials`; `RateLimitEvent` is now a proper typed `Message` |
+| v0.2.82 | **Breaking**: MCP servers connect in background by default (status: `"pending"` in init; `MCP_CONNECTION_NONBLOCKING=0` to revert; `alwaysLoad: True` to require before turn 1). **Breaking**: Task tools (`TaskCreate`/`TaskUpdate`/`TaskGet`/`TaskList`) replace `TodoWrite` (`CLAUDE_CODE_ENABLE_TASKS=0` to revert). `EffortLevel` exported from package root. `permission_suggestions` tightened to `list[dict[str, Any]] \| None`. Stderr callback exceptions no longer drop subsequent stderr lines. Full cross-platform wheels; `AgentDefinition` adds `background`, `effort`, `permissionMode`, `initialPrompt`; `PermissionMode` adds `"dontAsk"`; `EffortLevel` adds `"xhigh"`; new options `strict_mcp_config`, `include_hook_events`, `skills`, `session_store`; `AssistantMessage` adds `usage`, `message_id`; `ResultMessage` adds `model_usage`, `deferred_tool_use`, `permission_denials`; `RateLimitEvent` is now a proper typed `Message` |
 | v0.1.49 | Added `skills`, `memory`, `mcpServers` to `AgentDefinition`; per-turn usage on `AssistantMessage`; `rename_session()`, `delete_session()`, `tag_session()`; typed `RateLimitEvent`; reverted Bedrock-breaking eager_input_streaming. Partial release resolved in v0.2.x |
 | v0.1.48 | Introduced `eager_input_streaming` with `include_partial_messages=True` (broke Bedrock/Vertex — see [#21](#21-include_partial_messagestrue-breaks-tool-input-streaming-on-bedrockvertex)) |
 | v0.1.44 | Fixed `rate_limit_event` crash in message parser; bundled CLI v2.1.59 |

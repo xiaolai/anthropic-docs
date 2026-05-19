@@ -51,98 +51,141 @@
     "pageCount": 29,
     "knownPages": {
       "https://code.claude.com/docs/en/agent-sdk/agent-loop.md": {
-        "lastSeen": "2026-05-19T06:59:12Z"
+        "lastSeen": "2026-05-19T12:48:06Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/claude-code-features.md": {
-        "lastSeen": "2026-05-19T06:59:12Z"
+        "lastSeen": "2026-05-19T12:48:06Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/cost-tracking.md": {
-        "lastSeen": "2026-05-19T06:59:12Z"
+        "lastSeen": "2026-05-19T12:48:06Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/custom-tools.md": {
-        "lastSeen": "2026-05-19T06:59:12Z"
+        "lastSeen": "2026-05-19T12:48:06Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/file-checkpointing.md": {
-        "lastSeen": "2026-05-19T06:59:12Z"
+        "lastSeen": "2026-05-19T12:48:06Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/hooks.md": {
-        "lastSeen": "2026-05-19T06:59:12Z"
+        "lastSeen": "2026-05-19T12:48:06Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/hosting.md": {
-        "lastSeen": "2026-05-19T06:59:12Z"
+        "lastSeen": "2026-05-19T12:48:06Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/mcp.md": {
-        "lastSeen": "2026-05-19T06:59:12Z"
+        "lastSeen": "2026-05-19T12:48:06Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/migration-guide.md": {
-        "lastSeen": "2026-05-19T06:59:12Z"
+        "lastSeen": "2026-05-19T12:48:06Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/modifying-system-prompts.md": {
-        "lastSeen": "2026-05-19T06:59:12Z"
+        "lastSeen": "2026-05-19T12:48:06Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/observability.md": {
-        "lastSeen": "2026-05-19T06:59:12Z"
+        "lastSeen": "2026-05-19T12:48:06Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/overview.md": {
-        "lastSeen": "2026-05-19T06:59:12Z"
+        "lastSeen": "2026-05-19T12:48:06Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/permissions.md": {
-        "lastSeen": "2026-05-19T06:59:12Z"
+        "lastSeen": "2026-05-19T12:48:06Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/plugins.md": {
-        "lastSeen": "2026-05-19T06:59:12Z"
+        "lastSeen": "2026-05-19T12:48:06Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/python.md": {
-        "lastSeen": "2026-05-19T06:59:12Z"
+        "lastSeen": "2026-05-19T12:48:06Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/quickstart.md": {
-        "lastSeen": "2026-05-19T06:59:12Z"
+        "lastSeen": "2026-05-19T12:48:06Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/secure-deployment.md": {
-        "lastSeen": "2026-05-19T06:59:12Z"
+        "lastSeen": "2026-05-19T12:48:06Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/sessions.md": {
-        "lastSeen": "2026-05-19T06:59:12Z"
+        "lastSeen": "2026-05-19T12:48:06Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/skills.md": {
-        "lastSeen": "2026-05-19T06:59:12Z"
+        "lastSeen": "2026-05-19T12:48:06Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/slash-commands.md": {
-        "lastSeen": "2026-05-19T06:59:12Z"
+        "lastSeen": "2026-05-19T12:48:06Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/streaming-output.md": {
-        "lastSeen": "2026-05-19T06:59:12Z"
+        "lastSeen": "2026-05-19T12:48:06Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/streaming-vs-single-mode.md": {
-        "lastSeen": "2026-05-19T06:59:12Z"
+        "lastSeen": "2026-05-19T12:48:06Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/structured-outputs.md": {
-        "lastSeen": "2026-05-19T06:59:12Z"
+        "lastSeen": "2026-05-19T12:48:06Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/subagents.md": {
-        "lastSeen": "2026-05-19T06:59:12Z"
+        "lastSeen": "2026-05-19T12:48:06Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/todo-tracking.md": {
-        "lastSeen": "2026-05-19T06:59:12Z"
+        "lastSeen": "2026-05-19T12:48:06Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/tool-search.md": {
-        "lastSeen": "2026-05-19T06:59:12Z"
+        "lastSeen": "2026-05-19T12:48:06Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/typescript-v2-preview.md": {
-        "lastSeen": "2026-05-19T06:59:12Z"
+        "lastSeen": "2026-05-19T12:48:06Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/typescript.md": {
-        "lastSeen": "2026-05-19T06:59:12Z"
+        "lastSeen": "2026-05-19T12:48:06Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/user-input.md": {
-        "lastSeen": "2026-05-19T06:59:12Z"
+        "lastSeen": "2026-05-19T12:48:06Z"
       }
     }
   },
   "trackedIssues": {},
-  "researchedIssues": {},
+  "researchedIssues": {
+    "327": {
+      "title": "examples: add Synap memory integration example",
+      "verdict": "skipped",
+      "reason": "example addition, no labels, not a bug",
+      "researchedAt": "2026-05-19T07:30:00Z"
+    },
+    "305": {
+      "title": "fix: probe libc before selecting bundled CLI binary (#296)",
+      "verdict": "skipped",
+      "reason": "fix PR (no bug label), internal build fix not user-impacting as known issue",
+      "researchedAt": "2026-05-19T07:30:00Z"
+    },
+    "285": {
+      "title": "docs: update documentation to match latest release",
+      "verdict": "skipped",
+      "reason": "docs PR, not a bug",
+      "researchedAt": "2026-05-19T07:30:00Z"
+    },
+    "229": {
+      "title": "Add regression test for write-after-endInput race in ProcessTransport",
+      "verdict": "skipped",
+      "reason": "internal test addition, no bug label, no user-facing impact",
+      "researchedAt": "2026-05-19T07:30:00Z"
+    },
+    "223": {
+      "title": "fix: escape issue title in Slack notification to prevent JSON breakage",
+      "verdict": "skipped",
+      "reason": "internal CI fix, not user-facing SDK bug",
+      "researchedAt": "2026-05-19T07:30:00Z"
+    },
+    "194": {
+      "title": "fix: add timeout: null support to HookCallbackMatcher for indefinite hook waiting",
+      "verdict": "already_documented",
+      "reason": "already covered as known issue in SKILL-typescript.md §Known Issues (timeout: null silently ignored)",
+      "researchedAt": "2026-05-19T07:30:00Z"
+    },
+    "68": {
+      "title": "security: Add comprehensive security audit documentation",
+      "verdict": "skipped",
+      "reason": "security docs addition, not a user-impacting bug",
+      "researchedAt": "2026-05-19T07:30:00Z"
+    }
+  },
   "lastAuditedVersion": "0.3.144",
-  "lastUpdated": "2026-05-19T06:59:12Z",
+  "lastUpdated": "2026-05-19T12:48:06Z",
   "scaffoldComplete": true,
   "lastRunWarnings": [],
   "lastScannedIssueNumber": null
