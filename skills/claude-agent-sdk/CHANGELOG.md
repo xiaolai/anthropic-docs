@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-05-19 (second run)
+- *(pending review — see draft PR on `auto/2026-05-19-pending-review`)* Research-only run (no version bump); check-docs-drift failed — surface file diff queued for manual review
+
 ## 2026-05-19
 
 - SDK TS v0.3.143 → v0.3.144; docs index hash updated (content changed, page count unchanged at 29)
