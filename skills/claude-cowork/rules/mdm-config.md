@@ -92,6 +92,29 @@ JSON file your org publishes. **Pin plugin versions** in that
 manifest; bare references resolve to "latest" and inherit any
 breaking change immediately.
 
+## Rule 9 — Set `deploymentOrganizationUuid` before fleet rollout
+
+`deploymentOrganizationUuid` must be a UUID you generate (format
+`xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`) set in every MDM profile before
+deployment. Without it, every unset device shares the placeholder UUID
+`00000000-0000-4000-8000-000000000001`, making it impossible for Anthropic
+to isolate your fleet's events when you file a support case.
+
+```xml
+<key>deploymentOrganizationUuid</key>
+<string>a1b2c3d4-0000-4000-8000-e5f6a7b8c9d0</string>
+```
+
+Source: [`cowork/3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
+
+## Rule 10 — `disableAutoUpdates: true` disables enforcement; pair with redistribution plan
+
+When `disableAutoUpdates` is `true`, the `autoUpdaterEnforcementHours` key is
+ignored. Your IT team must redistribute new Claude Desktop builds manually.
+If you want automatic updates but with a controlled rollout window, leave
+`disableAutoUpdates` unset and set `autoUpdaterEnforcementHours` (1–72,
+default 72) to the maximum hours before a pending update is forced.
+
 ## Rule 8 — Token caps are per-device and token-based, not USD per-workspace
 
 `inferenceMaxTokensPerWindow` caps total input + output tokens allowed per

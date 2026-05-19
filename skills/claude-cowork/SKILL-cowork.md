@@ -124,17 +124,38 @@ APJ, and other sovereign regions).
 
 Every managed-configuration key lives in
 [`3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
-That page is the source of truth for:
+The in-app configuration window (**Developer → Configure third-party inference**)
+is the recommended authoring tool — it validates values and exports to
+`.mobileconfig` (macOS) or `.reg` (Windows). Use the reference when authoring
+policy by hand or auditing an existing profile.
 
-- Inference provider selection (`inferenceProvider`)
-- Region pinning (`inferenceVertexRegion`, `inferenceBedrockRegion`)
-- Feature toggles (web search, local MCP, Code tab, etc.)
-- Telemetry toggles (`disableEssentialTelemetry`, `disableNonessentialTelemetry`,
-  `disableNonessentialServices`, `disableAutoUpdates`)
-- MCP server allowlist (`managedMcpServers`)
-- Plugin / skill / hook distribution settings
-- Token-based spend caps (`inferenceMaxTokensPerWindow`, `inferenceTokenWindowHours`)
-- Auto-update policy (`disableAutoUpdates`)
+Key groups (all values stored as **strings** in the OS preference store, even booleans and arrays):
+
+| Group | Keys |
+|---|---|
+| **Activation** | `inferenceProvider` (enum: `vertex`/`bedrock`/`foundry`/`gateway`), `deploymentOrganizationUuid`, `disableDeploymentModeChooser` |
+| **Credentials** | Provider-specific keys (see provider pages); `inferenceCredentialHelper` (path), `inferenceCredentialHelperTtlSec` (integer, default `3600`) |
+| **Models** | `inferenceModels` — JSON string\[] or `{"name","labelOverride","supports1m"}` objects; first entry is default |
+| **Sandbox & workspace** | `disabledBuiltinTools` (JSON string\[]), `allowedWorkspaceFolders` (JSON string\[]), `coworkEgressAllowedHosts` (JSON string\[]), `isClaudeCodeForDesktopEnabled` (bool, default `true`), `disableDeepLinkRegistration` (bool, default `false`) |
+| **Connectors & extensions** | `managedMcpServers` (JSON object\[]), `orgPluginSettings` (JSON object), `isLocalDevMcpEnabled` (bool, default `true`), `isDesktopExtensionEnabled` (bool, default `true`), `isDesktopExtensionSignatureRequired` (bool, default `false`) |
+| **Telemetry & updates** | `disableEssentialTelemetry`, `disableNonessentialTelemetry`, `disableNonessentialServices`, `disableAutoUpdates` (all bool, default `false`); `autoUpdaterEnforcementHours` (integer 1–72, default `72`) |
+| **OpenTelemetry export** | `otlpEndpoint`, `otlpProtocol` (`http/protobuf`\|`http/json`\|`grpc`), `otlpHeaders` (JSON object), `otlpResourceAttributes` (JSON object) |
+| **Usage limits** | `inferenceMaxTokensPerWindow` (integer), `inferenceTokenWindowHours` (integer 1–720) |
+| **Appearance** | `banner` (JSON object with `enabled`, `text`, `backgroundColor`, `textColor`, `linkUrl`) |
+
+> **`deploymentOrganizationUuid`** — set this before rollout. Without it, crash
+> reports and telemetry from your fleet use a shared placeholder UUID, making
+> Anthropic unable to isolate your organization's events for support cases.
+>
+> **`coworkEgressAllowedHosts`** — governs the Cowork-tab sandbox (not the Code
+> tab). When unset, only the inference endpoint is reachable; package installs
+> and web fetches inside Cowork tasks will fail. Set to `["*"]` to allow all,
+> or enumerate hosts (wildcards `*.example.com` supported).
+>
+> **Array/object keys** (`inferenceModels`, `managedMcpServers`,
+> `coworkEgressAllowedHosts`, `otlpHeaders`, etc.) must be JSON strings in the
+> `.mobileconfig` — a single `<string>` containing `[...]` or `{...}`, not a
+> native `<array>` or `<dict>`.
 
 ## Data residency
 
