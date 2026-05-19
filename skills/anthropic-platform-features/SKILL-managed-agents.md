@@ -40,9 +40,13 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
 - **Sessions are persistent conversations.** Unlike Messages API
   (stateless), a Managed Agent session holds state across calls.
   Bill by tokens consumed, not by session duration.
-- **Vaults** store secrets your agent needs to access third-party
-  services (API keys, OAuth tokens). Encrypted at rest, scoped per
-  agent, never exposed to your agent's prompt context.
+- **Vaults** store credentials your agent needs to access third-party
+  services (API keys, OAuth tokens). **Workspace-scoped** (any API key
+  in the workspace can reference them). The vault reference is a
+  **per-session** parameter, so you manage credentials at the user
+  level without re-defining agents. To revoke access, delete the
+  vault or individual credential. Vault ID prefix: `vlt_`. See
+  [`vaults.md`](https://platform.claude.com/docs/en/managed-agents/vaults.md).
 - **Permission policies** gate what each agent may do (which tools,
   which file paths, which network endpoints). Set on the agent
   definition; enforced server-side. Default-deny.

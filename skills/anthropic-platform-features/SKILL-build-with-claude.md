@@ -79,6 +79,16 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
   the new behavior with beta header
   `model-context-window-exceeded-2025-08-26`.
   Source: [`context-windows.md`](https://platform.claude.com/docs/en/build-with-claude/context-windows.md).
+- **Context awareness** — Claude Sonnet 4.6, Sonnet 4.5, and Haiku 4.5
+  automatically receive token-budget information injected by the API. At
+  conversation start the system sends
+  `<budget:token_budget>N</budget:token_budget>` (1M for 1M-window
+  models, 200K for others). After each tool call, a
+  `<system_warning>Token usage: X/Y; Z remaining</system_warning>` block
+  is injected so the model can track remaining capacity. Developers do
+  not configure this — it is automatic. The feature helps these models
+  persist on long tasks instead of prematurely stopping.
+  Source: [`context-windows.md`](https://platform.claude.com/docs/en/build-with-claude/context-windows.md).
 
 ## Platform foundation (top-level intro pages)
 
