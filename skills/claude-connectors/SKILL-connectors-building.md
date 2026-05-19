@@ -46,6 +46,46 @@ for the protocol details. The Claude-specific concerns are:
 - **Test credentials** — required for review (so Anthropic reviewers
   can validate end-to-end without acquiring production access).
 
+> **Tip:** Install the official `mcp-server-dev` plugin in Claude Code to
+> get an interactive build-test-package workflow using these docs as its
+> reference:
+> `https://github.com/anthropics/claude-plugins-official/tree/main/plugins/mcp-server-dev`
+
+### Supported transports
+
+Claude supports both **Streamable HTTP** (preferred) and the legacy
+**HTTP+SSE** transport. The legacy HTTP+SSE transport is being deprecated
+in favor of Streamable HTTP.
+
+### Authentication — supported spec versions
+
+| Auth spec | Status |
+|---|---|
+| [2025-03-26](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization) | Supported |
+| [2025-06-18](https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization) | Supported |
+| [2025-11-25](https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization) | Supported |
+
+Dynamic Client Registration (DCR) is enabled. OAuth callback:
+`https://claude.ai/api/mcp/auth_callback` (hosted surfaces); loopback
+redirect for Claude Code. Full details: [`authentication.md`](https://claude.com/docs/connectors/building/authentication.md).
+
+### Protocol features — not yet supported
+
+- Resource subscriptions
+- Sampling
+- Advanced/draft capabilities
+
+### Technical limits
+
+| Constraint | Limit |
+|---|---|
+| Claude.ai/Desktop max tool result size | ~150,000 characters |
+| Claude Code max tool result size | 25,000 tokens (configurable via `MAX_MCP_OUTPUT_TOKENS`) |
+| Claude Code timeout | Configurable via `MCP_TOOL_TIMEOUT` |
+| Claude.ai/Desktop timeout | 300 seconds (5 minutes) |
+
+Source: [`building/index.md`](https://claude.com/docs/connectors/building/index.md).
+
 ## Authentication
 
 Two pages cover auth:

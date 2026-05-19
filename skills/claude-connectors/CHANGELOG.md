@@ -3,6 +3,9 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-19 (run 2)
+*(pending review — see PR auto/2026-05-19-pending-review)* — Research agent crash (SDK runtime error); check-docs-drift gate failed; no content changes applied
+
 ## 2026-05-19
 *(pending review — see PR auto/2026-05-19-pending-review)* — Docs index content sync: 34 pages audited and refreshed; check-diff-size gate triggered review branch (no pages added or removed)
 

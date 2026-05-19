@@ -187,9 +187,21 @@ Source: [`mcp-apps/design-guidelines.md`](https://claude.com/docs/connectors/bui
 
 Make your widget background transparent and style with Claude's
 CSS custom properties — blends seamlessly into the host UI across themes.
-The host injects color tokens (`color-background-*`, `color-text-*`,
-`color-border-*`), typography (`font-sans`, `font-mono`, `font-weight-*`),
-and spacing variables. All tokens adapt automatically to light/dark mode.
+The host passes `hostContext` (via `App.connect()`) with fields:
+`theme` (`"light"`|`"dark"`), `styles.variables` (CSS custom properties),
+and `styles.css.fonts` (`@font-face` rules from `https://assets.claude.ai`).
+
+SDK helpers (all from `@modelcontextprotocol/ext-apps`):
+- `applyDocumentTheme(theme)` — sets `<html data-theme>` + root `color-scheme`
+- `applyHostStyleVariables(variables)` — writes tokens to `:root`
+- `applyHostFonts(fontCss)` — injects `@font-face` rules
+- React: `useApp(options)`, `useHostStyles(app, hostContext)`
+
+To suppress the host border card: set `prefersBorder: false` in your
+resource's `_meta.ui`. To allow host font loading: add
+`csp: { resourceDomains: ["https://assets.claude.ai"] }` in `_meta.ui`.
+Listen for `hostcontextchanged` on the `App` instance to re-apply on
+theme switch.
 
 Reference: [`mcp-apps/transparent-theming.md`](https://claude.com/docs/connectors/building/mcp-apps/transparent-theming.md).
 Full CSS token table: [`mcp-apps/design-guidelines.md#style-variables`](https://claude.com/docs/connectors/building/mcp-apps/design-guidelines.md).
@@ -200,26 +212,72 @@ When a tool is called more than once in a conversation, keep only
 the newest copy of the widget active. Prevents stale widgets from
 piling up.
 
+**Pattern:** Use `BroadcastChannel` across widget iframes (same origin
+`*.claudemcpcontent.com`). The server stamps each tool result with an
+election key (`{createdAt, seq}`) in `structuredContent` (the typed
+JSON payload of an MCP tool result). Each widget reads its key from the
+SDK's `toolresult` event, announces on the channel, and marks itself
+superseded if a sibling has a newer key. Guard all calls to
+`updateModelContext()` and `sendMessage()` with `if (!superseded)`.
+
+Key SDK types involved: `structuredContent`, `App.toolresult` event,
+`hostContext.toolInfo.id` (stable tool-use ID on Claude.ai web),
+`_meta.ui.domain` (channel scope — see cross-compatibility section).
+
 Reference: [`mcp-apps/instance-supersession.md`](https://claude.com/docs/connectors/building/mcp-apps/instance-supersession.md).
 
 ### External links
 
-How Claude handles `ui/open-link` requests; how directory connectors
-can allowlist destinations to skip the confirmation modal.
+`ui/open-link` requests show a confirmation modal by default. Directory
+connectors can declare **Allowed link URIs** at submission time to skip
+the modal for trusted destinations.
+
+Allowlist entry shapes:
+
+| Shape | Example | Matches |
+|---|---|---|
+| HTTPS origin | `https://docs.example.com` | Exact hostname only (no implicit subdomain match) |
+| Custom URI scheme | `example-app` or `example-app:` | Any URL with that scheme (e.g., deep links) |
+
+Rejected scheme values: `http`, `https`, `file`, `data`, `javascript`,
+`blob`, `mailto`, `tel`, `sms`, `intent`, `android-app`, browser-extension
+schemes, Windows shell schemes (`search-ms`, `shell`), etc.
+
+The modal is also shown when `ui/open-link` fires without a real user
+gesture (programmatic, on a timer, or after the activation window expires).
+
+Custom/local connectors always show the modal regardless of allowlist.
 
 Reference: [`mcp-apps/external-links.md`](https://claude.com/docs/connectors/building/mcp-apps/external-links.md).
 
 ### Cross-platform compatibility (Claude + ChatGPT)
 
 Build MCP Apps that work with both Claude and ChatGPT using a
-single codebase. Worth the constraints if your audience spans both.
+single codebase. The SDK auto-detects the host via `App.connect()` —
+no explicit transport parameter needed.
+
+**`_meta.ui.domain` for Claude:** Compute as a SHA-256 hash of your
+server URL, truncated to 32 hex chars + `.claudemcpcontent.com`:
+```bash
+node -e 'const u="https://example.com/mcp"; console.log(require("crypto").createHash("sha256").update(u).digest("hex").slice(0,32)+".claudemcpcontent.com")'
+```
+This domain is used for `BroadcastChannel` scope in instance supersession.
 
 Reference: [`mcp-apps/cross-compatibility.md`](https://claude.com/docs/connectors/building/mcp-apps/cross-compatibility.md).
 
 ### Getting started
 
 [`mcp-apps/getting-started.md`](https://claude.com/docs/connectors/building/mcp-apps/getting-started.md)
-walks through testing MCP Apps in Claude.
+walks through testing MCP Apps in Claude. Official example servers (all
+from `@modelcontextprotocol/ext-apps` repo): Customer Segmentation, Map,
+QR Code, ShaderToy, Sheet Music. Install via `npx -y @modelcontextprotocol/<name>-server --stdio`.
+
+**MCP Apps skills for AI coding agents:** Install in Claude Code with:
+```
+/plugin marketplace add modelcontextprotocol/ext-apps
+/plugin install mcp-apps@modelcontextprotocol-ext-apps
+```
+Then ask the agent: "Create an MCP App" or "Add a UI to my MCP tool".
 
 ### Troubleshooting
 
