@@ -3,6 +3,12 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-19 (run 7)
+*(pending review — see PR auto/2026-05-19-pending-review)* Routine research pass (58 turns, 223s) — no upstream change; checkDocsDrift gate failed; surface-file edits pending human review before merge
+
+## 2026-05-19 (run 6)
+- Routine research pass — no new pages (SHA256 changed cosmetically, 119 URLs unchanged); no new bug issues (change-report empty); all Part C checks pass: versions consistent (SDK 1.29.0, spec 2025-11-25), URLs resolve, no duplicate facts, cross-references valid; updated docs.indexSha256 in state.json
+
 ## 2026-05-19 (run 5)
 *(pending review — see PR auto/2026-05-19-pending-review)* Research pass added 3 rules (NumberSchema types, HTTP fallback body-inspection, notifications/message scoping) — checkDocsDrift gate failed; changes pending human review before merge
 
