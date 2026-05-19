@@ -51,6 +51,14 @@ for the protocol details. The Claude-specific concerns are:
 > reference:
 > `https://github.com/anthropics/claude-plugins-official/tree/main/plugins/mcp-server-dev`
 
+### Key resources
+
+- **TypeScript SDK** — [`modelcontextprotocol/typescript-sdk`](https://github.com/modelcontextprotocol/typescript-sdk) (examples included)
+- **Python SDK** — [`modelcontextprotocol/python-sdk`](https://github.com/modelcontextprotocol/python-sdk) (examples included)
+- **Protocol spec** — [modelcontextprotocol.io](https://modelcontextprotocol.io)
+- **Hosting** — Platforms like Cloudflare offer remote MCP server hosting with autoscaling and OAuth management
+- **Auth spec (third-party flows)** — [authorization spec](https://modelcontextprotocol.io/specification/latest/basic/authorization)
+
 ### Supported transports
 
 Claude supports both **Streamable HTTP** (preferred) and the legacy
@@ -65,9 +73,14 @@ in favor of Streamable HTTP.
 | [2025-06-18](https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization) | Supported |
 | [2025-11-25](https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization) | Supported |
 
-Dynamic Client Registration (DCR) is enabled. OAuth callback:
-`https://claude.ai/api/mcp/auth_callback` (hosted surfaces); loopback
-redirect for Claude Code. Full details: [`authentication.md`](https://claude.com/docs/connectors/building/authentication.md).
+Additional auth features:
+
+- Dynamic Client Registration (DCR) enabled.
+- OAuth callback: `https://claude.ai/api/mcp/auth_callback` (hosted surfaces); loopback redirect for Claude Code — see [callback URLs](https://claude.com/docs/connectors/building/authentication#callback-urls).
+- Token refresh and expiry supported.
+- Custom credentials for non-DCR servers supported.
+
+Full details: [`authentication.md`](https://claude.com/docs/connectors/building/authentication.md).
 
 ### Protocol features — not yet supported
 
@@ -83,6 +96,7 @@ redirect for Claude Code. Full details: [`authentication.md`](https://claude.com
 | Claude Code max tool result size | 25,000 tokens (configurable via `MAX_MCP_OUTPUT_TOKENS`) |
 | Claude Code timeout | Configurable via `MCP_TOOL_TIMEOUT` |
 | Claude.ai/Desktop timeout | 300 seconds (5 minutes) |
+| Transport protocol | Streamable HTTP (legacy HTTP+SSE being deprecated) |
 
 Source: [`building/index.md`](https://claude.com/docs/connectors/building/index.md).
 
@@ -115,6 +129,10 @@ clarifies the distinction:
 
 Before submission, test against Claude:
 [`testing.md`](https://claude.com/docs/connectors/building/testing.md).
+
+Quick start:
+1. Add your server directly to Claude via **Settings → Connectors**.
+2. Use the [MCP inspector tool](https://github.com/modelcontextprotocol/inspector) to validate auth flows.
 
 Coverage points:
 

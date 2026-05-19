@@ -3,7 +3,7 @@
   "indexSha256": "49628647363beee70ed0e7782490e3e5521635ffd95a8aaf057e9bc7cc38afdc",
   "indexBytes": 12123,
   "pageCount": 34,
-  "refreshedAt": "2026-05-19T00:00:00Z",
+  "refreshedAt": "2026-05-19T14:30:00Z",
   "pages": [
     {
       "path": "connectors/building/after-publishing.md",
@@ -26,8 +26,8 @@
     {
       "path": "connectors/building/index.md",
       "url": "https://claude.com/docs/connectors/building/index.md",
-      "sha256": "309a0b7f989daebea899377791744bdc7fb27d4290b40835d3bce4050e9ecfa1",
-      "bytes": 4414
+      "sha256": "9a253142f2074438616b91d99b9bb7109b73a38841d29951badcd13fdd6e0b4b",
+      "bytes": 4415
     },
     {
       "path": "connectors/building/lazy-authentication.md",
