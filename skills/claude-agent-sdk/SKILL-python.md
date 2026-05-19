@@ -799,11 +799,12 @@ return {
     }
 }
 
-# Modify MCP tool output (PostToolUse only)
+# Modify tool output (PostToolUse only) — works for all tools (not just MCP)
 return {
     "hookSpecificOutput": {
         "hookEventName": input_data["hook_event_name"],
-        "updatedMCPToolOutput": {"content": [{"type": "text", "text": "filtered"}]},
+        "updatedToolOutput": {"content": [{"type": "text", "text": "filtered"}]},
+        # ⚠️ "updatedMCPToolOutput" is deprecated — use "updatedToolOutput" instead
     }
 }
 
@@ -849,7 +850,7 @@ from claude_agent_sdk import (
 # Additional hook-specific output types (not in __all__, import from claude_agent_sdk.types):
 from claude_agent_sdk.types import (
     PreToolUseHookSpecificOutput,         # hookEventName, permissionDecision, permissionDecisionReason, updatedInput, additionalContext
-    PostToolUseHookSpecificOutput,        # hookEventName, additionalContext, updatedMCPToolOutput
+    PostToolUseHookSpecificOutput,        # hookEventName, additionalContext, updatedToolOutput (deprecated: updatedMCPToolOutput)
     UserPromptSubmitHookSpecificOutput,   # hookEventName, additionalContext
 )
 ```
@@ -1169,13 +1170,15 @@ class AgentDefinition:
 
 > ⚠️ `AgentDefinition` uses **camelCase** field names (e.g. `disallowedTools`, `permissionMode`, `maxTurns`) — unlike `ClaudeAgentOptions` which uses snake_case. Passing snake_case keyword args raises `TypeError` at construction time.
 
-Include `Task` in parent's `allowed_tools` — subagents are invoked via the Task tool.
+Include `Agent` in parent's `allowed_tools` — subagents are invoked via the Agent tool. Source: [subagents.md](https://code.claude.com/docs/en/agent-sdk/subagents.md)
+
+> ⚠️ Do **not** include `Agent` in a subagent's own `tools` list — subagents cannot spawn their own subagents.
 
 ```python
 from claude_agent_sdk import query, ClaudeAgentOptions
 
 options = ClaudeAgentOptions(
-    allowed_tools=["Read", "Glob", "Grep", "Task"],
+    allowed_tools=["Read", "Glob", "Grep", "Agent"],
     agents={
         "reviewer": AgentDefinition(
             description="Code review specialist",

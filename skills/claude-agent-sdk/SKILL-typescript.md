@@ -1,6 +1,6 @@
-# Claude Agent SDK — TypeScript Reference (v0.3.144)
+# Claude Agent SDK — TypeScript Reference (v0.3.145)
 
-**Package**: `@anthropic-ai/claude-agent-sdk@0.3.144`
+**Package**: `@anthropic-ai/claude-agent-sdk@0.3.145`
 **Docs**: https://code.claude.com/docs/en/agent-sdk/typescript
 **Repo**: https://github.com/anthropics/claude-agent-sdk-typescript
 **Migration**: Renamed from `@anthropic-ai/claude-code`. See [migration guide](https://code.claude.com/docs/en/agent-sdk/migration-guide).
@@ -322,7 +322,7 @@ await tagSession(sessionId, null);
 | `tools` | `string[] \| { type: 'preset', preset: 'claude_code' }` | — | Tool configuration |
 | `allowedTools` | `string[]` | All tools | Allowed tool names |
 | `disallowedTools` | `string[]` | `[]` | Blocked tool names |
-| `permissionMode` | `PermissionMode` | `'default'` | `'default' \| 'acceptEdits' \| 'bypassPermissions' \| 'plan' \| 'dontAsk'` — see [Permissions](#permissions) |
+| `permissionMode` | `PermissionMode` | `'default'` | `'default' \| 'acceptEdits' \| 'bypassPermissions' \| 'plan' \| 'dontAsk' \| 'auto'` (TS only) — see [Permissions](#permissions) |
 | `canUseTool` | `CanUseTool` | — | Custom permission callback |
 | `allowDangerouslySkipPermissions` | `boolean` | `false` | Required with `bypassPermissions` |
 | `permissionPromptToolName` | `string` | — | Route permission prompts through a named MCP tool |
@@ -824,11 +824,12 @@ return {
   }
 };
 
-// Modify MCP tool output (PostToolUse only)
+// Modify tool output (PostToolUse only) — works for all tools (not just MCP)
 return {
   hookSpecificOutput: {
     hookEventName: input.hook_event_name,
-    updatedMCPToolOutput: { content: [{ type: 'text', text: 'filtered output' }] }
+    updatedToolOutput: { content: [{ type: 'text', text: 'filtered output' }] }
+    // ⚠️ updatedMCPToolOutput is deprecated — use updatedToolOutput instead
   }
 };
 
@@ -1043,13 +1044,15 @@ type AgentDefinition = {
 }
 ```
 
-Include `Task` in parent's `allowedTools` — subagents are invoked via the Task tool.
+Include `Agent` in parent's `allowedTools` — subagents are invoked via the Agent tool. Source: [subagents.md](https://code.claude.com/docs/en/agent-sdk/subagents.md)
+
+> ⚠️ Do **not** include `Agent` in a subagent's own `tools` array — subagents cannot spawn their own subagents.
 
 ```typescript
 for await (const msg of query({
   prompt: "Use the reviewer to check this code",
   options: {
-    allowedTools: ["Read", "Glob", "Grep", "Task"],
+    allowedTools: ["Read", "Glob", "Grep", "Agent"],
     agents: {
       "reviewer": {
         description: "Code review specialist",
@@ -1085,8 +1088,8 @@ const options = {
   },
   canUseTool: async (toolName, input, { signal }) => {
     const sessionId = input.session_id;
-    if (toolName === "Task" && activeSubagentSessions.has(sessionId)) {
-      return { behavior: 'deny', message: 'Task tool blocked in subagents' };
+    if (toolName === "Agent" && activeSubagentSessions.has(sessionId)) {
+      return { behavior: 'deny', message: 'Agent tool blocked in subagents' };
     }
     return { behavior: 'allow', updatedInput: input };
   }
@@ -1711,10 +1714,11 @@ sandbox: {
 
 ---
 
-## Changelog Highlights (v0.2.77 → v0.3.144)
+## Changelog Highlights (v0.2.77 → v0.3.145)
 
 | Version | Change |
 |---------|--------|
+| v0.3.145 | Parity update with Claude Code v2.1.145; no new API surface changes |
 | v0.3.144 | `SDKAssistantMessageError.error` now reports `'model_not_found'` (instead of generic `'invalid_request'`) when the model ID doesn't exist/isn't available; `api_error_status` field added to `SDKResultMessage` (HTTP status of last API error); new `@anthropic-ai/claude-agent-sdk/extract` subpath with `extractFromBunfs()` for `bun build --compile` consumers |
 | v0.3.x  | `startup()` / `WarmQuery` — pre-warm CLI before prompt available; `resolveSettings()` (alpha); new `SDKPermissionDeniedMessage`, `SDKPluginInstallMessage`, `SDKTaskUpdatedMessage` types; `SDKMessageOrigin` on user/result messages; new `AgentDefinition` fields: `background`, `memory`, `effort`, `permissionMode`, `initialPrompt`; new options: `skills`, `strictMcpConfig`, `outputStyle`, `includeHookEvents`, `sessionStore`; `effort` adds `'xhigh'` level; `SDKAPIRetryMessage` and `SDKElicitationCompleteMessage` removed from `SDKMessage` union |
 | v0.2.77 | `SDKAPIRetryMessage` added (now removed in v0.3.x); fixed `./sdk-tools` exports map ([#222](https://github.com/anthropics/claude-agent-sdk-typescript/issues/222)) |
@@ -1730,4 +1734,4 @@ sandbox: {
 
 ---
 
-**Last verified**: 2026-05-19 | **SDK version**: 0.3.144
+**Last verified**: 2026-05-19 | **SDK version**: 0.3.145

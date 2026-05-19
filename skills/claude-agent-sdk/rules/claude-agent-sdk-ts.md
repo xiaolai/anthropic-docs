@@ -91,16 +91,18 @@ options: { allowedTools: [...], permissionMode: "default" }
 
 Note in [`SKILL-typescript.md` § Permissions § PermissionMode](../SKILL-typescript.md#permissionmode).
 
-### Subagents require `Task` in `allowedTools`
+### Subagents require `Agent` in `allowedTools`
 
 ```typescript
 // WRONG — subagents won't be invocable
 allowedTools: ["Read", "Write"],
 agents: { reviewer: { ... } }
 
-// CORRECT
-allowedTools: ["Read", "Write", "Task"],
+// CORRECT — subagents are invoked via the Agent tool (renamed from Task in earlier versions)
+allowedTools: ["Read", "Write", "Agent"],
 agents: { reviewer: { ... } }
+
+// ALSO: never include "Agent" in a subagent's own tools — subagents cannot spawn subagents
 ```
 
 See [`SKILL-typescript.md` § Subagents](../SKILL-typescript.md#subagents).

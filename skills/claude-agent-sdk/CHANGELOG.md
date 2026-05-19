@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-05-19 (run 22:05Z — success)
+- SDK TS v0.3.144 → v0.3.145 (parity with Claude Code v2.1.145); all 11 gates pass, 21 verify checks pass
+- SKILL-typescript.md, SKILL-python.md, rules/claude-agent-sdk-ts.md updated: subagent invocation tool renamed Task→Agent; PostToolUse hook field updatedMCPToolOutput deprecated → updatedToolOutput; permissionMode 'auto' confirmed; ttft_ms/terminal_reason/fast_mode_state on SDKResultMessage; xhigh effort level
+
+## 2026-05-19 (v0.3.145)
+
+- SDK TS v0.3.144 → v0.3.145 (parity with Claude Code v2.1.145; no new API surface changes)
+- Version propagated to SKILL.md, SKILL-typescript.md, README.md, state.json; no new known issues
+
 ## 2026-05-19 (run 21:06Z)
 - *(pending review — see draft PR on `auto/2026-05-19-pending-review`)* Research agent crashed (sdk.mjs init, exit 1); check-docs-drift failed — surface diff from earlier today's runs queued for manual review
 
