@@ -682,7 +682,7 @@ Hooks use **callback matchers**: an optional regex `matcher` for tool names and 
 | `Notification` | Notification event | Yes |
 | `PermissionRequest` | Permission requested | Yes |
 
-**Not supported in Python SDK**: `Setup`, `SessionStart`, `SessionEnd`, `TeammateIdle`, `TaskCompleted`.
+**Not supported in Python SDK**: `Setup`, `SessionStart`, `SessionEnd`, `TeammateIdle`, `TaskCompleted`, `PostToolBatch`, `ConfigChange`, `WorktreeCreate`, `WorktreeRemove`. Source: [hooks.md](https://code.claude.com/docs/en/agent-sdk/hooks.md).
 
 ### Hook Callback Signature
 

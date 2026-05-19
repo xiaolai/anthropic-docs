@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-05-19 (fourth run)
+- Docs-index hash refreshed (content changed, page count unchanged at 29, no version bump); 29 pages audited, 119 research turns; all 11 outcomes pass, 21 verify checks pass
+
 ## 2026-05-19 (third run)
 - Docs-index content updated (hash changed, page count unchanged at 29, no version bump); all 11 gates pass; 21 verify checks pass
 

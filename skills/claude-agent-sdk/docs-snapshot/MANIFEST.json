@@ -1,9 +1,9 @@
 {
   "indexUrl": "https://code.claude.com/llms.txt",
-  "indexSha256": "065bd6abd8c70cd7cade48857600efb33f19cb54990a4fcaf4c7db3e97f57c0e",
-  "indexBytes": 28005,
+  "indexSha256": "ee68ff8e5141f34a85a8b6f8e190a200b74d3ab8a00922aacfe72db6cc488d4e",
+  "indexBytes": 28307,
   "pageCount": 29,
-  "refreshedAt": "2026-05-19T15:45:48Z",
+  "refreshedAt": "2026-05-19T17:30:58Z",
   "pages": [
     {
       "path": "en/agent-sdk/agent-loop.md",
