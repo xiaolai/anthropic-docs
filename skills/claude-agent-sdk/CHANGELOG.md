@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-05-19 (run 23:04Z — success)
+- SDK TS v0.3.144 → v0.3.145 (parity with Claude Code v2.1.145); 27/27 verify checks pass; 1 mending run; 29 pages audited; TodoWrite→Task tools migration, subagent tool rename Task→Agent, `updatedToolOutput` hook field, `auto` permissionMode, `xhigh` effort level, OAuth2 Bearer MCP auth documented across SKILL files
+
+## 2026-05-19 (run 22:52Z — version-sync)
+- State.json registry version and lastAuditedVersion synced to 0.3.145 (SKILL.md and README.md were already at v0.3.145 from prior runs; state.json lagged behind)
+
 ## 2026-05-19 (run 22:05Z — success)
 - SDK TS v0.3.144 → v0.3.145 (parity with Claude Code v2.1.145); all 11 gates pass, 21 verify checks pass
 - SKILL-typescript.md, SKILL-python.md, rules/claude-agent-sdk-ts.md updated: subagent invocation tool renamed Task→Agent; PostToolUse hook field updatedMCPToolOutput deprecated → updatedToolOutput; permissionMode 'auto' confirmed; ttft_ms/terminal_reason/fast_mode_state on SDKResultMessage; xhigh effort level

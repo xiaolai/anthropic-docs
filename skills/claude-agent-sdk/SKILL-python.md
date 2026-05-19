@@ -18,6 +18,7 @@
 - [Hooks](#hooks) — 10 hook events, matchers, return values, async hooks
 - [Permissions](#permissions) — 4 modes, `can_use_tool` callback
 - [MCP Servers](#mcp-servers) — stdio, HTTP, SSE, SDK in-process
+- [Todo Tracking](#todo-tracking-v0282) — TaskCreate/TaskUpdate (replaces TodoWrite as of v0.2.82)
 - [Subagents](#subagents) — `AgentDefinition`, tool enforcement
 - [Extended Thinking](#extended-thinking) — `ThinkingConfig`, `effort`
 - [Structured Outputs](#structured-outputs)
@@ -1143,6 +1144,31 @@ are ready, instead of blocking session start.
 - **URL-based servers require `type` field** — missing it causes opaque "process exited with code 1"
 - **In-process SDK MCP servers don't support concurrent queries** — use stdio servers instead
 - **Unicode U+2028/U+2029 in tool results breaks JSON** — sanitize all MCP responses
+
+---
+
+## Todo Tracking (v0.2.82+)
+
+**Breaking change in v0.2.82**: Sessions now use `TaskCreate`, `TaskUpdate`, `TaskGet`, and `TaskList` tools instead of `TodoWrite`. Set `env={"CLAUDE_CODE_ENABLE_TASKS": "0"}` in `ClaudeAgentOptions` to revert to `TodoWrite`.
+
+Monitoring pattern — match tool names in `AssistantMessage` content:
+
+```python
+from claude_agent_sdk import query, AssistantMessage, ToolUseBlock
+
+async for message in query(prompt="Refactor authentication module"):
+    if not isinstance(message, AssistantMessage):
+        continue
+    for block in message.content:
+        if not isinstance(block, ToolUseBlock):
+            continue
+        if block.name == "TaskCreate":
+            print(f"+ {block.input['subject']}")
+        elif block.name == "TaskUpdate" and block.input.get("status"):
+            print(f"  {block.input['taskId']} → {block.input['status']}")
+```
+
+For full `TaskCreate`/`TaskUpdate`/`TaskList` schema and ID-capture pattern, see [`SKILL-typescript.md` → Todo Tracking](SKILL-typescript.md#todo-tracking). Source: [todo-tracking.md](https://code.claude.com/docs/en/agent-sdk/todo-tracking.md).
 
 ---
 

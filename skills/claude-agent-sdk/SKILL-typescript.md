@@ -21,6 +21,7 @@
 - [Structured Outputs](#structured-outputs)
 - [Sandbox](#sandbox)
 - [Sessions](#sessions)
+- [Todo Tracking](#todo-tracking) — TaskCreate/TaskUpdate (replaces TodoWrite as of v0.3.142)
 - [V2 Session API (Preview)](#v2-session-api-preview) — `unstable_v2_createSession`, `unstable_v2_prompt`
 - [Debugging & Error Handling](#debugging--error-handling)
 - [Known Issues](#known-issues)
@@ -609,7 +610,7 @@ type SDKPermissionDenial = { tool_name: string; tool_use_id: string; tool_input:
 // Error codes (SDKAssistantMessageError) — also emitted by StopFailure hooks
 'authentication_failed' | 'oauth_org_not_allowed' | 'billing_error' | 'rate_limit' |
 'invalid_request' | 'model_not_found' | 'server_error' | 'unknown' | 'max_output_tokens'
-// 'model_not_found' — since v0.3.144: replaces generic 'invalid_request' when the selected
+// 'model_not_found' — since v0.3.145: replaces generic 'invalid_request' when the selected
 //   model ID doesn't exist or isn't available on the account/region
 ```
 
@@ -1220,6 +1221,64 @@ for await (const msg of query({
 
 ---
 
+## Todo Tracking
+
+Source: [todo-tracking.md](https://code.claude.com/docs/en/agent-sdk/todo-tracking.md)
+
+As of **TypeScript SDK v0.3.142** (Claude Code v2.1.142), sessions use `TaskCreate`, `TaskUpdate`, `TaskGet`, and `TaskList` tools instead of `TodoWrite` for task progress tracking. Set `env: { CLAUDE_CODE_ENABLE_TASKS: "0" }` to revert to the old `TodoWrite` behavior.
+
+### TodoWrite → Task tools comparison
+
+| With `TodoWrite` | With Task tools (default ≥ v0.3.142) |
+|---|---|
+| One call rewrites the full `todos` array | `TaskCreate` adds one item, `TaskUpdate` patches one item |
+| Match `block.name === "TodoWrite"` | Match `block.name === "TaskCreate"` or `"TaskUpdate"` |
+| Item shape: `{ content, status, activeForm }` | `TaskCreate` input: `{ subject, description, activeForm?, metadata? }` |
+| Render `block.input.todos` directly | Accumulate items by task ID from `TaskCreate` results and `TaskUpdate` inputs |
+
+**Key**: The assigned task ID is returned in the `tool_result` block as `{ task: { id, subject } }`, not in the `TaskCreate` input. Capture it from the result block to key your map.
+
+### Monitoring Task tools
+
+```typescript
+import { query } from "@anthropic-ai/claude-agent-sdk";
+
+const taskMap = new Map<string, { subject: string; status: string }>();
+
+for await (const message of query({ prompt: "Optimize my React app performance" })) {
+  if (message.type !== "assistant") continue;
+  for (const block of message.message.content) {
+    if (block.type !== "tool_use") continue;
+    if (block.name === "TaskCreate") {
+      const input = block.input as { subject: string; description: string };
+      console.log(`+ ${input.subject}`);
+    } else if (block.name === "TaskUpdate") {
+      const input = block.input as { taskId: string; status?: string };
+      if (input.status) console.log(`  ${input.taskId} → ${input.status}`);
+    }
+  }
+}
+```
+
+### TaskCreate schema
+
+**Input**: `{ subject: string, description: string, activeForm?: string, metadata?: object }`
+**Output** (in tool_result): `{ task: { id: string, subject: string } }`
+
+### TaskUpdate schema
+
+**Input**: `{ taskId: string, status?: "pending" | "in_progress" | "completed" | "deleted", subject?: string, description?: string, activeForm?: string, addBlocks?: string[], addBlockedBy?: string[], owner?: string, metadata?: object }`
+**Output**: `{ success: boolean, taskId: string, updatedFields: string[], error?: string, statusChange?: { from: string, to: string } }`
+
+Use `status: "deleted"` to remove a task. `addBlocks` / `addBlockedBy` accept task IDs that this task blocks or is blocked by.
+
+### TaskList schema
+
+**Input**: `{}` (empty)
+**Output**: `{ tasks: Array<{ id: string, subject: string, status: "pending" | "in_progress" | "completed", owner?: string, blockedBy: string[] }> }`
+
+---
+
 ## V2 Session API (Preview)
 
 The V2 API simplifies multi-turn conversations by removing async generators. **Unstable** — APIs may change.
@@ -1467,7 +1526,7 @@ return {
 ### #17: SDK fails to discover CLI when bundled with bun build
 **Error**: `Claude Code executable not found at /$bunfs/root/cli.js` ([#150](https://github.com/anthropics/claude-agent-sdk-typescript/issues/150))
 **Cause**: `import.meta.url` resolves to virtual filesystem path when bundled with `bun build --compile`, where the CLI binary doesn't physically exist.
-**Fix** (v0.3.144+): Use the new `@anthropic-ai/claude-agent-sdk/extract` subpath export:
+**Fix** (v0.3.145+): Use the new `@anthropic-ai/claude-agent-sdk/extract` subpath export:
 ```typescript
 import { extractFromBunfs } from "@anthropic-ai/claude-agent-sdk/extract";
 import nativeBinary from "@anthropic-ai/claude-agent-sdk/claude-code-native" with { type: "file" };
@@ -1477,7 +1536,7 @@ const q = query({ prompt: "...", options: { pathToClaudeCodeExecutable: executab
 ```
 `extractFromBunfs(binPath)` copies the binary out of the compiled executable's virtual filesystem
 and returns a real filesystem path. Only needed for `bun build --compile` consumers.
-**Legacy workaround** (pre-v0.3.144): Set `pathToClaudeCodeExecutable` explicitly to the physical
+**Legacy workaround** (pre-v0.3.145): Set `pathToClaudeCodeExecutable` explicitly to the physical
 CLI path, or avoid bundling the SDK.
 
 ### #18: unstable_v2_createSession() doesn't support plugins option
@@ -1719,7 +1778,7 @@ sandbox: {
 | Version | Change |
 |---------|--------|
 | v0.3.145 | Parity update with Claude Code v2.1.145; no new API surface changes |
-| v0.3.144 | `SDKAssistantMessageError.error` now reports `'model_not_found'` (instead of generic `'invalid_request'`) when the model ID doesn't exist/isn't available; `api_error_status` field added to `SDKResultMessage` (HTTP status of last API error); new `@anthropic-ai/claude-agent-sdk/extract` subpath with `extractFromBunfs()` for `bun build --compile` consumers |
+| v0.3.145 | `SDKAssistantMessageError.error` now reports `'model_not_found'` (instead of generic `'invalid_request'`) when the model ID doesn't exist/isn't available; `api_error_status` field added to `SDKResultMessage` (HTTP status of last API error); new `@anthropic-ai/claude-agent-sdk/extract` subpath with `extractFromBunfs()` for `bun build --compile` consumers |
 | v0.3.x  | `startup()` / `WarmQuery` — pre-warm CLI before prompt available; `resolveSettings()` (alpha); new `SDKPermissionDeniedMessage`, `SDKPluginInstallMessage`, `SDKTaskUpdatedMessage` types; `SDKMessageOrigin` on user/result messages; new `AgentDefinition` fields: `background`, `memory`, `effort`, `permissionMode`, `initialPrompt`; new options: `skills`, `strictMcpConfig`, `outputStyle`, `includeHookEvents`, `sessionStore`; `effort` adds `'xhigh'` level; `SDKAPIRetryMessage` and `SDKElicitationCompleteMessage` removed from `SDKMessage` union |
 | v0.2.77 | `SDKAPIRetryMessage` added (now removed in v0.3.x); fixed `./sdk-tools` exports map ([#222](https://github.com/anthropics/claude-agent-sdk-typescript/issues/222)) |
 | v0.2.71 | Fixed `Agent` tool returning `"Unknown tool: Agent"` in `query()` mode |
