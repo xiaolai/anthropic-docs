@@ -111,6 +111,13 @@ Migration path: streamable HTTP servers can offer SSE compatibility
 during a transition period by exposing both endpoints; once all
 clients update, the SSE endpoints can be removed.
 
+> **SEP-2596 (Draft)** proposes a formal feature lifecycle policy under which
+> HTTP+SSE would be officially classified **Deprecated**, with a 3-month
+> grace period (from the date SEP-2596 reaches Final) before the earliest
+> permitted removal. Removal still requires a Core Maintainer decision at
+> release preparation — it is not automatic. See
+> [SEP-2596](https://modelcontextprotocol.io/seps/2596-spec-feature-lifecycle-and-deprecation.md).
+
 ## Choosing a transport
 
 ```

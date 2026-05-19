@@ -111,6 +111,12 @@ Standard JSON-RPC error codes plus MCP-specific extensions:
 MCP-defined error semantics live in the spec under
 [`specification/2025-11-25/basic/`](https://modelcontextprotocol.io/specification/2025-11-25/basic/).
 
+> **SEP-2164 (Draft)** proposes standardising resource-not-found responses to use
+> `-32602` (Invalid Params). Current SDK implementations vary: TypeScript SDK uses
+> `-32602`, Python SDK uses `0`, and C#/Rust/Java/Go/PHP SDKs use `-32002`.
+> During any transition period clients SHOULD handle both `-32602` and `-32002`.
+> See [SEP-2164](https://modelcontextprotocol.io/seps/2164-resource-not-found-error.md).
+
 ## Protocol versioning
 
 Version string format: `YYYY-MM-DD` — the date of the last
@@ -147,6 +153,14 @@ Protocol evolution happens via SEPs — Specification Enhancement
 Proposals. The process is documented at
 [`community/sep-guidelines.md`](https://modelcontextprotocol.io/community/sep-guidelines.md).
 Active SEPs live under [`seps/`](https://modelcontextprotocol.io/seps/).
+
+### Notable SEPs (as of 2026-05-18)
+
+| SEP | Status | Type | Summary |
+|---|---|---|---|
+| [SEP-2106](https://modelcontextprotocol.io/seps/2106-json-schema-2020-12.md) | Draft | Standards Track | Loosen `inputSchema`/`outputSchema`/`structuredContent` to full JSON Schema 2020-12 (enables `anyOf`, `oneOf`, array/primitive `structuredContent`) |
+| [SEP-2164](https://modelcontextprotocol.io/seps/2164-resource-not-found-error.md) | Draft | Standards Track | Standardise resource-not-found error to `-32602` (Invalid Params) across all SDKs |
+| [SEP-2596](https://modelcontextprotocol.io/seps/2596-spec-feature-lifecycle-and-deprecation.md) | Draft | Process | Formal feature lifecycle (Active → Deprecated → Removed) with 12-month minimum deprecation window; formalises HTTP+SSE transport as Deprecated |
 
 ---
 

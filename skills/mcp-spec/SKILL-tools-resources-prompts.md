@@ -63,6 +63,15 @@ A tool is a callable function the server exposes to the host LLM.
   permission prompts). All Boolean fields default to safe-pessimistic
   values when absent.
 
+> **SEP-2106 (Draft)** proposes loosening these schemas to full
+> [JSON Schema 2020-12](https://modelcontextprotocol.io/seps/2106-json-schema-2020-12.md)
+> support: `inputSchema` would retain `type: "object"` but allow composition keywords
+> (`anyOf`, `oneOf`, `allOf`, `$ref`, etc.); `outputSchema` would accept any valid JSON
+> Schema (including arrays and primitives); and `structuredContent` would widen from
+> `{ [key: string]: unknown }` to `unknown` (accepting arrays and primitive values
+> directly). Servers relying on array `structuredContent` MUST also emit a `TextContent`
+> fallback for older clients.
+
 ### Calling
 
 ```
