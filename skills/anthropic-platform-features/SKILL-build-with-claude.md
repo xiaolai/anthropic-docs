@@ -66,6 +66,14 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
 - **Context windows** differ per model and may change over time.
   Use `GET /v1/models/{id}` at runtime instead of hardcoding the
   limit. See [`anthropic-api → SKILL-models.md`](../anthropic-api/SKILL-models.md).
+- **`stop_reason: "model_context_window_exceeded"`** — on Claude 4.5
+  and newer models, if `input_tokens + max_tokens` exceeds the context
+  window, the API accepts the request and returns this stop reason when
+  generation reaches the limit (instead of a validation error). On
+  older models the API returns a validation error by default; opt in to
+  the new behavior with beta header
+  `model-context-window-exceeded-2025-08-26`.
+  Source: [`context-windows.md`](https://platform.claude.com/docs/en/build-with-claude/context-windows.md).
 
 ## Platform foundation (top-level intro pages)
 
