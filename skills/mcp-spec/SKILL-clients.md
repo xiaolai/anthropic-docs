@@ -226,11 +226,13 @@ Source: [`clients.md`](https://modelcontextprotocol.io/clients.md)
 [`clients.md`](https://modelcontextprotocol.io/clients.md) is
 the registry of applications that support MCP. Notable entries:
 
-- Claude Desktop, Claude Code, Claude Cowork (Anthropic).
+- Claude Desktop, Claude Code, Claude.ai (Anthropic).
 - GitHub Copilot CLI (supports Tools, Discovery, Instructions, Sampling, Elicitation, DCR, OAuth Client Credentials, Tasks).
-- VS Code (via the MCP extension).
-- Cline, Zed (with Discovery support), other editor integrations.
-- Third-party IDE / agent platforms including Archestra (enterprise AI platform, supports CIMD).
+- Codex (OpenAI) — lightweight AI coding agent for the terminal; supports Resources, Tools, Elicitation.
+- Gemini CLI (Google) — terminal agent; supports Prompts, Tools, Instructions, DCR.
+- VS Code (via GitHub Copilot extension).
+- Cline, Zed (with Discovery support), Cursor, Windsurf, other editor integrations.
+- Third-party IDE / agent platforms including Archestra (enterprise AI platform, supports CIMD, Enterprise-Managed Authorization).
 
 The list grows constantly — consult the source page for the
 current state.

@@ -1,9 +1,9 @@
 {
   "indexUrl": "https://modelcontextprotocol.io/llms.txt",
-  "indexSha256": "0c42badbaa1863fa0daffb4cf5c9f47b3ed9b73fa2b5a1393f4d95ce864affd2",
-  "indexBytes": 17923,
+  "indexSha256": "2a3dc7cff742a97809e44f71b140d50fb43b02d90d2808192f008fec522206f6",
+  "indexBytes": 17922,
   "pageCount": 119,
-  "refreshedAt": "2026-05-19T17:30:00Z",
+  "refreshedAt": "2026-05-19T22:42:13Z",
   "pages": [
     {
       "path": "clients.md",

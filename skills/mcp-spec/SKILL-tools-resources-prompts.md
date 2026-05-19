@@ -62,7 +62,7 @@ A tool is a callable function the server exposes to the host LLM.
 - `title` — optional human-readable display name for UI (distinct from `annotations.title`, which is deprecated in favor of this field).
 - `description` — human-readable description for the LLM.
 - `icons` — optional array of `{ src, mimeType, sizes[] }` objects for client UI display.
-- `inputSchema` — JSON Schema defining expected parameters. Defaults to JSON Schema 2020-12 when no `$schema` field is present. For tools with no parameters, use `{ "type": "object", "additionalProperties": false }`.
+- `inputSchema` — JSON Schema defining expected parameters. **MUST** be a valid JSON Schema object (not `null`). Defaults to JSON Schema 2020-12 when no `$schema` field is present. For tools with no parameters, use `{ "type": "object", "additionalProperties": false }` (recommended) or `{ "type": "object" }`.
 - `outputSchema` — optional JSON Schema for the `structuredContent` field of the response.
 - `annotations` — *non-binding* hints for clients (UI rendering, permission prompts). All Boolean fields default to safe-pessimistic values when absent.
 - `execution.taskSupport` — optional. Values: `"forbidden"` (default), `"optional"`, `"required"`. Indicates whether this tool supports [task-augmented execution](https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/tasks) (experimental feature in `2025-11-25`).
