@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-05-19 (run 3)
+
+- *(pending review — see PR on auto/2026-05-19-pending-review)* Research agent audited 29 docs pages (no version change, TS v0.3.144 / PY v0.2.82); check-docs-drift gate failed, surface changes held in draft PR
+
 ## 2026-05-19
 
 - SDK TS v0.3.143 → v0.3.144; docs index hash updated (content changed, page count unchanged at 29)

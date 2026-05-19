@@ -279,7 +279,7 @@ options = ClaudeAgentOptions(
 | `thinking` | `ThinkingConfig \| None` | `None` | Extended thinking configuration (adaptive/enabled/disabled) |
 | `effort` | `Literal["low", "medium", "high", "max"] \| None` | `None` | Effort level for thinking depth |
 | `fallback_model` | `str \| None` | `None` | Fallback model on failure |
-| `betas` | `list[SdkBeta]` | `[]` | Beta features (e.g., `["context-1m-2025-08-07"]`) |
+| `betas` | `list[SdkBeta]` | `[]` | Beta features. **Note**: `"context-1m-2025-08-07"` is retired as of April 30, 2026 — 1M context is included at standard pricing in Claude Sonnet 4.6, Opus 4.6, and Opus 4.7 with no beta header needed. ([source](https://code.claude.com/docs/en/agent-sdk/python.md)) |
 | `include_partial_messages` | `bool` | `False` | Include streaming partial `StreamEvent` messages |
 
 ### Sessions
@@ -447,6 +447,7 @@ AssistantMessageError = Literal[
     "billing_error",
     "rate_limit",
     "invalid_request",
+    "model_not_found",   # v0.3.144: replaces generic 'invalid_request' when model doesn't exist
     "server_error",
     "max_output_tokens",
     "unknown",
@@ -664,6 +665,8 @@ asyncio.run(main())
 ## Hooks
 
 Hooks use **callback matchers**: an optional regex `matcher` for tool names and a list of `hooks` callbacks. Hooks work with both `query()` and `ClaudeSDKClient` via `ClaudeAgentOptions.hooks`.
+
+> **Dispatch is concurrent**: When an event fires, all matching hooks run in parallel. For permission decisions, the most restrictive result wins — a single `deny` blocks the tool call regardless of what other hooks return. Because completion order is non-deterministic, write each hook to act independently rather than relying on another hook having run first. ([source](https://code.claude.com/docs/en/agent-sdk/hooks.md))
 
 ### Hook Events
 
@@ -1029,6 +1032,8 @@ options = ClaudeAgentOptions(
 ---
 
 ## MCP Servers
+
+> **v0.2.82 breaking change**: MCP servers now connect in the background by default. Sessions start immediately and slow servers report `status: "pending"` in the `init` `SystemMessage` until ready. Set `MCP_CONNECTION_NONBLOCKING=0` (env var) to restore the old behavior of waiting up to 5 s before the first query. Mark a server `alwaysLoad: true` in its config to require it before turn 1.
 
 ### Config Types
 
@@ -1828,7 +1833,7 @@ options = ClaudeAgentOptions(
 
 | Version | Change |
 |---------|--------|
-| v0.2.82 | Current stable; full cross-platform wheels; `AgentDefinition` adds `background`, `effort`, `permissionMode`, `initialPrompt`; `PermissionMode` adds `"dontAsk"`; `EffortLevel` adds `"xhigh"`; new options `strict_mcp_config`, `include_hook_events`, `skills`, `session_store`; `AssistantMessage` adds `usage`, `message_id`; `ResultMessage` adds `model_usage`, `deferred_tool_use`, `permission_denials`; `RateLimitEvent` is now a proper typed `Message` |
+| v0.2.82 | Current stable; full cross-platform wheels; **Breaking**: MCP servers now connect in background by default (`status: "pending"` until ready, `MCP_CONNECTION_NONBLOCKING=0` to restore old wait-5s behavior); **Breaking**: `TodoWrite` disabled by default — use Task tools (`TaskCreate`/`TaskGet`/`TaskUpdate`/`TaskList`) instead (`CLAUDE_CODE_ENABLE_TASKS=0` to revert); `AgentDefinition` adds `background`, `effort`, `permissionMode`, `initialPrompt`; `PermissionMode` adds `"dontAsk"`; `EffortLevel` adds `"xhigh"`; new options `strict_mcp_config`, `include_hook_events`, `skills`, `session_store`; `AssistantMessage` adds `usage`, `message_id`; `ResultMessage` adds `model_usage`, `deferred_tool_use`, `permission_denials`; `RateLimitEvent` is now a proper typed `Message`; hooks dispatch documented as concurrent |
 | v0.1.49 | Added `skills`, `memory`, `mcpServers` to `AgentDefinition`; per-turn usage on `AssistantMessage`; `rename_session()`, `delete_session()`, `tag_session()`; typed `RateLimitEvent`; reverted Bedrock-breaking eager_input_streaming. Partial release resolved in v0.2.x |
 | v0.1.48 | Introduced `eager_input_streaming` with `include_partial_messages=True` (broke Bedrock/Vertex — see [#21](#21-include_partial_messagestrue-breaks-tool-input-streaming-on-bedrockvertex)) |
 | v0.1.44 | Fixed `rate_limit_event` crash in message parser; bundled CLI v2.1.59 |

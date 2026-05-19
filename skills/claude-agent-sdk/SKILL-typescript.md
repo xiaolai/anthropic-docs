@@ -336,7 +336,7 @@ await tagSession(sessionId, null);
 | `effort` | `'low' \| 'medium' \| 'high' \| 'xhigh' \| 'max'` | `'high'` (supported models) | Controls response effort level; `'xhigh'` is Opus 4.7+ only |
 | `maxThinkingTokens` | `number` | — | **Deprecated** — use `thinking` instead |
 | `fallbackModel` | `string` | — | Fallback model on failure |
-| `betas` | `SdkBeta[]` | `[]` | Beta features (e.g., `['context-1m-2025-08-07']`) |
+| `betas` | `SdkBeta[]` | `[]` | Beta features. **Note**: `'context-1m-2025-08-07'` is retired as of April 30, 2026 — 1M context is included at standard pricing in Claude Sonnet 4.6, Opus 4.6, and Opus 4.7 with no beta header needed. ([source](https://code.claude.com/docs/en/agent-sdk/typescript.md)) |
 | `includePartialMessages` | `boolean` | `false` | Include streaming partial messages |
 | `promptSuggestions` | `boolean` | `false` | Emit `SDKPromptSuggestionMessage` after each turn with a predicted next user prompt (arrives after result; suppressed on first turn, after errors, in plan mode) |
 
@@ -589,9 +589,9 @@ type SDKMessageOrigin =
 // SDKPermissionDenial (in permission_denials array)
 type SDKPermissionDenial = { tool_name: string; tool_use_id: string; tool_input: Record<string, unknown> }
 
-// Error codes (SDKAssistantMessageError)
+// Error codes (SDKAssistantMessageError) — v0.3.144 added 'model_not_found'
 'authentication_failed' | 'oauth_org_not_allowed' | 'billing_error' | 'rate_limit' |
-'invalid_request' | 'server_error' | 'unknown' | 'max_output_tokens'
+'invalid_request' | 'model_not_found' | 'server_error' | 'unknown' | 'max_output_tokens'
 ```
 
 ### SDKSystemMessage (init)
@@ -708,6 +708,8 @@ for await (const message of query({ prompt: "...", options })) {
 ## Hooks
 
 Hooks use **callback matchers**: an optional regex `matcher` for tool names and an array of `hooks` callbacks.
+
+> **Dispatch is concurrent**: When an event fires, all matching hooks run in parallel. For permission decisions, the most restrictive result wins — a single `deny` blocks the tool call regardless of what other hooks return. Because completion order is non-deterministic, write each hook to act independently rather than relying on another hook having run first. ([source](https://code.claude.com/docs/en/agent-sdk/hooks.md))
 
 ### Hook Events
 
@@ -1426,7 +1428,15 @@ return {
 ### #17: SDK fails to discover CLI when bundled with bun build
 **Error**: `Claude Code executable not found at /$bunfs/root/cli.js` ([#150](https://github.com/anthropics/claude-agent-sdk-typescript/issues/150))
 **Cause**: `import.meta.url` resolves to virtual filesystem path when bundled, where CLI binary doesn't physically exist.
-**Workaround**: Set `pathToClaudeCodeExecutable` option explicitly to the physical CLI path, or avoid bundling the SDK.
+**Fix (v0.3.144+)**: Use the `@anthropic-ai/claude-agent-sdk/extract` subpath export. Import the CLI binary as a file asset with `with { type: 'file' }`, then call `extractFromBunfs(binPath)` to copy it out of the compiled executable's virtual filesystem, and pass the result to `options.pathToClaudeCodeExecutable`:
+```typescript
+import { extractFromBunfs } from "@anthropic-ai/claude-agent-sdk/extract";
+import cliBin from "@anthropic-ai/claude-agent-sdk/cli.js" with { type: "file" };
+
+const cliBinPath = await extractFromBunfs(cliBin);
+const q = query({ prompt: "...", options: { pathToClaudeCodeExecutable: cliBinPath } });
+```
+**Workaround (pre-v0.3.144)**: Set `pathToClaudeCodeExecutable` option explicitly to the physical CLI path, or avoid bundling the SDK.
 
 ### #18: unstable_v2_createSession() doesn't support plugins option
 **Error**: Plugins silently ignored when using v2 session API ([#171](https://github.com/anthropics/claude-agent-sdk-typescript/issues/171))
@@ -1666,6 +1676,7 @@ sandbox: {
 
 | Version | Change |
 |---------|--------|
+| v0.3.144 | `'model_not_found'` added to `SDKAssistantMessageError` (replaces `'invalid_request'` when model doesn't exist); `api_error_status` field documented on result messages; `@anthropic-ai/claude-agent-sdk/extract` subpath + `extractFromBunfs()` for `bun build --compile` users (see [KI #17](#17-sdk-fails-to-discover-cli-when-bundled-with-bun-build)); hooks dispatch documented as concurrent |
 | v0.3.x  | `startup()` / `WarmQuery` — pre-warm CLI before prompt available; `resolveSettings()` (alpha); new `SDKPermissionDeniedMessage`, `SDKPluginInstallMessage`, `SDKTaskUpdatedMessage` types; `SDKMessageOrigin` on user/result messages; new `AgentDefinition` fields: `background`, `memory`, `effort`, `permissionMode`, `initialPrompt`; new options: `skills`, `strictMcpConfig`, `outputStyle`, `includeHookEvents`, `sessionStore`; `effort` adds `'xhigh'` level; `SDKAPIRetryMessage` and `SDKElicitationCompleteMessage` removed from `SDKMessage` union |
 | v0.2.77 | `SDKAPIRetryMessage` added (now removed in v0.3.x); fixed `./sdk-tools` exports map ([#222](https://github.com/anthropics/claude-agent-sdk-typescript/issues/222)) |
 | v0.2.71 | Fixed `Agent` tool returning `"Unknown tool: Agent"` in `query()` mode |
