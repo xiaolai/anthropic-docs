@@ -208,7 +208,18 @@ Configure OS-level bash sandboxing (macOS, Linux, WSL2). Sandbox settings nest i
 | `sandbox.filesystem.allowRead` | Re-allow reading within `denyRead` regions |
 | `sandbox.network.allowedDomains` | Domains to allow for outbound traffic |
 | `sandbox.network.deniedDomains` | Domains to block (takes precedence over allowedDomains) |
-| `sandbox.network.allowUnixSockets` | (macOS only) Unix socket paths accessible in sandbox |
+| `sandbox.network.allowUnixSockets` | (macOS only) Unix socket paths accessible in sandbox. Ignored on Linux/WSL2 (use `allowAllUnixSockets` instead) |
+| `sandbox.network.allowAllUnixSockets` | Allow all Unix socket connections. On Linux/WSL2 this is the only way to permit Unix sockets. Default: `false` |
+| `sandbox.network.allowLocalBinding` | (macOS only) Allow binding to localhost ports. Default: `false` |
+| `sandbox.network.allowMachLookup` | (macOS only) XPC/Mach service names the sandbox may look up. Supports a single trailing `*`. Needed for Playwright, iOS Simulator, etc. |
+| `sandbox.network.allowManagedDomainsOnly` | (Managed only) Only managed-settings `allowedDomains` and `WebFetch` allow rules are respected; user/project domains are ignored. Default: `false` |
+| `sandbox.network.httpProxyPort` | HTTP proxy port for bring-your-own-proxy setup |
+| `sandbox.network.socksProxyPort` | SOCKS5 proxy port for bring-your-own-proxy setup |
+| `sandbox.filesystem.allowManagedReadPathsOnly` | (Managed only) Only managed-settings `filesystem.allowRead` paths are respected; `denyRead` still merges from all sources. Default: `false` |
+| `sandbox.enableWeakerNestedSandbox` | (Linux/WSL2 only) Enable weaker sandbox for unprivileged Docker environments. **Reduces security.** Default: `false` |
+| `sandbox.enableWeakerNetworkIsolation` | (macOS only) Allow access to system TLS trust service (`com.apple.trustd.agent`). Required for Go tools (`gh`, `gcloud`, `terraform`) with MITM proxy + custom CA. **Reduces security.** Default: `false` |
+| `sandbox.bwrapPath` | (Managed only, Linux/WSL2) Absolute path to `bwrap` binary; overrides `PATH` detection |
+| `sandbox.socatPath` | (Managed only, Linux/WSL2) Absolute path to `socat` binary; overrides `PATH` detection |
 
 ## `env` injection
 

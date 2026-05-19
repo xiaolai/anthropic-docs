@@ -164,7 +164,7 @@ and `git pull`.
 
 | Date | Update | Research | Mending | Report | Total | Notes |
 |------|--------|----------|---------|--------|-------|-------|
-| 2026-05-19 | review | CC v0.0.0 → v2.1.144 |
+| 2026-05-19 | review | research + report (no upstream change) |
 
 ## For maintainers
 
