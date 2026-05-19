@@ -10,6 +10,16 @@ The newest entry is at the top.
 
 ---
 
+## 2026-05-19
+*(pending review — see branch auto/2026-05-19-pending-review)*
+- Sync to CC v2.1.144 — docs index content updated (103 pages); validate-examples and check-populated gates failed, routed to draft PR
+
+## v2.1.144 — 2026-05-19
+
+Routine version bump: `@anthropic-ai/claude-code` updated from v2.1.143 to v2.1.144.
+Docs index hash changed (same 103 pages; upstream content updated in one or more pages).
+No schema or surface-file changes required — no pages were added or removed.
+
 ## 2026-05-17 — codex audit-fix pass 4 (8 findings → CLEAN in 2 rounds)
 
 Sanity-check audit re-run after the push-to-100 pass. Codex surfaced
