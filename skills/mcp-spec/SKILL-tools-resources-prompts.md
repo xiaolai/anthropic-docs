@@ -27,6 +27,7 @@ A tool is a callable function the server exposes to the host LLM.
 ```json
 {
   "name": "search_files",
+  "title": "Search Files",
   "description": "Search files matching a query",
   "inputSchema": {
     "type": "object",
@@ -45,23 +46,40 @@ A tool is a callable function the server exposes to the host LLM.
       }
     }
   },
+  "icons": [
+    { "src": "https://example.com/search-icon.png", "mimeType": "image/png", "sizes": ["48x48"] }
+  ],
   "annotations": {
-    "title": "Search Files",
     "readOnlyHint": true,
     "destructiveHint": false,
     "idempotentHint": true,
     "openWorldHint": false
+  },
+  "execution": {
+    "taskSupport": "optional"
   }
 }
 ```
 
-- `inputSchema` — JSON Schema, used by the LLM and the client to
-  validate arguments.
+- `name` — unique identifier within the server (1–128 chars;
+  allowed chars: `A-Za-z0-9_-.`; no spaces or commas). Source:
+  [SEP-986](https://modelcontextprotocol.io/seps/986-specify-format-for-tool-names.md).
+- `title` — optional human-readable display name distinct from `name`
+  (top-level field, **not** inside `annotations`). Source: [SEP-973](https://modelcontextprotocol.io/seps/973-expose-additional-metadata-for-implementations-res.md).
+- `inputSchema` — JSON Schema 2020-12 by default (omit `$schema` to use
+  the default; add `"$schema": "http://json-schema.org/draft-07/schema#"`
+  to override). MUST be a valid object schema; for no-param tools use
+  `{"type":"object","additionalProperties":false}`.
 - `outputSchema` — optional. When present, the response's
-  `structuredContent` should match it.
+  `structuredContent` MUST conform to this schema.
+- `icons` — optional array of `{src, mimeType, sizes}` for UI display.
+  Applies to tools, resources, resource templates, and prompts. Source: [SEP-973](https://modelcontextprotocol.io/seps/973-expose-additional-metadata-for-implementations-res.md).
 - `annotations` — *non-binding* hints for clients (UI rendering,
   permission prompts). All Boolean fields default to safe-pessimistic
   values when absent.
+- `execution.taskSupport` — declares task-augmented execution support.
+  Values: `"forbidden"` (default), `"optional"`, `"required"`. Source:
+  [SEP-1686](https://modelcontextprotocol.io/seps/1686-tasks.md).
 
 ### Calling
 
@@ -93,10 +111,17 @@ optionally subscribes, and reads.
 {
   "uri": "file:///path/to/data.json",
   "name": "Data file",
+  "title": "Data File",
   "description": "Application configuration",
-  "mimeType": "application/json"
+  "mimeType": "application/json",
+  "icons": [
+    { "src": "https://example.com/file-icon.png", "mimeType": "image/png", "sizes": ["48x48"] }
+  ]
 }
 ```
+
+- `title` — optional human-readable display name (top-level, same as tools). Source: [SEP-973](https://modelcontextprotocol.io/seps/973-expose-additional-metadata-for-implementations-res.md).
+- `icons` — optional array of icons for UI display. Source: [SEP-973](https://modelcontextprotocol.io/seps/973-expose-additional-metadata-for-implementations-res.md).
 
 ### Schema (resource template)
 
@@ -104,6 +129,7 @@ optionally subscribes, and reads.
 {
   "uriTemplate": "github://repos/{owner}/{repo}/issues/{number}",
   "name": "GitHub issue",
+  "title": "GitHub Issue",
   "description": "Fetch an issue by owner/repo/number",
   "mimeType": "application/json"
 }
@@ -171,11 +197,13 @@ their own API key.
 ← sampling/createMessage {
     messages: [...],
     modelPreferences?: { hints: [...], costPriority, speedPriority, intelligencePriority },
-    systemPrompt?, includeContext?, temperature?, maxTokens?, stopSequences?, metadata?
+    systemPrompt?, includeContext?, temperature?, maxTokens?, stopSequences?, metadata?,
+    tools?: [...],
+    toolChoice?: { type: "auto" | "any" | "tool", name? }
   }
 → {
     role: "assistant",
-    content: { type: "text", text: "..." },
+    content: { type: "text", text: "..." } | { type: "tool_use", ... },
     model, stopReason
   }
 ```
@@ -183,6 +211,21 @@ their own API key.
 The client typically asks the user for permission before fulfilling
 sampling requests — servers can effectively spend the user's tokens
 otherwise.
+
+### Sampling capabilities
+
+```json
+{ "capabilities": { "sampling": {} } }                      // basic
+{ "capabilities": { "sampling": { "tools": {} } } }         // with tool use (SEP-1577)
+```
+
+Clients MUST declare `sampling.tools` to receive sampling requests
+that include a `tools` array. `includeContext` values `"thisServer"` and
+`"allServers"` are **soft-deprecated** — servers should omit `includeContext`
+(defaults to `"none"`).
+
+Source: [`client/sampling.md`](https://modelcontextprotocol.io/specification/2025-11-25/client/sampling.md),
+[SEP-1577](https://modelcontextprotocol.io/seps/1577--sampling-with-tools.md).
 
 ## Roots
 

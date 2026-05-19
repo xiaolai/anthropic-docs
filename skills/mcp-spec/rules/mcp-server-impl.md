@@ -55,19 +55,19 @@ from mcp.server import Server
 from mcp.server.stdio import stdio_server
 ```
 
-## Rule 3 — Tool annotations: declare safety properties explicitly
+## Rule 3 — Tool `title` is top-level; `annotations` are safety hints
 
-Tool annotations default to safe-pessimistic when absent (`destructive`
-treated as true, `readOnly` treated as false). Clients use these to
+`title` is a top-level field on the tool object (NOT inside `annotations`).
+`annotations` contains only safety hint booleans. Clients use these to
 decide permission prompts. Set them explicitly for accurate UX:
 
 ```typescript
 tools: [{
   name: "search_files",
+  title: "Search Files",              // ← top-level, NOT in annotations
   description: "Search files by name",
   inputSchema: { type: "object", properties: { query: { type: "string" } } },
   annotations: {
-    title: "Search Files",
     readOnlyHint: true,
     destructiveHint: false,
     idempotentHint: true,
@@ -78,6 +78,7 @@ tools: [{
 
 `openWorldHint: true` means "operates on the public internet" (search,
 public APIs). False = "scoped to the user's local / private resources."
+All annotation booleans default to safe-pessimistic values when absent.
 
 ## Rule 4 — Pin the protocol version, accept negotiation
 
@@ -157,6 +158,19 @@ capabilities: {
   resources: { subscribe: true, listChanged: true }
 }
 ```
+
+## Rule 9 — Tool names: format and length constraints
+
+Per [SEP-986](https://modelcontextprotocol.io/seps/986-specify-format-for-tool-names.md),
+tool names SHOULD:
+
+- Be **1–128 characters** long.
+- Use only `A-Za-z0-9`, `_`, `-`, and `.` (no spaces, commas, slashes).
+- Be **unique** within a server.
+- Be **case-sensitive** (clients treat `foo` and `Foo` as different tools).
+
+Valid: `getUser`, `DATA_EXPORT_v2`, `admin.tools.list`
+Invalid: `get user`, `export,data`, `tool/read`
 
 ---
 

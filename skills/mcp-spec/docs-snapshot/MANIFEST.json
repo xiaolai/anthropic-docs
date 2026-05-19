@@ -1,15 +1,15 @@
 {
   "indexUrl": "https://modelcontextprotocol.io/llms.txt",
-  "indexSha256": "66c1db82f1594bee0fcd0e3259404fa93029a9ccfbcecbc7d7cb485aac4a11b5",
-  "indexBytes": 17325,
-  "pageCount": 116,
-  "refreshedAt": "2026-05-17T23:09:36Z",
+  "indexSha256": "2a3dc7cff742a97809e44f71b140d50fb43b02d90d2808192f008fec522206f6",
+  "indexBytes": 17922,
+  "pageCount": 119,
+  "refreshedAt": "2026-05-19T00:28:17Z",
   "pages": [
     {
       "path": "clients.md",
       "url": "https://modelcontextprotocol.io/clients.md",
-      "sha256": "74bf7746f0d549b31c25b2b54d43057e36124149f9c40b96c0e865c8e61f4055",
-      "bytes": 96777
+      "sha256": "715a50066aa4f972f525f2a2fd1bf65bec87b1e43fc62823769d16d34d5f04bb",
+      "bytes": 97784
     },
     {
       "path": "community/antitrust.md",
@@ -432,6 +432,12 @@
       "bytes": 7057
     },
     {
+      "path": "seps/2106-json-schema-2020-12.md",
+      "url": "https://modelcontextprotocol.io/seps/2106-json-schema-2020-12.md",
+      "sha256": "ff81611dc053295e3dff86a1e89d4ef14c415c54012e6409eef2100cff9fc53a",
+      "bytes": 20949
+    },
+    {
       "path": "seps/2133-extensions.md",
       "url": "https://modelcontextprotocol.io/seps/2133-extensions.md",
       "sha256": "a6497950a3340cd042b9a8a8d39d58fa58afbd33b0b46b86b17787d25e0ff33d",
@@ -448,6 +454,12 @@
       "url": "https://modelcontextprotocol.io/seps/2149-working-group-charter-template.md",
       "sha256": "603ea0c3b270fc62a557cda298c36f80dfe7ebaf70c6ddc36c893c8da3d1bce9",
       "bytes": 24937
+    },
+    {
+      "path": "seps/2164-resource-not-found-error.md",
+      "url": "https://modelcontextprotocol.io/seps/2164-resource-not-found-error.md",
+      "sha256": "c249f3f11887596de154477124c31ac5d050884d9a0b6fd4152da2304dd265da",
+      "bytes": 7900
     },
     {
       "path": "seps/2207-oidc-refresh-token-guidance.md",
@@ -510,6 +522,12 @@
       "bytes": 14759
     },
     {
+      "path": "seps/2596-spec-feature-lifecycle-and-deprecation.md",
+      "url": "https://modelcontextprotocol.io/seps/2596-spec-feature-lifecycle-and-deprecation.md",
+      "sha256": "047246150515787674ee78a130f0f7c653282ff3b3d76113769f33f6d0bc8b83",
+      "bytes": 27610
+    },
+    {
       "path": "seps/2663-tasks-extension.md",
       "url": "https://modelcontextprotocol.io/seps/2663-tasks-extension.md",
       "sha256": "553c886a2ac30c60607c3702a711235e0fb45bac5330a3a8cd048001da47d2c5",
@@ -566,8 +584,8 @@
     {
       "path": "seps/index.md",
       "url": "https://modelcontextprotocol.io/seps/index.md",
-      "sha256": "e1169897cf21398bb36e2e133bae2f11234b5d70e8fad68f68954af842f3962f",
-      "bytes": 12190
+      "sha256": "bcb1f011cd2609d906c61de198f65240b232f52305e24bb6de65ddf8e6640b9f",
+      "bytes": 12958
     },
     {
       "path": "specification/2025-11-25/architecture/index.md",

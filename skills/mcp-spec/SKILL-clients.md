@@ -123,13 +123,25 @@ If the client declared `sampling`, the server can ask the host to
 sample from its LLM:
 
 ```
-← sampling/createMessage { messages, modelPreferences?, includeContext?, ... }
+← sampling/createMessage { messages, modelPreferences?, includeContext?, tools?, toolChoice?, ... }
 → { role: "assistant", content: { type, text }, model, stopReason }
 ```
 
 This is how MCP servers leverage the host's LLM without needing
 their own API key. The client decides whether to allow the request
 (typically asking the user first).
+
+To receive requests that include a `tools` array (tool-enabled sampling,
+[SEP-1577](https://modelcontextprotocol.io/seps/1577--sampling-with-tools.md)),
+the client MUST declare `sampling.tools`:
+
+```json
+{ "capabilities": { "sampling": { "tools": {} } } }
+```
+
+Note: `includeContext` values `"thisServer"`/`"allServers"` are
+soft-deprecated — clients receiving them should still handle them for
+backward compatibility, but servers should omit `includeContext` going forward.
 
 ## Elicitation (server asks user for structured input)
 
