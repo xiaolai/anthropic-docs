@@ -67,11 +67,23 @@ in favor of Streamable HTTP.
 
 ### Authentication — supported spec versions
 
-| Auth spec | Status |
-|---|---|
-| [2025-03-26](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization) | Supported |
-| [2025-06-18](https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization) | Supported |
-| [2025-11-25](https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization) | Supported |
+The 2025-03-26, 2025-06-18, and 2025-11-25 MCP auth specifications are all
+supported.
+
+### Authentication — supported types
+
+| Type | Description | Availability |
+|---|---|---|
+| `oauth_dcr` | OAuth 2.0 with Dynamic Client Registration (RFC 7591) | Supported out of the box |
+| `oauth_cimd` | OAuth 2.0 with Client ID Metadata Document (CIMD) | Supported out of the box |
+| `oauth_anthropic_creds` | OAuth 2.0 with Anthropic-held client credentials | Contact `mcp-review@anthropic.com` |
+| `custom_connection` | Custom URL or credentials supplied at connection time | Contact `mcp-review@anthropic.com` |
+| `none` | No authentication (authless server) | Supported |
+
+**Not supported:**
+
+- `static_bearer` (user-pasted bearer tokens) — not yet supported.
+- Tokens or API keys in the connector URL query string (`?token=`, `?apiKey=`) — explicitly prohibited by the MCP auth spec.
 
 Additional auth features:
 
@@ -79,6 +91,8 @@ Additional auth features:
 - OAuth callback: `https://claude.ai/api/mcp/auth_callback` (hosted surfaces); loopback redirect for Claude Code — see [callback URLs](https://claude.com/docs/connectors/building/authentication#callback-urls).
 - Token refresh and expiry supported.
 - Custom credentials for non-DCR servers supported.
+- PKCE (S256) is included on every authorization request; your authorization server must support it.
+- **For high-traffic servers, prefer CIMD or `oauth_anthropic_creds` over DCR.** DCR registers a new client on every fresh connection — this creates large numbers of registered clients on your authorization server at scale. CIMD and Anthropic-held credentials avoid the registration call entirely.
 
 Full details: [`authentication.md`](https://claude.com/docs/connectors/building/authentication.md).
 
@@ -188,7 +202,7 @@ read the full spec. For the full spec, see [`mcp-spec`](../mcp-spec/SKILL.md).
 
 ## Page index (building/ subtree)
 
-10 source pages under [`https://claude.com/docs/connectors/building/`](https://claude.com/docs/connectors/building/):
+11 source pages under [`https://claude.com/docs/connectors/building/`](https://claude.com/docs/connectors/building/):
 
 - `index.md`, `mcp.md` — MCP primer for connector authors
 - `what-to-build.md`, `directory-vs-custom.md` — decision guides
@@ -202,4 +216,4 @@ is covered there too.)
 
 ---
 
-*Source pages: 10 under `claude.com/docs/connectors/building/`.*
+*Source pages: 11 under `claude.com/docs/connectors/building/`.*
