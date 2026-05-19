@@ -4,7 +4,8 @@ All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
 ## 2026-05-19
-- Daily maintenance run — no upstream changes detected; research agent audited 109 pages across 4 surfaces in 49 turns ($0.76), all gates pass
+*(pending review — see branch auto/2026-05-19-pending-review)*
+- Docs index expanded (109 → 119 pages): 8 new MCP Tunnels pages (`agents-and-tools/mcp-tunnels/`), 2 new self-hosted sandboxes pages (`managed-agents/`); check-diff-size gate triggered, changes on draft PR branch pending review
 
 ## 2026-05-18
 - Sync to platform.claude.com docs — added `build-with-claude/cache-diagnostics.md` (page count 108 → 109); all 11 gates pass
