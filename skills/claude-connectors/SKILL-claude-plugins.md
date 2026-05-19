@@ -30,27 +30,55 @@ commands that drive it.
 
 ## Where plugins are available
 
-- **Claude Code (CLI)** — `/plugin` commands, plugin marketplaces.
-- **Claude Cowork** — full plugin support (see
-  [`claude-cowork → SKILL-cowork.md`](../claude-cowork/SKILL-cowork.md)).
+- **Claude Code (CLI)** — full plugin creation, distribution, and
+  installation via `/plugin` commands.
+- **Claude Cowork** — full plugin support (research preview for paid
+  users); see
+  [`claude-cowork → SKILL-cowork.md`](../claude-cowork/SKILL-cowork.md).
 
 Plugins are NOT available on Claude.ai web or Mobile (as of this
 snapshot — check upstream for current state).
 
+## Plugin directory
+
+Anthropic's public plugin directory is browsable at
+[**claude.com/plugins-for/cowork**](https://claude.com/plugins-for/cowork)
+and via the plugin settings in Claude Code / Cowork. Anthropic has also
+open-sourced **11 internally-developed plugins** spanning
+productivity, search, sales, finance, data analysis, legal,
+marketing, customer support, product management, biology research,
+and a **Plugin Create** plugin for authoring new plugins.
+
+Directory tiers:
+
+| Tier | Review process |
+|---|---|
+| **Community** | Basic automated review |
+| **Anthropic Verified** | Additional quality and safety scrutiny by Anthropic |
+
+Install only plugins from developers you trust — Anthropic cannot
+exhaustively review every submission.
+
 ## Plugin marketplaces
 
 A marketplace is a directory of installable plugins, identified by
-a URL pointing at a `marketplace.json` file. Users can:
+a URL pointing at a `marketplace.json` file (see
+[`code.claude.com/docs/en/plugin-marketplaces`](https://code.claude.com/docs/en/plugin-marketplaces)).
+Three distribution paths are available:
 
-- Browse plugins from any marketplace they trust.
-- Install plugins from a marketplace with one command.
-- Update / remove installed plugins.
+| Path | Best for |
+|---|---|
+| **Direct installation** | Internal tools or small teams |
+| **Custom marketplace** | Enterprises/communities with domain-specific needs |
+| **Claude plugin directory** | Broad reach across all Cowork + Code users |
 
-Anthropic operates a public plugin marketplace for the broader
-community. Organizations can run their own private marketplaces for
-internal-only plugins (common in Cowork on 3P deployments — see
-[`claude-cowork`](../claude-cowork/SKILL-cowork.md) for the "org-plugins
-directory" pattern).
+Organizations can run private marketplaces for internal-only plugins
+(see [`claude-cowork`](../claude-cowork/SKILL-cowork.md) for the
+"org-plugins directory" pattern).
+
+> **Note:** Plugins are currently saved locally to your machine.
+> Org-wide sharing and management are coming in the weeks ahead.
+> Source: [`plugins/overview.md`](https://claude.com/docs/plugins/overview.md).
 
 ## Installation scope
 
@@ -70,11 +98,37 @@ directory" pattern).
   the plugin manifest schema, marketplace.json schema, CLI authoring
   flow.
 
+## Submitting to the directory
+
+To submit a plugin to the Claude plugin directory:
+
+1. Share a **public GitHub repo link** OR upload a **zip file** containing
+   your plugin. The plugin (or repo) must be open — closed-source plugins
+   are not accepted.
+2. Run `claude plugin validate` — all checks must pass.
+3. Submit via [claude.ai/settings/plugins/submit](https://claude.ai/settings/plugins/submit)
+   or [platform.claude.com/plugins/submit](https://platform.claude.com/plugins/submit).
+4. After publication, updates pushed to your GitHub repo sync automatically.
+
+Plugins must comply with Anthropic's Software Directory Terms and
+Policy. Source: [`plugins/submit.md`](https://claude.com/docs/plugins/submit.md).
+
+## SETUP.md — guided MCP configuration
+
+Plugins can include a `SETUP.md` skill to guide Claude through
+configuring and connecting any MCP servers bundled in the plugin. This
+lets you define step-by-step setup instructions that Claude follows when
+a user installs or activates your plugin.
+
+Source: [`plugins/submit.md`](https://claude.com/docs/plugins/submit.md).
+
 ## Page index
 
 All source pages under
-[`https://claude.com/docs/plugins/`](https://claude.com/docs/plugins/)
-— see the directory listing for the current set.
+[`https://claude.com/docs/plugins/`](https://claude.com/docs/plugins/):
+
+- `overview.md` — plugin components, Anthropic's open-sourced plugins, platform support
+- `submit.md` — submission requirements, tiers, and review process
 
 ---
 
