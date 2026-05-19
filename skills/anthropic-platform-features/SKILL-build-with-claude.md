@@ -38,6 +38,9 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
   reports the first divergence point (`model_changed`, `system_changed`,
   `tools_changed`, `messages_changed`, `previous_message_not_found`, or
   `unavailable`). Claude API only — not available on Bedrock or Vertex AI.
+  **ZDR eligible (qualified)** — only fingerprints (hashes + token counts) are
+  retained, not raw prompt content. See
+  [`cache-diagnostics.md`](https://platform.claude.com/docs/en/build-with-claude/cache-diagnostics.md).
 - **Batches return within 24h** at 50% discount. Submit via
   `POST /v1/messages/batches`; poll for results. Not for interactive use.
 - **Vision input:** images can be base64-inline or URL-referenced.
@@ -63,9 +66,11 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
   Falling back to standard speed on 429 causes a prompt-cache miss
   (fast and standard don't share cached prefixes). ZDR eligible.
   Join waitlist at [claude.com/fast-mode](https://claude.com/fast-mode).
-- **Context windows** differ per model and may change over time.
-  Use `GET /v1/models/{id}` at runtime instead of hardcoding the
-  limit. See [`anthropic-api → SKILL-models.md`](../anthropic-api/SKILL-models.md).
+- **Context windows** differ per model. Current sizes: **1M tokens** for
+  Claude Mythos Preview (`claude-mythos-preview`), Opus 4.7, Opus 4.6, and
+  Sonnet 4.6; **200K tokens** for Sonnet 4.5 and older models. Use
+  `GET /v1/models/{id}` at runtime to avoid hardcoding.
+  See [`anthropic-api → SKILL-models.md`](../anthropic-api/SKILL-models.md).
 - **`stop_reason: "model_context_window_exceeded"`** — on Claude 4.5
   and newer models, if `input_tokens + max_tokens` exceeds the context
   window, the API accepts the request and returns this stop reason when
@@ -114,7 +119,7 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
 | **Prompt caching** | [`prompt-caching.md`](https://platform.claude.com/docs/en/build-with-claude/prompt-caching.md) | `cache_control: ephemeral` breakpoints, 5-min TTL |
 | **Cache diagnostics** | [`cache-diagnostics.md`](https://platform.claude.com/docs/en/build-with-claude/cache-diagnostics.md) | Beta (`cache-diagnosis-2026-04-07`) — identify where a prompt prefix diverged and caused a cache miss; Claude API only |
 | **Batch processing** | [`batch-processing.md`](https://platform.claude.com/docs/en/build-with-claude/batch-processing.md) | Submit many requests at lower price, returns in 24h |
-| **Compaction** | [`compaction.md`](https://platform.claude.com/docs/en/build-with-claude/compaction.md) | Auto-summarize older messages when nearing context limit |
+| **Compaction** | [`compaction.md`](https://platform.claude.com/docs/en/build-with-claude/compaction.md) | Auto-summarize older messages when nearing context limit. Supported on: `claude-mythos-preview`, Opus 4.7, Opus 4.6, Sonnet 4.6 |
 | **Context editing** | [`context-editing.md`](https://platform.claude.com/docs/en/build-with-claude/context-editing.md) | Programmatic context-window management |
 
 ## Inputs

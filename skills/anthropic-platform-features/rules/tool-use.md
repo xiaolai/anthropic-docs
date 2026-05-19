@@ -128,9 +128,11 @@ for await (const chunk of stream) { /* ... */ }
 ## Rule 7 — Model IDs are family-prefix or dated; don't typo
 
 Valid families today: `claude-opus-4-7`, `claude-sonnet-4-6`,
-`claude-haiku-4-5-20251001`. The platform rejects unknown IDs.
-Prefer family-only IDs unless reproducibility matters; dated IDs
-pin to a specific snapshot (e.g., `claude-opus-4-7-20251030`).
+`claude-haiku-4-5-20251001`, `claude-mythos-preview`. The platform
+rejects unknown IDs. Prefer family-only IDs unless reproducibility
+matters; dated IDs pin to a specific snapshot (e.g.,
+`claude-opus-4-7-20251030`). Note: `claude-mythos-preview` rejects
+forced tool_choice (`"any"` / `"tool"`) — use `"auto"` or `"none"`.
 
 ## Rule 8 — `tool_choice` enum
 
