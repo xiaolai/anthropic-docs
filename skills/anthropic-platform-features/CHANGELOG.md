@@ -4,6 +4,7 @@ All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
 ## 2026-05-19
+- *(pending review — see branch auto/2026-05-19-pending-review)* Sync to platform.claude.com docs — +10 pages (8 MCP tunnels pages, 2 self-hosted sandboxes pages; page count 109 → 119); `checkDiffSize` gate failed, draft PR pending review
 - Daily maintenance run — no upstream changes detected; research agent audited 109 pages across 4 surfaces in 49 turns ($0.76), all gates pass
 
 ## 2026-05-18

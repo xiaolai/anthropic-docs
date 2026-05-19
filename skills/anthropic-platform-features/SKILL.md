@@ -38,10 +38,10 @@ user-invocable: true
 
 | Surface file | Read when the user asks about… |
 |---|---|
-| [`SKILL-agents-and-tools.md`](SKILL-agents-and-tools.md) | Agent Skills format spec, MCP connector, remote MCP servers, tool use (computer use, code execution, bash, define-your-own tools), tool_choice |
+| [`SKILL-agents-and-tools.md`](SKILL-agents-and-tools.md) | Agent Skills format spec, MCP connector, remote MCP servers, MCP tunnels (private-network MCP servers over outbound-only encrypted tunnel), tool use (computer use, code execution, bash, define-your-own tools), tool_choice |
 | [`SKILL-build-with-claude.md`](SKILL-build-with-claude.md) | extended thinking, message batches, prompt caching, citations, Amazon Bedrock, Google Vertex, embeddings, fast mode, context editing, vision; also platform foundation (`intro`, `get-started`) and guardrails / streaming-refusals from `test-and-evaluate/` |
 | [`SKILL-manage-claude.md`](SKILL-manage-claude.md) | workload identity federation (WIF), billing & usage, organizations & workspaces operations, identity & SSO |
-| [`SKILL-managed-agents.md`](SKILL-managed-agents.md) | Managed Agents product — agent definitions, deployment, lifecycle, monitoring |
+| [`SKILL-managed-agents.md`](SKILL-managed-agents.md) | Managed Agents product — agent definitions, deployment, lifecycle, monitoring, self-hosted sandboxes |
 
 ---
 
