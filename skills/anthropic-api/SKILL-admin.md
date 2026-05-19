@@ -142,6 +142,42 @@ groups). Filter by `group_type`: `model_group`, `batch`, `token_count`,
 `files`, `skills`, `web_search`. Uses opaque-cursor pagination (`page`
 query param + `next_page` in response).
 
+## MCP Tunnels
+
+Admin endpoints for managing MCP Tunnel registrations and their TLS certificates.
+Added 2026-05-19.
+
+**Key facts:**
+- **Auth:** WIF (Workload Identity Federation) — `Authorization: Bearer $ANTHROPIC_WIF_BEARER_TOKEN`, **not** `x-api-key`.
+- **Beta header required:** `anthropic-beta: mcp-tunnels-2026-05-19` on all tunnel endpoints.
+- **Base path:** `/v1/organizations/tunnels/`
+- **Tunnel domain:** each tunnel has an Anthropic-assigned `domain`; MCP server URLs whose host is a subdomain of that value are routed through the tunnel. Globally unique; never reused after archive.
+- **Tunnel limit per workspace:** at most two non-archived certificates per tunnel.
+- **Token lifecycle:** the connection token is fetched live on each `reveal_token` call. Repeated calls return the same value until `rotate_token` is called.
+
+| Endpoint | Description | Page |
+|---|---|---|
+| `GET /v1/organizations/tunnels` | List tunnels (filter by `workspace_id`; use `include_archived` to see archived) | [`admin/mcp_tunnels/list.md`](https://platform.claude.com/docs/en/api/admin/mcp_tunnels/list.md) |
+| `GET /v1/organizations/tunnels/{id}` | Retrieve a tunnel | [`admin/mcp_tunnels/retrieve.md`](https://platform.claude.com/docs/en/api/admin/mcp_tunnels/retrieve.md) |
+| `POST /v1/organizations/tunnels/{id}/reveal_token` | Return current connection token (not stored by Anthropic) | [`admin/mcp_tunnels/reveal_token.md`](https://platform.claude.com/docs/en/api/admin/mcp_tunnels/reveal_token.md) |
+| `POST /v1/organizations/tunnels/{id}/rotate_token` | Rotate connection token (invalidates previous) | [`admin/mcp_tunnels/rotate_token.md`](https://platform.claude.com/docs/en/api/admin/mcp_tunnels/rotate_token.md) |
+| `POST /v1/organizations/tunnels/{id}/archive` | Archive tunnel (also archives all its certificates) | [`admin/mcp_tunnels/archive.md`](https://platform.claude.com/docs/en/api/admin/mcp_tunnels/archive.md) |
+
+### Tunnel Certificates
+
+Register CA certificates to verify the gateway's TLS server certificate.
+
+| Endpoint | Description | Page |
+|---|---|---|
+| `POST /v1/organizations/tunnels/{id}/certificates` | Register a CA cert (PEM, one X.509 cert, no private key) | [`admin/mcp_tunnels/tunnel_certificates/create.md`](https://platform.claude.com/docs/en/api/admin/mcp_tunnels/tunnel_certificates/create.md) |
+| `GET /v1/organizations/tunnels/{id}/certificates` | List certificates for a tunnel | [`admin/mcp_tunnels/tunnel_certificates/list.md`](https://platform.claude.com/docs/en/api/admin/mcp_tunnels/tunnel_certificates/list.md) |
+| `GET /v1/organizations/tunnels/{id}/certificates/{cert_id}` | Retrieve a certificate | [`admin/mcp_tunnels/tunnel_certificates/retrieve.md`](https://platform.claude.com/docs/en/api/admin/mcp_tunnels/tunnel_certificates/retrieve.md) |
+| `POST /v1/organizations/tunnels/{id}/certificates/{cert_id}/archive` | Archive a certificate | [`admin/mcp_tunnels/tunnel_certificates/archive.md`](https://platform.claude.com/docs/en/api/admin/mcp_tunnels/tunnel_certificates/archive.md) |
+
+Certificate response fields: `id`, `archived_at`, `created_at`, `expires_at`, `fingerprint` (SHA-256 lowercase hex), `tunnel_id`, `type: "tunnel_certificate"`.
+
+Source: [`admin/mcp_tunnels/`](https://platform.claude.com/docs/en/api/admin/mcp_tunnels.md) (added 2026-05-19)
+
 ---
 
-*Source pages: 37 under `platform.claude.com/docs/en/api/admin/`.*
+*Source pages: 48 under `platform.claude.com/docs/en/api/admin/` (37 original + 11 MCP tunnels).*
