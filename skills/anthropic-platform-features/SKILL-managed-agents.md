@@ -89,9 +89,73 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
 | Page | Topic |
 |---|---|
 | [`environments.md`](https://platform.claude.com/docs/en/managed-agents/environments.md) | Environment concept (dev / staging / prod) |
-| [`cloud-containers.md`](https://platform.claude.com/docs/en/managed-agents/cloud-containers.md) | Container-backed agent runtime |
+| [`cloud-containers.md`](https://platform.claude.com/docs/en/managed-agents/cloud-containers.md) | Container-backed agent runtime (Anthropic-managed) |
+| [`self-hosted-sandboxes.md`](https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes.md) | Run tool execution in your own infrastructure |
+| [`self-hosted-sandboxes-security.md`](https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes-security.md) | Shared responsibility model for self-hosted environments |
 | [`sessions.md`](https://platform.claude.com/docs/en/managed-agents/sessions.md) | Session lifecycle |
 | [`permission-policies.md`](https://platform.claude.com/docs/en/managed-agents/permission-policies.md) | What each agent may do |
+
+### Self-hosted sandboxes
+
+By default Managed Agents executes tools inside Anthropic-managed cloud
+containers. **Self-hosted sandboxes** keep orchestration on Anthropic's
+side but move tool execution into infrastructure you control — agent
+code, filesystem, and network egress never leave your environment.
+
+> Not yet available on Claude Platform on AWS.
+
+**How it relates to MCP Tunnels:** These are independent features.
+Self-hosted controls *where the agent's code runs*; MCP Tunnels controls
+*how Anthropic reaches MCP servers in your network*. They can be used
+together or separately.
+
+#### Environment worker
+
+An **environment worker** is a process you run that receives tool
+execution requests from Anthropic and runs them locally. It polls
+a work queue, claims sessions, downloads agent skills, executes tool
+calls, and posts results back.
+
+| Worker pattern | Tooling |
+|---|---|
+| Always-on polling | `ant beta:worker poll` (CLI) or `EnvironmentWorker.run()` (SDK) |
+| Webhook-triggered | SDK `EnvironmentWorker.handle_item()` — wake on `session.status_run_started` |
+| Custom per-session containers | `work.poller()` + your own container spawn script |
+
+SDK support: Python, TypeScript, Go. `EnvironmentWorker` not yet in C#, Java, PHP, Ruby SDKs (use `ant` CLI or raw API instead).
+
+#### Key facts
+
+- **Environment config type:** `{"type": "self_hosted"}` (via API or Console **Environments > New > Self-hosted**)
+- **Beta header:** `managed-agents-2026-04-01`
+- **Environment key** (`ANTHROPIC_ENVIRONMENT_KEY`): authenticates the worker's poll/submit calls. Scoped to one environment's work queue. Store in a secrets manager, not in images or env files.
+- **Filesystem layout:**
+  - `/workspace` — default workdir; skills downloaded to `/workspace/skills/<name>/`
+  - `/mnt/session/outputs` — agent writes final output files here
+- **SDK requirements:** `/bin/bash` must exist at that exact path; TypeScript SDK also requires `unzip`, `tar`, and Node.js 22+.
+- **Memory stores** are not yet supported with self-hosted sandboxes.
+- **Session metadata** (`metadata: {...}`) can pass session-specific context (e.g. S3 paths) to your orchestration layer for file mounting.
+
+#### Queue monitoring (`work.stats`)
+
+```text
+{ "type": "work_queue_stats", "depth": 0, "pending": 0,
+  "oldest_queued_at": null, "workers_polling": 0 }
+```
+
+- `depth` — items waiting to be claimed (use for scaling / alerting)
+- `pending` — items a worker has claimed and is processing
+- `workers_polling` — workers that polled in the last 30 s (liveness check)
+
+Stop a running session via `work.stop` (graceful) or `work.stop` with `force: true` (immediate).
+
+#### Security responsibilities (owner: you)
+
+- Container image quality and runtime hardening (drop capabilities, non-root user, read-only rootfs)
+- Network egress controls (restrict to required endpoints only)
+- `ANTHROPIC_ENVIRONMENT_KEY` rotation and storage
+- Per-session isolation when running untrusted workloads (separate workspace/environment per trust boundary)
+- Log retention and session-content compliance (Anthropic has no visibility once content is delivered to your worker)
 
 ## Integrations
 
@@ -116,9 +180,9 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
 
 ## Page index
 
-20 source pages under
+22 source pages under
 [`https://platform.claude.com/docs/en/managed-agents/`](https://platform.claude.com/docs/en/managed-agents/).
 
 ---
 
-*Source pages: 20 under `platform.claude.com/docs/en/managed-agents/`.*
+*Source pages: 22 under `platform.claude.com/docs/en/managed-agents/`.*
