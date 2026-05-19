@@ -54,8 +54,7 @@ Each entry uses this structure:
 
 ## Recently resolved
 
-> *Populated by the research agent.* Recent fixes worth flagging
-> because users on older versions may still hit them.
+*None tracked yet. The research agent will surface user-impacting bugs that were fixed in a recent CLI release, so users on older versions know what's worth upgrading for.*
 
 ---
 
