@@ -35,6 +35,10 @@ source: https://platform.claude.com/docs/en/api/admin/
   belongs to exactly one org.
 - **Archived workspaces:** archive (not delete) is reversible. Once
   archived, no new requests bill against the workspace.
+- **Org-level user roles:** `user`, `developer`, `billing`,
+  `claude_code_user`. The `admin` role exists but cannot be set via
+  the invite API (Console only). Source:
+  [`admin.md`](https://platform.claude.com/docs/en/api/admin.md) (updated 2026-05-19).
 - **Member roles:** workspace members have a `workspace_role` field
   distinct from org-level role; set on create, mutable via the Update
   Workspace Member endpoint. Valid values: `workspace_user`,

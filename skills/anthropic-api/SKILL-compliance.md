@@ -56,14 +56,30 @@ shape, and pagination.
 |---|---|
 | Compliance API section index | [`compliance.md`](https://platform.claude.com/docs/en/api/compliance.md) |
 | `GET /v1/compliance/activities` | [`compliance/activities.md`](https://platform.claude.com/docs/en/api/compliance/activities.md) — activity feed (filter by `activity_types`; 290+ event type enum values) |
-| `GET /v1/compliance/apps/chats` | [`compliance/apps/chats`](https://platform.claude.com/docs/en/api/compliance/apps/chats/list.md) — list chat metadata; requires `user_ids` (1–10 IDs) |
-| `GET /v1/compliance/apps/chats/{chat_id}/messages` | [`compliance/apps/chats`](https://platform.claude.com/docs/en/api/compliance/apps/chats.md) — retrieve chat messages |
-| `GET /v1/compliance/apps/projects` | [`compliance/apps/projects`](https://platform.claude.com/docs/en/api/compliance/apps/projects.md) — list Claude projects |
+| `GET /v1/compliance/apps/chats` | [`compliance/apps/chats/list.md`](https://platform.claude.com/docs/en/api/compliance/apps/chats/list.md) — list chat metadata; requires `user_ids` (1–10 IDs) |
+| `GET /v1/compliance/apps/chats/{chat_id}/messages` | [`compliance/apps/chats/messages.md`](https://platform.claude.com/docs/en/api/compliance/apps/chats/messages.md) — retrieve chat messages (includes `artifacts[]` and `generated_files[]`) |
+| `DELETE /v1/compliance/apps/chats/{chat_id}` | [`compliance/apps/chats/delete.md`](https://platform.claude.com/docs/en/api/compliance/apps/chats/delete.md) — permanently delete a chat + messages + files; returns `{id, type: "claude_chat_deleted"}` |
+| `GET /v1/compliance/apps/chats/files/{file_id}` | [`compliance/apps/chats/files/retrieve.md`](https://platform.claude.com/docs/en/api/compliance/apps/chats/files/retrieve.md) — retrieve file metadata |
+| `GET /v1/compliance/apps/chats/files/{file_id}/content` | [`compliance/apps/chats/files/content.md`](https://platform.claude.com/docs/en/api/compliance/apps/chats/files/content.md) — download file bytes |
+| `DELETE /v1/compliance/apps/chats/files/{file_id}` | [`compliance/apps/chats/files/delete.md`](https://platform.claude.com/docs/en/api/compliance/apps/chats/files/delete.md) — delete a chat file |
+| `GET /v1/compliance/apps/chats/{id}/generated_files` | [`compliance/apps/chats/generated_files.md`](https://platform.claude.com/docs/en/api/compliance/apps/chats/generated_files.md) — list model-generated files |
+| `GET /v1/compliance/apps/chats/{id}/generated_files/{fid}/content` | [`compliance/apps/chats/generated_files/content.md`](https://platform.claude.com/docs/en/api/compliance/apps/chats/generated_files/content.md) — download generated file bytes |
+| `GET /v1/compliance/apps/artifacts/{artifact_id}/content` | [`compliance/apps/artifacts/content.md`](https://platform.claude.com/docs/en/api/compliance/apps/artifacts/content.md) — retrieve artifact content |
+| `GET /v1/compliance/apps/projects` | [`compliance/apps/projects/list.md`](https://platform.claude.com/docs/en/api/compliance/apps/projects/list.md) — list Claude projects |
+| `GET /v1/compliance/apps/projects/{id}` | [`compliance/apps/projects/retrieve.md`](https://platform.claude.com/docs/en/api/compliance/apps/projects/retrieve.md) — retrieve a project |
+| `DELETE /v1/compliance/apps/projects/{id}` | [`compliance/apps/projects/delete.md`](https://platform.claude.com/docs/en/api/compliance/apps/projects/delete.md) — delete project + all documents/files |
+| `GET /v1/compliance/apps/projects/{id}/attachments` | [`compliance/apps/projects/attachments.md`](https://platform.claude.com/docs/en/api/compliance/apps/projects/attachments.md) — list project attachments |
+| `GET /v1/compliance/apps/projects/{id}/documents` | [`compliance/apps/projects/documents.md`](https://platform.claude.com/docs/en/api/compliance/apps/projects/documents.md) — list project documents |
+| `GET /v1/compliance/apps/projects/{id}/documents/{doc_id}` | [`compliance/apps/projects/documents/retrieve.md`](https://platform.claude.com/docs/en/api/compliance/apps/projects/documents/retrieve.md) — retrieve a document |
+| `DELETE /v1/compliance/apps/projects/{id}/documents/{doc_id}` | [`compliance/apps/projects/documents/delete.md`](https://platform.claude.com/docs/en/api/compliance/apps/projects/documents/delete.md) — delete a document |
 | `GET /v1/compliance/groups` | [`compliance/groups.md`](https://platform.claude.com/docs/en/api/compliance/groups.md) — list compliance groups (filter by `name_prefix`) |
-| `GET /v1/compliance/groups/{group_id}/members` | [`compliance/groups/members`](https://platform.claude.com/docs/en/api/compliance/groups/members.md) — list group members |
+| `GET /v1/compliance/groups/{group_id}` | [`compliance/groups/retrieve.md`](https://platform.claude.com/docs/en/api/compliance/groups/retrieve.md) — retrieve a group |
+| `GET /v1/compliance/groups/{group_id}/members` | [`compliance/groups/members.md`](https://platform.claude.com/docs/en/api/compliance/groups/members.md) — list group members |
 | `GET /v1/compliance/organizations` | [`compliance/organizations.md`](https://platform.claude.com/docs/en/api/compliance/organizations.md) — list sub-organizations (no pagination; max 1,000) |
-| `GET /v1/compliance/organizations/{uuid}/users` | [`compliance/organizations/users`](https://platform.claude.com/docs/en/api/compliance/organizations/users.md) — list org users |
-| `GET /v1/compliance/organizations/{uuid}/roles` | [`compliance/organizations/roles`](https://platform.claude.com/docs/en/api/compliance/organizations/roles.md) — list compliance roles + permissions |
+| `GET /v1/compliance/organizations/{uuid}/users` | [`compliance/organizations/users.md`](https://platform.claude.com/docs/en/api/compliance/organizations/users.md) — list org users |
+| `GET /v1/compliance/organizations/{uuid}/roles` | [`compliance/organizations/roles.md`](https://platform.claude.com/docs/en/api/compliance/organizations/roles.md) — list compliance roles |
+| `GET /v1/compliance/organizations/{uuid}/roles/{role_id}` | [`compliance/organizations/roles/retrieve.md`](https://platform.claude.com/docs/en/api/compliance/organizations/roles/retrieve.md) — retrieve a role |
+| `GET /v1/compliance/organizations/{uuid}/roles/{role_id}/permissions` | [`compliance/organizations/roles/permissions.md`](https://platform.claude.com/docs/en/api/compliance/organizations/roles/permissions.md) — list role permissions |
 
 The conceptual coverage of each (what to use it for, what fields
 mean, integration patterns) lives in the platform-features

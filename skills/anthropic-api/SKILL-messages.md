@@ -134,10 +134,35 @@ in the platform-features skill for caching strategy.
     "input_tokens": 25,
     "cache_creation_input_tokens": 0,
     "cache_read_input_tokens": 0,
-    "output_tokens": 100
+    "output_tokens": 100,
+    "cache_creation": {
+      "ephemeral_5m_input_tokens": 0,
+      "ephemeral_1h_input_tokens": 0
+    },
+    "inference_geo": "us",
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard"
   }
 }
 ```
+
+#### `usage` object fields
+
+| Field | Type | Notes |
+|---|---|---|
+| `input_tokens` | number | Input tokens billed |
+| `cache_creation_input_tokens` | number | Tokens written to cache (total across TTLs) |
+| `cache_read_input_tokens` | number | Tokens read from cache |
+| `output_tokens` | number | Output tokens generated |
+| `cache_creation` | object | Breakdown by TTL: `ephemeral_5m_input_tokens`, `ephemeral_1h_input_tokens` |
+| `inference_geo` | string | Geographic region where inference was performed |
+| `server_tool_use` | object | Server tool request counts: `web_search_requests`, `web_fetch_requests` |
+| `service_tier` | string | Which tier served this request: `"standard"`, `"priority"`, or `"batch"` |
+
+Source: [`messages/create.md`](https://platform.claude.com/docs/en/api/messages/create.md) (updated 2026-05-19).
 
 ### Stop reasons
 
