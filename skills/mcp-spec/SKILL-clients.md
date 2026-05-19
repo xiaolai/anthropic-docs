@@ -134,15 +134,52 @@ their own API key. The client decides whether to allow the request
 ## Elicitation (server asks user for structured input)
 
 If the client declared `elicitation`, the server can prompt the
-user for structured input via the host:
+user for structured input via the host. Two modes exist:
+
+### Form mode (structured data)
 
 ```
-← elicitation/create { message, requestedSchema }
+← elicitation/create { mode: "form", message, requestedSchema }
 → { action: "accept" | "decline" | "cancel", content?: <matching schema> }
 ```
 
-The host renders an appropriate UI (form, dialog) and returns the
-user's response.
+The host renders a form/dialog. `mode` may be omitted for backwards
+compatibility (defaults to `"form"`).
+
+### URL mode (out-of-band / sensitive)
+
+```
+← elicitation/create { mode: "url", elicitationId, url, message }
+→ { action: "accept" | "decline" | "cancel" }
+```
+
+The client shows the user the `url` and asks for consent before
+opening it. Used for OAuth flows, payment pages, and other
+interactions where sensitive data must NOT pass through the MCP
+client. The client MUST NOT auto-fetch the URL or expose its
+response content.
+
+### Capability declaration
+
+```json
+{
+  "capabilities": {
+    "elicitation": {
+      "form": {},
+      "url": {}
+    }
+  }
+}
+```
+
+For backwards compatibility, `elicitation: {}` (empty) is treated
+as `form`-only. Servers MUST NOT send URL mode requests unless the
+client declared `elicitation.url`.
+
+An optional `notifications/elicitation/complete` notification may
+be sent by the server to signal completion of a URL mode flow.
+
+Source: [`specification/2025-11-25/client/elicitation.md`](https://modelcontextprotocol.io/specification/2025-11-25/client/elicitation.md)
 
 ## Client best practices
 

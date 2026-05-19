@@ -81,7 +81,7 @@ features that the peer advertised. Typical capabilities:
 **Client capabilities** (subset):
 - `sampling` — server may request the client to sample from the host LLM.
 - `roots` — server may request the list of filesystem roots, optionally with `listChanged`.
-- `elicitation` — server may request structured input from the user.
+- `elicitation` — server may request input from the user. Sub-capabilities: `form` (structured data, flat JSON schema) and/or `url` (out-of-band URL navigation for sensitive flows). Empty `{}` is treated as `form`-only for backwards compatibility.
 - `extensions` — declares supported optional extensions (see below).
 
 ### Extension capability field
@@ -147,6 +147,7 @@ Standard JSON-RPC error codes plus MCP-specific extensions:
 | -32601 | Method not found |
 | -32602 | Invalid params |
 | -32603 | Internal error |
+| -32042 | `URLElicitationRequiredError` — server cannot proceed until user completes a URL-mode elicitation (opens the provided URL out-of-band). Client should retry the request after the user completes the flow. |
 | -32000…-32099 | Implementation-defined server errors |
 
 MCP-defined error semantics live in the spec under

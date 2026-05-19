@@ -239,10 +239,13 @@ roots change:
 ## Elicitation
 
 `elicitation/create` — server asks the user for structured input
-via the host's UI.
+via the host's UI. Two modes:
+
+### Form mode (structured data collection)
 
 ```
 ← elicitation/create {
+    mode: "form",          // optional for backwards compat — defaults to "form"
     message: "Which environment should I deploy to?",
     requestedSchema: {
       type: "object",
@@ -255,7 +258,34 @@ via the host's UI.
 → { action: "accept" | "decline" | "cancel", content?: { env: "staging", confirm: true } }
 ```
 
-The host renders an appropriate UI (form, dialog).
+`requestedSchema` is a restricted flat JSON Schema — only primitive
+properties (`string`, `number`/`integer`, `boolean`) at the top level.
+Servers MUST NOT use form mode to request passwords, API keys, or
+other secrets.
+
+### URL mode (out-of-band, sensitive interactions)
+
+```
+← elicitation/create {
+    mode: "url",
+    elicitationId: "<uuid>",
+    url: "https://mcp.example.com/ui/connect",
+    message: "Please authorize access to the external service."
+  }
+→ { action: "accept" | "decline" | "cancel" }
+```
+
+URL mode directs the user to an external URL (OAuth flow, payment
+page, API key setup). Data never transits through the MCP client.
+The server optionally sends `notifications/elicitation/complete`
+when the external flow finishes, signaling the client can retry the
+original request.
+
+Error code `-32042` (`URLElicitationRequiredError`) is returned by
+the server when a tool call cannot proceed until the user completes
+a URL mode elicitation.
+
+Source: [`specification/2025-11-25/client/elicitation.md`](https://modelcontextprotocol.io/specification/2025-11-25/client/elicitation.md)
 
 ## Completion
 
