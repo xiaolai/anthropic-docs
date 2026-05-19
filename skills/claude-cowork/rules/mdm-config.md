@@ -47,18 +47,25 @@ MDM profile should explicitly NOT set `inferenceProvider: foundry`.
 
 ## Rule 4 — Telemetry kill switches
 
-Three independent telemetry toggles:
+Four independent telemetry/service toggles (all default `false` = enabled):
 
-- `disableCrashReporting`: boolean, scrubs and disables crash reports
-- `disableProductAnalytics`: boolean, disables usage telemetry
-- `disableAutoUpdate`: boolean, disables auto-update checks
+- `disableEssentialTelemetry`: boolean — blocks crash reports and error telemetry to Anthropic. **Disabling opts you into a manual support model** (your team must collect and send logs directly).
+- `disableNonessentialTelemetry`: boolean — blocks product-usage analytics to Anthropic.
+- `disableNonessentialServices`: boolean — blocks non-critical third-party fetches (connector favicons, artifact-preview iframe).
+- `disableAutoUpdates`: boolean — blocks update checks and downloads from Anthropic (IT must redistribute new builds).
 
-All three are off-by-default (telemetry enabled). For air-gapped or
-compliance-hardened deployments, set all three to `true`.
+When all four are `true`, the desktop app makes **no outbound connections to Anthropic-operated hosts at runtime**.
 
 Telemetry NEVER contains user prompts or completions, but if your
-audit posture requires zero Anthropic-bound network traffic, disable
-all three.
+audit posture requires zero Anthropic-bound network traffic, set all
+four to `true`.
+
+> **Common mistake:** the old key names `disableCrashReporting`,
+> `disableProductAnalytics`, and `disableAutoUpdate` do not exist —
+> they are silently ignored by the app. Always use the names above.
+
+Source: [`cowork/3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md),
+[`cowork/3p/telemetry.md`](https://claude.com/docs/cowork/3p/telemetry.md).
 
 ## Rule 5 — Don't mix per-user and admin profiles
 
@@ -85,11 +92,21 @@ JSON file your org publishes. **Pin plugin versions** in that
 manifest; bare references resolve to "latest" and inherit any
 breaking change immediately.
 
-## Rule 8 — Spend caps are workspace-monthly, not per-request
+## Rule 8 — Token caps are per-device and token-based, not USD per-workspace
 
-`workspaceSpendCapUSD` caps monthly usage per workspace. When hit,
-requests return 429 `cap_exceeded` until the next billing month.
-Set to a value above your monthly forecast, with a buffer.
+`inferenceMaxTokensPerWindow` caps total input + output tokens allowed per
+device per rolling window. When hit, the app **refuses new messages locally**
+until the window resets — no 429 from the provider.
+
+Pair with `inferenceTokenWindowHours` (integer, 1–720) to set the window
+length. Both keys are enforced locally and persist across restarts.
+
+> **Common mistake:** `workspaceSpendCapUSD` does not exist as a config key.
+> 3P spend limits are token-based and device-local, not USD-based per-workspace.
+> Set `inferenceMaxTokensPerWindow` to a value above your expected daily usage
+> times the window length, with a comfortable buffer.
+
+Source: [`cowork/3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
 
 ---
 

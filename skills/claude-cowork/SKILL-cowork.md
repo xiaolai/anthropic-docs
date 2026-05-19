@@ -128,12 +128,13 @@ That page is the source of truth for:
 
 - Inference provider selection (`inferenceProvider`)
 - Region pinning (`inferenceVertexRegion`, `inferenceBedrockRegion`)
-- Feature toggles (web search, local MCP, etc.)
-- Telemetry toggles
-- MCP server allowlist
+- Feature toggles (web search, local MCP, Code tab, etc.)
+- Telemetry toggles (`disableEssentialTelemetry`, `disableNonessentialTelemetry`,
+  `disableNonessentialServices`, `disableAutoUpdates`)
+- MCP server allowlist (`managedMcpServers`)
 - Plugin / skill / hook distribution settings
-- Per-user spend caps
-- Auto-update policy
+- Token-based spend caps (`inferenceMaxTokensPerWindow`, `inferenceTokenWindowHours`)
+- Auto-update policy (`disableAutoUpdates`)
 
 ## Data residency
 
@@ -192,16 +193,30 @@ Full comparison: [`3p/feature-matrix.md`](https://claude.com/docs/cowork/3p/feat
 Salient gaps in 3P (versus full Claude Enterprise):
 
 - No Chat tab (Cowork + Code tabs only).
-- No Anthropic 1P connectors (except M365).
+- No Anthropic 1P connectors (except M365; Google Workspace planned).
 - No Project / plugin sharing across orgs.
-- No public plugin marketplace.
-- No mobile dispatch.
+- No public Anthropic plugin marketplace — the org-plugins directory
+  provides an org-internal marketplace (see
+  [`3p/extensions.md`](https://claude.com/docs/cowork/3p/extensions.md)).
+- No mobile dispatch (Dispatch/mobile feature absent).
 - No voice mode.
 - No Claude in Chrome.
 - No web-based admin console — admin functions delivered via MDM.
-- Per-user spend caps are blanket-only (not differentiated by role).
+- Per-user spend caps are blanket-only (not differentiated by role);
+  token-based and device-enforced via `inferenceMaxTokensPerWindow`.
 - Compliance / Analytics APIs are not exposed; equivalent capability
   via OpenTelemetry export.
+
+Features confirmed available in 3P that are sometimes assumed missing:
+
+- **Projects** — fully supported.
+- **Memory** — supported; stored on the user's device (not Anthropic
+  infrastructure). Users can review, delete, or pause under
+  **Settings → Cowork → Memory**.
+- **Scheduled tasks** — supported.
+- **Skills, plugins, and hooks** — full extension model supported.
+- **Remote MCP** — supported.
+- **Artifacts** — supported.
 
 ## Cowork guide (standard mode)
 
