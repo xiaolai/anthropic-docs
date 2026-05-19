@@ -71,16 +71,24 @@ Each side advertises what it supports. The other side only invokes
 features that the peer advertised. Typical capabilities:
 
 **Server capabilities** (subset):
-- `tools` — provides callable tools.
-- `resources` — provides readable resources, optionally with `subscribe`.
-- `prompts` — provides prompt templates.
+- `tools` — provides callable tools, optionally with `listChanged`.
+- `resources` — provides readable resources, optionally with `subscribe` and `listChanged`.
+- `prompts` — provides prompt templates, optionally with `listChanged`.
 - `logging` — accepts client log messages.
 - `completions` — provides argument completion for prompts/resource URIs.
+- `tasks` *(experimental)* — supports task-augmented requests (e.g., `tasks.requests.tools.call`).
 
 **Client capabilities** (subset):
 - `sampling` — server may request the client to sample from the host LLM.
 - `roots` — server may request the list of filesystem roots, optionally with `listChanged`.
 - `elicitation` — server may request structured input from the user.
+- `tasks` *(experimental)* — supports task-augmented requests (e.g., `tasks.requests.sampling.createMessage`, `tasks.requests.elicitation.create`).
+
+> **Experimental: Tasks.** Tasks are durable state machines for long-running or deferred
+> operations. Either side can declare `tasks` capability broken down by request type
+> (`tasks.list`, `tasks.cancel`, `tasks.requests.*`). Tools opt in per-tool via the
+> `execution.taskSupport` field (`"forbidden"` | `"optional"` | `"required"`).
+> See [`specification/2025-11-25/basic/utilities/tasks.md`](https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/tasks.md).
 
 ## Lifecycle
 

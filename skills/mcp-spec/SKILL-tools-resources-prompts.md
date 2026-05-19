@@ -27,7 +27,11 @@ A tool is a callable function the server exposes to the host LLM.
 ```json
 {
   "name": "search_files",
+  "title": "Search Files",
   "description": "Search files matching a query",
+  "icons": [
+    { "src": "https://example.com/search-icon.png", "mimeType": "image/png", "sizes": ["48x48"] }
+  ],
   "inputSchema": {
     "type": "object",
     "properties": {
@@ -46,22 +50,41 @@ A tool is a callable function the server exposes to the host LLM.
     }
   },
   "annotations": {
-    "title": "Search Files",
     "readOnlyHint": true,
     "destructiveHint": false,
     "idempotentHint": true,
     "openWorldHint": false
+  },
+  "execution": {
+    "taskSupport": "optional"
   }
 }
 ```
 
-- `inputSchema` — JSON Schema, used by the LLM and the client to
-  validate arguments.
-- `outputSchema` — optional. When present, the response's
-  `structuredContent` should match it.
-- `annotations` — *non-binding* hints for clients (UI rendering,
-  permission prompts). All Boolean fields default to safe-pessimistic
-  values when absent.
+- `title` — Optional top-level human-readable display name for the tool (shown in UIs).
+  Distinct from `annotations.title` which has been removed; use this field instead.
+- `icons` — Optional array of icon objects for UI display, each with `src` (URL),
+  `mimeType`, and `sizes` (array of `"WxH"` strings).
+- `inputSchema` — JSON Schema, used by the LLM and the client to validate arguments.
+  Defaults to JSON Schema 2020-12 if no `$schema` field is present. **MUST** be an
+  object schema (`type: "object"`). For no-parameter tools use
+  `{ "type": "object", "additionalProperties": false }`.
+- `outputSchema` — optional. When present, `structuredContent` in the response
+  MUST match it. Also defaults to 2020-12 without a `$schema` field.
+- `annotations` — *non-binding* hints for clients (UI rendering, permission prompts).
+  All Boolean fields default to safe-pessimistic values when absent.
+- `execution.taskSupport` — optional. Indicates task-based execution support:
+  - `"forbidden"` (default) — tool does not support task augmentation.
+  - `"optional"` — tool supports task augmentation if the client declares the capability.
+  - `"required"` — tool requires task augmentation.
+
+### Tool names
+
+Tool names SHOULD be 1–128 characters, case-sensitive, using only ASCII letters
+(`A-Z`, `a-z`), digits (`0-9`), underscore (`_`), hyphen (`-`), and dot (`.`).
+No spaces, commas, or other special characters.
+
+Source: [`specification/2025-11-25/server/tools.md`](https://modelcontextprotocol.io/specification/2025-11-25/server/tools.md)
 
 > **Pending SEP:** [SEP-2106](https://modelcontextprotocol.io/seps/2106-json-schema-2020-12.md)
 > (Draft, Standards Track) proposes aligning `inputSchema`, `outputSchema`, and
@@ -108,10 +131,19 @@ optionally subscribes, and reads.
 {
   "uri": "file:///path/to/data.json",
   "name": "Data file",
+  "title": "Application Config",
   "description": "Application configuration",
-  "mimeType": "application/json"
+  "mimeType": "application/json",
+  "size": 4096,
+  "icons": [
+    { "src": "https://example.com/json-icon.png", "mimeType": "image/png", "sizes": ["48x48"] }
+  ]
 }
 ```
+
+- `title` — Optional human-readable display name for the resource (shown in UIs).
+- `size` — Optional size in bytes.
+- `icons` — Optional array of icon objects for UI display (same shape as tool icons).
 
 ### Schema (resource template)
 
@@ -294,6 +326,7 @@ Plus the conceptual overviews:
 ---
 
 *Source pages: `specification/2025-11-25/{client,server}/*`,
+`specification/2025-11-25/basic/utilities/tasks.md`,
 `docs/learn/{client,server}-concepts.md`,
 `seps/2106-json-schema-2020-12.md`,
 `seps/2164-resource-not-found-error.md`.*

@@ -3,6 +3,10 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-19 (run 2)
+*(pending review — see branch auto/2026-05-19-pending-review)*
+- Research-only periodic audit — no version change; 5 issues evaluated, all skipped; validateExamples + checkDocsDrift gates failed (known false-positives for mcp-spec surfaces)
+
 ## 2026-05-19
 - Sync to @modelcontextprotocol/sdk v1.29.0 — 3 new draft SEPs (JSON Schema 2020-12, resource-not-found error code, feature lifecycle/deprecation policy), docs index 116→119 pages
 
