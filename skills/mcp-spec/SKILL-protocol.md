@@ -111,6 +111,13 @@ Standard JSON-RPC error codes plus MCP-specific extensions:
 MCP-defined error semantics live in the spec under
 [`specification/2025-11-25/basic/`](https://modelcontextprotocol.io/specification/2025-11-25/basic/).
 
+> **Pending SEP:** [SEP-2164](https://modelcontextprotocol.io/seps/2164-resource-not-found-error.md)
+> (Draft, Standards Track) proposes standardising the resource-not-found error to `-32602`
+> (Invalid Params). Current SDKs are inconsistent: TypeScript uses `-32602`, Python uses `0`,
+> and C#/Rust/Java/Go use a custom `-32002`. Until SEP-2164 is Final, clients that need to
+> reliably detect resource-not-found across SDKs should handle `-32602`, `-32002`, and `-32603`
+> defensively.
+
 ## Protocol versioning
 
 Version string format: `YYYY-MM-DD` — the date of the last
@@ -148,8 +155,24 @@ Proposals. The process is documented at
 [`community/sep-guidelines.md`](https://modelcontextprotocol.io/community/sep-guidelines.md).
 Active SEPs live under [`seps/`](https://modelcontextprotocol.io/seps/).
 
+Notable recently-added Draft SEPs (added 2026-05-19):
+
+| SEP | Title | Status | Affects |
+|---|---|---|---|
+| [SEP-2106](https://modelcontextprotocol.io/seps/2106-json-schema-2020-12.md) | Tools `inputSchema` & `outputSchema` conform to JSON Schema 2020-12 | Draft | Tools primitive — `inputSchema`, `outputSchema`, `structuredContent` |
+| [SEP-2164](https://modelcontextprotocol.io/seps/2164-resource-not-found-error.md) | Standardize resource-not-found error code to `-32602` | Draft | Error codes, Resources error handling |
+| [SEP-2596](https://modelcontextprotocol.io/seps/2596-spec-feature-lifecycle-and-deprecation.md) | Specification feature lifecycle and deprecation policy | Draft | Governance process; grandfathers HTTP+SSE transport and `includeContext: "thisServer"/"allServers"` as formally Deprecated |
+
+SEP-2596 also introduces the concept of a **deprecated registry** (`deprecated.mdx`) listing
+every feature in the Deprecated state, their migration targets, and earliest removal dates.
+When it reaches Final, the minimum deprecation window is 12 months measured from the revision
+release in which the feature is first marked Deprecated.
+
 ---
 
 *Source pages: `learn/architecture.md`, `learn/versioning.md`,
 `specification/2025-11-25/*` (multi-page subtree),
-`community/sep-guidelines.md`, `seps/*`.*
+`community/sep-guidelines.md`, `seps/*`
+(including `seps/2106-json-schema-2020-12.md`,
+`seps/2164-resource-not-found-error.md`,
+`seps/2596-spec-feature-lifecycle-and-deprecation.md`).*

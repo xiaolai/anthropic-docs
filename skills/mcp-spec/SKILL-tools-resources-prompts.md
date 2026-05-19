@@ -63,6 +63,21 @@ A tool is a callable function the server exposes to the host LLM.
   permission prompts). All Boolean fields default to safe-pessimistic
   values when absent.
 
+> **Pending SEP:** [SEP-2106](https://modelcontextprotocol.io/seps/2106-json-schema-2020-12.md)
+> (Draft, Standards Track) proposes aligning `inputSchema`, `outputSchema`, and
+> `structuredContent` with JSON Schema 2020-12:
+>
+> - **`inputSchema`** — keeps `type: "object"` required but allows any additional JSON Schema
+>   keywords (`anyOf`, `oneOf`, `allOf`, `$ref`, etc.).
+> - **`outputSchema`** — removes the `type: "object"` restriction; any valid JSON Schema
+>   (including array or primitive schemas) becomes valid.
+> - **`structuredContent`** — widens from `{ [key: string]: unknown }` to `unknown`, so arrays
+>   and primitives can be returned directly without an object wrapper.
+>
+> Until SEP-2106 is Final, keep `inputSchema.type = "object"` and wrap non-object
+> `structuredContent` in an object for maximum client compatibility. Always include a
+> `TextContent` fallback in `content` regardless.
+
 ### Calling
 
 ```
@@ -120,6 +135,16 @@ to construct concrete URIs.
 ```
 
 Text resources use `text`; binary resources use `blob` (base64).
+
+### Error handling
+
+If the requested resource does not exist, servers should return a
+JSON-RPC error. The spec currently recommends `-32002`; however
+[SEP-2164](https://modelcontextprotocol.io/seps/2164-resource-not-found-error.md)
+(Draft) proposes changing this to `-32602` (Invalid Params) to align
+with the TypeScript SDK and standard JSON-RPC semantics. Clients
+should defensively handle both `-32002` and `-32602` as resource-not-found.
+An empty `contents` array MUST NOT be used to signal non-existence.
 
 ### Subscriptions
 
@@ -269,4 +294,6 @@ Plus the conceptual overviews:
 ---
 
 *Source pages: `specification/2025-11-25/{client,server}/*`,
-`docs/learn/{client,server}-concepts.md`.*
+`docs/learn/{client,server}-concepts.md`,
+`seps/2106-json-schema-2020-12.md`,
+`seps/2164-resource-not-found-error.md`.*
