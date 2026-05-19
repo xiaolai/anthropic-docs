@@ -1,16 +1,16 @@
-# Claude Agent SDK — TypeScript Reference (v0.2.77)
+# Claude Agent SDK — TypeScript Reference (v0.3.144)
 
-**Package**: `@anthropic-ai/claude-agent-sdk@0.2.77`
-**Docs**: https://platform.claude.com/docs/en/agent-sdk/overview
+**Package**: `@anthropic-ai/claude-agent-sdk@0.3.144`
+**Docs**: https://code.claude.com/docs/en/agent-sdk/overview
 **Repo**: https://github.com/anthropics/claude-agent-sdk-typescript
-**Migration**: Renamed from `@anthropic-ai/claude-code`. See [migration guide](https://platform.claude.com/docs/en/agent-sdk/migration-guide).
+**Migration**: Renamed from `@anthropic-ai/claude-code`. See [migration guide](https://code.claude.com/docs/en/agent-sdk/migration-guide).
 
 ---
 
 ## Table of Contents
 
 - [Breaking Changes](#breaking-changes-v010)
-- [Core API](#core-api) — `query()`, `tool()`, `createSdkMcpServer()`, `listSessions()`, `getSessionMessages()`, `getSessionInfo()`, `renameSession()`, `forkSession()`, `tagSession()`
+- [Core API](#core-api) — `query()`, `startup()`, `tool()`, `createSdkMcpServer()`, `resolveSettings()`, `listSessions()`, `getSessionMessages()`, `getSessionInfo()`, `renameSession()`, `forkSession()`, `tagSession()`
 - [Options](#options) — Core, Tools & Permissions, Models & Output, Sessions, MCP & Agents, Advanced
 - [Query Object Methods](#query-object-methods)
 - [Message Types](#message-types) — All 23 SDKMessage types
@@ -59,6 +59,70 @@ async function* promptStream(): AsyncIterable<SDKUserMessage> {
 
 const q = query({ prompt: promptStream() });
 for await (const msg of q) { ... }
+```
+
+### `startup()`
+
+Pre-warms the CLI subprocess by spawning it and completing the initialize handshake before a prompt is available. The returned `WarmQuery` handle accepts a prompt later and resolves without paying subprocess spawn and initialization cost inline. Source: https://code.claude.com/docs/en/agent-sdk/typescript.md
+
+```typescript
+import { startup } from "@anthropic-ai/claude-agent-sdk";
+
+function startup(params?: {
+  options?: Options;
+  initializeTimeoutMs?: number;  // Default: 60000ms — rejects with timeout error if exceeded
+}): Promise<WarmQuery>
+```
+
+```typescript
+// Pay startup cost upfront (on application boot)
+const warm = await startup({ options: { maxTurns: 3 } });
+
+// Later, when prompt is ready — no spawn latency
+for await (const message of warm.query("What files are here?")) {
+  console.log(message);
+}
+```
+
+### `WarmQuery`
+
+Handle returned by `startup()`. The subprocess is already spawned and initialized.
+
+```typescript
+interface WarmQuery extends AsyncDisposable {
+  query(prompt: string | AsyncIterable<SDKUserMessage>): Query;  // Can only be called once
+  close(): void;  // Discard without sending prompt
+}
+// Supports 'await using' for automatic cleanup
+```
+
+### `resolveSettings()` *(alpha)*
+
+Resolves the effective Claude Code settings for a directory using the same merge engine as the CLI, **without** spawning the CLI. Reads MDM sources (macOS plist, Windows HKLM/HKCU). API may change before stabilization. Source: https://code.claude.com/docs/en/agent-sdk/typescript.md
+
+```typescript
+import { resolveSettings } from "@anthropic-ai/claude-agent-sdk";
+
+function resolveSettings(options?: {
+  cwd?: string;                        // Default: process.cwd()
+  settingSources?: SettingSource[];    // Default: all sources
+  managedSettings?: Settings;          // Restrictive policy-tier overrides
+  serverManagedSettings?: Settings;    // Server-managed settings payload
+}): Promise<ResolvedSettings>
+
+type ResolvedSettings = {
+  effective: Settings;                                            // Merged settings
+  provenance: Partial<Record<keyof Settings, ProvenanceEntry>>;  // Which source supplied each key
+  sources: Array<{ source, settings, path?, policyOrigin? }>;    // Per-source raw settings
+};
+```
+
+```typescript
+const { effective, provenance } = await resolveSettings({
+  cwd: "/path/to/project",
+  settingSources: ["user", "project", "local"],
+});
+console.log(`Model: ${effective.model}, set by: ${provenance.model?.source}`);
 ```
 
 ### `tool()`
@@ -297,8 +361,9 @@ await tagSession(sessionId, null);
 | `fallbackModel` | `string` | — | Fallback model on failure |
 | `betas` | `SdkBeta[]` | `[]` | Beta features (e.g., `['context-1m-2025-08-07']`) |
 | `includePartialMessages` | `boolean` | `false` | Include streaming partial messages |
+| `includeHookEvents` | `boolean` | `false` | Include hook lifecycle events (`SDKHookStartedMessage`, `SDKHookProgressMessage`, `SDKHookResponseMessage`) in the message stream |
 | `promptSuggestions` | `boolean` | `false` | Emit `SDKPromptSuggestionMessage` after each turn with a predicted next user prompt (arrives after result; suppressed on first turn, after errors, in plan mode) |
-| `agentProgressSummaries` | `boolean` | `false` | Enable periodic AI-generated progress summaries for running subagents. Every ~30s, forks the subagent's conversation to produce a short present-tense description emitted on `task_progress` events via the `summary` field. Applies to foreground and background subagents. |
+| `outputStyle` | `string` | — | Name of an [output style](https://code.claude.com/docs/en/output-styles) to activate for the session. Must exist in a loaded `settingSources` location (e.g., `.claude/output-styles/`) |
 
 ### Sessions
 
@@ -322,13 +387,14 @@ await tagSession(sessionId, null);
 | `agents` | `Record<string, AgentDefinition>` | — | Subagent definitions |
 | `agent` | `string` | — | Apply a named agent's config to main thread (like `--agent` CLI flag) |
 | `plugins` | `SdkPluginConfig[]` | `[]` | `{ type: 'local', path: string }` |
+| `skills` | `string[] \| 'all'` | — | Skills available to the session. Pass `'all'` to enable all discovered skills; SDK auto-enables the Skill tool (no need to list in `allowedTools`) |
 | `strictMcpConfig` | `boolean` | `false` | Strict MCP validation |
+| `sessionStore` | `SessionStore` | — | Mirror session transcripts to an external backend for cross-host resume. See [session-storage docs](https://code.claude.com/docs/en/agent-sdk/session-storage) |
 
 ### Advanced
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `onElicitation` | `OnElicitation` | — | Callback for MCP elicitation requests (form fields, URL auth); auto-declines if not provided |
 | `sandbox` | `SandboxSettings` | — | Sandbox configuration |
 | `hooks` | `Partial<Record<HookEvent, HookCallbackMatcher[]>>` | `{}` | Hook callbacks |
 | `settings` | `string \| Settings` | — | Additional settings to apply (path to JSON file or inline object). Loaded into the highest-priority "flag settings" layer. Equivalent to `--settings` CLI flag. |
@@ -458,7 +524,50 @@ type SDKMessage =
   // Rate limiting & suggestions
   | SDKRateLimitEvent             // type: 'rate_limit_event' — rate limit status for claude.ai subscriptions
   | SDKPromptSuggestionMessage    // type: 'prompt_suggestion' — predicted next user prompt (requires promptSuggestions: true)
+  // Plugin & permissions
+  | SDKPluginInstallMessage       // type: 'system', subtype: 'plugin_install' — marketplace plugin install progress (requires CLAUDE_CODE_SYNC_PLUGIN_INSTALL env var)
+  | SDKPermissionDeniedMessage    // type: 'system', subtype: 'permission_denied' — auto-denied tool call notification (requires Claude Code v2.1.136+)
 ```
+
+### SDKPluginInstallMessage
+
+Plugin installation progress event. Set `CLAUDE_CODE_SYNC_PLUGIN_INSTALL` env var to receive these. Source: https://code.claude.com/docs/en/agent-sdk/typescript.md
+
+```typescript
+{ type: 'system', subtype: 'plugin_install', uuid, session_id,
+  status: 'started' | 'installed' | 'failed' | 'completed',
+  name?: string,   // Marketplace name (on 'installed'/'failed')
+  error?: string } // Error message (on 'failed')
+```
+
+### SDKPermissionDeniedMessage
+
+Emitted when the permission system auto-denies a tool call without an interactive prompt. Use to render denials in your UI as they happen. Requires Claude Code v2.1.136+. Denials from `PreToolUse` hooks do **not** appear here. Source: https://code.claude.com/docs/en/agent-sdk/typescript.md
+
+```typescript
+{ type: 'system', subtype: 'permission_denied', uuid, session_id,
+  tool_name: string,              // Denied tool name
+  tool_use_id: string,            // ID of the tool_use block
+  agent_id?: string,              // Subagent ID if denied inside a subagent
+  decision_reason_type?: string,  // 'rule' | 'mode' | 'classifier' | 'asyncAgent'
+  decision_reason?: string,       // Human-readable reason from deciding component
+  message: string }               // Rejection message returned to model
+```
+
+### SDKMessageOrigin
+
+Provenance of a user-role message. Appears as `origin` on `SDKUserMessage` and forwarded to `SDKResultMessage`. Source: https://code.claude.com/docs/en/agent-sdk/typescript.md
+
+```typescript
+type SDKMessageOrigin =
+  | { kind: 'human' }                          // Direct user input (absent origin also means human)
+  | { kind: 'channel'; server: string }        // From a channel MCP server
+  | { kind: 'peer'; from: string; name?: string } // From another agent via SendMessage
+  | { kind: 'task-notification' }              // Synthetic turn after background task finished
+  | { kind: 'coordinator' };                   // From a team coordinator
+```
+
+Use `origin: { kind: 'task-notification' }` on `SDKResultMessage` to distinguish task-completion results from prompt answers so you can suppress or route them separately.
 
 ### SDKAPIRetryMessage (v0.2.77)
 
@@ -1268,10 +1377,10 @@ return {
 **Cause**: Bundled MCP transport doesn't propagate proxy configuration from environment variables (HTTP_PROXY, HTTPS_PROXY, NODE_EXTRA_CA_CERTS).
 **Workaround**: Use SSE-type MCP servers or stdio MCP servers instead of HTTP type.
 
-### #15: ANTHROPIC_LOG=debug corrupts SDK protocol
+### #15: ANTHROPIC_LOG=debug corrupts SDK protocol ✅ Fixed (debug now routed to stderr)
 **Error**: `CLI output was not valid JSON` when `ANTHROPIC_LOG=debug` is set ([#157](https://github.com/anthropics/claude-agent-sdk-typescript/issues/157))
-**Cause**: Debug logs written to stdout corrupt JSON protocol between SDK and CLI subprocess.
-**Fix**: Don't use `ANTHROPIC_LOG=debug` with SDK. Use `debug: true` or `debugFile` option instead.
+**Cause**: Debug logs were written to stdout, corrupting JSON protocol between SDK and CLI subprocess.
+**Fix (post-v0.3.x)**: Debug output is now routed to stderr, so `ANTHROPIC_LOG=debug` no longer corrupts the protocol. If on older versions, use `debug: true` or `debugFile` option instead of `ANTHROPIC_LOG=debug`.
 
 ### #16: MCP server responses don't reset activity timer
 **Error**: "Stream closed" errors or excessive query durations with SDK MCP servers ([#114](https://github.com/anthropics/claude-agent-sdk-typescript/issues/114))
@@ -1371,7 +1480,7 @@ const claudePath = execFileSync('which', ['claude'], { encoding: 'utf8' }).trim(
 const session = new ClaudeCodeSession({ pathToClaudeCodeExecutable: claudePath });
 ```
 
-### #31: "write after end" race condition in single-turn queries with MCP tool calls
+### #31: "write after end" race condition in single-turn queries with MCP tool calls ✅ Fixed (v0.3.x)
 **Error**: `Error: write after end` / `Error: ProcessTransport is not ready for writing` in production ([#148](https://github.com/anthropics/claude-agent-sdk-typescript/issues/148))
 **Cause**: For single-turn (string prompt) queries, the SDK calls `transport.endInput()` on the first `result` message. If async `handleControlRequest()` calls arrive after stdin is ended (e.g., MCP responses), they attempt to write to the ended stream. `handleControlRequest` is not awaited so there is no backpressure.
 **Impact**: Production applications with MCP tools and single-turn queries see sporadic crashes (~77 Sentry errors per two weeks in one report).
@@ -1517,10 +1626,11 @@ sandbox: {
 
 ---
 
-## Changelog Highlights (v0.2.12 → v0.2.77)
+## Changelog Highlights (v0.2.12 → v0.3.144)
 
 | Version | Change |
 |---------|--------|
+| v0.3.x | Added `startup()` / `WarmQuery` for pre-warmed subprocess to eliminate cold-start latency; added `resolveSettings()` (alpha) to inspect effective config without spawning CLI; added `includeHookEvents` option; added `skills` / `outputStyle` / `sessionStore` options; added `SDKPluginInstallMessage`, `SDKPermissionDeniedMessage`, `SDKMessageOrigin` message types; removed `agentProgressSummaries` and `onElicitation` from Options |
 | v0.2.77 | Added `SDKAPIRetryMessage` (`type: 'system', subtype: 'api_retry'`) — emitted when a transient API error is automatically retried; exposes attempt count, max retries, delay, and error status; fixed `SubagentStart`/`SubagentStop` hook `agent_type` always reporting `"general-purpose"` — now correctly reports the agent key from the `agents` map ([#226](https://github.com/anthropics/claude-agent-sdk-typescript/issues/226)); fixed missing `./sdk-tools` entry in `package.json` exports map ([#222](https://github.com/anthropics/claude-agent-sdk-typescript/issues/222)) |
 | v0.2.71 | Fixed `Agent` tool returning `"Unknown tool: Agent"` in `query()` mode — subagent invocation via `tools: ['Agent']` + `agents` map now works ([#210](https://github.com/anthropics/claude-agent-sdk-typescript/issues/210)) |
 | v0.2.63 | Fixed `SDKRateLimitEvent` and `SDKPromptSuggestionMessage` missing from `sdk.d.ts` — `SDKMessage` now has full type safety ([#196](https://github.com/anthropics/claude-agent-sdk-typescript/issues/196), [#206](https://github.com/anthropics/claude-agent-sdk-typescript/issues/206)) |
@@ -1538,4 +1648,4 @@ sandbox: {
 
 ---
 
-**Last verified**: 2026-03-18 | **SDK version**: 0.2.77
+**Last verified**: 2026-05-19 | **SDK version**: 0.3.144

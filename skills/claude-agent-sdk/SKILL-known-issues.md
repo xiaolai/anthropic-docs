@@ -40,10 +40,54 @@ upstream repo. For each:
 
 ## Entries
 
-> *No confirmed user-impacting bugs surfaced yet via the research
-> agent. (Several SDK-specific gotchas already live in the rules
-> files — those are auto-correctable patterns rather than catalogued
-> bugs.)*
+### KI 1 — Linux: musl binary preferred over glibc in SDK v0.2.116+
+
+**Source**: [#296](https://github.com/anthropics/claude-agent-sdk-typescript/issues/296) | 8 reactions, 8 comments | Status: **Open** (fix PR [#305](https://github.com/anthropics/claude-agent-sdk-typescript/issues/305) in review)
+
+**Symptom**: On Linux with pnpm (which installs all optional deps) or npm in some Docker images, `query()` fails with:
+```
+Claude Code native binary not found at
+  .../claude-agent-sdk-linux-x64-musl/claude.
+```
+The referenced file **exists** — but is a musl-linked ELF that cannot run on a glibc system, causing the OS loader to return ENOENT for the dynamic linker path.
+
+**Trigger**: Both `@anthropic-ai/claude-agent-sdk-linux-x64-musl` and `@anthropic-ai/claude-agent-sdk-linux-x64` platform packages are installed simultaneously. Since neither declares a `libc` field in `package.json`, pnpm cannot distinguish them and installs both. The SDK's auto-discovery resolves to the musl variant first.
+
+**Affected environments**: Ubuntu, Debian, glibc-based Docker images (e.g., `node:22-slim`, `node:24-bookworm`), Amazon Linux, Alpine-glibc. Confirmed on SDK v0.2.114 through v0.2.119+.
+
+**Workarounds**:
+
+1. **Delete musl packages** (quickest):
+   ```bash
+   rm -rf node_modules/@anthropic-ai/claude-agent-sdk-linux-x64-musl
+   rm -rf node_modules/@anthropic-ai/claude-agent-sdk-linux-arm64-musl
+   ```
+
+2. **Override musl packages in package.json** (pnpm):
+   ```json
+   "pnpm": {
+     "overrides": {
+       "@anthropic-ai/claude-agent-sdk-linux-x64-musl": "npm:@favware/skip-dependency@^1",
+       "@anthropic-ai/claude-agent-sdk-linux-arm64-musl": "npm:@favware/skip-dependency@^1"
+     }
+   }
+   ```
+
+3. **Pin to pre-native version** (downgrade):
+   Downgrade to `@anthropic-ai/claude-agent-sdk@0.2.112` (last version before native binary packages were introduced).
+
+4. **Set `pathToClaudeCodeExecutable`** to the glibc binary explicitly:
+   ```typescript
+   const q = query({
+     prompt: 'hello',
+     options: {
+       pathToClaudeCodeExecutable:
+         './node_modules/@anthropic-ai/claude-agent-sdk-linux-x64/claude'
+     }
+   });
+   ```
+
+**Research date**: 2026-05-19
 
 ---
 

@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-05-19 (run report)
+
+*(pending review — checkDiffSize gate failed; changes on branch `auto/2026-05-19-pending-review`)*
+
+- Update agent synced TS v0.3.144 / Python v0.2.82; docs index hash refreshed (29 pages); 1 new known issue added (Linux musl/glibc CLI auto-discovery bug #296); KI #15 and KI #31 marked fixed
+
+## 2026-05-19
+
+- Docs index updated (hash changed, 29 pages — none added or removed); surface content may have been revised upstream
+- TypeScript SDK: current version v0.3.144 (`@anthropic-ai/claude-agent-sdk`); SKILL.md version table updated from v0.3.143
+- State initialized: npm package version recorded as 0.3.144; lastAuditedVersion set
+
 ## 2026-03-18
 
 - Research only, no version change (TS v0.2.77, Python v0.1.49 unchanged)

@@ -1,7 +1,7 @@
-# Claude Agent SDK — Python Reference (v0.1.49)
+# Claude Agent SDK — Python Reference (v0.2.82)
 
-**Package**: `claude-agent-sdk==0.1.49` (PyPI)
-**Docs**: https://platform.claude.com/docs/en/agent-sdk/python
+**Package**: `claude-agent-sdk==0.2.82` (PyPI)
+**Docs**: https://code.claude.com/docs/en/agent-sdk/python
 **Repo**: https://github.com/anthropics/claude-agent-sdk-python
 **Requires**: Python 3.10+
 **Migration**: Renamed from `claude-code-sdk`. `ClaudeCodeOptions` is now `ClaudeAgentOptions`.
@@ -281,6 +281,7 @@ options = ClaudeAgentOptions(
 | `fallback_model` | `str \| None` | `None` | Fallback model on failure |
 | `betas` | `list[SdkBeta]` | `[]` | Beta features (e.g., `["context-1m-2025-08-07"]`) |
 | `include_partial_messages` | `bool` | `False` | Include streaming partial `StreamEvent` messages |
+| `include_hook_events` | `bool` | `False` | Include hook lifecycle events in the message stream as `HookEventMessage` objects |
 
 ### Sessions
 
@@ -300,6 +301,7 @@ options = ClaudeAgentOptions(
 | `mcp_servers` | `dict[str, McpServerConfig] \| str \| Path` | `{}` | MCP server configs or path to config file |
 | `agents` | `dict[str, AgentDefinition] \| None` | `None` | Subagent definitions |
 | `plugins` | `list[SdkPluginConfig]` | `[]` | `{"type": "local", "path": str}` |
+| `skills` | `list[str] \| Literal["all"] \| None` | `None` | Skills available to the session. Pass `"all"` to enable every discovered skill; SDK auto-enables the Skill tool |
 
 ### Advanced
 
@@ -314,6 +316,8 @@ options = ClaudeAgentOptions(
 | `max_buffer_size` | `int \| None` | `None` | Maximum bytes when buffering CLI stdout |
 | `stderr` | `Callable[[str], None] \| None` | `None` | stderr callback |
 | `debug_stderr` | `Any` | `sys.stderr` | **Deprecated** — use `stderr` callback instead |
+| `session_store` | `SessionStore \| None` | `None` | Mirror session transcripts to external backend for cross-host resume. See [session-storage docs](https://code.claude.com/docs/en/agent-sdk/session-storage) |
+| `session_store_flush` | `Literal["batched", "eager"]` | `"batched"` | When to flush to `session_store`. `"batched"` flushes once per turn; `"eager"` flushes after every frame. Ignored when `session_store` is `None` |
 
 ---
 
