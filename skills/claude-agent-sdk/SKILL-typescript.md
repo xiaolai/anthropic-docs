@@ -576,6 +576,7 @@ type SDKMessageOrigin =
   is_error: false, num_turns, result: string, total_cost_usd,
   usage, modelUsage, permission_denials: SDKPermissionDenial[], structured_output?, stop_reason?,
   origin?: SDKMessageOrigin,
+  api_error_status?: number,  // HTTP status of last API error (e.g. 404 for model_not_found); v0.3.144+
   deferred_tool_use?: { id: string; name: string; input: Record<string, unknown> } }
   // deferred_tool_use: set when PreToolUse hook returns permissionDecision: 'defer'
   //   stop_reason will be 'tool_deferred'; resume same session_id to continue
@@ -584,6 +585,7 @@ type SDKMessageOrigin =
 { type: 'result', subtype: 'error_max_turns' | 'error_during_execution'
   | 'error_max_budget_usd' | 'error_max_structured_output_retries',
   session_id, is_error: true, errors: string[], permission_denials: SDKPermissionDenial[],
+  api_error_status?: number,  // HTTP status of last API error; v0.3.144+
   origin?: SDKMessageOrigin }
 
 // SDKPermissionDenial (in permission_denials array)
@@ -591,7 +593,8 @@ type SDKPermissionDenial = { tool_name: string; tool_use_id: string; tool_input:
 
 // Error codes (SDKAssistantMessageError)
 'authentication_failed' | 'oauth_org_not_allowed' | 'billing_error' | 'rate_limit' |
-'invalid_request' | 'server_error' | 'unknown' | 'max_output_tokens'
+'invalid_request' | 'model_not_found' | 'server_error' | 'unknown' | 'max_output_tokens'
+// 'model_not_found' added in v0.3.144 — replaces 'invalid_request' when the selected model doesn't exist
 ```
 
 ### SDKSystemMessage (init)
@@ -708,6 +711,8 @@ for await (const message of query({ prompt: "...", options })) {
 ## Hooks
 
 Hooks use **callback matchers**: an optional regex `matcher` for tool names and an array of `hooks` callbacks.
+
+> **Dispatch is concurrent**: when an event fires, all matching `HookCallbackMatcher` entries for that event run **in parallel**, not sequentially. A single `deny` result from any matcher blocks the action regardless of other matchers. Do not rely on ordering between matchers (e.g., a rate-limiter hook cannot gate a subsequent logging hook). Source: [hooks.md](https://code.claude.com/docs/en/agent-sdk/hooks.md).
 
 ### Hook Events
 
@@ -1666,6 +1671,7 @@ sandbox: {
 
 | Version | Change |
 |---------|--------|
+| v0.3.144 | New `'model_not_found'` error code in `SDKAssistantMessageError` (replaces `'invalid_request'` when selected model is unavailable); `api_error_status` field on result messages (HTTP status of last API error); new `@anthropic-ai/claude-agent-sdk/extract` sub-export for `bun build --compile` consumers: import native binary with `with { type: 'file' }` then `extractFromBunfs(binPath)` to unpack from the compiled executable's VFS; `TodoWrite` disabled by default — use `TaskCreate`/`TaskGet`/`TaskUpdate`/`TaskList` (set `CLAUDE_CODE_ENABLE_TASKS=0` to revert) |
 | v0.3.x  | `startup()` / `WarmQuery` — pre-warm CLI before prompt available; `resolveSettings()` (alpha); new `SDKPermissionDeniedMessage`, `SDKPluginInstallMessage`, `SDKTaskUpdatedMessage` types; `SDKMessageOrigin` on user/result messages; new `AgentDefinition` fields: `background`, `memory`, `effort`, `permissionMode`, `initialPrompt`; new options: `skills`, `strictMcpConfig`, `outputStyle`, `includeHookEvents`, `sessionStore`; `effort` adds `'xhigh'` level; `SDKAPIRetryMessage` and `SDKElicitationCompleteMessage` removed from `SDKMessage` union |
 | v0.2.77 | `SDKAPIRetryMessage` added (now removed in v0.3.x); fixed `./sdk-tools` exports map ([#222](https://github.com/anthropics/claude-agent-sdk-typescript/issues/222)) |
 | v0.2.71 | Fixed `Agent` tool returning `"Unknown tool: Agent"` in `query()` mode |

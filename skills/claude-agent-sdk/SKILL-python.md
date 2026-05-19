@@ -35,6 +35,11 @@
 2. **No filesystem settings loaded** — `setting_sources` defaults to `None`. Add `setting_sources=["project"]` to load CLAUDE.md.
 3. **`ClaudeCodeOptions` renamed** — Now `ClaudeAgentOptions`.
 
+## Breaking Changes (v0.2.82)
+
+4. **MCP servers connect in the background by default** — Sessions start immediately; slow MCP servers report `status: "pending"` in the `init` `SystemMessage` until ready. Set `MCP_CONNECTION_NONBLOCKING=0` env var to restore the old behavior (waits up to 5 s before the first query). Mark a server `alwaysLoad: true` in its config to require it by the first turn regardless of the env var.
+5. **`TodoWrite` tool disabled by default** — Claude Code v2.1.142 disables `TodoWrite`. Use `TaskCreate` / `TaskGet` / `TaskUpdate` / `TaskList` instead for task monitoring. Set `CLAUDE_CODE_ENABLE_TASKS=0` to revert to `TodoWrite`. See [Migrate to Task tools](https://code.claude.com/docs/en/agent-sdk/todo-tracking#migrate-to-task-tools).
+
 ---
 
 ## Core API
@@ -664,6 +669,8 @@ asyncio.run(main())
 ## Hooks
 
 Hooks use **callback matchers**: an optional regex `matcher` for tool names and a list of `hooks` callbacks. Hooks work with both `query()` and `ClaudeSDKClient` via `ClaudeAgentOptions.hooks`.
+
+> **Dispatch is concurrent**: when an event fires, all matching `HookMatcher` entries for that event run **in parallel**, not sequentially. A single `deny` return from any hook blocks the action regardless of what other hooks return. Do not rely on ordering between matchers (e.g., a rate-limiter hook cannot gate a subsequent logging hook).
 
 ### Hook Events
 
@@ -1828,7 +1835,7 @@ options = ClaudeAgentOptions(
 
 | Version | Change |
 |---------|--------|
-| v0.2.82 | Current stable; full cross-platform wheels; `AgentDefinition` adds `background`, `effort`, `permissionMode`, `initialPrompt`; `PermissionMode` adds `"dontAsk"`; `EffortLevel` adds `"xhigh"`; new options `strict_mcp_config`, `include_hook_events`, `skills`, `session_store`; `AssistantMessage` adds `usage`, `message_id`; `ResultMessage` adds `model_usage`, `deferred_tool_use`, `permission_denials`; `RateLimitEvent` is now a proper typed `Message` |
+| v0.2.82 | **Breaking**: MCP servers connect in the background by default (`MCP_CONNECTION_NONBLOCKING=0` to revert); **Breaking**: `TodoWrite` disabled — use `TaskCreate`/`TaskGet`/`TaskUpdate`/`TaskList` (`CLAUDE_CODE_ENABLE_TASKS=0` to revert); `EffortLevel` type exported from package root; `permission_suggestions` on `PermissionRequestHookInput` tightened to `list[dict[str, Any]] \| None`; hooks dispatch for a given event is now explicitly concurrent (all matchers fire in parallel); full cross-platform wheels; `AgentDefinition` adds `background`, `effort`, `permissionMode`, `initialPrompt`; `PermissionMode` adds `"dontAsk"`; `EffortLevel` adds `"xhigh"`; new options `strict_mcp_config`, `include_hook_events`, `skills`, `session_store`; `AssistantMessage` adds `usage`, `message_id`; `ResultMessage` adds `model_usage`, `deferred_tool_use`, `permission_denials`; `RateLimitEvent` is now a proper typed `Message` |
 | v0.1.49 | Added `skills`, `memory`, `mcpServers` to `AgentDefinition`; per-turn usage on `AssistantMessage`; `rename_session()`, `delete_session()`, `tag_session()`; typed `RateLimitEvent`; reverted Bedrock-breaking eager_input_streaming. Partial release resolved in v0.2.x |
 | v0.1.48 | Introduced `eager_input_streaming` with `include_partial_messages=True` (broke Bedrock/Vertex — see [#21](#21-include_partial_messagestrue-breaks-tool-input-streaming-on-bedrockvertex)) |
 | v0.1.44 | Fixed `rate_limit_event` crash in message parser; bundled CLI v2.1.59 |

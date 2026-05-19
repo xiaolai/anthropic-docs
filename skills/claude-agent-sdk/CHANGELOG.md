@@ -6,6 +6,7 @@
 - Version propagated to SKILL.md, SKILL-typescript.md, README.md, state.json; no new known issues
 - *(partial run)* Research agent crashed (sdk.mjs init failure, exit 1); update agent and all safety gates succeeded; research will retry on next run
 - Research retry succeeded — 29 docs pages audited, no new issues, all gates pass (success run)
+- *(pending review — see auto/2026-05-19-pending-review)* Late run: research crashed again (sdk.mjs init, exit 1); validate-examples + check-docs-drift failed; draft PR opened for human review
 
 ## 2026-03-18
 
