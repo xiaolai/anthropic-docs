@@ -79,6 +79,19 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
   the new behavior with beta header
   `model-context-window-exceeded-2025-08-26`.
   Source: [`context-windows.md`](https://platform.claude.com/docs/en/build-with-claude/context-windows.md).
+- **Context awareness (Sonnet 4.6, Sonnet 4.5, Haiku 4.5):** These models
+  automatically receive their token budget at conversation start:
+  `<budget:token_budget>1000000</budget:token_budget>` (1M for 1M-context models,
+  200K for others). After each tool call they also receive:
+  `<system_warning>Token usage: 35000/1000000; 965000 remaining</system_warning>`.
+  This lets the model self-manage pacing on long agentic tasks without prompting
+  tricks. No extra parameter needed — built into these models.
+  Source: [`context-windows.md`](https://platform.claude.com/docs/en/build-with-claude/context-windows.md).
+- **Images / PDFs per request:** A single request can include up to **600 images
+  or PDF pages** (100 for 200K-context models). You may hit the
+  [request size limit](/docs/en/api/overview#request-size-limits) before the token
+  limit when sending many images.
+  Source: [`context-windows.md`](https://platform.claude.com/docs/en/build-with-claude/context-windows.md).
 
 ## Platform foundation (top-level intro pages)
 
@@ -119,7 +132,7 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
 | **Prompt caching** | [`prompt-caching.md`](https://platform.claude.com/docs/en/build-with-claude/prompt-caching.md) | `cache_control: ephemeral` breakpoints, 5-min TTL |
 | **Cache diagnostics** | [`cache-diagnostics.md`](https://platform.claude.com/docs/en/build-with-claude/cache-diagnostics.md) | Beta (`cache-diagnosis-2026-04-07`) — identify where a prompt prefix diverged and caused a cache miss; Claude API only |
 | **Batch processing** | [`batch-processing.md`](https://platform.claude.com/docs/en/build-with-claude/batch-processing.md) | Submit many requests at lower price, returns in 24h |
-| **Compaction** | [`compaction.md`](https://platform.claude.com/docs/en/build-with-claude/compaction.md) | Auto-summarize older messages when nearing context limit. Supported on: `claude-mythos-preview`, Opus 4.7, Opus 4.6, Sonnet 4.6 |
+| **Compaction** | [`compaction.md`](https://platform.claude.com/docs/en/build-with-claude/compaction.md) | Auto-summarize older messages when nearing context limit. Supported on: `claude-mythos-preview`, Opus 4.7, Opus 4.6, Sonnet 4.6. Beta header `compact-2026-01-12`. Key `compact_20260112` parameters: `trigger` (default 150,000 input tokens, min 50,000); `pause_after_compaction` (bool, default `false` — yields `stop_reason: "compaction"` when `true`); `instructions` (string, null — fully replaces default summarization prompt when set). |
 | **Context editing** | [`context-editing.md`](https://platform.claude.com/docs/en/build-with-claude/context-editing.md) | Programmatic context-window management |
 
 ## Inputs

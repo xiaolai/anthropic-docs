@@ -4,7 +4,7 @@ All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
 ## 2026-05-19
-- Daily maintenance run — no upstream changes detected; research agent audited 109 pages across 4 surfaces in 99 turns ($1.54), all gates pass
+- *(pending review — see PR on branch auto/2026-05-19-pending-review)* Research agent audited 109 pages across 4 surfaces (78 turns, $1.11); check-docs-drift gate failed — changes held in draft PR pending review
 
 ## 2026-05-18
 - Sync to platform.claude.com docs — added `build-with-claude/cache-diagnostics.md` (page count 108 → 109); all 11 gates pass

@@ -15,338 +15,338 @@
     "pageCount": 109,
     "knownPages": {
       "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/enterprise.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/quickstart.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/agents-and-tools/mcp-connector.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/agents-and-tools/remote-mcp-servers.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/agents-and-tools/tool-use/advisor-tool.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/agents-and-tools/tool-use/bash-tool.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/agents-and-tools/tool-use/build-a-tool-using-agent.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/agents-and-tools/tool-use/code-execution-tool.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/agents-and-tools/tool-use/fine-grained-tool-streaming.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/agents-and-tools/tool-use/how-tool-use-works.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/agents-and-tools/tool-use/manage-tool-context.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/agents-and-tools/tool-use/parallel-tool-use.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/agents-and-tools/tool-use/programmatic-tool-calling.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/agents-and-tools/tool-use/server-tools.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/agents-and-tools/tool-use/strict-tool-use.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/agents-and-tools/tool-use/text-editor-tool.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-combinations.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-reference.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-runner.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-use-with-prompt-caching.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/agents-and-tools/tool-use/troubleshooting-tool-use.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-fetch-tool.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/build-with-claude/batch-processing.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/build-with-claude/cache-diagnostics.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/build-with-claude/citations.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/build-with-claude/claude-in-amazon-bedrock.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/build-with-claude/claude-in-microsoft-foundry.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/build-with-claude/claude-on-amazon-bedrock-legacy.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/build-with-claude/claude-on-vertex-ai.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/build-with-claude/claude-platform-on-aws.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/build-with-claude/compaction.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/build-with-claude/context-editing.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/build-with-claude/context-windows.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/build-with-claude/effort.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/build-with-claude/embeddings.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/build-with-claude/extended-thinking.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/build-with-claude/fast-mode.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/build-with-claude/files.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/build-with-claude/multilingual-support.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/build-with-claude/overview.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/build-with-claude/pdf-support.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/build-with-claude/prompt-caching.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/build-with-claude/search-results.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/build-with-claude/skills-guide.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/build-with-claude/streaming.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/build-with-claude/structured-outputs.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/build-with-claude/task-budgets.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/build-with-claude/token-counting.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/build-with-claude/vision.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/build-with-claude/working-with-messages.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/manage-claude/admin-api.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/manage-claude/authentication.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/manage-claude/claude-code-analytics-api.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/manage-claude/compliance-activity-feed.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/manage-claude/compliance-api-access.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/manage-claude/compliance-api.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/manage-claude/compliance-content-data.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/manage-claude/compliance-errors.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/manage-claude/compliance-faq.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/manage-claude/compliance-integration-patterns.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/manage-claude/compliance-org-data.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/manage-claude/data-residency.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/manage-claude/rate-limits-api.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/manage-claude/usage-cost-api.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/manage-claude/wif-providers/aws.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/manage-claude/wif-providers/azure.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/manage-claude/wif-providers/gcp.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/manage-claude/wif-providers/github-actions.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/manage-claude/wif-providers/kubernetes.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/manage-claude/wif-providers/okta.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/manage-claude/wif-providers/spiffe.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/manage-claude/wif-reference.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/manage-claude/workload-identity-federation.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/manage-claude/workspaces.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/managed-agents/agent-setup.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/managed-agents/cloud-containers.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/managed-agents/define-outcomes.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/managed-agents/dreams.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/managed-agents/environments.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/managed-agents/events-and-streaming.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/managed-agents/files.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/managed-agents/github.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/managed-agents/mcp-connector.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/managed-agents/memory.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/managed-agents/multi-agent.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/managed-agents/onboarding.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/managed-agents/overview.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/managed-agents/permission-policies.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/managed-agents/quickstart.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/managed-agents/sessions.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/managed-agents/skills.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/managed-agents/tools.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/managed-agents/vaults.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/managed-agents/webhooks.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/handle-streaming-refusals.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/get-started.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       },
       "https://platform.claude.com/docs/en/intro.md": {
-        "lastSeen": "2026-05-19T03:58:18Z"
+        "lastSeen": "2026-05-19T05:38:47Z"
       }
     }
   },
   "trackedIssues": {},
   "researchedIssues": {},
   "lastAuditedVersion": "none",
-  "lastUpdated": "2026-05-19T03:58:18Z",
+  "lastUpdated": "2026-05-19T05:38:47Z",
   "scaffoldComplete": true,
   "lastRunWarnings": [],
   "lastScannedIssueNumber": null
