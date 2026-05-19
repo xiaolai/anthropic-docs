@@ -142,6 +142,36 @@ groups). Filter by `group_type`: `model_group`, `batch`, `token_count`,
 `files`, `skills`, `web_search`. Uses opaque-cursor pagination (`page`
 query param + `next_page` in response).
 
+## MCP Tunnels
+
+MCP Tunnels provide Anthropic-hosted ingress for self-hosted MCP servers.
+All Tunnel endpoints require the beta header `anthropic-beta: mcp-tunnels-2026-05-19`.
+
+| Endpoint | Page | Purpose |
+|---|---|---|
+| `GET /v1/organizations/tunnels` | [`admin/mcp_tunnels/list.md`](https://platform.claude.com/docs/en/api/admin/mcp_tunnels/list.md) | List tunnels (filter by `workspace_id`; optionally include archived) |
+| `GET /v1/organizations/tunnels/{id}` | [`admin/mcp_tunnels/retrieve.md`](https://platform.claude.com/docs/en/api/admin/mcp_tunnels/retrieve.md) | Retrieve a tunnel |
+| `POST /v1/organizations/tunnels/{id}/archive` | [`admin/mcp_tunnels/archive.md`](https://platform.claude.com/docs/en/api/admin/mcp_tunnels/archive.md) | Archive a tunnel (reversible) |
+| `POST /v1/organizations/tunnels/{id}/reveal_token` | [`admin/mcp_tunnels/reveal_token.md`](https://platform.claude.com/docs/en/api/admin/mcp_tunnels/reveal_token.md) | Reveal connection token (live fetch; Anthropic does not store it) |
+| `POST /v1/organizations/tunnels/{id}/rotate_token` | [`admin/mcp_tunnels/rotate_token.md`](https://platform.claude.com/docs/en/api/admin/mcp_tunnels/rotate_token.md) | Rotate connection token |
+
+Tunnel certificates (CA verification for inner TLS):
+
+| Endpoint | Page | Purpose |
+|---|---|---|
+| `POST /v1/organizations/tunnels/{id}/certificates` | [`admin/mcp_tunnels/tunnel_certificates/create.md`](https://platform.claude.com/docs/en/api/admin/mcp_tunnels/tunnel_certificates/create.md) | Register a CA cert (PEM, at most 2 non-archived per tunnel) |
+| `GET /v1/organizations/tunnels/{id}/certificates` | [`admin/mcp_tunnels/tunnel_certificates/list.md`](https://platform.claude.com/docs/en/api/admin/mcp_tunnels/tunnel_certificates/list.md) | List certificates |
+| `GET /v1/organizations/tunnels/{id}/certificates/{cert_id}` | [`admin/mcp_tunnels/tunnel_certificates/retrieve.md`](https://platform.claude.com/docs/en/api/admin/mcp_tunnels/tunnel_certificates/retrieve.md) | Retrieve a certificate |
+| `POST /v1/organizations/tunnels/{id}/certificates/{cert_id}/archive` | [`admin/mcp_tunnels/tunnel_certificates/archive.md`](https://platform.claude.com/docs/en/api/admin/mcp_tunnels/tunnel_certificates/archive.md) | Archive a certificate |
+
+Key facts:
+- The `domain` field on a tunnel is an Anthropic-assigned hostname; MCP server URLs whose host is a subdomain of `domain` are routed through the tunnel. Globally unique, never reused after archival.
+- `reveal_token` is `POST` intentionally — the token does not appear in intermediary access logs.
+- A tunnel holds at most **2 non-archived certificates**.
+- The `workspace_id` on a tunnel is immutable after creation.
+
+Source: [`admin/mcp_tunnels.md`](https://platform.claude.com/docs/en/api/admin/mcp_tunnels.md) (added 2026-05-19).
+
 ---
 
-*Source pages: 37 under `platform.claude.com/docs/en/api/admin/`.*
+*Source pages: 48 under `platform.claude.com/docs/en/api/admin/`.*

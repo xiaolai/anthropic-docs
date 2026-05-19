@@ -57,6 +57,8 @@ As of 2026-05-18 (from [`models/list.md`](https://platform.claude.com/docs/en/ap
 | `user-profiles-2026-03-24` | User profiles API (`/v1/beta/user_profiles/`) |
 | `advisor-tool-2026-03-01` | Advisor server tool |
 | `managed-agents-2026-04-01` | Managed agents (agents / sessions / environments) |
+| `cache-diagnosis-2026-04-07` | Cache diagnostics — per-request cache hit/miss metadata |
+| `mcp-tunnels-2026-05-19` | MCP Tunnels admin API (`/v1/organizations/tunnels/`) |
 
 ## Beta resource catalog
 
@@ -69,13 +71,14 @@ required:
 | Beta API section index | [`beta.md`](https://platform.claude.com/docs/en/api/beta.md) |
 | `agents/` | [`beta/agents/`](https://platform.claude.com/docs/en/api/beta/agents/) |
 | `environments/` | [`beta/environments/`](https://platform.claude.com/docs/en/api/beta/environments/) |
+| `environments/work/` | [`beta/environments/work/`](https://platform.claude.com/docs/en/api/beta/environments/work.md) — work-item queue for self-hosted sandbox environments (poll, ack, heartbeat, stop, stats); called automatically by SDK/CLI environment worker |
 | `files/` | [`beta/files/`](https://platform.claude.com/docs/en/api/beta/files/) |
 | `memory_stores/` | [`beta/memory_stores/`](https://platform.claude.com/docs/en/api/beta/memory_stores/) |
 | `messages/` | [`beta/messages/`](https://platform.claude.com/docs/en/api/beta/messages/) (extends stable messages) |
 | `models/` | [`beta/models/`](https://platform.claude.com/docs/en/api/beta/models/) |
 | `sessions/` | [`beta/sessions/`](https://platform.claude.com/docs/en/api/beta/sessions/) |
 | `sessions/threads/` | [`beta/sessions/threads/`](https://platform.claude.com/docs/en/api/beta/sessions/threads.md) — list, retrieve, archive threads within a session; thread events (list/stream) via `GET /v1/sessions/{session_id}/threads` |
-| `skills/` | [`beta/skills/`](https://platform.claude.com/docs/en/api/beta/skills/) (Skills upload/management API) |
+| `skills/` | [`beta/skills/`](https://platform.claude.com/docs/en/api/beta/skills/) (Skills upload/management; `GET /v1/skills/{id}/versions/{ver}/content` downloads a version as a zip archive) |
 | `user_profiles/` | [`beta/user_profiles/`](https://platform.claude.com/docs/en/api/beta/user_profiles/) |
 | `vaults/` | [`beta/vaults/`](https://platform.claude.com/docs/en/api/beta/vaults/) |
 | `webhooks.md` | [`beta/webhooks.md`](https://platform.claude.com/docs/en/api/beta/webhooks.md) |
@@ -101,11 +104,11 @@ When a beta is retired:
 
 ## Source pages
 
-107 pages under
+118 pages under
 [`https://platform.claude.com/docs/en/api/beta/`](https://platform.claude.com/docs/en/api/beta/)
 — see directory listing for the current per-endpoint set across
-the 11 beta resources.
+the 12 beta resources.
 
 ---
 
-*Source pages: 107 under `platform.claude.com/docs/en/api/beta/`.*
+*Source pages: 118 under `platform.claude.com/docs/en/api/beta/`.*
