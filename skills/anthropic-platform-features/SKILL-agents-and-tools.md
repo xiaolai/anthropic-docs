@@ -5,10 +5,12 @@ description: |
   Agent Skills format spec (filesystem-based skills with three-level
   progressive disclosure), MCP connector (Anthropic's hosted MCP
   server), remote MCP servers (connecting third-party MCP from the
-  API), and the full tool-use catalog (computer use, code execution,
-  bash, text editor, memory, advisor, server tools, define-your-own
-  tools, parallel/programmatic/strict tool use, fine-grained tool
-  streaming, tool combinations).
+  API), MCP tunnels (securely connecting private-network MCP servers
+  without opening inbound ports, Research Preview), and the full
+  tool-use catalog (computer use, code execution, bash, text editor,
+  memory, advisor, server tools, define-your-own tools,
+  parallel/programmatic/strict tool use, fine-grained tool streaming,
+  tool combinations).
 source: https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview.md
 ---
 
@@ -87,6 +89,99 @@ tools.
 Source: [`remote-mcp-servers.md`](https://platform.claude.com/docs/en/agents-and-tools/remote-mcp-servers.md).
 
 For deep MCP protocol details, see [`mcp-spec`](../mcp-spec/SKILL.md).
+
+### MCP tunnels (private-network MCP access)
+
+MCP tunnels let you connect Claude to MCP servers running inside your
+private network without opening inbound firewall ports or exposing
+services to the public internet. Traffic flows over an outbound-only
+connection backed by Cloudflare's network.
+
+> **Research Preview.** [Request access](https://claude.com/form/claude-managed-agents).
+> Provided "as-is" without uptime, support, or continuity commitments.
+
+#### How it works
+
+A tunnel deployment is two components that run inside your network:
+
+- **cloudflared** — initiates outbound-only connections to the Anthropic-operated tunnel edge.
+- **Proxy** — terminates inner TLS, validates upstream IPs, and routes each request to the correct MCP server by hostname.
+
+Each MCP server gets a hostname under your tunnel domain (e.g. `docs.<tunnel-domain>`), which you pass as an `mcp_servers` URL to the Messages API (via the [MCP connector](https://platform.claude.com/docs/en/agents-and-tools/mcp-connector.md)) or attach to a Managed Agent session in the Console.
+
+#### Security layers
+
+Three independent layers protect every request:
+
+| Layer | Protects against |
+|---|---|
+| Outer mTLS + IP validation (Anthropic ↔ transport edge) | Unauthorized clients reaching the tunnel |
+| Inner TLS (Anthropic backend → proxy) | Payload inspection by the transport provider |
+| OAuth on each MCP server | Unauthorized use of MCP tools |
+
+Because the proxy terminates inner TLS with a certificate only you hold, Cloudflare cannot read MCP request or response payloads.
+
+> **Credential warning:** if an attacker obtains your tunnel token **and** one of your TLS private keys, they could impersonate your proxy. Treat both as high-value secrets.
+
+#### Network requirements
+
+| Component | Destination | Port / protocol | When |
+|---|---|---|---|
+| Setup | `api.anthropic.com` | 443 TCP | Provisioning and token rotation |
+| cloudflared | Tunnel edge (`198.41.192.0/19`, `2606:4700:a0::/44`) | 7844 TCP+UDP | Continuous |
+| Proxy | Your upstream MCP servers | As configured | Continuous |
+
+#### Deployment options
+
+| Option | When to use |
+|---|---|
+| [Quickstart](https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/quickstart.md) | Local Docker Compose + sample server — shortest path to a working tunnel |
+| [Docker Compose](https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/deploy-compose.md) | Single-host / VM production deployment |
+| [Helm](https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/deploy-helm.md) | Kubernetes cluster deployment |
+
+Authentication for setup: **programmatic** (Workload Identity Federation with `org:manage_tunnels` scope — recommended) or **manual** (static tunnel token + CA certificate you supply).
+
+#### Proxy config fields (`config.yaml`)
+
+| Field | Description | Default |
+|---|---|---|
+| `listen_addr` | Address and port to listen on | Required |
+| `log_level` | `debug`, `info`, `warn`, or `error` | `info` |
+| `shutdown_timeout` | Grace period for in-flight requests | `30s` |
+| `tunnel_domain` | Base domain for the tunnel; allows bare subdomain keys in `routes` | Required |
+| `tls.cert_file` | Path to the server TLS certificate | Required |
+| `tls.key_file` | Path to the server TLS private key | Required |
+| `routes` | Map of subdomain → `scheme://host:port` (path excluded; port mandatory) | Required |
+| `upstream.allowed_ips` | IPv4 CIDRs the proxy may connect to | RFC1918 ranges |
+| `upstream.disable_ip_validation` | Disable upstream IP validation (mutually exclusive with `allowed_ips`) | `false` |
+| `upstream.tls.ca_file` | CA bundle for validating upstream TLS | None |
+| `upstream.tls.include_system_cas` | Also trust system CA bundle for upstream TLS | `false` |
+
+#### Tunnels API
+
+All endpoints require `Authorization: Bearer <WIF-token>` with the `org:manage_tunnels` scope. Admin API keys are not accepted.
+
+Required headers:
+
+| Header | Value |
+|---|---|
+| `anthropic-version` | `2023-06-01` |
+| `anthropic-beta` | `mcp-tunnels-2026-05-19` |
+
+Full endpoint reference: [MCP tunnels Admin API](https://platform.claude.com/docs/en/api/admin/mcp_tunnels).
+
+#### Source pages
+
+| Page | Topic |
+|---|---|
+| [`mcp-tunnels/overview.md`](https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/overview.md) | Concept, security model, network requirements, usage patterns |
+| [`mcp-tunnels/quickstart.md`](https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/quickstart.md) | Local Docker Compose walkthrough with sample MCP server |
+| [`mcp-tunnels/deploy-compose.md`](https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/deploy-compose.md) | Docker Compose production deployment |
+| [`mcp-tunnels/deploy-helm.md`](https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/deploy-helm.md) | Kubernetes / Helm deployment |
+| [`mcp-tunnels/console.md`](https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/console.md) | Creating tunnels and managing certificates in the Console |
+| [`mcp-tunnels/reference.md`](https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/reference.md) | Proxy config fields, Tunnels API, certificate requirements, setup CLI |
+| [`mcp-tunnels/security.md`](https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/security.md) | Hardening guidance, credential rotation, breach response |
+| [`mcp-tunnels/troubleshooting.md`](https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/troubleshooting.md) | Diagnosing connectivity, TLS, and routing issues |
 
 ## Tool use catalog
 
@@ -203,5 +298,5 @@ For long-running server tool operations the API may return `stop_reason: "pause_
 
 ---
 
-*Source pages: 31 under `platform.claude.com/docs/en/agents-and-tools/`
-(agent-skills/* + mcp-connector + remote-mcp-servers + tool-use/*).*
+*Source pages: 39 under `platform.claude.com/docs/en/agents-and-tools/`
+(agent-skills/* + mcp-connector + remote-mcp-servers + mcp-tunnels/* + tool-use/*).*
