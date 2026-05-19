@@ -10,6 +10,16 @@ The newest entry is at the top.
 
 ---
 
+## 2026-05-19 — v2.1.144 version sync
+
+- **Version bump**: `@anthropic-ai/claude-code` promoted from initial
+  scaffold placeholder (`0.0.0`) to `v2.1.144`. Router version table and
+  README version stamp updated to match.
+- **Docs index**: upstream `code.claude.com/llms.txt` hash updated
+  (`0b1ca29…` → `c8639f2…`); page count unchanged at 103. No pages
+  added or removed; no surface-file structural changes required.
+- *(pending review — see branch `auto/2026-05-19-pending-review`)* Pipeline run (review): `validate-examples` and `check-populated` gates failed — changes await human review before merging to main.
+
 ## 2026-05-17 — codex audit-fix pass 4 (8 findings → CLEAN in 2 rounds)
 
 Sanity-check audit re-run after the push-to-100 pass. Codex surfaced

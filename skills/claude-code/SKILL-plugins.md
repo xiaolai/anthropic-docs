@@ -50,33 +50,85 @@ Source: `code.claude.com/docs/en/plugins.md`.
 
 ## Marketplace manifest: `marketplace.json`
 
-> *Populated by the research agent.* The `name`, `owner`, and
-> `plugins` array structure.
+A marketplace is a collection of plugins hosted in a git repo. Its `marketplace.json` declares the marketplace and its plugins.
+
+```json
+{
+  "name": "acme-tools",
+  "owner": { "name": "Acme Corp", "url": "https://acme.com" },
+  "plugins": [
+    {
+      "name": "code-formatter",
+      "description": "Auto-format code on save",
+      "source": { "source": "github", "repo": "acme-corp/code-formatter" }
+    }
+  ]
+}
+```
+
+Required fields: `name`, `owner` (object with at least `name`). The `plugins` array lists available plugins.
 
 ## Marketplace source types
 
-> *Populated by the research agent.* Seven source types:
-> `github`, `git`, `url`, `npm`, `file`, `directory`, `hostPattern`.
+Marketplaces and plugins can be sourced in multiple ways:
+
+| Source type | Key field | Use case |
+|---|---|---|
+| `github` | `repo: "owner/repo"` | GitHub-hosted plugin |
+| `git` | `url: "https://..."` | Any git URL |
+| `url` | `url: "https://..."` | Direct URL to `.zip` archive |
+| `npm` | `package: "@scope/name"` | npm package |
+| `file` | `path: "/abs/path"` | Local filesystem (dev only) |
+| `directory` | `path: "/abs/path"` | Local directory (dev only) |
+| `hostPattern` | `hostPattern: "*.example.com"` | Regex for marketplace host matching |
+| `settings` | inline `name` + `plugins` | Inline marketplace in `settings.json` (no hosted repo needed) |
 
 ## Install scopes
 
-> *Populated by the research agent.* `user` / `project` / `local` —
-> what each means and where the install is recorded.
+| Scope | Recorded in | Notes |
+|---|---|---|
+| `user` | `~/.claude/settings.json` `enabledPlugins` | Personal, applies to all projects |
+| `project` | `.claude/settings.json` `enabledPlugins` | Shared with team via git |
+| `local` | `.claude/settings.local.json` `enabledPlugins` | Personal override for this project; gitignored |
+
+Managed settings can force-enable plugins that cannot be disabled by users.
 
 ## What plugins can ship
 
-> *Populated by the research agent.* Commands, agents, skills, hooks,
-> rules, MCP server configs.
+A plugin directory can contain any of these by convention (no manifest enumeration needed):
+
+| Path | Content |
+|---|---|
+| `commands/*.md` | Slash commands (e.g. `/plugin-name:command`) |
+| `agents/*.md` | Subagent definitions |
+| `skills/*/SKILL.md` | Skill routers |
+| `.claude/hooks/**` | Hook scripts |
+| `rules/*.md` | Auto-correction rules |
+| `.mcp.json` | MCP server configurations |
+| `bin/` | Executables added to PATH during plugin activation |
 
 ## Plugin discovery: convention paths
 
-> *Populated by the research agent.* How Claude Code finds
-> `commands/`, `agents/`, `skills/`, etc. inside a plugin.
+Claude Code auto-discovers all the above resource types from the plugin root. You do **not** list them in `plugin.json`. The plugin manifest only declares identity (`name`, `version`).
 
 ## CLI commands
 
-> *Populated by the research agent.* `claude plugin install`,
-> `claude plugin list`, `claude plugin marketplace add`, etc.
+```bash
+claude plugin install code-review@claude-plugins-official   # install from marketplace
+claude plugin install --url https://example.com/plugin.zip  # install from URL
+claude plugin install --dir ./my-local-plugin               # install from local dir
+claude plugin list                                           # list installed plugins
+claude plugin enable my-plugin@marketplace                   # enable a plugin
+claude plugin disable my-plugin@marketplace                  # disable a plugin
+claude plugin uninstall my-plugin@marketplace               # uninstall
+claude plugin marketplace add https://...                   # add a marketplace
+claude plugin marketplace list                              # list configured marketplaces
+claude plugin update                                        # update all plugins
+```
+
+Inside a session: `/plugin` to manage plugins, `/reload-plugins` to hot-reload after changes.
+
+Source: [plugins.md](https://code.claude.com/docs/en/plugins.md), [plugins-reference.md](https://code.claude.com/docs/en/plugins-reference.md).
 
 ## Worked examples
 

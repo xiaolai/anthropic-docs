@@ -19,20 +19,89 @@ source: https://code.claude.com/docs/en/hooks.md
 
 ## Hook event catalog
 
-> *Populated by the research agent.*
-> Source: `code.claude.com/docs/en/hooks.md`,
-> `code.claude.com/docs/en/hooks-guide.md`.
+Full list of hook events. Source: [hooks.md](https://code.claude.com/docs/en/hooks.md).
+
+| Event | When it fires | Can block? |
+|---|---|---|
+| `SessionStart` | Session begins or resumes | No |
+| `Setup` | `--init-only`, `--init`, or `--maintenance` mode before session | No |
+| `UserPromptSubmit` | User submits a prompt, before Claude processes it | Yes |
+| `UserPromptExpansion` | A user-typed command expands into a prompt | Yes |
+| `PreToolUse` | Before a tool call executes | Yes — exit 2 |
+| `PermissionRequest` | Permission dialog appears | No |
+| `PermissionDenied` | Auto mode classifier denies a tool call. Return `{retry:true}` to allow retry | No |
+| `PostToolUse` | After a tool call succeeds | No |
+| `PostToolUseFailure` | After a tool call fails | No |
+| `PostToolBatch` | After a full batch of parallel tool calls resolves | No |
+| `Notification` | Claude Code sends a notification | No |
+| `SubagentStart` | A subagent is spawned | No |
+| `SubagentStop` | A subagent finishes | No |
+| `TaskCreated` | A task is being created via `TaskCreate` | No |
+| `TaskCompleted` | A task is marked completed | No |
+| `Stop` | Claude finishes responding | No |
+| `StopFailure` | Turn ends due to API error (output/exit ignored) | No |
+| `TeammateIdle` | An agent team teammate is about to go idle | No |
+| `InstructionsLoaded` | A CLAUDE.md or `.claude/rules/*.md` is loaded | No |
+| `ConfigChange` | A configuration file changes during a session | No |
+| `CwdChanged` | Working directory changes (e.g. Claude runs `cd`) | No |
+| `FileChanged` | A watched file changes on disk (matcher = filename pattern) | No |
+| `WorktreeCreate` | Worktree being created; replaces default git behavior | Yes |
+| `WorktreeRemove` | Worktree being removed | No |
+| `PreCompact` | Before context compaction | No |
+| `PostCompact` | After context compaction completes | No |
+| `Elicitation` | An MCP server requests user input during a tool call | No |
+| `ElicitationResult` | User responds to MCP elicitation, before response sent to server | No |
+| `SessionEnd` | Session terminates | No |
+
+**Blocking:** Only `PreToolUse` supports blocking via exit code 2. Other events that say "Yes" (UserPromptSubmit, WorktreeCreate) support blocking via the JSON output `permissionDecision: "deny"`.
 
 ## Configuration: where hooks live
 
-> *Populated by the research agent.* Hooks are declared in
-> `settings.json` under the `hooks` key. Cross-reference:
-> [`SKILL-settings.md`](SKILL-settings.md) `hooks` block.
+Hooks are declared in `settings.json` under the `hooks` key (cross-reference: [`SKILL-settings.md`](SKILL-settings.md)):
+
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/path/to/hook.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "notify-send 'Claude finished'"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+Hook types: `"command"` (shell command), `"http"` (HTTP POST), `"prompt"` (LLM as hook). Hook commands receive JSON on stdin and can write JSON to stdout.
 
 ## Matcher syntax
 
-> *Populated by the research agent.* Covers tool-name matchers,
-> regex matchers, and the `*` wildcard.
+Matchers narrow which invocations a hook fires for:
+
+| Matcher field | Form | Effect |
+|---|---|---|
+| `matcher` | `"Bash"` | Fires on any Bash tool call |
+| `matcher` | `"Bash(git *)"` | Fires only on git Bash calls |
+| `matcher` | `"Read"` | Fires on any file read |
+| `if` | `"Bash(rm *)"` | Secondary filter inside a hook entry |
+| (none) | — | Fires on all events of that type |
+
+Matchers use the same permission rule syntax as `permissions.allow/deny` (see [`SKILL-settings.md`](SKILL-settings.md#permission-rule-syntax)).
 
 ## Hook input shape
 
@@ -72,13 +141,40 @@ Source: `code.claude.com/docs/en/hooks-guide.md`. The research agent fills in pe
 
 ## Hook output shape
 
-> *Populated by the research agent.* The JSON your hook can write to
-> stdout to influence Claude (block tool call, modify input, suppress
-> output, etc.).
+Hooks write a JSON object to stdout. The top-level key is `hookSpecificOutput`:
+
+```json
+{
+  "hookSpecificOutput": {
+    "hookEventName": "PreToolUse",
+    "permissionDecision": "deny",
+    "permissionDecisionReason": "Destructive rm -rf blocked by policy"
+  }
+}
+```
+
+Key `permissionDecision` values for `PreToolUse`:
+- `"allow"` — proceed without prompting the user
+- `"deny"` — block the tool call and surface `permissionDecisionReason` to Claude
+- `"ask"` — show the normal permission prompt
+
+For `UserPromptSubmit`, you can rewrite the prompt:
+```json
+{ "hookSpecificOutput": { "hookEventName": "UserPromptSubmit", "userPrompt": "Rewritten prompt text" } }
+```
 
 ## Blocking vs non-blocking
 
-> *Populated by the research agent.*
+**Blocking a tool call** requires TWO things in `PreToolUse`:
+1. Write JSON with `permissionDecision: "deny"` **or** exit with code **2** (not any other non-zero code).
+2. Write the reason to stderr — Claude surfaces it to the user.
+
+Exit code semantics:
+- `0` — hook ran successfully; Claude reads stdout for output
+- `2` — block the tool call (PreToolUse only)
+- Any other non-zero — hook error; logged but does not block
+
+**Non-blocking hooks** (`PostToolUse`, `Stop`, etc.) can still write stdout that Claude reads as additional context, but they cannot prevent the action.
 
 ## Worked examples
 

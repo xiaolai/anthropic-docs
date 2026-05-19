@@ -18,8 +18,13 @@ source: https://code.claude.com/docs/en/mcp.md
 
 ## File scope
 
-> *Populated by the research agent.* Project `.mcp.json` vs user-level
-> MCP config.
+| Scope | File | Committed to git? |
+|---|---|---|
+| Project | `<project>/.mcp.json` | Yes — shared with team |
+| User | `~/.claude.json` (under `mcpServers` key) | No — personal, all projects |
+| Local per-project | `~/.claude.json` (per-project entry) | No |
+
+Use `claude mcp add --scope project` (default) for `.mcp.json`, or `--scope user` for `~/.claude.json`. Managed MCP config can be deployed via `managed-mcp.json` in the system directory alongside `managed-settings.json`.
 
 ## Top-level shape
 
@@ -48,30 +53,104 @@ Source: `code.claude.com/docs/en/mcp.md`.
 
 ## Transport: `stdio`
 
-> *Populated by the research agent.* Local subprocess transport.
+Local subprocess. Claude Code spawns the process and communicates via stdin/stdout. Default when `type` is omitted.
+
+```json
+{
+  "mcpServers": {
+    "airtable": {
+      "command": "npx",
+      "args": ["-y", "airtable-mcp-server@1.2.3"],
+      "env": { "AIRTABLE_API_KEY": "your-key" }
+    }
+  }
+}
+```
+
+Fields: `command` (required), `args` (array), `env` (object of string→string).
+
+Claude Code sets `CLAUDE_PROJECT_DIR` in the server process's environment to the project root.
 
 ## Transport: `http`
 
-> *Populated by the research agent.* Remote HTTP transport, headers,
-> auth.
+Recommended for remote servers (replaces SSE). `streamable-http` is also accepted as an alias for `http`.
+
+```json
+{
+  "mcpServers": {
+    "notion": {
+      "type": "http",
+      "url": "https://mcp.notion.com/mcp",
+      "headers": { "Authorization": "Bearer your-token" }
+    }
+  }
+}
+```
+
+CLI: `claude mcp add --transport http notion https://mcp.notion.com/mcp --header "Authorization: Bearer token"`
 
 ## Transport: `sse`
 
-> *Populated by the research agent.* Server-Sent Events transport.
+Server-Sent Events (deprecated — prefer `http` where available).
+
+```json
+{
+  "mcpServers": {
+    "asana": {
+      "type": "sse",
+      "url": "https://mcp.asana.com/sse"
+    }
+  }
+}
+```
 
 ## Tool naming convention
 
-> *Populated by the research agent.* `mcp__<server>__<tool>` —
-> double-underscore separator.
+MCP tools appear as `mcp__<server-name>__<tool-name>` in permission rules and hook matchers. Double-underscore separators.
 
-## Capabilities declaration
+Examples:
+- `mcp__github__create_pull_request`
+- `mcp__filesystem__read_file`
 
-> *Populated by the research agent.*
+In `permissions.allow`: `"mcp__github__*"` allows all GitHub MCP tools.
+
+## CLI management commands
+
+```bash
+claude mcp add --transport http notion https://mcp.notion.com/mcp   # add HTTP server
+claude mcp add --transport stdio airtable -- npx -y airtable-mcp-server  # add stdio server
+claude mcp list           # list all configured servers
+claude mcp get github     # show details for a server
+claude mcp remove github  # remove a server
+```
+
+Inside a session, use `/mcp` to see connection status and tool count per server.
+
+The server name `workspace` is reserved — Claude Code skips any server with that name.
+
+## File scope
+
+`.mcp.json` in the project root → project-scoped servers (all team members, committed to git).
+
+`~/.claude.json` → user-scoped servers (personal, all projects) and local per-project overrides.
+
+Use `claude mcp add --scope user` to add to `~/.claude.json`, or default (`--scope project`) for `.mcp.json`.
 
 ## Worked examples
 
-> *Populated by the research agent.* See also:
-> [`templates/.mcp.json`](templates/.mcp.json).
+Version-pinned local server:
+```json
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem@0.6.2", "/Users/me/projects"]
+    }
+  }
+}
+```
+
+Source: [mcp.md](https://code.claude.com/docs/en/mcp.md).
 
 ## Common mistakes (auto-corrected by `rules/mcp.md`)
 
