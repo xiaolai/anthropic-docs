@@ -206,7 +206,9 @@ their own API key.
 ← sampling/createMessage {
     messages: [...],
     modelPreferences?: { hints: [...], costPriority, speedPriority, intelligencePriority },
-    systemPrompt?, includeContext?, temperature?, maxTokens?, stopSequences?, metadata?
+    systemPrompt?, includeContext?, temperature?, maxTokens?, stopSequences?, metadata?,
+    tools?: [...],        // optional: tool definitions for agentic sampling (SEP-1577)
+    toolChoice?: { mode: "auto" | "none" }  // default: "auto"
   }
 → {
     role: "assistant",
@@ -218,6 +220,13 @@ their own API key.
 The client typically asks the user for permission before fulfilling
 sampling requests — servers can effectively spend the user's tokens
 otherwise.
+
+**Sampling with tools (SEP-1577, `2025-11-25`+):** Servers may include `tools` and
+`toolChoice` to enable agentic multi-turn sampling where the LLM can call tools, receive
+results, and continue — all within the sampling flow. Clients MUST declare
+`capabilities.sampling.tools: {}` to receive tool-enabled sampling requests.
+`toolChoice.mode: "none"` forces a final text response without tool calls.
+Source: [`specification/2025-11-25/client/sampling.md`](https://modelcontextprotocol.io/specification/2025-11-25/client/sampling.md)
 
 ## Roots
 
@@ -256,6 +265,28 @@ via the host's UI.
 ```
 
 The host renders an appropriate UI (form, dialog).
+
+### URL mode elicitation (SEP-1036, `2025-11-25`+)
+
+For out-of-band interactions (OAuth flows, payment, sensitive data entry) that must
+**not** pass through the MCP client, servers use `mode: "url"`:
+
+```
+← elicitation/create {
+    mode: "url",
+    message: "Please authorize access to your GitHub account",
+    url: "https://github.com/login/oauth/authorize?...",
+    elicitationId: "550e8400-e29b-41d4-a716-446655440000"
+  }
+→ { action: "accept" | "decline" | "cancel" }
+```
+
+The client shows the URL to the user; the user opens it externally. When the server
+detects completion it MAY send `notifications/elicitation/complete { elicitationId }`.
+This is **not** for authorizing MCP client access (that uses OAuth); it is for the
+server obtaining user authorization on behalf of itself.
+
+Source: [`specification/2025-11-25/client/elicitation.md`](https://modelcontextprotocol.io/specification/2025-11-25/client/elicitation.md)
 
 ## Completion
 

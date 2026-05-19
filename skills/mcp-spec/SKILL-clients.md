@@ -141,8 +141,13 @@ user for structured input via the host:
 → { action: "accept" | "decline" | "cancel", content?: <matching schema> }
 ```
 
-The host renders an appropriate UI (form, dialog) and returns the
-user's response.
+The host renders an appropriate UI (form, dialog) and returns the user's response.
+
+**URL mode** (SEP-1036, `2025-11-25`+): servers may also request out-of-band interactions
+(OAuth, payments) by sending `mode: "url"` with a `url` and `elicitationId`. The client
+shows the URL to the user; the server may later notify via
+`notifications/elicitation/complete { elicitationId }` when complete.
+See [`SKILL-tools-resources-prompts.md`](SKILL-tools-resources-prompts.md#url-mode-elicitation-sep-1036-2025-11-25) for the full schema.
 
 ## Client best practices
 
