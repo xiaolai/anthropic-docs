@@ -68,6 +68,7 @@ Source: `code.claude.com/docs/en/cli-reference.md`.
 | `--channels` | MCP servers whose channel notifications Claude listens for | `claude --channels plugin:my-notifier@my-marketplace` |
 | `--chrome` | Enable Chrome browser integration | `claude --chrome` |
 | `--continue`, `-c` | Load the most recent conversation in the current directory | `claude --continue` |
+| `--dangerously-load-development-channels` | Enable channels not on the approved allowlist for local development. Accepts `plugin:<name>@<marketplace>` and `server:<name>` entries; prompts for confirmation. See [channels reference](https://code.claude.com/docs/en/channels-reference.md) | `claude --dangerously-load-development-channels server:webhook` |
 | `--dangerously-skip-permissions` | Skip permission prompts (= `--permission-mode bypassPermissions`) | `claude --dangerously-skip-permissions` |
 | `--debug` | Enable debug mode with optional category filtering | `claude --debug "api,mcp"` |
 | `--debug-file <path>` | Write debug logs to file. Implicitly enables debug mode | `claude --debug-file /tmp/claude-debug.log` |
@@ -101,6 +102,7 @@ Source: `code.claude.com/docs/en/cli-reference.md`.
 | `--print`, `-p` | Print response without interactive mode | `claude -p "query"` |
 | `--remote` | Create a new web session on claude.ai with provided task | `claude --remote "Fix the login bug"` |
 | `--remote-control`, `--rc` | Start interactive session with Remote Control enabled | `claude --remote-control "My Project"` |
+| `--remote-control-session-name-prefix <prefix>` | Prefix for auto-generated Remote Control session names when no explicit name is set. Defaults to the machine hostname (e.g. `myhost-graceful-unicorn`). Env var equivalent: `CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX` | `claude remote-control --remote-control-session-name-prefix dev-box` |
 | `--replay-user-messages` | Re-emit user messages from stdin back on stdout. Requires `--input-format stream-json` and `--output-format stream-json` | |
 | `--resume`, `-r` | Resume session by ID or name, or show interactive picker | `claude --resume auth-refactor` |
 | `--session-id` | Use a specific session UUID | `claude --session-id "550e8400-..."` |
