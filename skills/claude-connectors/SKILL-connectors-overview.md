@@ -38,8 +38,8 @@ A connector can do two things:
 | **Prebuilt integrations** | First-party Anthropic-maintained — Google Workspace, GitHub, M365, Slack | [`getting-started.md`](https://claude.com/docs/connectors/getting-started.md) |
 | **Remote MCP servers** | Cloud-hosted MCP servers reachable over HTTPS | [`custom/remote-mcp.md`](https://claude.com/docs/connectors/custom/remote-mcp.md) |
 | **MCP Apps** | MCP servers that render UI in the conversation | [`building/mcp-apps/getting-started.md`](https://claude.com/docs/connectors/building/mcp-apps/getting-started.md) |
-| **MCP Bundles (MCPB)** | Local MCP servers packaged as Desktop extensions (.mcpb) | [`custom/desktop-extensions.md`](https://claude.com/docs/connectors/custom/desktop-extensions.md) |
-| **Self-serve local MCP** | Local servers distributed via npm/PyPI (not directory-listable) | [`overview.md`](https://claude.com/docs/connectors/overview.md) |
+| **MCP Bundles (MCPB)** | Local MCP servers packaged as Desktop extensions (.mcpb) — handles cross-platform compatibility, dependency management, code signing, and centralized version updates | [`custom/desktop-extensions.md`](https://claude.com/docs/connectors/custom/desktop-extensions.md) |
+| **Self-serve local MCP** | Local servers via npm/PyPI — package as MCPB for the Desktop Extensions gallery, or bundle in a plugin using `.mcp.json` and submit to the plugin directory | [`overview.md`](https://claude.com/docs/connectors/overview.md) |
 
 ## Connectors Directory
 

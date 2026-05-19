@@ -164,10 +164,38 @@ happen to appear alongside.
 
 ### Display modes
 
-- **Inline card** — compact, embedded directly in conversation. Good
-  for summaries, confirmations, quick actions.
-- **Expanded view** — larger surface for richer interactions.
-- **Sidebar** — persistent context alongside the conversation.
+Declare which modes your app supports via `appCapabilities.availableDisplayModes`
+in `ui/initialize`. The host responds with modes it supports; request
+a switch with `ui/request-display-mode`. Mode values: `inline`,
+`fullscreen`, and `pip`.
+
+| Mode | Use for | Constraints |
+|---|---|---|
+| **Inline card** | Summaries, confirmations, quick actions | Max 500 px height, max 2 actions, no nested scrolling |
+| **Inline carousel** | Product listings, search results, media galleries | 3–8 items; each card: image + title + max 3 metadata lines + 1 optional CTA |
+| **Full screen** | Dashboards, document editing, data visualizations | No floating panels; use collapsible sidebars/tabs/pagination instead |
+
+### Mobile considerations
+
+On mobile, Claude renders MCP Apps in a native WebView (WKWebView on
+iOS, WebView on Android). Current mobile-only constraints:
+
+- **Inline display only** — full-screen mode is not yet available on
+  mobile; apps render inline only.
+- **No camera / mic / location access.**
+- **Connectors must be added via web or desktop** before they appear
+  on mobile.
+
+The host passes layout hints via `hostContext.safeAreaInsets`
+(`{top, right, bottom, left}` in pixels). Honor these to keep
+content clear of notches, the home indicator, and the composer
+overlay. Design responsively from **320 px** up using container
+queries. Ensure all tap targets are at least **44 pt**.
+
+Set `_meta.ui.prefersBorder: false` on your `ui://` resource
+metadata to remove the outer card border on mobile.
+
+Reference: [`mcp-apps/design-guidelines.md`](https://claude.com/docs/connectors/building/mcp-apps/design-guidelines.md).
 
 ### Transparent theming
 

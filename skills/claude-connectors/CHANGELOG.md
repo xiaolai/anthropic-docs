@@ -3,6 +3,10 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-19
+*(pending review — see PR auto/2026-05-19-pending-review)*
+- Docs content sync: index hash updated across 34 existing pages; no pages added or removed; checkDiffSize gate triggered review branch
+
 ## [0.1.0] — 2026-05-17
 
 ### Added
