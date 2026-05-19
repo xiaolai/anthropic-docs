@@ -34,6 +34,7 @@ Commands marked **[Skill]** are bundled skills — prompts handed to Claude that
 | `/branch [name]` | Create a branch/fork of the current conversation. Alias: `/fork` |
 | `/btw <question>` | Ask a quick side question without adding to the conversation |
 | `/chrome` | Configure Claude in Chrome settings |
+| `/claude-api [migrate\|managed-agents-onboard]` | **[Skill]** Load Claude API reference for the project's language. `/claude-api migrate` upgrades existing code to a newer model version; `/claude-api managed-agents-onboard` creates a new Managed Agent interactively |
 | `/clear [name]` | Start new conversation, keeping previous in `/resume`. Aliases: `/reset`, `/new` |
 | `/color [color\|default]` | Set prompt bar color: `red`, `blue`, `green`, `yellow`, `purple`, `orange`, `pink`, `cyan` |
 | `/compact [instructions]` | Summarize conversation to free up context |
@@ -41,6 +42,7 @@ Commands marked **[Skill]** are bundled skills — prompts handed to Claude that
 | `/context [all]` | Visualize current context usage |
 | `/copy [N]` | Copy last assistant response to clipboard |
 | `/debug [description]` | **[Skill]** Enable debug logging and troubleshoot issues |
+| `/desktop` | Continue the current session in the Claude Code Desktop app. macOS and Windows only. Alias: `/app` |
 | `/diff` | Open interactive diff viewer of uncommitted changes |
 | `/doctor` | Diagnose Claude Code installation and settings |
 | `/effort [level\|auto]` | Set model effort level: `low`, `medium`, `high`, `xhigh`, `max` |
@@ -65,25 +67,35 @@ Commands marked **[Skill]** are bundled skills — prompts handed to Claude that
 | `/loop [interval] [prompt]` | **[Skill]** Run a prompt repeatedly; Claude self-paces when no interval given. Alias: `/proactive` |
 | `/mcp` | Manage MCP server connections and OAuth authentication |
 | `/memory` | Edit CLAUDE.md files and manage auto-memory |
-| `/model [model]` | Select or change the AI model |
+| `/mobile` | Show QR code to download the Claude mobile app. Aliases: `/ios`, `/android` |
+| `/model [model]` | Select or change the AI model for the current session only; press `d` in the picker to set a default for new sessions |
+| `/passes` | Share a free week of Claude Code with friends (account eligibility required) |
 | `/permissions` | Manage allow/ask/deny rules for tool permissions. Alias: `/allowed-tools` |
 | `/plan [description]` | Enter plan mode |
 | `/plugin` | Manage Claude Code plugins |
+| `/powerup` | Discover Claude Code features through quick interactive lessons with animated demos |
+| `/privacy-settings` | View and update your privacy settings (Pro and Max subscribers only) |
+| `/radio` | Open Claude FM lo-fi radio in your browser; not available on Bedrock, Vertex, or Foundry |
 | `/recap` | Generate a one-line session summary on demand |
 | `/release-notes` | View changelog in interactive version picker |
 | `/reload-plugins` | Reload all active plugins without restarting |
 | `/remote-control` | Make this session available for remote control from claude.ai. Alias: `/rc` |
+| `/remote-env` | Configure the default remote environment for web sessions started with `--remote` |
 | `/rename [name]` | Rename the current session |
 | `/resume [session]` | Resume a conversation by ID or name. Alias: `/continue` |
 | `/review [PR]` | Review a pull request locally |
 | `/rewind` | Rewind conversation and/or code to a previous point. Aliases: `/checkpoint`, `/undo` |
 | `/sandbox` | Toggle sandbox mode |
 | `/schedule [description]` | Create/manage routines on Anthropic-managed cloud infrastructure. Alias: `/routines` |
+| `/scroll-speed` | Adjust mouse wheel scroll speed interactively (fullscreen rendering only; not available in JetBrains terminal) |
 | `/security-review` | Analyze pending branch changes for security vulnerabilities |
+| `/setup-bedrock` | Configure Amazon Bedrock authentication, region, and model pins via interactive wizard (only visible when `CLAUDE_CODE_USE_BEDROCK=1`) |
+| `/setup-vertex` | Configure Google Vertex AI authentication, project, region, and model pins via interactive wizard (only visible when `CLAUDE_CODE_USE_VERTEX=1`) |
 | `/simplify [focus]` | **[Skill]** Review recently changed files for quality/efficiency issues and fix them |
 | `/skills` | List available skills |
 | `/status` | Open Settings interface (Status tab) |
 | `/statusline` | Configure the status line |
+| `/stickers` | Order Claude Code stickers |
 | `/stop` | Stop the current background session (while attached) |
 | `/tasks` | List and manage background tasks. Alias: `/bashes` |
 | `/team-onboarding` | Generate a team onboarding guide from usage history |
@@ -93,8 +105,11 @@ Commands marked **[Skill]** are bundled skills — prompts handed to Claude that
 | `/tui [default\|fullscreen]` | Set terminal UI renderer |
 | `/ultraplan <prompt>` | Draft a plan in the cloud and review in browser |
 | `/ultrareview [PR]` | Run deep multi-agent code review in cloud sandbox |
+| `/upgrade` | Open the upgrade page to switch to a higher plan tier |
 | `/usage` | Show session cost and plan usage. Aliases: `/cost`, `/stats` |
+| `/usage-credits` | Configure usage credits to keep working when you hit a plan limit. Previously `/extra-usage` (old name still works) |
 | `/voice [hold\|tap\|off]` | Toggle voice dictation |
+| `/web-setup` | Connect your GitHub account to Claude Code on the web using local `gh` CLI credentials |
 
 **MCP prompts** from connected servers appear as `/mcp__<server>__<prompt>` and are dynamically discovered.
 

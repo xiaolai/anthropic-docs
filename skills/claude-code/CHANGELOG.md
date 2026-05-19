@@ -12,7 +12,7 @@ The newest entry is at the top.
 
 ## 2026-05-19
 *(pending review — see draft PR on branch `auto/2026-05-19-pending-review`)*
-- Sync to CC v2.1.144 — docs index updated (103 pages), validateExamples gate failed; changes queued for review
+- CC v2.1.144 — research pass added 7 known issues to `SKILL-known-issues.md`; checkPopulated, checkDocsDrift, checkDiffSize gates failed; changes queued for review
 
 ## v2.1.144 — 2026-05-19
 
