@@ -277,7 +277,7 @@ options = ClaudeAgentOptions(
 | `output_format` | `dict[str, Any] \| None` | `None` | `{"type": "json_schema", "schema": dict}` |
 | `max_thinking_tokens` | `int \| None` | `None` | **Deprecated** — use `thinking` instead |
 | `thinking` | `ThinkingConfig \| None` | `None` | Extended thinking configuration (adaptive/enabled/disabled) |
-| `effort` | `EffortLevel \| None` | `None` | Effort level for thinking depth (`"low"`, `"medium"`, `"high"`, `"xhigh"`, `"max"`; see [EffortLevel](#effortlevel)) |
+| `effort` | `EffortLevel \| None` | `None` | Effort level for thinking depth: `"low"`, `"medium"`, `"high"`, `"xhigh"`, `"max"` |
 | `fallback_model` | `str \| None` | `None` | Fallback model on failure |
 | `betas` | `list[SdkBeta]` | `[]` | Beta features (e.g., `["context-1m-2025-08-07"]`) |
 | `include_partial_messages` | `bool` | `False` | Include streaming partial `StreamEvent` messages |

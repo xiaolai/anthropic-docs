@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-05-19 (run 19:07Z)
+- Docs-index hash refresh (ee68ff8e → c0a299b7, 29 pages unchanged, no version bump); fixed dangling `#effortlevel` anchor in SKILL-python.md line 280; 71 research turns; all 11 gates pass, 21 verify checks pass
+
 ## 2026-05-19 (fourth run)
 - Docs-index hash refreshed (content changed, page count unchanged at 29, no version bump); 29 pages audited, 119 research turns; all 11 outcomes pass, 21 verify checks pass
 
