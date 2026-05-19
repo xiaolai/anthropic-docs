@@ -1,14 +1,16 @@
 ---
 name: claude-code-slash-commands
 description: |
-  Deep reference for authoring Claude Code slash commands. Covers
-  frontmatter schema (description, argument-hint, allowed-tools,
-  model), `$ARGUMENTS` substitution, the `!` shell-prefix, the `@`
-  file-reference prefix, command discovery paths (user / project /
-  plugin), and namespacing. Read this file when the user asks about
-  writing or debugging a slash command, command frontmatter, or
-  command discovery.
-source: https://code.claude.com/docs/en/slash-commands.md
+  Deep reference for Claude Code slash commands: built-in session
+  commands, and authoring custom slash commands (skills). Covers
+  the full built-in command list, custom command frontmatter schema
+  (description, argument-hint, allowed-tools, model), $ARGUMENTS
+  substitution, the ! shell-prefix, the @ file-reference prefix,
+  command discovery paths (user / project / plugin), and namespacing.
+  Read this file when the user asks about available slash commands,
+  writing or debugging a custom slash command, command frontmatter,
+  or command discovery.
+source: https://code.claude.com/docs/en/commands.md
 ---
 
 # Claude Code — Slash Commands
@@ -16,14 +18,106 @@ source: https://code.claude.com/docs/en/slash-commands.md
 > *This file is one of seven surface-specific references. The router
 > ([`SKILL.md`](SKILL.md)) dispatches you here for slash command questions.*
 
-## Discovery paths
+## Built-in commands
 
-> *Populated by the research agent.* Covers `~/.claude/commands/`,
-> `<project>/.claude/commands/`, and plugin-shipped commands.
+Type `/` inside a session to see every command, or type `/` followed by letters to filter. A command is only recognized at the start of a message; text that follows is passed as arguments.
 
-## Frontmatter schema
+Commands marked **[Skill]** are bundled skills — prompts handed to Claude that Claude can also invoke automatically.
 
-<!-- seed: replace on first real research pass -->
+| Command | Purpose |
+|---|---|
+| `/add-dir <path>` | Add a working directory for file access during the current session |
+| `/agents` | Manage subagent configurations |
+| `/autofix-pr [prompt]` | Spawn a web session that watches the current branch's PR and pushes fixes when CI fails or reviewers comment |
+| `/background [prompt]` | Detach current session to run as a background agent. Alias: `/bg` |
+| `/batch <instruction>` | **[Skill]** Orchestrate large-scale changes in parallel across worktrees |
+| `/branch [name]` | Create a branch/fork of the current conversation. Alias: `/fork` |
+| `/btw <question>` | Ask a quick side question without adding to the conversation |
+| `/chrome` | Configure Claude in Chrome settings |
+| `/clear [name]` | Start new conversation, keeping previous in `/resume`. Aliases: `/reset`, `/new` |
+| `/color [color\|default]` | Set prompt bar color: `red`, `blue`, `green`, `yellow`, `purple`, `orange`, `pink`, `cyan` |
+| `/compact [instructions]` | Summarize conversation to free up context |
+| `/config` | Open Settings interface. Alias: `/settings` |
+| `/context [all]` | Visualize current context usage |
+| `/copy [N]` | Copy last assistant response to clipboard |
+| `/debug [description]` | **[Skill]** Enable debug logging and troubleshoot issues |
+| `/diff` | Open interactive diff viewer of uncommitted changes |
+| `/doctor` | Diagnose Claude Code installation and settings |
+| `/effort [level\|auto]` | Set model effort level: `low`, `medium`, `high`, `xhigh`, `max` |
+| `/exit` | Exit the CLI. Aliases: `/quit` |
+| `/export [filename]` | Export current conversation as plain text |
+| `/fast [on\|off]` | Toggle fast mode |
+| `/feedback [report]` | Submit feedback. Alias: `/bug` |
+| `/fewer-permission-prompts` | **[Skill]** Add allowlist to reduce permission prompts |
+| `/focus` | Toggle focus view (last prompt + one-line tool summary + final response) |
+| `/goal [condition\|clear]` | Set a completion condition; Claude keeps working until met |
+| `/heapdump` | Write heap snapshot for diagnosing high memory usage |
+| `/help` | Show help and available commands |
+| `/hooks` | View hook configurations |
+| `/ide` | Manage IDE integrations |
+| `/init` | Initialize project with a `CLAUDE.md` guide |
+| `/insights` | Generate report analyzing Claude Code sessions |
+| `/install-github-app` | Set up Claude GitHub Actions app for a repository |
+| `/install-slack-app` | Install the Claude Slack app |
+| `/keybindings` | Open or create keybindings configuration |
+| `/login` | Sign in to your Anthropic account |
+| `/logout` | Sign out |
+| `/loop [interval] [prompt]` | **[Skill]** Run a prompt repeatedly; Claude self-paces when no interval given. Alias: `/proactive` |
+| `/mcp` | Manage MCP server connections and OAuth authentication |
+| `/memory` | Edit CLAUDE.md files and manage auto-memory |
+| `/model [model]` | Select or change the AI model |
+| `/permissions` | Manage allow/ask/deny rules for tool permissions. Alias: `/allowed-tools` |
+| `/plan [description]` | Enter plan mode |
+| `/plugin` | Manage Claude Code plugins |
+| `/recap` | Generate a one-line session summary on demand |
+| `/release-notes` | View changelog in interactive version picker |
+| `/reload-plugins` | Reload all active plugins without restarting |
+| `/remote-control` | Make this session available for remote control from claude.ai. Alias: `/rc` |
+| `/rename [name]` | Rename the current session |
+| `/resume [session]` | Resume a conversation by ID or name. Alias: `/continue` |
+| `/review [PR]` | Review a pull request locally |
+| `/rewind` | Rewind conversation and/or code to a previous point. Aliases: `/checkpoint`, `/undo` |
+| `/sandbox` | Toggle sandbox mode |
+| `/schedule [description]` | Create/manage routines on Anthropic-managed cloud infrastructure. Alias: `/routines` |
+| `/security-review` | Analyze pending branch changes for security vulnerabilities |
+| `/simplify [focus]` | **[Skill]** Review recently changed files for quality/efficiency issues and fix them |
+| `/skills` | List available skills |
+| `/status` | Open Settings interface (Status tab) |
+| `/statusline` | Configure the status line |
+| `/stop` | Stop the current background session (while attached) |
+| `/tasks` | List and manage background tasks. Alias: `/bashes` |
+| `/team-onboarding` | Generate a team onboarding guide from usage history |
+| `/teleport` | Pull a web session into this terminal. Alias: `/tp` |
+| `/terminal-setup` | Configure terminal keybindings (VS Code, Cursor, etc.) |
+| `/theme` | Change color theme |
+| `/tui [default\|fullscreen]` | Set terminal UI renderer |
+| `/ultraplan <prompt>` | Draft a plan in the cloud and review in browser |
+| `/ultrareview [PR]` | Run deep multi-agent code review in cloud sandbox |
+| `/usage` | Show session cost and plan usage. Aliases: `/cost`, `/stats` |
+| `/voice [hold\|tap\|off]` | Toggle voice dictation |
+
+**MCP prompts** from connected servers appear as `/mcp__<server>__<prompt>` and are dynamically discovered.
+
+Source: `code.claude.com/docs/en/commands.md`.
+
+## Authoring custom slash commands (skills)
+
+A custom skill/command is a Markdown file placed in a discovery path. The frontmatter defines its behavior and metadata.
+
+### Discovery paths
+
+| Path | Scope | Namespacing |
+|---|---|---|
+| `~/.claude/commands/<name>.md` | User (all projects) | `/name` |
+| `~/.claude/skills/<name>/SKILL.md` | User (all projects) | `/name` |
+| `<project>/.claude/commands/<name>.md` | Project | `/name` |
+| `<project>/.claude/skills/<name>/SKILL.md` | Project | `/name` |
+| `<plugin>/commands/<name>.md` | Plugin (when enabled) | `/<plugin-name>:<name>` |
+| `<plugin>/skills/<name>/SKILL.md` | Plugin (when enabled) | `/<plugin-name>:<name>` |
+
+Plugin-shipped commands are automatically namespaced to prevent conflicts.
+
+### Frontmatter schema
 
 A slash command is a Markdown file with YAML frontmatter. Common keys:
 
@@ -31,8 +125,10 @@ A slash command is a Markdown file with YAML frontmatter. Common keys:
 |---|---|---|
 | `description` | string | One-line summary shown in command lists. Keep ≤120 chars. |
 | `argument-hint` | string | Placeholder text shown after the command name, e.g. `"<file path>"`. |
-| `allowed-tools` | string | Comma-separated tool list (e.g. `Read, Bash(git:*)`). Restricts what the command can call. The `<Tool>(<matcher>)` parenthetical narrows a tool to specific invocations (see `SKILL-settings.md` `permissions` block for the matcher grammar). |
+| `allowed-tools` | string | Comma-separated tool list (e.g. `Read, Bash(git:*)`). Restricts what the command can call. |
 | `model` | string | Optional model override for this command's invocation. |
+| `when_to_use` | string | When Claude should automatically invoke this skill (without explicit `/name`). |
+| `disable-model-invocation` | boolean | If `true`, the skill runs its shell blocks but does not invoke the model. |
 
 Minimal command (`~/.claude/commands/wc.md`):
 
@@ -46,36 +142,65 @@ allowed-tools: Read
 Count the words in $ARGUMENTS. Read the file and report `<path>: <N> words`.
 ```
 
-**Avoid putting `$ARGUMENTS` into a `!`-prefixed shell line.** The `!` prefix invokes a shell, and `$ARGUMENTS` is unsanitised caller input — `foo.txt; rm -rf ~` parses as three commands. The `allowed-tools` matcher constrains which tool the model can invoke; it does not escape arguments. Prefer `Read` (this example) over `!`-shell when the input touches `$ARGUMENTS`. The fuller risk analysis is in [`templates/commands/example.md`](templates/commands/example.md) under "Safety note".
+Source: `code.claude.com/docs/en/commands.md`, `skills.md`.
 
-Source: `code.claude.com/docs/en/slash-commands.md`.
+### Argument substitution: `$ARGUMENTS`
 
-## Argument substitution: `$ARGUMENTS`
+`$ARGUMENTS` in the command body is replaced with everything the user types after the command name:
 
-> *Populated by the research agent.*
+```
+/my-command foo bar baz
+```
 
-## Inline shell execution: `!` prefix
+→ `$ARGUMENTS` = `"foo bar baz"`
 
-> *Populated by the research agent.* `! <command>` runs the shell
-> command and embeds its output into the command body.
+**Avoid putting `$ARGUMENTS` into a `!`-prefixed shell line.** The `!` prefix invokes a shell, and `$ARGUMENTS` is unsanitized caller input — `foo.txt; rm -rf ~` parses as three commands. Prefer `Read` (or other non-shell tools) when the input touches `$ARGUMENTS`.
 
-## File references: `@` prefix
+### Inline shell execution: `!` prefix
 
-> *Populated by the research agent.*
+A line or block starting with `!` runs a shell command and embeds its output into the command body at load time:
 
-## Namespacing and plugin-shipped commands
+```markdown
+---
+description: Run today's standup
+---
 
-> *Populated by the research agent.* Covers `plugin:command` syntax.
+Today is: `! date`
 
-## Worked examples
+Please help write the standup.
+```
 
-> *Populated by the research agent.* See also:
-> [`templates/commands/`](templates/commands/).
+Shell execution can be disabled by policy with the `disableSkillShellExecution` setting. Cross-reference: [`SKILL-settings.md`](SKILL-settings.md).
+
+### File references: `@` prefix
+
+In the command body or prompt, `@<path>` embeds the contents of the referenced file into the prompt. Supports glob patterns. Uses the file picker for autocomplete.
+
+### Namespacing and plugin-shipped commands
+
+- Standalone commands (in `~/.claude/` or `.claude/`) use bare names: `/my-command`
+- Plugin commands use namespaced form: `/plugin-name:my-command`
+- Run `/help` to see all commands including plugin-namespaced ones
+
+### SKILL.md additional frontmatter (for the skill router system)
+
+When writing a `SKILL.md` for a multi-file skill:
+
+| Key | Notes |
+|---|---|
+| `name` | Skill identifier |
+| `description` | Description shown to Claude for auto-invocation |
+| `when_to_use` | When Claude should automatically invoke this skill |
+| `user-invocable` | Whether the user can invoke it with `/name` (default: `true`) |
+| `hooks` | Inline hook definitions (see [`SKILL-hooks.md`](SKILL-hooks.md)) |
 
 ## Common mistakes (auto-corrected by `rules/skills-agents-commands.md`)
 
-> *Populated by the research agent.*
+See [`rules/skills-agents-commands.md`](rules/skills-agents-commands.md). Key pitfalls:
+- Do not put `$ARGUMENTS` directly into a `!` shell block
+- Plugin command files go in `<plugin>/commands/` or `<plugin>/skills/`, NOT inside `.claude-plugin/`
+- Plugin skills are namespaced (`/plugin-name:skill`); standalone skills are bare (`/skill`)
 
 ---
 
-*Source pages: `code.claude.com/docs/en/slash-commands.md`.*
+*Source pages: `code.claude.com/docs/en/commands.md`, `skills.md`.*
