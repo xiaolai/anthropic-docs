@@ -454,7 +454,7 @@ type ModelInfo = {
   displayName: string;    // Human-readable name
   description: string;    // Model capabilities description
   supportsEffort?: boolean;                              // Whether this model supports effort levels
-  supportedEffortLevels?: ('low' | 'medium' | 'high' | 'max')[];  // Available effort levels
+  supportedEffortLevels?: ('low' | 'medium' | 'high' | 'xhigh' | 'max')[];  // Available effort levels
   supportsAdaptiveThinking?: boolean;                   // Whether this model supports adaptive thinking
   supportsFastMode?: boolean;                           // Whether this model supports fast mode (rate-limit speed optimization)
   supportsAutoMode?: boolean;                           // Whether this model supports auto mode
@@ -576,6 +576,9 @@ type SDKMessageOrigin =
   is_error: false, num_turns, result: string, total_cost_usd,
   usage, modelUsage, permission_denials: SDKPermissionDenial[], structured_output?, stop_reason?,
   api_error_status?: number,          // HTTP status code of last API error (e.g. 400, 429, 529)
+  ttft_ms?: number,                   // Time to first token in ms (success arm only)
+  terminal_reason?: TerminalReason,   // Why the loop ended (see below)
+  fast_mode_state?: FastModeState,    // Rate-limit fast mode: 'on' | 'off' | 'cooldown'
   origin?: SDKMessageOrigin,
   deferred_tool_use?: { id: string; name: string; input: Record<string, unknown> } }
   // deferred_tool_use: set when PreToolUse hook returns permissionDecision: 'defer'
@@ -585,7 +588,14 @@ type SDKMessageOrigin =
 { type: 'result', subtype: 'error_max_turns' | 'error_during_execution'
   | 'error_max_budget_usd' | 'error_max_structured_output_retries',
   session_id, is_error: true, errors: string[], permission_denials: SDKPermissionDenial[],
+  terminal_reason?: TerminalReason,
+  fast_mode_state?: FastModeState,
   origin?: SDKMessageOrigin }
+
+// TerminalReason — why the agent loop ended
+type TerminalReason = 'completed' | 'max_turns' | 'tool_deferred' | 'aborted_streaming'
+  | 'aborted_tools' | 'hook_stopped' | 'stop_hook_prevented' | 'blocking_limit'
+  | 'rapid_refill_breaker' | 'prompt_too_long' | 'image_error' | 'model_error'
 
 // SDKPermissionDenial (in permission_denials array)
 type SDKPermissionDenial = { tool_name: string; tool_use_id: string; tool_input: Record<string, unknown> }

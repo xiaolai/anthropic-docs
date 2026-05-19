@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-05-19 (run 19:54Z)
+- *(pending review — see draft PR on `auto/2026-05-19-pending-review`)* Research-only run (no version bump); check-docs-drift failed — surface file diff queued for manual review (83 turns, $1.12)
+
 ## 2026-05-19 (run 19:07Z)
 - Docs-index hash refresh (ee68ff8e → c0a299b7, 29 pages unchanged, no version bump); fixed dangling `#effortlevel` anchor in SKILL-python.md line 280; 71 research turns; all 11 gates pass, 21 verify checks pass
 
