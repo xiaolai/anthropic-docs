@@ -127,6 +127,7 @@ Server-Sent Events. **Deprecated** — use HTTP instead where available.
 | `type` | http/sse | `"http"`, `"streamable-http"`, or `"sse"` |
 | `url` | http/sse | Transport endpoint URL |
 | `headers` | http/sse | Key-value HTTP headers; env var interpolation with `${VAR}` |
+| `alwaysLoad` | all | If `true`, all tools from this server load into context at session start (bypassing tool search deferral). Blocks startup until server connects (capped at 5s). Requires v2.1.121+. Individual tools can also opt in via `"anthropic/alwaysLoad": true` in the tool's `_meta` object |
 
 ## Tool naming convention
 
@@ -186,7 +187,15 @@ Cross-reference: [`SKILL-settings.md`](SKILL-settings.md) § *All documented set
 ## Dynamic features
 
 - **`list_changed` notifications:** When an MCP server sends this, Claude Code automatically refreshes available tools/prompts/resources without reconnecting.
-- **Tool search:** Claude Code uses `ToolSearch` to discover tools from large tool sets on demand. In configurations without tool search (Vertex AI, custom `ANTHROPIC_BASE_URL`, or `ENABLE_TOOL_SEARCH=false`), Claude uses `WaitForMcpServers` instead.
+- **Tool search:** Claude Code defers MCP tool schemas and discovers them on demand via `ToolSearch`. Control with `ENABLE_TOOL_SEARCH`:
+  | Value | Behavior |
+  |---|---|
+  | (unset) | All tools deferred; falls back to upfront loading on Vertex AI or non-first-party `ANTHROPIC_BASE_URL` |
+  | `true` | All tools deferred; forces deferral even on Vertex AI/proxies (requests fail on unsupported models) |
+  | `auto` | Threshold mode: load upfront if tools fit within 10% of context window, defer overflow |
+  | `auto:N` | Custom threshold: `N`% (0–100), e.g. `ENABLE_TOOL_SEARCH=auto:5` |
+  | `false` | All tools loaded upfront; no deferral |
+  Use `alwaysLoad: true` on a specific server to exempt it from deferral. Requires Sonnet 4+ or Opus 4+ (not Haiku).
 - **MCP tool output size:** Warning at >10,000 tokens. Override with `MAX_MCP_OUTPUT_TOKENS` env var.
 - **Startup timeout:** Set `MCP_TIMEOUT` env var (milliseconds, e.g. `MCP_TIMEOUT=10000`).
 

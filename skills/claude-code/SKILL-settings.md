@@ -107,7 +107,7 @@ Minimal valid `settings.json`:
 | `permissions` | object | Permission rules. See § *`permissions` block* below |
 | `plansDirectory` | string | Where plan files are stored (default: `~/.claude/plans`) |
 | `pluginTrustMessage` | string | (Managed only) Custom message appended to plugin trust warning |
-| `policyHelper` | object | (Managed only) Admin executable for dynamic managed settings (v2.1.136+) |
+| `policyHelper` | object | (Managed only) Admin executable for dynamic managed settings (v2.1.136+). Keys: `path` (string, absolute path to helper), `timeoutMs` (number, wait limit before treating run as failed), `refreshIntervalMs` (number, re-run interval; `0` = disable, minimum `60000`) |
 | `preferredNotifChannel` | string | Notification method: `"auto"`, `"terminal_bell"`, `"iterm2"`, `"iterm2_with_bell"`, `"kitty"`, `"ghostty"`, `"notifications_disabled"` |
 | `prefersReducedMotion` | boolean | Reduce/disable UI animations |
 | `prUrlTemplate` | string | URL template for PR badge links |

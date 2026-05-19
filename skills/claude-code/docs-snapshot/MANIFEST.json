@@ -3,7 +3,7 @@
   "indexSha256": "c0a299b72f553a2a5d1ee3828af0ad27ed94022c8ca370e649dd4f7d0c6aa681",
   "indexBytes": 28298,
   "pageCount": 105,
-  "refreshedAt": "2026-05-19T20:10:20Z",
+  "refreshedAt": "2026-05-19T21:12:50Z",
   "pages": [
     {
       "path": "en/admin-setup.md",
@@ -68,8 +68,8 @@
     {
       "path": "en/changelog.md",
       "url": "https://code.claude.com/docs/en/changelog.md",
-      "sha256": "348031fcecb12b70497ac33ec2fa5bc970db668196e16541638d55e75cd8cd7c",
-      "bytes": 339687
+      "sha256": "489fcace78b0427f298cb728ad58b4bdffbc22719efd8d59f0e3d513e1bd0f67",
+      "bytes": 339406
     },
     {
       "path": "en/channels-reference.md",

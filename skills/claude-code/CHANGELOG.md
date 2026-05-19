@@ -10,6 +10,9 @@ The newest entry is at the top.
 
 ---
 
+## 2026-05-19 (run 6 — success)
+- Routine audit pass at CC v2.1.144 — no upstream change detected; SKILL-cli.md added 2 new flags (`--dangerously-load-development-channels`, `--remote-control-session-name-prefix`), SKILL-settings.md expanded `policyHelper` sub-fields (`path`/`timeoutMs`/`refreshIntervalMs`), SKILL-mcp.md added `alwaysLoad` field and `ENABLE_TOOL_SEARCH` value table, SKILL-hooks.md added MCP tool hook fields (`server`/`tool`/`input`); all 8 gates passed, pushed to main
+
 ## 2026-05-19 (run 5 — success)
 - Routine audit pass at CC v2.1.144 — no upstream change detected; SKILL-slash-commands.md updated with 14 new slash commands and revised /model session-only semantics; all 8 gates passed, pushed to main
 

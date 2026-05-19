@@ -163,6 +163,14 @@ Non-2xx responses, connection failures, and timeouts produce non-blocking errors
 
 Calls a tool on an already-connected MCP server. The tool's text output is treated like command-hook stdout.
 
+| Field | Required | Notes |
+|---|---|---|
+| `server` | yes | Name of a configured MCP server (must already be connected) |
+| `tool` | yes | Name of the tool to call on that server |
+| `input` | no | Arguments passed to the tool. String values support `${path}` substitution from the hook's JSON input (e.g. `"${tool_input.file_path}"`) |
+
+If the named server is not connected, or the tool returns `isError: true`, the hook produces a non-blocking error and execution continues. `SessionStart` and `Setup` hooks typically fire before servers finish connecting.
+
 ## Hook input shape
 
 Claude Code writes a JSON object to stdin (or POST body for HTTP hooks). Common top-level fields:
