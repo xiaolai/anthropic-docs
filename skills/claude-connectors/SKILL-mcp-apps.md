@@ -186,10 +186,34 @@ Source: [`mcp-apps/design-guidelines.md`](https://claude.com/docs/connectors/bui
 ### Transparent theming
 
 Make your widget background transparent and style with Claude's
-CSS custom properties — blends seamlessly into the host UI across themes.
-The host injects color tokens (`color-background-*`, `color-text-*`,
-`color-border-*`), typography (`font-sans`, `font-mono`, `font-weight-*`),
-and spacing variables. All tokens adapt automatically to light/dark mode.
+CSS custom properties. Key steps:
+
+1. Set `html, body { background: transparent; }` — any opaque background
+   hides the chat surface.
+2. Add `<meta name="color-scheme" content="light dark" />` in your document
+   `<head>` so the browser drops its opaque canvas backdrop.
+3. Set `prefersBorder: false` in your UI resource's `_meta.ui` object so
+   the host doesn't wrap your widget in a bordered card.
+
+The SDK delivers a [`hostContext`](https://modelcontextprotocol.github.io/ext-apps/api/interfaces/app.McpUiHostContext.html)
+object with theming data during `connect()`:
+
+| Field | Contents |
+|---|---|
+| `theme` | `"light"` or `"dark"` |
+| `styles.variables` | CSS custom properties: `--color-background-*`, `--color-text-*`, `--color-border-*`, `--color-ring-*`, `--font-*`, `--border-radius-*`, `--border-width-*` |
+| `styles.css.fonts` | `@font-face` rules for Anthropic Sans (served from `https://assets.claude.ai`) |
+
+Read the initial context via `App.getHostContext()` after `connect()`
+resolves; subscribe to subsequent changes (e.g., user toggles dark mode)
+via the `hostcontextchanged` event. Register the listener **before**
+calling `connect()`.
+
+To load Anthropic Sans, include `csp: { resourceDomains: ["https://assets.claude.ai"] }`
+in your `_meta.ui` object.
+
+Register the resource with `registerAppResource` / `RESOURCE_MIME_TYPE`
+from `@modelcontextprotocol/ext-apps/server`.
 
 Reference: [`mcp-apps/transparent-theming.md`](https://claude.com/docs/connectors/building/mcp-apps/transparent-theming.md).
 Full CSS token table: [`mcp-apps/design-guidelines.md#style-variables`](https://claude.com/docs/connectors/building/mcp-apps/design-guidelines.md).
@@ -200,12 +224,51 @@ When a tool is called more than once in a conversation, keep only
 the newest copy of the widget active. Prevents stale widgets from
 piling up.
 
+All widget iframes from a single connector share the same sandbox origin
+(`*.claudemcpcontent.com` with `allow-same-origin`), so a `BroadcastChannel`
+opened in one instance reaches every sibling in the same conversation.
+
+**Pattern:**
+
+1. **Server** stamps each tool result with an election key (`{createdAt, seq}`)
+   in `structuredContent` (the typed JSON payload slot of an MCP tool result).
+   Use `registerAppTool` from `@modelcontextprotocol/ext-apps/server`.
+2. **Widget** reads its key from the `toolresult` event (delivered by the SDK
+   after `connect()` resolves), then broadcasts the key on a `BroadcastChannel`.
+3. Any widget that sees a younger sibling marks itself superseded (greyed out,
+   buttons disabled).
+
+Use server-minted keys (`structuredContent` values) rather than
+client-side `Date.now()` — on stored-conversation reopen, widgets mount
+as they scroll into view, so client timestamps don't reflect tool-call
+order.
+
 Reference: [`mcp-apps/instance-supersession.md`](https://claude.com/docs/connectors/building/mcp-apps/instance-supersession.md).
 
 ### External links
 
-How Claude handles `ui/open-link` requests; how directory connectors
-can allowlist destinations to skip the confirmation modal.
+`ui/open-link` requests show an "Open external link" confirmation modal
+by default. Directory connectors can declare trusted destinations that
+open without the modal via the **Allowed link URIs** field in directory
+submission.
+
+**Allowlist entry shapes:**
+
+| Shape | Example | Matches |
+|---|---|---|
+| HTTPS origin | `https://docs.example.com` | Exact hostname only; subdomains must be listed separately; port not compared |
+| Custom URI scheme | `example-app` or `example-app:` | Any URL with that scheme (e.g., deep links) |
+
+Rejected shapes: bare hostnames (`example.com`), `http://` origins,
+malformed values, and reserved schemes (`http`, `https`, `file`, `data`,
+`javascript`, `blob`, `mailto`, `tel`, `sms`, `intent`, `android-app`, etc.).
+
+Bypassed links also require a real user gesture (button click) in the
+widget. Programmatic or timer-triggered `ui/open-link` calls always show
+the modal.
+
+Custom connectors and locally configured servers always show the modal
+(no allowlist support). Design your UI so it works with the modal present.
 
 Reference: [`mcp-apps/external-links.md`](https://claude.com/docs/connectors/building/mcp-apps/external-links.md).
 

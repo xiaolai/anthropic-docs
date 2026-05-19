@@ -22,7 +22,7 @@ A valid MCPB manifest MUST include: `name`, `version`, `description`,
   "description": "What this MCPB does, one sentence.",
   "runtime": { "name": "node", "version": ">=18" },
   "entry_point": "dist/server.js",
-  "tools": [ /* ... */ ]
+  "tools": []
 }
 ```
 
