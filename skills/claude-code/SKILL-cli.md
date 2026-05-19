@@ -161,6 +161,21 @@ Environment variables can also be set in `settings.json` under `env`. See `code.
 | `ENABLE_TOOL_SEARCH` | Set to `false` to disable MCP tool search |
 | `CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE` | Set to `1` to pin `/fast` mode to Opus 4.6 instead of the default Opus 4.7 |
 
+### Prompt caching environment variables
+
+Source: `code.claude.com/docs/en/prompt-caching.md`.
+
+| Variable | Effect |
+|---|---|
+| `ENABLE_PROMPT_CACHING_1H` | Set to `1` to opt into the one-hour cache TTL (API key / Bedrock / Vertex / Foundry). Subscription users get this automatically. |
+| `FORCE_PROMPT_CACHING_5M` | Set to `1` to force the five-minute TTL regardless of auth method. Useful for debugging or overriding an `ENABLE_PROMPT_CACHING_1H` set in managed settings. |
+| `DISABLE_PROMPT_CACHING` | Set to `1` to disable prompt caching for all models. |
+| `DISABLE_PROMPT_CACHING_HAIKU` | Set to `1` to disable prompt caching for Haiku only. |
+| `DISABLE_PROMPT_CACHING_SONNET` | Set to `1` to disable prompt caching for Sonnet only. |
+| `DISABLE_PROMPT_CACHING_OPUS` | Set to `1` to disable prompt caching for Opus only. |
+
+Cache invalidation triggers (cause one slow uncached turn): switching models, connecting/disconnecting an MCP server, running `/compact`, upgrading Claude Code. Actions that keep the cache: editing files, changing output style mid-session, invoking skills/commands, `/recap`, `/rewind`. See `code.claude.com/docs/en/prompt-caching.md` for the full reference.
+
 Precedence (highest wins): CLI flags > `settings.local.json` > `settings.json` (project) > `settings.json` (user) > built-in default.
 
 ## Permission modes
