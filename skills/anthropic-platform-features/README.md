@@ -41,6 +41,6 @@ SKILL_NAME=anthropic-platform-features npm run update
 
 | Date | Update | Research | Mending | Report | Total | Notes |
 |------|--------|----------|---------|--------|-------|-------|
-| 2026-05-19 | success | research + report (no upstream change) |
-| 2026-05-18 | — | — | — | — | — | success, research + report (no upstream change) |
+| 2026-05-19 | review | docs +10/-0 |
+| 2026-05-18 | — | $0.70 | — | — | **$0.70** | success, research-only run (no upstream change) |
 
