@@ -18,8 +18,15 @@ source: https://code.claude.com/docs/en/slash-commands.md
 
 ## Discovery paths
 
-> *Populated by the research agent.* Covers `~/.claude/commands/`,
-> `<project>/.claude/commands/`, and plugin-shipped commands.
+Source: [`code.claude.com/docs/en/skills.md`](https://code.claude.com/docs/en/skills.md), [`commands.md`](https://code.claude.com/docs/en/commands.md)
+
+| Path | Scope | Invocation |
+|---|---|---|
+| `~/.claude/commands/<name>.md` | User (all projects) | `/<name>` |
+| `<project>/.claude/commands/<name>.md` | Project | `/<name>` |
+| Plugin `commands/<name>.md` | Plugin | `/<plugin>:<name>` |
+
+Subdirectories create namespaces: `commands/deploy/staging.md` → `/deploy:staging`. Plugin commands are always namespaced with the plugin name to prevent conflicts.
 
 ## Frontmatter schema
 
@@ -52,29 +59,31 @@ Source: `code.claude.com/docs/en/slash-commands.md`.
 
 ## Argument substitution: `$ARGUMENTS`
 
-> *Populated by the research agent.*
+`$ARGUMENTS` in a command body is replaced verbatim with everything the user types after the command name. Example: `/deploy staging` with `$ARGUMENTS` in the body becomes `staging`.
+
+⚠️ **Do NOT put `$ARGUMENTS` into a `!`-prefixed shell line.** `$ARGUMENTS` is unsanitised caller input — `foo; rm -rf ~` executes as three shell commands. Use `Read` or `Bash` tool calls with the model inspecting the value instead.
 
 ## Inline shell execution: `!` prefix
 
-> *Populated by the research agent.* `! <command>` runs the shell
-> command and embeds its output into the command body.
+A line starting with `!` in the command body is executed as a shell command, and its stdout is embedded into the prompt. Example: `` !git log --oneline -10 `` embeds the last 10 commits.
+
+Use `` `!<command>` `` for inline shell substitution within a sentence. Full fenced code blocks with `` ```! `` also work.
+
+**`disableSkillShellExecution`** managed setting blocks all `!` / `` ` `` execution from user/project/plugin commands (bundled and managed skills are exempt).
 
 ## File references: `@` prefix
 
-> *Populated by the research agent.*
+`@<path>` in a command body includes the file contents in the prompt. Path is relative to project root. Example: `@src/config.ts` embeds that file.
 
 ## Namespacing and plugin-shipped commands
 
-> *Populated by the research agent.* Covers `plugin:command` syntax.
-
-## Worked examples
-
-> *Populated by the research agent.* See also:
-> [`templates/commands/`](templates/commands/).
+- Standalone commands: `/<name>` or `/<namespace>:<name>` (for subdirectory commands)
+- Plugin commands: `/<plugin-name>:<name>` (always namespaced)
+- Use `/help` to list all available commands and their descriptions
 
 ## Common mistakes (auto-corrected by `rules/skills-agents-commands.md`)
 
-> *Populated by the research agent.*
+See [`rules/skills-agents-commands.md`](rules/skills-agents-commands.md) — covers: SKILL.md casing, PascalCase tool names in `allowed-tools`, agent `tools` frontmatter format, specific `description` text.
 
 ---
 

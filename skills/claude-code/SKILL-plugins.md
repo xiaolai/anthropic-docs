@@ -50,42 +50,72 @@ Source: `code.claude.com/docs/en/plugins.md`.
 
 ## Marketplace manifest: `marketplace.json`
 
-> *Populated by the research agent.* The `name`, `owner`, and
-> `plugins` array structure.
+Required top-level keys:
+
+| Key | Type | Notes |
+|---|---|---|
+| `name` | string | Marketplace identifier |
+| `owner` | object | Must contain at least `{ "name": "..." }` |
+| `plugins` | array | Array of plugin source entries |
 
 ## Marketplace source types
 
-> *Populated by the research agent.* Seven source types:
-> `github`, `git`, `url`, `npm`, `file`, `directory`, `hostPattern`.
+Eight source types for `extraKnownMarketplaces` and `strictKnownMarketplaces`:
+
+| Source type | Key field | Notes |
+|---|---|---|
+| `github` | `repo` | `"acme-corp/plugins"` |
+| `git` | `url` | Any git URL |
+| `url` | `url` | Direct URL to `marketplace.json` |
+| `npm` | `package` | Scoped packages supported |
+| `file` | `path` | Absolute path to `marketplace.json` |
+| `directory` | `path` | Absolute path to directory with `.claude-plugin/marketplace.json` |
+| `hostPattern` | `hostPattern` | Regex against marketplace host |
+| `pathPattern` | `pathPattern` | Regex against filesystem path (`file`/`directory` sources) |
+| `settings` | `name`, `plugins` | Inline marketplace in `settings.json` |
 
 ## Install scopes
 
-> *Populated by the research agent.* `user` / `project` / `local` —
-> what each means and where the install is recorded.
+| Scope | Where recorded | Notes |
+|---|---|---|
+| `user` | `~/.claude/settings.json` `enabledPlugins` | Personal, all projects |
+| `project` | `.claude/settings.json` `enabledPlugins` | Team-shared |
+| `local` | `.claude/settings.local.json` `enabledPlugins` | Per-machine, gitignored |
 
-## What plugins can ship
+## What plugins can ship (convention paths)
 
-> *Populated by the research agent.* Commands, agents, skills, hooks,
-> rules, MCP server configs.
+Plugins auto-discover resources from convention paths — **not** via manifest arrays:
 
-## Plugin discovery: convention paths
-
-> *Populated by the research agent.* How Claude Code finds
-> `commands/`, `agents/`, `skills/`, etc. inside a plugin.
+| Path inside plugin root | What it provides |
+|---|---|
+| `skills/<name>/SKILL.md` | Skill (invoked as `/<plugin>:<name>`) |
+| `agents/<name>.md` | Subagent definition |
+| `commands/<name>.md` | Slash command |
+| `hooks/hooks.json` | Hook handlers |
+| `rules/*.md` | Auto-correction rules |
+| `.mcp.json` or MCP in `plugin.json` | MCP servers |
+| `<executables>/` | Executables added to PATH |
 
 ## CLI commands
 
-> *Populated by the research agent.* `claude plugin install`,
-> `claude plugin list`, `claude plugin marketplace add`, etc.
+```bash
+claude plugin install <name>@<marketplace>     # install a plugin
+claude plugin list                              # list installed plugins
+claude plugin marketplace add <url-or-source>  # register a marketplace
+claude plugin marketplace list                  # list known marketplaces
+claude plugin update [name@marketplace]         # update plugins
+claude plugin enable <name>@<marketplace>       # enable a disabled plugin
+claude plugin disable <name>@<marketplace>      # disable a plugin
+claude plugin uninstall <name>@<marketplace>    # remove a plugin
+```
 
-## Worked examples
+Load a plugin for a single session without installing: `claude --plugin-dir ./my-plugin` or `claude --plugin-url https://example.com/plugin.zip`.
 
-> *Populated by the research agent.* See also:
-> [`templates/.claude-plugin/plugin.json`](templates/.claude-plugin/plugin.json).
+In-session: `/plugin` to browse, install, enable/disable, and manage marketplaces interactively.
 
 ## Common mistakes (auto-corrected by `rules/plugins.md`)
 
-> *Populated by the research agent.*
+See [`rules/plugins.md`](rules/plugins.md) — covers: required fields; `marketplace.json` needs `owner`; `version` must be SemVer; no `commands`/`skills` arrays in `plugin.json`.
 
 ---
 

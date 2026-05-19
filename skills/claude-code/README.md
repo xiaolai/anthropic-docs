@@ -14,8 +14,8 @@ changes that affect the reference surface (schema fields, event
 names, flags, env vars) flow in.
 
 <!-- The two stamps below are auto-filled by the pipeline. -->
-**Claude Code version**: v<version>
-**Last updated**: <YYYY-MM-DD>
+**Claude Code version**: v2.1.144
+**Last updated**: 2026-05-19
 **Pipeline status**: see [`reports/`](reports/) for per-run records.
 
 ## What it does
@@ -162,11 +162,9 @@ and `git pull`.
 
 ## Recent activity
 
-*Populated by the report agent after the first pipeline run (daily 08:00 UTC). Until then, this table is empty by design.*
-
-| Date | Result | Notes |
-|------|--------|-------|
-| — | — | — |
+| Date | Update | Research | Mending | Report | Total | Notes |
+|------|--------|----------|---------|--------|-------|-------|
+| 2026-05-19 | $0.48 | $2.14 | $— | $— | **$2.62** | review — validateExamples + checkPopulated failed; draft PR `auto/2026-05-19-pending-review` |
 
 ## For maintainers
 

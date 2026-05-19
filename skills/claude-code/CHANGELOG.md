@@ -10,6 +10,18 @@ The newest entry is at the top.
 
 ---
 
+## 2026-05-19
+*(pending review — see branch `auto/2026-05-19-pending-review`)* First full pipeline sync to CC v2.1.144 — docs index refreshed (103 pages, hash updated), surface files updated by research agent; blocked on validateExamples + checkPopulated gate failures.
+
+## v2.1.144 — 2026-05-19
+
+First pipeline-detected version bump: `@anthropic-ai/claude-code` published
+`v2.1.144` on npm. Router version table (`SKILL.md`) and README version stamp
+updated to `v2.1.144`. Docs index hash also changed
+(`c8639f2e…`); page count unchanged at 103.
+
+---
+
 ## 2026-05-17 — codex audit-fix pass 4 (8 findings → CLEAN in 2 rounds)
 
 Sanity-check audit re-run after the push-to-100 pass. Codex surfaced
