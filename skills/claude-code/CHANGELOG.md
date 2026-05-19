@@ -10,6 +10,9 @@ The newest entry is at the top.
 
 ---
 
+## 2026-05-19 (run 5 — success)
+- Routine audit pass at CC v2.1.144 — no upstream change detected; SKILL-slash-commands.md updated with 14 new slash commands and revised /model session-only semantics; all 8 gates passed, pushed to main
+
 ## 2026-05-19 (run 4 — success)
 - Sync to CC v2.1.144 — docs index content updated (105 pages, no add/remove); 11 new sandbox settings keys in SKILL-settings.md, `effort` field in SKILL-hooks.md, `mcpServers`/`servers` key rule in rules/mcp.md; all 11 gates passed, pushed to main
 

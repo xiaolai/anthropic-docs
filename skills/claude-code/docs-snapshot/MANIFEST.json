@@ -3,7 +3,7 @@
   "indexSha256": "c0a299b72f553a2a5d1ee3828af0ad27ed94022c8ca370e649dd4f7d0c6aa681",
   "indexBytes": 28298,
   "pageCount": 105,
-  "refreshedAt": "2026-05-19T19:21:49Z",
+  "refreshedAt": "2026-05-19T20:10:20Z",
   "pages": [
     {
       "path": "en/admin-setup.md",
@@ -392,8 +392,8 @@
     {
       "path": "en/permissions.md",
       "url": "https://code.claude.com/docs/en/permissions.md",
-      "sha256": "803bd6007b147a5b502b7518e928e15a7cce66251c87f5087aa18fdf03a73640",
-      "bytes": 31843
+      "sha256": "e65f37c24f0b9aac5a112045c1751e178d6798f17a85d7171a2bb6b1bad19878",
+      "bytes": 32223
     },
     {
       "path": "en/platforms.md",
