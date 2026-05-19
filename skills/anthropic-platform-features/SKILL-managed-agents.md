@@ -92,6 +92,92 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
 | [`cloud-containers.md`](https://platform.claude.com/docs/en/managed-agents/cloud-containers.md) | Container-backed agent runtime |
 | [`sessions.md`](https://platform.claude.com/docs/en/managed-agents/sessions.md) | Session lifecycle |
 | [`permission-policies.md`](https://platform.claude.com/docs/en/managed-agents/permission-policies.md) | What each agent may do |
+| [`self-hosted-sandboxes.md`](https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes.md) | Run tool execution in your own infrastructure |
+| [`self-hosted-sandboxes-security.md`](https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes-security.md) | Shared responsibility model for self-hosted environments |
+
+## Self-hosted sandboxes
+
+By default, Managed Agents executes tools and code inside
+Anthropic-managed cloud containers. Self-hosted sandboxes move tool
+execution into infrastructure you control — the orchestration stays on
+Anthropic's side, but code, filesystem, and network egress never leave
+your environment.
+
+**Not yet available on Claude Platform on AWS.**
+
+### When to use self-hosted sandboxes
+
+- Agent must operate on data that cannot leave your network boundary.
+- Agent needs to reach internal services that are not publicly routable.
+- Compliance or audit controls require execution inside your own environment.
+
+### When to combine with MCP tunnels
+
+Self-hosting controls *where the agent's code executes*.
+[MCP tunnels](https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/overview.md)
+controls *how Anthropic reaches MCP servers in your network*. They are
+independent: a cloud-container session can reach private MCP servers
+through a tunnel, and a self-hosted session can use tunneled or public
+MCP servers.
+
+### Environment worker
+
+An environment worker is a process you run on your own infrastructure.
+It polls the environment's work queue, claims sessions, downloads agent
+skills, runs tool calls locally, and posts results back. Anthropic's
+orchestration enqueues sessions; your worker executes them.
+
+**Worker patterns:**
+
+| Pattern | How |
+|---|---|
+| **Always-on** | `ant beta:worker poll` (CLI) or `EnvironmentWorker.run()` (SDK) — polls continuously |
+| **Webhook-triggered** | Wake on `session.status_run_started`, run `EnvironmentWorker.handle_item()` (SDK) |
+
+**Sandbox filesystem:**
+
+| Path | Purpose |
+|---|---|
+| `/workspace` | Default working directory; skills downloaded to `/workspace/skills/<name>/` |
+| `/mnt/session/outputs` | Agent writes final output files here; mount a host directory to retrieve them |
+
+**SDK helpers (Python / TypeScript / Go):**
+
+| Helper | Purpose |
+|---|---|
+| `EnvironmentWorker` | Out-of-the-box worker: polling, skill download, execution end-to-end |
+| `work.poller()` | Claims sessions from queue; use when you want per-session container launches |
+| `tool_runner()` / `beta_agent_toolset_20260401()` | Execution layer only — use after you've claimed the work yourself |
+
+**Monitoring:**
+
+`work.stats()` returns queue depth, pending items,
+`oldest_queued_at`, and `workers_polling` (liveness — workers that
+polled in the last 30 s). Use `work.stop()` to gracefully drain a
+specific session; pass `force: true` to interrupt immediately.
+
+> **Note:** The environment key (`ANTHROPIC_ENVIRONMENT_KEY`) authenticates
+> the worker to the work queue. Store it in a secrets manager. Call
+> `work.stats()` and `work.stop()` from your monitoring tooling using the
+> org API key — not the environment key, and not from inside the worker
+> host.
+
+> **Memory not yet supported** with self-hosted sandboxes.
+
+### Shared responsibility model
+
+| Anthropic handles | You handle |
+|---|---|
+| Session and work queue integrity | Container image quality and runtime hardening |
+| Multi-tenant isolation | Network egress controls |
+| Agent-context minimization | Environment key storage and rotation |
+| | Isolating untrusted workloads |
+| | Tool-execution blast radius (least-privilege process user) |
+| | Log retention and session content compliance |
+
+Source pages:
+[`self-hosted-sandboxes.md`](https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes.md),
+[`self-hosted-sandboxes-security.md`](https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes-security.md).
 
 ## Integrations
 
@@ -116,9 +202,9 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
 
 ## Page index
 
-20 source pages under
+22 source pages under
 [`https://platform.claude.com/docs/en/managed-agents/`](https://platform.claude.com/docs/en/managed-agents/).
 
 ---
 
-*Source pages: 20 under `platform.claude.com/docs/en/managed-agents/`.*
+*Source pages: 22 under `platform.claude.com/docs/en/managed-agents/`.*

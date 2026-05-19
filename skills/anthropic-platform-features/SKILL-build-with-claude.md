@@ -35,9 +35,16 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
 - **Cache diagnostics (beta):** When cache hits drop unexpectedly, pass
   `diagnostics: { previous_message_id: <prev_id> }` with beta header
   `cache-diagnosis-2026-04-07`. The response's `diagnostics.cache_miss_reason`
-  reports the first divergence point (`model_changed`, `system_changed`,
+  reports the first divergence point: `model_changed`, `system_changed`,
   `tools_changed`, `messages_changed`, `previous_message_not_found`, or
-  `unavailable`). Claude API only — not available on Bedrock or Vertex AI.
+  `unavailable`. Each `*_changed` type also carries
+  **`cache_missed_input_tokens`** — an integer estimate of how many input
+  tokens fell after the divergence point (magnitude indicator, not a billing
+  number). Response `diagnostics` field has four states: (a) field absent
+  (beta header missing), (b) `null` (first turn or no divergence), (c)
+  `{"cache_miss_reason": null}` (comparison still pending — treat as
+  inconclusive), (d) `{"cache_miss_reason": {...}}` (divergence found).
+  Claude API only — not available on Bedrock or Vertex AI.
   **ZDR eligible (qualified)** — only fingerprints (hashes + token counts) are
   retained, not raw prompt content. See
   [`cache-diagnostics.md`](https://platform.claude.com/docs/en/build-with-claude/cache-diagnostics.md).
@@ -78,6 +85,16 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
   older models the API returns a validation error by default; opt in to
   the new behavior with beta header
   `model-context-window-exceeded-2025-08-26`.
+  Source: [`context-windows.md`](https://platform.claude.com/docs/en/build-with-claude/context-windows.md).
+- **Context awareness (Sonnet 4.6, Sonnet 4.5, Haiku 4.5):** These
+  models track their remaining token budget automatically. At conversation
+  start the API injects `<budget:token_budget>N</budget:token_budget>`
+  (N = 1M for 1M-context models, 200K for 200K-context models). After
+  each tool call it injects
+  `<system_warning>Token usage: X/N; Y remaining</system_warning>`.
+  This lets the model determine how much capacity is left and sustain
+  focus on long-running tasks without guessing. Particularly useful for
+  multi-context-window agentic workflows.
   Source: [`context-windows.md`](https://platform.claude.com/docs/en/build-with-claude/context-windows.md).
 
 ## Platform foundation (top-level intro pages)
