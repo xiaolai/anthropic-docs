@@ -74,6 +74,7 @@ required:
 | `messages/` | [`beta/messages/`](https://platform.claude.com/docs/en/api/beta/messages/) (extends stable messages) |
 | `models/` | [`beta/models/`](https://platform.claude.com/docs/en/api/beta/models/) |
 | `sessions/` | [`beta/sessions/`](https://platform.claude.com/docs/en/api/beta/sessions/) |
+| `sessions/threads/` | [`beta/sessions/threads/`](https://platform.claude.com/docs/en/api/beta/sessions/threads.md) — list, retrieve, archive threads within a session; thread events (list/stream) via `GET /v1/sessions/{session_id}/threads` |
 | `skills/` | [`beta/skills/`](https://platform.claude.com/docs/en/api/beta/skills/) (Skills upload/management API) |
 | `user_profiles/` | [`beta/user_profiles/`](https://platform.claude.com/docs/en/api/beta/user_profiles/) |
 | `vaults/` | [`beta/vaults/`](https://platform.claude.com/docs/en/api/beta/vaults/) |

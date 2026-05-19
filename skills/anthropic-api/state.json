@@ -7,8 +7,6 @@
   "lastAuditedVersion": null,
   "lastUpdated": null,
   "scaffoldComplete": true,
-  "lastRunWarnings": [
-    "2026-05-19: Part B GitHub issues research skipped — gh api repos/anthropics/anthropic-sdk-typescript/issues returned HTTP 403 (Resource not accessible by integration); no bug tracker access in this environment."
-  ],
+  "lastRunWarnings": [],
   "lastScannedIssueNumber": null
 }

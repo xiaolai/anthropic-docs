@@ -23,12 +23,13 @@ audit reports.
 
 ## Key facts (at intent time)
 
-- **Auth:** uses an **admin-scoped API key**, not a regular API key.
-  Mint one in the Anthropic Console under the org's API Keys section
-  (admin-only).
-- **Header:** standard `x-api-key: <admin-key>` plus the usual
-  `anthropic-version`. No `anthropic-beta` header required (compliance
-  is stable, not beta).
+- **Auth:** uses a **compliance API key** (a separate key from the standard
+  API key and admin API key). Passed as a Bearer token:
+  `Authorization: Bearer $ANTHROPIC_COMPLIANCE_API_KEY`.
+  The compliance API does **not** use `x-api-key` — that header is for the
+  Messages / Admin API only.
+- **No `anthropic-version` required** for compliance endpoints (unlike the
+  Messages API). No `anthropic-beta` header required.
 - **Plan gating:** Compliance API endpoints return `403` for orgs
   without the required plan. Check eligibility at
   [`compliance-api-access`](https://platform.claude.com/docs/en/manage-claude/compliance-api-access.md)
@@ -47,17 +48,22 @@ audit reports.
 
 ## Endpoint catalog
 
-Endpoints under `/v1/organizations/compliance/...`. Each page in
-the snapshot documents one endpoint's parameters, response shape,
-and pagination.
+All compliance endpoints are under the `https://api.anthropic.com/v1/compliance/...`
+path. Each page in the snapshot documents one endpoint's parameters, response
+shape, and pagination.
 
-| Topic | Source dir |
+| Endpoint | Source |
 |---|---|
 | Compliance API section index | [`compliance.md`](https://platform.claude.com/docs/en/api/compliance.md) |
-| Activity feed | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
-| Content data (per-message records) | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
-| Org-level data | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
-| Errors | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
+| `GET /v1/compliance/activities` | [`compliance/activities.md`](https://platform.claude.com/docs/en/api/compliance/activities.md) — activity feed (filter by `activity_types`; 290+ event type enum values) |
+| `GET /v1/compliance/apps/chats` | [`compliance/apps/chats`](https://platform.claude.com/docs/en/api/compliance/apps/chats/list.md) — list chat metadata; requires `user_ids` (1–10 IDs) |
+| `GET /v1/compliance/apps/chats/{chat_id}/messages` | [`compliance/apps/chats`](https://platform.claude.com/docs/en/api/compliance/apps/chats.md) — retrieve chat messages |
+| `GET /v1/compliance/apps/projects` | [`compliance/apps/projects`](https://platform.claude.com/docs/en/api/compliance/apps/projects.md) — list Claude projects |
+| `GET /v1/compliance/groups` | [`compliance/groups.md`](https://platform.claude.com/docs/en/api/compliance/groups.md) — list compliance groups (filter by `name_prefix`) |
+| `GET /v1/compliance/groups/{group_id}/members` | [`compliance/groups/members`](https://platform.claude.com/docs/en/api/compliance/groups/members.md) — list group members |
+| `GET /v1/compliance/organizations` | [`compliance/organizations.md`](https://platform.claude.com/docs/en/api/compliance/organizations.md) — list sub-organizations (no pagination; max 1,000) |
+| `GET /v1/compliance/organizations/{uuid}/users` | [`compliance/organizations/users`](https://platform.claude.com/docs/en/api/compliance/organizations/users.md) — list org users |
+| `GET /v1/compliance/organizations/{uuid}/roles` | [`compliance/organizations/roles`](https://platform.claude.com/docs/en/api/compliance/organizations/roles.md) — list compliance roles + permissions |
 
 The conceptual coverage of each (what to use it for, what fields
 mean, integration patterns) lives in the platform-features

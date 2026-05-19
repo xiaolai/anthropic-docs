@@ -42,5 +42,5 @@ SKILL_NAME=anthropic-api npm run update
 | Date | Update | Research | Mending | Report | Total | Notes |
 |------|--------|----------|---------|--------|-------|-------|
 | 2026-05-19 | success | research + report (no upstream change) |
-| 2026-05-18 | review | research + report (no upstream change) |
+| 2026-05-18 | — | — | — | — | — | review; first baseline audit; diff size gate failed |
 
