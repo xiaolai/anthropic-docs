@@ -107,4 +107,4 @@ the 11 beta resources.
 
 ---
 
-*Source pages: 107 under `platform.claude.com/docs/en/api/beta/`.*
+*Source pages: 108 under `platform.claude.com/docs/en/api/beta/`. Last audited: 2026-05-19.*

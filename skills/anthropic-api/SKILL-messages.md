@@ -43,6 +43,9 @@ single queries or stateless multi-turn conversations.
 | `service_tier` | `auto` / `standard_only` |
 | `thinking` | `{ type: "enabled", budget_tokens: N }` for extended thinking |
 | `output_config` | Output configuration — see below |
+| `cache_control` | Top-level cache breakpoint: `{ type: "ephemeral", ttl?: "5m" \| "1h" }`. Places a breakpoint covering the entire request prefix. |
+| `container` | Reuse a code-execution container across requests. Pass the `container.id` from a previous response to resume the same sandbox. |
+| `inference_geo` | Geographic region for inference processing (e.g. `"us"`, `"eu"`). Overrides the workspace `default_inference_geo`. |
 
 ### `output_config` parameter
 
@@ -52,8 +55,6 @@ An optional object that configures the model's output:
 |---|---|---|
 | `effort` | string | Reasoning effort level: `"low"` / `"medium"` / `"high"` / `"xhigh"` / `"max"`. Controls how much compute the model spends on reasoning. Check `ModelCapabilities.effort` for model support. |
 | `format` | object | Structured output format: `{ type: "json_schema", schema: { ... } }`. Forces the model to return JSON matching the schema. |
-
-Source: [`messages/create.md`](https://platform.claude.com/docs/en/api/messages/create.md)
 
 > **Note:** `max_tokens: 0` is valid and pre-warms the prompt cache without generating any output tokens.
 
@@ -71,6 +72,7 @@ block) or an array of typed blocks:
 | `text` | Plain text. May include `cache_control` and `citations`. |
 | `image` | `{ source: { type: "base64" \| "url", media_type, data \| url } }` |
 | `document` | PDF or other document input |
+| `search_result` | User-provided search result for grounding / citation. Fields: `content` (array of text blocks), `source` (URL string), `title` (optional string), `type: "search_result"`. |
 | `tool_use` | Assistant turn: model invoked a **client** tool. Carries `id`, `name`, `input`. |
 | `tool_result` | User turn: result of a previous `tool_use`. **Must reference the matching `tool_use_id`**. |
 | `server_tool_use` | Assistant turn: model invoked a **server** tool (e.g. web_search, web_fetch, code_execution). Different return path — see server tools below. |
@@ -130,13 +132,29 @@ in the platform-features skill for caching strategy.
   ],
   "stop_reason": "end_turn",
   "stop_sequence": null,
+  "stop_details": null,
+  "container": null,
   "usage": {
     "input_tokens": 25,
     "cache_creation_input_tokens": 0,
     "cache_read_input_tokens": 0,
-    "output_tokens": 100
+    "cache_creation": {
+      "ephemeral_5m_input_tokens": 0,
+      "ephemeral_1h_input_tokens": 0
+    },
+    "output_tokens": 100,
+    "inference_geo": "us"
   }
 }
+```
+
+**New response fields (2026):**
+- `container` — `{ id, expires_at }` when a code-execution container was used; `null` otherwise. Pass `container.id` back in the next request to reuse the sandbox.
+- `usage.inference_geo` — geographic region where inference ran.
+- `usage.cache_creation` — per-TTL cache-creation token breakdown: `ephemeral_5m_input_tokens` and `ephemeral_1h_input_tokens`.
+- `stop_details` — present when `stop_reason == "refusal"`. Contains `{ type: "refusal", category: "cyber" | "bio" | null, explanation: string | null }`.
+
+Source: [`messages/create.md`](https://platform.claude.com/docs/en/api/messages/create.md)
 ```
 
 ### Stop reasons
@@ -229,4 +247,4 @@ tool use, vision, or structured outputs. Migrate to Messages.
 
 ---
 
-*Source pages: 9 under `platform.claude.com/docs/en/api/messages*` (Messages family) + 2 legacy completions.*
+*Source pages: 11 under `platform.claude.com/docs/en/api/messages*` (Messages family) + 2 legacy completions. Last audited: 2026-05-19.*

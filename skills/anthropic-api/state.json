@@ -3,7 +3,14 @@
   "github": null,
   "docs": null,
   "trackedIssues": null,
-  "researchedIssues": {},
+  "researchedIssues": {
+    "793": {
+      "title": "Streaming responses missing cache_creation TTL breakdown (ephemeral_5m/1h_input_tokens)",
+      "verdict": "skipped",
+      "reason": "Labeled spec-change, not bug; fix in flight via PR #1048 (preserve cache creation usage deltas in streaming accumulation). 1 reaction, 0 non-author comments.",
+      "researchedAt": "2026-05-19T00:00:00Z"
+    }
+  },
   "lastAuditedVersion": null,
   "lastUpdated": null,
   "scaffoldComplete": true,

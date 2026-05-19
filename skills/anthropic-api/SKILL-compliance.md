@@ -72,4 +72,4 @@ for the wire shape.
 
 ---
 
-*Source pages: 37 under `platform.claude.com/docs/en/api/compliance/`.*
+*Source pages: 38 under `platform.claude.com/docs/en/api/compliance/`. Last audited: 2026-05-19.*
