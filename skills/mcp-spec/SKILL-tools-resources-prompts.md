@@ -27,7 +27,9 @@ A tool is a callable function the server exposes to the host LLM.
 ```json
 {
   "name": "search_files",
+  "title": "Search Files",
   "description": "Search files matching a query",
+  "icons": [{ "src": "https://example.com/icon.png", "mimeType": "image/png", "sizes": ["48x48"] }],
   "inputSchema": {
     "type": "object",
     "properties": {
@@ -46,22 +48,41 @@ A tool is a callable function the server exposes to the host LLM.
     }
   },
   "annotations": {
-    "title": "Search Files",
     "readOnlyHint": true,
     "destructiveHint": false,
     "idempotentHint": true,
     "openWorldHint": false
+  },
+  "execution": {
+    "taskSupport": "optional"
   }
 }
 ```
 
+- `name` — unique identifier (required).
+- `title` — optional human-readable display name (top-level, **not** inside `annotations`).
+- `icons` — optional array of icon objects (`src`, `mimeType`, `sizes`) for UI display.
+  Source: [`specification/2025-11-25/server/tools.md`](https://modelcontextprotocol.io/specification/2025-11-25/server/tools.md)
 - `inputSchema` — JSON Schema, used by the LLM and the client to
-  validate arguments.
+  validate arguments. Currently typed as `{ type: "object", properties?,
+  required? }` only.
 - `outputSchema` — optional. When present, the response's
-  `structuredContent` should match it.
-- `annotations` — *non-binding* hints for clients (UI rendering,
-  permission prompts). All Boolean fields default to safe-pessimistic
-  values when absent.
+  `structuredContent` should match it. Currently typed as
+  `{ type: "object", … }` only.
+- `annotations` — *non-binding* behavior hints for clients (permission prompts).
+  All Boolean fields default to safe-pessimistic values when absent.
+- `execution.taskSupport` — optional. Controls task-augmented execution for this
+  tool. Values: `"forbidden"` (default), `"optional"`, `"required"`.
+  See [`basic/utilities/tasks.md`](https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/tasks.md).
+
+> **In-flight change ([SEP-2106](https://modelcontextprotocol.io/seps/2106-json-schema-2020-12.md),
+> Draft):** Proposes loosening both schema fields to full JSON Schema
+> 2020-12. `inputSchema` would retain `type: "object"` but gain support for
+> composition keywords (`anyOf`, `oneOf`, `allOf`, `$ref`, `if/then/else`).
+> `outputSchema` would accept any valid JSON Schema (arrays, primitives,
+> compositions). `structuredContent` would widen from
+> `{ [key: string]: unknown }` to `unknown`. Not yet adopted — check SDK
+> release notes before relying on non-object schemas.
 
 ### Calling
 
@@ -93,10 +114,25 @@ optionally subscribes, and reads.
 {
   "uri": "file:///path/to/data.json",
   "name": "Data file",
+  "title": "Application Config",
   "description": "Application configuration",
-  "mimeType": "application/json"
+  "mimeType": "application/json",
+  "size": 4096,
+  "icons": [{ "src": "https://example.com/icon.png", "mimeType": "image/png", "sizes": ["24x24"] }],
+  "annotations": {
+    "audience": ["user", "assistant"],
+    "priority": 0.8,
+    "lastModified": "2025-01-12T15:00:58Z"
+  }
 }
 ```
+
+- `title` — optional human-readable display name (top-level).
+- `size` — optional size in bytes.
+- `icons` — optional array of icon objects for UI display.
+- `annotations.audience` — array of `"user"` | `"assistant"` indicating intended consumers.
+- `annotations.priority` — 0.0 (least important) to 1.0 (most important / required).
+- `annotations.lastModified` — ISO 8601 timestamp of last modification.
 
 ### Schema (resource template)
 
@@ -104,6 +140,7 @@ optionally subscribes, and reads.
 {
   "uriTemplate": "github://repos/{owner}/{repo}/issues/{number}",
   "name": "GitHub issue",
+  "title": "GitHub Issue",
   "description": "Fetch an issue by owner/repo/number",
   "mimeType": "application/json"
 }
@@ -121,6 +158,12 @@ to construct concrete URIs.
 
 Text resources use `text`; binary resources use `blob` (base64).
 
+If the requested resource does not exist, the server returns a JSON-RPC
+error. The current spec recommends `-32002`; the TypeScript SDK uses
+`-32602`. Clients should handle both until
+[SEP-2164](https://modelcontextprotocol.io/seps/2164-resource-not-found-error.md)
+is finalized (it proposes standardizing on `-32602`).
+
 ### Subscriptions
 
 If server declared `resources.subscribe`, clients can subscribe to a
@@ -136,7 +179,9 @@ A prompt is a server-provided message template the user can invoke.
 ```json
 {
   "name": "review_pr",
+  "title": "Review Pull Request",
   "description": "Review a pull request",
+  "icons": [{ "src": "https://example.com/icon.png", "mimeType": "image/png", "sizes": ["24x24"] }],
   "arguments": [
     { "name": "owner", "description": "Repo owner", "required": true },
     { "name": "repo", "description": "Repo name", "required": true },
@@ -144,6 +189,9 @@ A prompt is a server-provided message template the user can invoke.
   ]
 }
 ```
+
+- `title` — optional human-readable display name (top-level).
+- `icons` — optional array of icon objects for UI display.
 
 ### Getting
 

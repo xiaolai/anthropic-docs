@@ -111,6 +111,13 @@ Standard JSON-RPC error codes plus MCP-specific extensions:
 MCP-defined error semantics live in the spec under
 [`specification/2025-11-25/basic/`](https://modelcontextprotocol.io/specification/2025-11-25/basic/).
 
+> **In-flight change ([SEP-2164](https://modelcontextprotocol.io/seps/2164-resource-not-found-error.md),
+> Draft):** The current spec recommends `-32002` for resource-not-found but
+> SDK implementations are inconsistent (TypeScript uses `-32602`, Python uses
+> `0`, others use `-32002`). SEP-2164 proposes standardizing on `-32602`
+> (Invalid Params). Until the SEP reaches Final, clients SHOULD handle both
+> `-32002` and `-32602` as resource-not-found.
+
 ## Protocol versioning
 
 Version string format: `YYYY-MM-DD` — the date of the last
@@ -147,6 +154,17 @@ Protocol evolution happens via SEPs — Specification Enhancement
 Proposals. The process is documented at
 [`community/sep-guidelines.md`](https://modelcontextprotocol.io/community/sep-guidelines.md).
 Active SEPs live under [`seps/`](https://modelcontextprotocol.io/seps/).
+
+Notable in-flight SEPs:
+
+| SEP | Title | Status | Relevance |
+|---|---|---|---|
+| [SEP-2106](https://modelcontextprotocol.io/seps/2106-json-schema-2020-12.md) | Tools `inputSchema` & `outputSchema` conform to JSON Schema 2020-12 | Draft | Loosens tool schema restrictions to support full JSON Schema 2020-12 (composition keywords, non-object `structuredContent`) |
+| [SEP-2164](https://modelcontextprotocol.io/seps/2164-resource-not-found-error.md) | Standardize Resource Not Found error code | Draft | Proposes `-32602` (Invalid Params) as the canonical resource-not-found error code across all SDKs |
+| [SEP-2596](https://modelcontextprotocol.io/seps/2596-spec-feature-lifecycle-and-deprecation.md) | Specification Feature Lifecycle and Deprecation Policy | Draft | Introduces formal feature states (Active, Deprecated, Removed) with a minimum 12-month deprecation window |
+
+> **Draft SEPs are not yet part of the official spec.** They describe
+> proposals under active discussion and may change before adoption.
 
 ---
 

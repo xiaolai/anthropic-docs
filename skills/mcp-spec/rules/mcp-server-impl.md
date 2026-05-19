@@ -64,10 +64,11 @@ decide permission prompts. Set them explicitly for accurate UX:
 ```typescript
 tools: [{
   name: "search_files",
+  title: "Search Files",          // ← top-level display name (NOT inside annotations)
   description: "Search files by name",
   inputSchema: { type: "object", properties: { query: { type: "string" } } },
   annotations: {
-    title: "Search Files",
+    // behavior hints only — title does NOT belong here
     readOnlyHint: true,
     destructiveHint: false,
     idempotentHint: true,
@@ -75,6 +76,9 @@ tools: [{
   }
 }]
 ```
+
+`title` is a **top-level** field on the tool object, not a field inside
+`annotations`. `annotations` holds only behavior hints.
 
 `openWorldHint: true` means "operates on the public internet" (search,
 public APIs). False = "scoped to the user's local / private resources."
