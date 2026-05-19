@@ -60,6 +60,11 @@ Telemetry NEVER contains user prompts or completions, but if your
 audit posture requires zero Anthropic-bound network traffic, set all
 four to `true`.
 
+When `disableAutoUpdates` is `false` (updates enabled), use
+`autoUpdaterEnforcementHours` (integer, 1–72, default 72) to force a
+pending update to install after the given number of hours. Reduce from
+the default when fleet-wide version consistency matters.
+
 > **Common mistake:** the old key names `disableCrashReporting`,
 > `disableProductAnalytics`, and `disableAutoUpdate` do not exist —
 > they are silently ignored by the app. Always use the names above.
@@ -105,6 +110,20 @@ length. Both keys are enforced locally and persist across restarts.
 > 3P spend limits are token-based and device-local, not USD-based per-workspace.
 > Set `inferenceMaxTokensPerWindow` to a value above your expected daily usage
 > times the window length, with a comfortable buffer.
+
+Source: [`cowork/3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
+
+## Rule 9 — Set `deploymentOrganizationUuid` before rollout
+
+`deploymentOrganizationUuid` is a UUID **you generate** (e.g. via
+`uuidgen` or https://www.uuidgenerator.net/) to identify your deployment
+in Anthropic telemetry. Without it, your fleet's events are tagged with
+a shared placeholder UUID (`00000000-0000-4000-8000-000000000001`) used
+by all unconfigured deployments — Anthropic cannot locate your crash
+reports when you open a support case.
+
+Set it in the MDM profile before initial rollout. Never reuse a UUID
+across different organizations.
 
 Source: [`cowork/3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
 

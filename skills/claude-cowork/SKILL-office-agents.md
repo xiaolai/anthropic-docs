@@ -41,6 +41,15 @@ e.g., findings from an Outlook inbox triage can be referenced when
 drafting a PowerPoint summary, without re-uploading or repeating
 context.
 
+> **3P platform limitation.** Work-across-apps is **not** supported
+> when connecting through Amazon Bedrock, Google Cloud Vertex AI, Azure
+> AI Foundry, or an LLM gateway. It requires direct Claude account sign-in.
+
+Enable per add-in under **Settings → "Let Claude work across files"**.
+Pro and Max plans have this on by default; Team and Enterprise default
+to off (admin-controllable at **Organization settings → Office agents**).
+Any Skills you've enabled apply across all apps during cross-app tasks.
+
 See [`work-across-apps.md`](https://claude.com/docs/office-agents/work-across-apps.md).
 
 ## Outlook setup: Microsoft Graph consent
@@ -97,11 +106,16 @@ analytics, and spend-tracking conventions live in
 
 Highlights:
 
-- Security architecture diagrams per app.
-- OpenTelemetry export for per-action audit trail (prompt, tool
-  calls, token counts).
-- Usage analytics surfaced both per-user and per-workspace.
-- Spend tracking by app, by user, by workspace.
+- Security architecture diagrams per app (first-party and third-party
+  deployment modes).
+- OpenTelemetry export for per-action audit trail (prompt, tool calls,
+  token counts). **Custom collector endpoints receive unfiltered spans
+  including prompt and document content** — only spans sent to
+  Anthropic's own collector are attribute-filtered.
+- Usage analytics (Analytics API) and spend tracking (CSV exports) apply
+  to **first-party (direct Claude account) deployments only**. Third-party
+  platform deployments (Bedrock / Vertex / Foundry / gateway) track usage
+  through your cloud provider's billing console and gateway logs.
 
 ## Page index
 

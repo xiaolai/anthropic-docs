@@ -126,15 +126,33 @@ Every managed-configuration key lives in
 [`3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
 That page is the source of truth for:
 
+- Deployment identity (`deploymentOrganizationUuid`, `disableDeploymentModeChooser`)
 - Inference provider selection (`inferenceProvider`)
 - Region pinning (`inferenceVertexRegion`, `inferenceBedrockRegion`)
-- Feature toggles (web search, local MCP, Code tab, etc.)
+- Credential helper for short-lived tokens (`inferenceCredentialHelper`,
+  `inferenceCredentialHelperTtlSec`; does not apply to Vertex AI)
+- Model list, 1M-context variants, and label overrides (`inferenceModels` with
+  `supports1m` and `labelOverride` fields per entry)
+- Sandbox controls: feature toggles (web search, local MCP, Code tab),
+  `disableDeepLinkRegistration`, `allowedWorkspaceFolders`,
+  `coworkEgressAllowedHosts`, `disabledBuiltinTools`
 - Telemetry toggles (`disableEssentialTelemetry`, `disableNonessentialTelemetry`,
   `disableNonessentialServices`, `disableAutoUpdates`)
-- MCP server allowlist (`managedMcpServers`)
-- Plugin / skill / hook distribution settings
+- Auto-update enforcement window (`autoUpdaterEnforcementHours`, integer 1–72,
+  default 72; ignored when `disableAutoUpdates` is `true`)
+- OpenTelemetry export (`otlpEndpoint`, `otlpProtocol`, `otlpHeaders`,
+  `otlpResourceAttributes`)
+- MCP server deployment (`managedMcpServers`; entries support `headersHelper`
+  and `headersHelperTtlSec` for dynamic auth tokens, and `toolPolicy` locks)
+- Extension controls (`isDesktopExtensionEnabled`, `isDesktopExtensionSignatureRequired`,
+  `isLocalDevMcpEnabled`)
+- Organization plugin tool-policy (`orgPluginSettings`)
 - Token-based spend caps (`inferenceMaxTokensPerWindow`, `inferenceTokenWindowHours`)
-- Auto-update policy (`disableAutoUpdates`)
+- Persistent app banner (`banner` with `text`, `backgroundColor`, `textColor`,
+  `linkUrl` fields)
+
+The page also provides three ready-made security profiles — **"Standard"**,
+**"Restricted"**, and **"Locked down"** — as MDM-rollout starting-point templates.
 
 ## Data residency
 
@@ -195,9 +213,10 @@ Salient gaps in 3P (versus full Claude Enterprise):
 - No Chat tab (Cowork + Code tabs only).
 - No Anthropic 1P connectors (except M365; Google Workspace planned).
 - No Project / plugin sharing across orgs.
-- No public Anthropic plugin marketplace — the org-plugins directory
-  provides an org-internal marketplace (see
-  [`3p/extensions.md`](https://claude.com/docs/cowork/3p/extensions.md)).
+- Plugin marketplace is org-internal only — the org-plugins directory
+  provides an organization-scoped marketplace; the public Anthropic
+  plugin marketplace is not available. See
+  [`3p/extensions.md`](https://claude.com/docs/cowork/3p/extensions.md).
 - No mobile dispatch (Dispatch/mobile feature absent).
 - No voice mode.
 - No Claude in Chrome.
@@ -206,6 +225,7 @@ Salient gaps in 3P (versus full Claude Enterprise):
   token-based and device-enforced via `inferenceMaxTokensPerWindow`.
 - Compliance / Analytics APIs are not exposed; equivalent capability
   via OpenTelemetry export.
+- Computer use — not available in either Claude Enterprise or Cowork on 3P.
 
 Features confirmed available in 3P that are sometimes assumed missing:
 
