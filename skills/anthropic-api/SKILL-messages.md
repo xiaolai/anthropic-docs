@@ -88,9 +88,13 @@ Known server tool types (specify in `tools` array):
 
 | Tool type string | Description |
 |---|---|
-| `web_search_20250305` / `web_search_20260209` | Web search. Supports `allowed_domains`, `blocked_domains`, `user_location`, `max_uses`. |
-| `web_fetch_20250910` | Fetch a URL. Supports `allowed_domains`, `blocked_domains`, `max_content_tokens`, `citations`. |
-| `code_execution_20250825` / `code_execution_20260120` | Execute code in a sandbox. |
+| `web_search_20250305` / `web_search_20260209` | Web search. Supports `allowed_domains`, `blocked_domains`, `user_location`, `max_uses`. Returns `web_search_tool_result` content block. |
+| `web_fetch_20250910` / `web_fetch_20260209` / `web_fetch_20260309` | Fetch a URL. Supports `allowed_domains`, `blocked_domains`, `max_content_tokens`, `citations`. Returns `web_fetch_tool_result` content block. |
+| `code_execution_20250825` / `code_execution_20260120` | Execute arbitrary code in a sandbox. Returns `code_execution_tool_result` block. |
+| `bash_code_execution` | Execute bash/shell commands in the sandbox. Returns `bash_code_execution_tool_result` block. |
+| `text_editor_code_execution` | Edit files in the sandbox (view, create, str_replace). Returns `text_editor_code_execution_tool_result` block. |
+| `tool_search_tool_regex_20251119` / `tool_search_tool_regex` | Regex-based tool search (for agent tool discovery). `allowed_callers` can restrict to direct or code_execution tools. |
+| `tool_search_tool_bm25_20251119` / `tool_search_tool_bm25` | BM25-based tool search (for agent tool discovery). Same `allowed_callers` options. |
 
 Server tools also support `defer_loading: true` to exclude from the initial system prompt (loaded on demand) and `strict: true` for schema validation.
 

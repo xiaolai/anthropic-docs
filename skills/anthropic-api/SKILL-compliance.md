@@ -45,19 +45,31 @@ audit reports.
   [`anthropic-platform-features → SKILL-manage-claude.md`](../anthropic-platform-features/SKILL-manage-claude.md);
   this surface is the wire reference.
 
+## Base path
+
+All compliance endpoints are under **`/v1/compliance/...`** (not `/v1/organizations/compliance/...`). The API key header is `x-api-key` (same as other API calls).
+
 ## Endpoint catalog
 
-Endpoints under `/v1/organizations/compliance/...`. Each page in
-the snapshot documents one endpoint's parameters, response shape,
-and pagination.
-
-| Topic | Source dir |
+| Endpoint | Page |
 |---|---|
 | Compliance API section index | [`compliance.md`](https://platform.claude.com/docs/en/api/compliance.md) |
-| Activity feed | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
-| Content data (per-message records) | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
-| Org-level data | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
-| Errors | [`compliance/`](https://platform.claude.com/docs/en/api/compliance/) |
+| `GET /v1/compliance/activities` | [`compliance/activities/list.md`](https://platform.claude.com/docs/en/api/compliance/activities/list.md) — paginated activity feed; filter by `activity_types` (295+ event types), time range, etc. |
+| Apps section | [`compliance/apps.md`](https://platform.claude.com/docs/en/api/compliance/apps.md) |
+| `GET /v1/compliance/apps/chats` | [`compliance/apps/chats/list.md`](https://platform.claude.com/docs/en/api/compliance/apps/chats/list.md) |
+| `DELETE /v1/compliance/apps/chats/{id}` | [`compliance/apps/chats/delete.md`](https://platform.claude.com/docs/en/api/compliance/apps/chats/delete.md) |
+| `GET /v1/compliance/apps/chats/{id}/messages` | [`compliance/apps/chats/messages.md`](https://platform.claude.com/docs/en/api/compliance/apps/chats/messages.md) |
+| Files / generated files | [`compliance/apps/chats/files.md`](https://platform.claude.com/docs/en/api/compliance/apps/chats/files.md), [`compliance/apps/chats/generated_files.md`](https://platform.claude.com/docs/en/api/compliance/apps/chats/generated_files.md) |
+| Artifacts | [`compliance/apps/artifacts.md`](https://platform.claude.com/docs/en/api/compliance/apps/artifacts.md) |
+| Projects / documents | [`compliance/apps/projects.md`](https://platform.claude.com/docs/en/api/compliance/apps/projects.md), [`compliance/apps/projects/documents.md`](https://platform.claude.com/docs/en/api/compliance/apps/projects/documents.md) |
+| `GET /v1/compliance/groups` | [`compliance/groups/list.md`](https://platform.claude.com/docs/en/api/compliance/groups/list.md) — list groups; filter by `name_prefix`. Pagination: `page` cursor, max 1000. |
+| `GET /v1/compliance/groups/{id}` | [`compliance/groups/retrieve.md`](https://platform.claude.com/docs/en/api/compliance/groups/retrieve.md) |
+| `GET /v1/compliance/groups/{id}/members` | [`compliance/groups/members/list.md`](https://platform.claude.com/docs/en/api/compliance/groups/members/list.md) |
+| `GET /v1/compliance/organizations` | [`compliance/organizations/list.md`](https://platform.claude.com/docs/en/api/compliance/organizations/list.md) |
+| `GET /v1/compliance/organizations/{org_uuid}/roles` | [`compliance/organizations/roles/list.md`](https://platform.claude.com/docs/en/api/compliance/organizations/roles/list.md) |
+| `GET /v1/compliance/organizations/{org_uuid}/roles/{role_id}` | [`compliance/organizations/roles/retrieve.md`](https://platform.claude.com/docs/en/api/compliance/organizations/roles/retrieve.md) |
+| `GET /v1/compliance/organizations/{org_uuid}/roles/{role_id}/permissions` | [`compliance/organizations/roles/permissions/list.md`](https://platform.claude.com/docs/en/api/compliance/organizations/roles/permissions/list.md) |
+| `GET /v1/compliance/organizations/{org_uuid}/users` | [`compliance/organizations/users/list.md`](https://platform.claude.com/docs/en/api/compliance/organizations/users/list.md) |
 
 The conceptual coverage of each (what to use it for, what fields
 mean, integration patterns) lives in the platform-features
@@ -66,10 +78,10 @@ for the wire shape.
 
 ## Source pages
 
-37 pages under
+38 pages under
 [`https://platform.claude.com/docs/en/api/compliance/`](https://platform.claude.com/docs/en/api/compliance/)
 — see directory listing for the current per-endpoint set.
 
 ---
 
-*Source pages: 37 under `platform.claude.com/docs/en/api/compliance/`.*
+*Source pages: 38 under `platform.claude.com/docs/en/api/compliance/` (as of 2026-05-19).*
