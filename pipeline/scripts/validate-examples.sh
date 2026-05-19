@@ -151,16 +151,16 @@ for (const [src, schemaPath] of Object.entries(MAP)) {
   // opt-out marker — \`\`\`<!-- skip-validate -->\` on the line immediately
   // before the fence — to mark blocks that intentionally use a different
   // shape than the surface's primary schema.
-  const re = /(?:^<!--\s*skip-validate\s*-->\s*\n)?^```json\s*\n([\s\S]*?)\n^```\s*$/gm;
-  const skipRe = /^<!--\s*skip-validate\s*-->\s*\n```json/gm;
+  const re = /^```json\s*\n([\s\S]*?)\n^```\s*$/gm;
   let m, idx = 0;
   let blocksInFile = 0;
 
   while ((m = re.exec(md)) !== null) {
     idx++;
-    // Detect opt-out: is the match preceded immediately by the marker?
+    // Detect opt-out: is the fence preceded immediately by the marker?
+    // matchStart is the position of the first backtick of ```json.
     const matchStart = m.index;
-    const precedingLine = md.slice(Math.max(0, matchStart - 40), matchStart);
+    const precedingLine = md.slice(Math.max(0, matchStart - 60), matchStart);
     if (/<!--\s*skip-validate\s*-->\s*\n$/.test(precedingLine)) {
       console.log(`SKIP ${src} block #${idx} (marked skip-validate)`);
       continue;
