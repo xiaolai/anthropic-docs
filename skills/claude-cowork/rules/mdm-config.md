@@ -47,18 +47,26 @@ MDM profile should explicitly NOT set `inferenceProvider: foundry`.
 
 ## Rule 4 — Telemetry kill switches
 
-Three independent telemetry toggles:
+Four independent telemetry toggles (all boolean, default `false`):
 
-- `disableCrashReporting`: boolean, scrubs and disables crash reports
-- `disableProductAnalytics`: boolean, disables usage telemetry
-- `disableAutoUpdate`: boolean, disables auto-update checks
+- `disableEssentialTelemetry` — blocks crash reports and error telemetry; opts you into a manual support model (your team must collect and send logs to Anthropic directly)
+- `disableNonessentialTelemetry` — blocks product-usage analytics
+- `disableNonessentialServices` — blocks non-critical third-party services (connector favicons and the artifact-preview iframe)
+- `disableAutoUpdates` — blocks update checks and downloads from Anthropic
 
-All three are off-by-default (telemetry enabled). For air-gapped or
-compliance-hardened deployments, set all three to `true`.
+All default to `false` (telemetry enabled). For air-gapped or
+compliance-hardened deployments, set all four to `true`.
+
+Separate auto-update enforcement key: `autoUpdaterEnforcementHours` (integer 1–72, default 72) — forces a pending update to install after this many hours. Ignored when `disableAutoUpdates: true`.
+
+> **Key name change from early 3P docs:** The old names `disableCrashReporting`,
+> `disableProductAnalytics`, and `disableAutoUpdate` are no longer valid.
+> Use the four keys above. Profiles written against the old names silently
+> have no effect — telemetry stays enabled.
 
 Telemetry NEVER contains user prompts or completions, but if your
 audit posture requires zero Anthropic-bound network traffic, disable
-all three.
+all four.
 
 ## Rule 5 — Don't mix per-user and admin profiles
 
@@ -85,11 +93,17 @@ JSON file your org publishes. **Pin plugin versions** in that
 manifest; bare references resolve to "latest" and inherit any
 breaking change immediately.
 
-## Rule 8 — Spend caps are workspace-monthly, not per-request
+## Rule 8 — Usage limits are token-per-rolling-window, not per-request
 
-`workspaceSpendCapUSD` caps monthly usage per workspace. When hit,
-requests return 429 `cap_exceeded` until the next billing month.
-Set to a value above your monthly forecast, with a buffer.
+Two keys govern local token throttling (both integers):
+
+- `inferenceMaxTokensPerWindow` — total input + output tokens permitted per device per window. When reached, the app refuses new messages until the window resets. Enforced locally; persists across restarts.
+- `inferenceTokenWindowHours` — length of the tumbling window (1–720 hours).
+
+There is no dollar-based spend-cap key. Token caps are enforced on
+the device and reset automatically when the window expires. For
+cost visibility, use OpenTelemetry export (`otlpEndpoint`) and
+track token counts in your own collector.
 
 ---
 

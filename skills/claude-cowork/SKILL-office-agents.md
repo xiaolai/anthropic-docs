@@ -9,7 +9,6 @@ description: |
   enterprise admin setup (OpenTelemetry audit, usage analytics,
   spend tracking), and the one-time Microsoft Graph consent required
   for Outlook.
-source: https://claude.com/docs/office-agents/overview.md
 ---
 
 # Claude for M365 (Office Agents)
@@ -74,8 +73,22 @@ See [`dictation.md`](https://claude.com/docs/office-agents/dictation.md).
 
 ## FSI plugins
 
-Pre-built plugins for financial-services workflows (modeling,
-disclosures, compliance reviews) ship as a dedicated plugin bundle.
+An open-source plugin set for financial-services workflows lives at
+[`github.com/anthropics/financial-services`](https://github.com/anthropics/financial-services).
+Add it as a Cowork marketplace via **Customize → Browse plugins → Personal → + → Add marketplace from GitHub**.
+
+| Plugin | Purpose |
+|---|---|
+| Financial analysis (core) | Comps, DCF, LBO, 3-statement models; shared MCP connectors. Install first. |
+| Investment banking | CIMs, teasers, buyer lists, merger models |
+| Equity research | Earnings updates, initiating coverage reports |
+| Private equity | Deal sourcing, due diligence, IC memos, portfolio monitoring |
+| Wealth management | Client meeting prep, financial plans, portfolio rebalancing |
+
+Included skills (examples): `/comps`, `/dcf`, `/earnings`, `/one-pager`, `/ic-memo`, `/source`, `/client-review`.
+MCP connectors included: Daloopa, Morningstar, S&P Global, FactSet, Moody's, MT Newswires, Aiera, LSEG, PitchBook, Chronograph, Egnyte (may require separate vendor subscription).
+
+Partner plugins from LSEG and S&P Global are also included in the repository.
 
 See [`fsi-plugins.md`](https://claude.com/docs/office-agents/fsi-plugins.md).
 
@@ -105,12 +118,11 @@ Highlights:
 
 ## Page index
 
-All 11 source pages mirrored under
+All 10 source pages mirrored under
 [`https://claude.com/docs/office-agents/`](https://claude.com/docs/office-agents/):
 
 | Page | Topic |
 |---|---|
-| `overview.md` | What's available, deployment overview |
 | `excel.md` | Claude for Excel |
 | `powerpoint.md` | Claude for PowerPoint |
 | `word.md` | Claude for Word |
@@ -124,4 +136,4 @@ All 11 source pages mirrored under
 
 ---
 
-*Source pages: 11 under `claude.com/docs/office-agents/`.*
+*Source pages: 10 under `claude.com/docs/office-agents/`. (`overview.md` was removed from the upstream docs index on 2026-05-19.) FSI plugins section updated 2026-05-19 to reflect open-source GitHub-hosted plugin set.*

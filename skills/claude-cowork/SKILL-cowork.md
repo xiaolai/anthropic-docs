@@ -126,14 +126,38 @@ Every managed-configuration key lives in
 [`3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
 That page is the source of truth for:
 
-- Inference provider selection (`inferenceProvider`)
+**Connection**
+- Inference provider selection (`inferenceProvider`: `vertex` | `bedrock` | `foundry` | `gateway`)
+- Organization UUID (`deploymentOrganizationUuid`) — required before rollout for telemetry attribution
+- Sign-in screen control (`disableDeploymentModeChooser`) — hides Anthropic sign-in option
+- Credential helper executable (`inferenceCredentialHelper`, `inferenceCredentialHelperTtlSec`) — for dynamic short-lived credentials
+- Model list (`inferenceModels` — string or `{"name","labelOverride","supports1m"}` objects)
 - Region pinning (`inferenceVertexRegion`, `inferenceBedrockRegion`)
-- Feature toggles (web search, local MCP, etc.)
-- Telemetry toggles
-- MCP server allowlist
-- Plugin / skill / hook distribution settings
-- Per-user spend caps
-- Auto-update policy
+
+**Sandbox & workspace**
+- Code tab toggle (`isClaudeCodeForDesktopEnabled`)
+- Egress allowlist (`coworkEgressAllowedHosts`) — governs Cowork tab sandbox only, not Code tab
+- Disabled built-in tools (`disabledBuiltinTools` — array of tool names)
+- Allowed workspace folders (`allowedWorkspaceFolders`)
+- Deep-link handling (`disableDeepLinkRegistration`)
+
+**Extensions**
+- Managed MCP servers (`managedMcpServers` — supports `oauth`, `headersHelper`, `toolPolicy`)
+- Org-plugin tool policy (`orgPluginSettings`)
+- User extension controls (`isLocalDevMcpEnabled`, `isDesktopExtensionEnabled`, `isDesktopExtensionSignatureRequired`)
+
+**Telemetry & updates**
+- Crash/error reports (`disableEssentialTelemetry`)
+- Usage analytics (`disableNonessentialTelemetry`)
+- Non-critical third-party services (`disableNonessentialServices`)
+- Auto-updates (`disableAutoUpdates`, `autoUpdaterEnforcementHours` 1–72 h, default 72)
+- OpenTelemetry export (`otlpEndpoint`, `otlpProtocol`, `otlpHeaders`, `otlpResourceAttributes`)
+
+**Usage limits**
+- Per-device token cap (`inferenceMaxTokensPerWindow`, `inferenceTokenWindowHours` 1–720 h)
+
+**Appearance**
+- Persistent banner (`banner` — `{enabled, text, backgroundColor, textColor, linkUrl}`)
 
 ## Data residency
 
@@ -178,6 +202,14 @@ marketplace is not available in 3P.
 See [`3p/extensions.md`](https://claude.com/docs/cowork/3p/extensions.md)
 for the per-extension distribution mechanics.
 
+**Auto-install preference for org plugins.** Set `installationPreference` in `.claude-plugin/plugin.json`:
+
+| Value | Behavior |
+|---|---|
+| `"required"` | Auto-installs; Uninstall action hidden; reinstalls if removed from disk |
+| `"auto_install"` | Auto-installs; users may uninstall |
+| `"available"` (default) | Users install manually from plugin browser |
+
 ## M365 connector (3P-specific)
 
 The Anthropic-built M365 connector **is** available in Cowork on 3P
@@ -189,19 +221,24 @@ Google Workspace connector is not currently supported in 3P (planned).
 
 Full comparison: [`3p/feature-matrix.md`](https://claude.com/docs/cowork/3p/feature-matrix.md).
 
-Salient gaps in 3P (versus full Claude Enterprise):
+Available in 3P but different from Enterprise:
+
+- Memory: ✓ in 3P, but stored **on device** (not Anthropic infrastructure); no chat-history search or nightly summaries.
+- Scheduled tasks: ✓ in 3P.
+- Plugin marketplace: org-plugins directory acts as an organization-internal marketplace; public Anthropic plugin marketplace not available.
+- Per-user spend caps: blanket token caps (`inferenceMaxTokensPerWindow`) only, not differentiated by role.
+- OpenTelemetry export: ✓ in both; replaces Compliance/Analytics API equivalents.
+
+Absent from 3P (versus full Claude Enterprise):
 
 - No Chat tab (Cowork + Code tabs only).
-- No Anthropic 1P connectors (except M365).
+- No Anthropic 1P connectors (except M365; Google Workspace coming soon).
 - No Project / plugin sharing across orgs.
-- No public plugin marketplace.
-- No mobile dispatch.
+- No mobile Dispatch.
 - No voice mode.
 - No Claude in Chrome.
 - No web-based admin console — admin functions delivered via MDM.
-- Per-user spend caps are blanket-only (not differentiated by role).
-- Compliance / Analytics APIs are not exposed; equivalent capability
-  via OpenTelemetry export.
+- No Compliance API or Analytics API — use OpenTelemetry export instead.
 
 ## Cowork guide (standard mode)
 
