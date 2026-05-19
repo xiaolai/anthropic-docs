@@ -29,7 +29,7 @@ on non-beta endpoints are ignored.
 
 ### Known beta feature strings
 
-As of 2026-05-18 (from [`models/list.md`](https://platform.claude.com/docs/en/api/models/list.md)):
+As of 2026-05-19 (from [`models/list.md`](https://platform.claude.com/docs/en/api/models/list.md)):
 
 | Beta string | Feature |
 |---|---|
