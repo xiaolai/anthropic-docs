@@ -10,6 +10,21 @@ The newest entry is at the top.
 
 ---
 
+## 2026-05-19 — v2.1.143 — first tracked npm release + docs index refresh
+
+Version bump: `@anthropic-ai/claude-code` `0.0.0` (placeholder) → `v2.1.143`
+(first real npm package version tracked by the pipeline).
+
+The upstream docs index hash also changed in this run (same 103 pages,
+no additions or removals — content updates within existing pages).
+
+- `SKILL.md` router table already reflected `v2.1.143` from the security-
+  hardening pass.
+- `README.md` version placeholder (`v<version>`, `<YYYY-MM-DD>`) stamped
+  with `v2.1.143` / `2026-05-19`.
+- `state.json` version tracking updated by the pipeline from `0.0.0` to
+  `2.1.143`.
+
 ## 2026-05-17 — codex audit-fix pass 4 (8 findings → CLEAN in 2 rounds)
 
 Sanity-check audit re-run after the push-to-100 pass. Codex surfaced
