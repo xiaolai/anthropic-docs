@@ -87,7 +87,11 @@ supported by [Cowork on 3P](SKILL-cowork.md). This decouples M365
 deployment from Anthropic's API for organizations with the same
 residency / regulatory drivers.
 
-See [`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md).
+See [`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md)
+for connection-path setup (LLM gateway, Bedrock direct, Vertex AI direct, Foundry
+direct) and **network allowlist tables** — separate tables for 1P and 3P
+deployments covering `pivot.claude.ai`, inference endpoints, Entra ID, and
+optional domains (Sentry, MCP proxy, work-across-apps bridge).
 
 ## Enterprise readiness
 
@@ -97,11 +101,16 @@ analytics, and spend-tracking conventions live in
 
 Highlights:
 
-- Security architecture diagrams per app.
-- OpenTelemetry export for per-action audit trail (prompt, tool
-  calls, token counts).
-- Usage analytics surfaced both per-user and per-workspace.
-- Spend tracking by app, by user, by workspace.
+- **Security architecture diagrams** per app (Anthropic 1P and third-party
+  deployment paths), linked from the Trust Center.
+- **OpenTelemetry export** for per-action audit trail. ⚠️ Custom OTLP
+  endpoints receive **unfiltered** spans that include prompt and document
+  content — treat the endpoint as sensitive data. Only spans sent to
+  Anthropic's own collector are scrubbed of sensitive attributes.
+- **Usage analytics and spend tracking** apply only when users sign in
+  with Claude accounts (1P). When using 3P platforms (Bedrock, Vertex,
+  Foundry, or a gateway), usage and spend are tracked through your cloud
+  provider's billing console and gateway logging instead.
 
 ## Page index
 

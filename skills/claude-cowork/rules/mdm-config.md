@@ -53,8 +53,9 @@ Four independent telemetry/service toggles (all default `false` = enabled):
 - `disableNonessentialTelemetry`: boolean — blocks product-usage analytics to Anthropic.
 - `disableNonessentialServices`: boolean — blocks non-critical third-party fetches (connector favicons, artifact-preview iframe).
 - `disableAutoUpdates`: boolean — blocks update checks and downloads from Anthropic (IT must redistribute new builds).
+- `autoUpdaterEnforcementHours`: integer (default 72, range 1–72) — when auto-updates are **enabled**, forces a pending update to install after N hours. Ignored when `disableAutoUpdates` is `true`. Pair with `"24"` in the Standard security profile.
 
-When all four are `true`, the desktop app makes **no outbound connections to Anthropic-operated hosts at runtime**.
+When all four telemetry/service toggles are `true`, the desktop app makes **no outbound connections to Anthropic-operated hosts at runtime**.
 
 Telemetry NEVER contains user prompts or completions, but if your
 audit posture requires zero Anthropic-bound network traffic, set all
@@ -108,6 +109,23 @@ length. Both keys are enforced locally and persist across restarts.
 
 Source: [`cowork/3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
 
+## Rule 9 — Set `deploymentOrganizationUuid` before fleet rollout
+
+Set a generated UUID in `deploymentOrganizationUuid` before distributing MDM
+profiles. Without it every device uses the shared placeholder
+`00000000-0000-4000-8000-000000000001`; Anthropic cannot identify your fleet's
+crash reports. Source: [`cowork/3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
+
+## Rule 10 — `inferenceModels` requires provider-namespaced IDs
+
+Use provider-exact IDs: Vertex publisher IDs (`claude-sonnet-4@20250514`),
+Bedrock inference-profile IDs (`us.anthropic.claude-sonnet-4-20250514-v1:0`),
+Foundry deployment names, or gateway `/v1/models` IDs. Generic aliases like
+`"claude-opus"` are silently ignored. Each entry may be a plain string or an
+object `{"name":"<id>","labelOverride":"<label>","supports1m":true}` — only set
+`supports1m` for models you've confirmed support 1M context. Source:
+[`cowork/3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
+
 ---
 
-*Source: claude.com/docs/cowork/3p/configuration.md + feature-matrix.md.*
+*Source: claude.com/docs/cowork/3p/configuration.md + feature-matrix.md + extensions.md.*

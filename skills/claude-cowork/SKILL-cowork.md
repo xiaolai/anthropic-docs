@@ -126,15 +126,36 @@ Every managed-configuration key lives in
 [`3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
 That page is the source of truth for:
 
-- Inference provider selection (`inferenceProvider`)
-- Region pinning (`inferenceVertexRegion`, `inferenceBedrockRegion`)
-- Feature toggles (web search, local MCP, Code tab, etc.)
-- Telemetry toggles (`disableEssentialTelemetry`, `disableNonessentialTelemetry`,
-  `disableNonessentialServices`, `disableAutoUpdates`)
-- MCP server allowlist (`managedMcpServers`)
-- Plugin / skill / hook distribution settings
-- Token-based spend caps (`inferenceMaxTokensPerWindow`, `inferenceTokenWindowHours`)
-- Auto-update policy (`disableAutoUpdates`)
+- **Activation:** `inferenceProvider` (enum: `vertex` `bedrock` `foundry` `gateway`),
+  `deploymentOrganizationUuid` (UUID; set before rollout so Anthropic can locate
+  your fleet's crash reports), `disableDeploymentModeChooser` (boolean; hides the
+  Anthropic sign-in option at launch)
+- **Region pinning:** `inferenceVertexRegion`, `inferenceBedrockRegion`
+- **Models:** `inferenceModels` — string list **or** objects
+  `{"name": "<provider-id>", "labelOverride": "<label>", "supports1m": true}`;
+  use provider-namespaced IDs (Vertex publisher IDs, Bedrock inference-profile IDs,
+  Foundry deployment names, or gateway `/v1/models` IDs)
+- **Credential helper:** `inferenceCredentialHelper` (executable path; stdout used
+  as credential); `inferenceCredentialHelperTtlSec` (cache TTL, default 3600; not used for Vertex)
+- **Sandbox & workspace:** `disabledBuiltinTools` (string[], JSON — remove named
+  tools from the agent), `allowedWorkspaceFolders` (string[], JSON — restrict
+  workspace paths), `coworkEgressAllowedHosts` (string[], JSON — sandbox egress
+  allowlist), `isClaudeCodeForDesktopEnabled` (bool, default `true`),
+  `disableDeepLinkRegistration` (bool, default `false`)
+- **Extension controls:** `isLocalDevMcpEnabled`, `isDesktopExtensionEnabled`,
+  `isDesktopExtensionSignatureRequired`, `managedMcpServers` (object[], JSON),
+  `orgPluginSettings` (object, JSON — per-tool policy for org-plugin-delivered servers)
+- **Telemetry & updates:** `disableEssentialTelemetry`, `disableNonessentialTelemetry`,
+  `disableNonessentialServices`, `disableAutoUpdates`; `autoUpdaterEnforcementHours`
+  (integer, default 72 — forces pending update installation after N hours when
+  auto-updates are enabled)
+- **OpenTelemetry export:** `otlpEndpoint`, `otlpProtocol`, `otlpHeaders`,
+  `otlpResourceAttributes` (object, JSON — extra resource attributes on every
+  span/metric)
+- **Usage limits:** `inferenceMaxTokensPerWindow`, `inferenceTokenWindowHours`
+
+Three recommended security profiles (**Standard**, **Restricted**, **Locked down**)
+are documented on the configuration reference page with per-key example tables.
 
 ## Data residency
 
@@ -177,7 +198,14 @@ an organization-internal marketplace; the public Anthropic plugin
 marketplace is not available in 3P.
 
 See [`3p/extensions.md`](https://claude.com/docs/cowork/3p/extensions.md)
-for the per-extension distribution mechanics.
+for the per-extension distribution mechanics, including:
+
+- **`installationPreference`** in each org-plugin's `.claude-plugin/plugin.json`:
+  `"required"` (auto-install, Uninstall hidden), `"auto_install"` (auto-install,
+  user may uninstall), `"available"` / omitted (default — user opts in manually).
+- **`orgPluginSettings`** in managed config for per-tool policy locks on
+  org-plugin-delivered MCP servers (a plugin's `.mcp.json` doesn't carry a
+  `toolPolicy` field; set it here instead, keyed by server name).
 
 ## M365 connector (3P-specific)
 
