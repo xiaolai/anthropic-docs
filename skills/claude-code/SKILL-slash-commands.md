@@ -41,6 +41,7 @@ Commands marked **[Skill]** are bundled skills — prompts handed to Claude that
 | `/context [all]` | Visualize current context usage |
 | `/copy [N]` | Copy last assistant response to clipboard |
 | `/debug [description]` | **[Skill]** Enable debug logging and troubleshoot issues |
+| `/desktop` | Continue the current session in the Claude Code Desktop app. macOS and Windows only. Alias: `/app` |
 | `/diff` | Open interactive diff viewer of uncommitted changes |
 | `/doctor` | Diagnose Claude Code installation and settings |
 | `/effort [level\|auto]` | Set model effort level: `low`, `medium`, `high`, `xhigh`, `max` |
@@ -65,7 +66,7 @@ Commands marked **[Skill]** are bundled skills — prompts handed to Claude that
 | `/loop [interval] [prompt]` | **[Skill]** Run a prompt repeatedly; Claude self-paces when no interval given. Alias: `/proactive` |
 | `/mcp` | Manage MCP server connections and OAuth authentication |
 | `/memory` | Edit CLAUDE.md files and manage auto-memory |
-| `/model [model]` | Select or change the AI model |
+| `/model [model]` | Select or change the AI model for the **current session only**. Press `d` in the interactive picker to set a default for new sessions. |
 | `/permissions` | Manage allow/ask/deny rules for tool permissions. Alias: `/allowed-tools` |
 | `/plan [description]` | Enter plan mode |
 | `/plugin` | Manage Claude Code plugins |
@@ -93,7 +94,9 @@ Commands marked **[Skill]** are bundled skills — prompts handed to Claude that
 | `/tui [default\|fullscreen]` | Set terminal UI renderer |
 | `/ultraplan <prompt>` | Draft a plan in the cloud and review in browser |
 | `/ultrareview [PR]` | Run deep multi-agent code review in cloud sandbox |
+| `/upgrade` | Open the upgrade page to switch to a higher plan tier |
 | `/usage` | Show session cost and plan usage. Aliases: `/cost`, `/stats` |
+| `/usage-credits` | Configure usage credits to keep working when you hit a limit. Renamed from `/extra-usage` (old name still works) |
 | `/voice [hold\|tap\|off]` | Toggle voice dictation |
 
 **MCP prompts** from connected servers appear as `/mcp__<server>__<prompt>` and are dynamically discovered.

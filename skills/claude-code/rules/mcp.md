@@ -29,3 +29,7 @@ For non-stdio transports, set `"type": "http"` or `"type": "sse"` and supply a `
 ### `env` values must be strings
 
 `env` is an object mapping env-var names to **string** values. Numbers and booleans should be quoted: `"PORT": "3000"`, not `"PORT": 3000`.
+
+### Use `mcpServers` as the top-level key, not `servers`
+
+VS Code MCP configurations use `"servers"` as the top-level key. Claude Code requires `"mcpServers"`. Copying a VS Code config without renaming the key causes all servers to be silently ignored (v2.1.144+: `claude mcp list` now shows a parse error). Rename `"servers"` → `"mcpServers"` when migrating from VS Code.

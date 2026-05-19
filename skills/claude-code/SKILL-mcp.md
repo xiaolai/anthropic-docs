@@ -203,6 +203,7 @@ See [`rules/mcp.md`](rules/mcp.md). Key pitfalls:
 - HTTP/SSE servers require explicit `"type": "http"` or `"type": "sse"` plus a `url`
 - `env` values must be **strings** (`"PORT": "3000"`, not `"PORT": 3000`)
 - The server name `workspace` is reserved and will be skipped
+- **VS Code uses `"servers"` as the top-level key; Claude Code requires `"mcpServers"`.** Copying a VS Code MCP config into `.mcp.json` without renaming the key causes all servers to be silently ignored (v2.1.144+: `claude mcp list` now shows a config parse error instead of an empty list)
 
 ---
 
