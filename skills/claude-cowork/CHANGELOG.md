@@ -3,6 +3,9 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-19 (run 2)
+*(pending review — see PR auto/2026-05-19-pending-review)* Research agent audited 34 pages; checkDocsDrift gate failed — research changes held in draft PR for human review.
+
 ## 2026-05-19
 - Sync to docs index 33c21db3 — removed office-agents/overview.md (35 → 34 pages); all 19 verify checks pass.
 
