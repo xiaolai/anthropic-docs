@@ -45,7 +45,7 @@ Each entry uses this structure:
 
 **KI 0 — Example bug title**
 
-- **Affects:** v0.0.0 – v0.0.0
+- **Affects:** v2.0.0 – v2.1.143
 - **Symptom:** Brief description of what the user observes.
 - **Reproduction:** Minimal steps to trigger.
 - **Workaround:** What to do until the bug is fixed.

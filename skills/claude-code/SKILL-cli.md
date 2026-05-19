@@ -18,17 +18,88 @@ source: https://code.claude.com/docs/en/cli-reference.md
 
 ## Top-level invocation
 
-> *Populated by the research agent.* `claude`, `claude -p`, `claude --resume`, etc.
+| Invocation | Description |
+|---|---|
+| `claude` | Start interactive session |
+| `claude "query"` | Start interactive session with initial prompt |
+| `claude -p "query"` | Print mode (non-interactive, then exit) |
+| `cat file \| claude -p "query"` | Process piped content |
+| `claude -c` | Continue most recent conversation in current directory |
+| `claude -r "<session>" "query"` | Resume session by ID or name |
 
-## CLI flags
+## CLI subcommands
 
-> *Populated by the research agent.* Every documented flag with type,
-> default, and effect.
+| Command | Description |
+|---|---|
+| `claude update` | Update to latest version |
+| `claude install [version]` | Install/reinstall native binary. Accepts version like `2.1.118`, `stable`, or `latest`. |
+| `claude auth login` | Sign in. Flags: `--email`, `--sso`, `--console`. |
+| `claude auth logout` | Sign out. |
+| `claude auth status` | Auth status as JSON (`--text` for human-readable). Exits 0 if logged in, 1 if not. |
+| `claude agents` | Open agent view to monitor background sessions. |
+| `claude attach <id>` | Attach to a background session. |
+| `claude auto-mode defaults` | Print built-in auto mode classifier rules as JSON. |
+| `claude daemon status` | Print background-session supervisor state. |
+| `claude logs <id>` | Print recent output from a background session. |
+| `claude mcp` | Configure MCP servers. See [`SKILL-mcp.md`](SKILL-mcp.md). |
+| `claude plugin` | Manage plugins. Alias: `claude plugins`. |
+| `claude project purge [path]` | Delete all local state for a project. Flags: `--dry-run`, `-y`, `--all`. |
+| `claude remote-control` | Start Remote Control server (no local session). |
+| `claude respawn <id>` | Restart a background session with conversation intact. |
+| `claude rm <id>` | Remove a background session. |
+| `claude setup-token` | Generate long-lived OAuth token for CI/scripts. |
+| `claude stop <id>` | Stop a background session. Also `claude kill`. |
+| `claude ultrareview [target]` | Run ultrareview non-interactively. `--json` for raw payload. |
+
+## CLI flags (key selection)
+
+| Flag | Description |
+|---|---|
+| `--add-dir` | Add working directories. Persist with `permissions.additionalDirectories` in settings. |
+| `--agent` | Specify a subagent for the current session. |
+| `--allowedTools` | Tools that execute without a permission prompt. |
+| `--append-system-prompt` | Append custom text to the default system prompt. |
+| `--bare` | Minimal mode: skip hooks, skills, plugins, MCP, memory, CLAUDE.md. Faster for scripts. |
+| `--bg` | Start session as background agent, return immediately with session ID. |
+| `--continue` / `-c` | Load most recent conversation in current directory. |
+| `--dangerously-skip-permissions` | Skip all permission prompts (bypassPermissions mode). |
+| `--debug [categories]` | Enable debug mode with optional category filtering. |
+| `--debug-file <path>` | Write debug logs to a file. |
+| `--disable-slash-commands` | Disable all skills and commands for this session. |
+| `--disallowedTools` | Tools removed from model's context entirely. |
+| `--effort` | Set effort level: `low`, `medium`, `high`, `xhigh`, `max`. |
+| `--exclude-dynamic-system-prompt-sections` | Move per-machine sections into first user message for better prompt-cache reuse. |
+| `--fallback-model` | Auto-fallback model when default is overloaded (print mode and background sessions). |
+| `--fork-session` | Create new session ID when resuming. |
+| `--from-pr` | Resume sessions linked to a PR (number, URL, or GitLab/Bitbucket URL). |
+| `--init` | Run Setup hooks with `init` matcher before session (print mode only). |
+| `--init-only` | Run Setup + SessionStart hooks, then exit. |
+| `--json-schema` | Get validated JSON output matching a JSON Schema (print mode only). |
+| `--max-budget-usd` | Max dollar amount on API calls before stopping (print mode only). |
+| `--max-turns` | Limit agentic turns (print mode only). |
+| `--mcp-config` | Load MCP servers from JSON files or strings. |
+| `--model` | Override model for session. Accepts alias (`sonnet`, `opus`) or full name. |
+| `--name` / `-n` | Set display name for session. Resume with `claude --resume <name>`. |
+| `--no-session-persistence` | Disable session saves (print mode only). |
+| `--output-format` | Output format: `text`, `json`, `stream-json`. |
+| `--permission-mode` | Start in specified mode: `default`, `acceptEdits`, `plan`, `auto`, `dontAsk`, `bypassPermissions`. |
+| `--plugin-dir` | Load plugin from directory or `.zip` archive for this session. |
+| `--plugin-url` | Fetch plugin `.zip` archive from URL for this session. |
+| `--print` / `-p` | Print mode (non-interactive). |
+| `--remote` | Create new web session on claude.ai. |
+| `--remote-control` / `--rc` | Start interactive session with Remote Control enabled. |
+| `--resume` / `-r` | Resume session by ID or name, or show interactive picker. |
+| `--settings` | Settings JSON file or inline JSON string (overrides same keys in settings files). |
+| `--strict-mcp-config` | Only use MCP servers from `--mcp-config`. |
+| `--system-prompt` | Replace entire system prompt with custom text. |
+| `--teleport` | Resume a web session in your local terminal. |
+| `--tools` | Restrict which built-in tools Claude can use. `""` = none, `"default"` = all. |
+| `--verbose` | Enable verbose logging (overrides `viewMode` setting). |
+| `--worktree` / `-w` | Start in isolated git worktree. Pass `#<number>` or PR URL to fetch a PR. |
+
+Source: `code.claude.com/docs/en/cli-reference.md`.
 
 ## Subcommands
-
-> *Populated by the research agent.* `claude plugin`, `claude config`,
-> `claude mcp`, etc.
 
 ## Environment variables
 
@@ -48,8 +119,29 @@ Source: `code.claude.com/docs/en/settings.md` (environment section). The researc
 
 ## Permission modes
 
-> *Populated by the research agent.* `default`, `acceptEdits`, `plan`,
-> `bypassPermissions` — semantics and use cases.
+Modes set the baseline for what Claude can do without prompting. See also [`SKILL-settings.md`](SKILL-settings.md) `permissions.defaultMode`.
+
+| Mode | What runs without asking | Best for |
+|---|---|---|
+| `default` | Reads only | Getting started, sensitive work |
+| `acceptEdits` | Reads, file edits, common filesystem cmds (`mkdir`, `touch`, `mv`, `cp`, `sed`) | Iterating on code |
+| `plan` | Reads only — Claude proposes a plan but does not edit | Exploring before changing |
+| `auto` | Everything, with background classifier checks | Long tasks, low prompt fatigue (requires Max/Team/Enterprise, v2.1.83+) |
+| `dontAsk` | Only pre-approved tools (from `allow` rules) | Locked-down CI and scripts |
+| `bypassPermissions` | Everything including protected paths | Isolated containers/VMs only |
+
+**Protected paths** (never auto-approved except in `bypassPermissions`):
+- Directories: `.git`, `.vscode`, `.idea`, `.husky`, `.claude` (except commands/agents/skills/worktrees)
+- Files: `.gitconfig`, `.gitmodules`, `.bashrc`, `.zshrc`, `.mcp.json`, `.claude.json`
+
+**Switching modes:**
+- During session: `Shift+Tab` cycles `default` → `acceptEdits` → `plan` (→ `bypassPermissions` → `auto` if enabled)
+- At startup: `claude --permission-mode plan`
+- As default: `permissions.defaultMode` in `settings.json` (user scope for `auto`)
+
+**Auto mode requirements** (v2.1.83+): Plan Max/Team/Enterprise/API; admin must enable for Team/Enterprise; supported models only; Anthropic API only (not Bedrock/Vertex/Foundry).
+
+Source: `code.claude.com/docs/en/permission-modes.md`.
 
 ## Authentication
 

@@ -10,6 +10,29 @@ The newest entry is at the top.
 
 ---
 
+## 2026-05-19
+- *(pending review — branch auto/2026-05-19-pending-review)* Sync to CC v2.1.144 — first tracked version; docs index hash updated; validate-examples gate failed, changes held for review
+
+## 2026-05-19 — first content population pass (research agent)
+
+Populated all 7 SKILL surface files from upstream docs (prior content was
+scaffolding placeholders). Docs index SHA256 updated to `616c053c…` (index
+content changed; URL set unchanged at 103 pages). No new pages added or removed.
+No bug-labeled issues found in `anthropics/claude-code` tracker (Part B skipped).
+
+Key additions per surface:
+- **SKILL-settings.md**: Complete settings key table; scope system; permission rule syntax; sandbox/worktree/attribution settings.
+- **SKILL-cli.md**: CLI subcommands + 40+ flags; 6 permission modes with protected-paths list and auto mode requirements.
+- **SKILL-hooks.md**: 28-event hook catalog; matcher syntax; 5 handler types; output shape; blocking semantics.
+- **SKILL-mcp.md**: Scope table; transport details (stdio/http/sse); tool naming convention; management commands.
+- **SKILL-plugins.md**: 9 marketplace source types; install scopes; convention paths; CLI commands.
+- **SKILL-slash-commands.md**: Discovery paths; argument substitution; 50+ built-in commands table.
+- **state.json**: indexSha256 updated; all lastSeen timestamps updated; scaffoldComplete → true.
+
+## v2.1.144 — 2026-05-19
+
+Bumped `@anthropic-ai/claude-code` to `v2.1.144` (npm). This is the first version tracked by the pipeline (previously recorded as `0.0.0` before monitoring initialised). Docs index hash updated (`c8639f2e9dad6d710a0ba8fa81c04ea0a8bc8c29626e9e5053e7bd79ed4949d2`); page count unchanged at 103, no page additions or removals. No surface-file content changes required.
+
 ## 2026-05-17 — codex audit-fix pass 4 (8 findings → CLEAN in 2 rounds)
 
 Sanity-check audit re-run after the push-to-100 pass. Codex surfaced

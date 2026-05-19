@@ -48,40 +48,85 @@ Skills, commands, agents, hooks, and rules shipped by a plugin are **auto-discov
 
 Source: `code.claude.com/docs/en/plugins.md`.
 
-## Marketplace manifest: `marketplace.json`
-
-> *Populated by the research agent.* The `name`, `owner`, and
-> `plugins` array structure.
-
 ## Marketplace source types
 
-> *Populated by the research agent.* Seven source types:
-> `github`, `git`, `url`, `npm`, `file`, `directory`, `hostPattern`.
+Eight source types for `extraKnownMarketplaces` and `strictKnownMarketplaces`:
+
+| Type | Key fields | Notes |
+|---|---|---|
+| `github` | `repo` (required), `ref` (optional), `path` (optional) | GitHub repository. Always matches against `github.com`. |
+| `git` | `url` (required), `ref` (optional), `path` (optional) | Any git URL (HTTPS or SSH). |
+| `url` | `url` (required), `headers` (optional) | Downloads only `marketplace.json`, not plugin files. Plugins must use external sources. |
+| `npm` | `package` (required) | npm package (supports scoped). |
+| `file` | `path` (required, absolute) | Local filesystem path to `marketplace.json`. |
+| `directory` | `path` (required, absolute) | Directory containing `.claude-plugin/marketplace.json`. |
+| `hostPattern` | `hostPattern` (required, regex) | Match all marketplaces on a hostname. Useful for GitHub Enterprise. |
+| `pathPattern` | `pathPattern` (required, regex) | Match `file`/`directory` sources by path. |
+| `settings` | `name`, `plugins` array | Inline marketplace declared directly in settings.json (no hosted repo). |
 
 ## Install scopes
 
-> *Populated by the research agent.* `user` / `project` / `local` —
-> what each means and where the install is recorded.
+| Scope | Where recorded | Who it affects |
+|---|---|---|
+| User | `~/.claude/settings.json` `enabledPlugins` | You, across all projects |
+| Project | `.claude/settings.json` `enabledPlugins` | All collaborators (committed to git) |
+| Local | `.claude/settings.local.json` `enabledPlugins` | You, in this project only (gitignored) |
+| Managed | `managed-settings.json` `enabledPlugins` | All users; can force-enable or block |
+
+Project settings override user settings for plugins. To disable a project-enabled plugin, set `false` in `.claude/settings.local.json`.
 
 ## What plugins can ship
 
-> *Populated by the research agent.* Commands, agents, skills, hooks,
-> rules, MCP server configs.
+Plugins auto-discover content via convention paths inside the plugin directory:
 
-## Plugin discovery: convention paths
+| Convention path | What it provides |
+|---|---|
+| `commands/` | Slash commands (`.md` files with YAML frontmatter) |
+| `agents/` | Subagent definitions |
+| `skills/` | Skill packs |
+| `hooks/hooks.json` | Hook handlers |
+| `rules/` | Rules files |
+| `.mcp.json` | MCP server configs (auto-started when plugin enabled) |
 
-> *Populated by the research agent.* How Claude Code finds
-> `commands/`, `agents/`, `skills/`, etc. inside a plugin.
+These are NOT listed in `plugin.json` — they are auto-discovered.
+
+## Plugin MCP servers
+
+Plugins can bundle MCP servers in `.mcp.json` at the plugin root or inline in `plugin.json`. Plugin MCP servers use `${CLAUDE_PLUGIN_ROOT}` to reference files relative to plugin root:
+
+```json
+{
+  "mcpServers": {
+    "my-server": {
+      "command": "${CLAUDE_PLUGIN_ROOT}/servers/main",
+      "env": { "DB_URL": "${DB_URL}" }
+    }
+  }
+}
+```
 
 ## CLI commands
 
-> *Populated by the research agent.* `claude plugin install`,
-> `claude plugin list`, `claude plugin marketplace add`, etc.
+| Command | Description |
+|---|---|
+| `claude plugin install <name>@<marketplace>` | Install a plugin |
+| `claude plugin list` | List installed plugins |
+| `claude plugin enable <name>@<marketplace>` | Enable a plugin |
+| `claude plugin disable <name>@<marketplace>` | Disable a plugin |
+| `claude plugin uninstall <name>@<marketplace>` | Uninstall a plugin |
+| `claude plugin marketplace add` | Add a marketplace |
+| `claude plugin marketplace remove` | Remove a marketplace |
+| `claude plugin marketplace list` | List marketplaces |
+| `/plugin` | In-session plugin manager |
+| `/reload-plugins` | Reload all active plugins (applies changes without restart) |
 
-## Worked examples
+## `plugin.json` zip/url loading (v2.1.x+)
 
-> *Populated by the research agent.* See also:
-> [`templates/.claude-plugin/plugin.json`](templates/.claude-plugin/plugin.json).
+Plugins can also be loaded from `.zip` archives:
+- `--plugin-dir ./my-plugin.zip` — load from zip for this session
+- `--plugin-url https://example.com/plugin.zip` — fetch from URL for this session
+
+Source: `code.claude.com/docs/en/plugins.md`, `code.claude.com/docs/en/plugins-reference.md`.
 
 ## Common mistakes (auto-corrected by `rules/plugins.md`)
 
