@@ -85,18 +85,46 @@ Requests support up to **100,000 messages** in the `messages` array.
 Each message's `content` can be a string (shorthand for one text
 block) or an array of typed blocks:
 
+**User-turn input blocks:**
+
 | Block type | Use |
 |---|---|
 | `text` | Plain text. May include `cache_control` and `citations`. |
 | `image` | `{ source: { type: "base64" \| "url", media_type, data \| url } }` |
 | `document` | PDF or other document input |
-| `tool_use` | Assistant turn: model invoked a **client** tool. Carries `id`, `name`, `input`. |
-| `tool_result` | User turn: result of a previous `tool_use`. **Must reference the matching `tool_use_id`**. |
-| `server_tool_use` | Assistant turn: model invoked a **server** tool (e.g. web_search, web_fetch, code_execution). Different return path — see server tools below. |
+| `search_result` | Passes a search result into context (from tool-search or external lookup). Fields: `content`, `source`, `title`, `type: "search_result"`. |
+| `tool_result` | Result of a previous `tool_use`. **Must reference the matching `tool_use_id`**. |
+| `tool_search_tool_result` | Result from a tool_search server tool (`tool_search_tool_bm25` / `tool_search_tool_regex`). Content is `tool_search_tool_search_result` or `tool_search_tool_result_error`. Carries `tool_use_id`. |
+| `text_editor_code_execution_tool_result` | Result from a text-editor operation inside code execution. Content is view/create/str_replace result or error. |
+
+**Assistant-turn output blocks:**
+
+| Block type | Use |
+|---|---|
+| `tool_use` | Model invoked a **client** tool. Carries `id`, `name`, `input`, and `caller` (see below). |
+| `server_tool_use` | Model invoked a **server** tool. Name: `"web_search"`, `"web_fetch"`, `"code_execution"`, `"bash"`, `"bash_code_execution"`, `"text_editor_code_execution"`, `"tool_search_tool_bm25"`, or `"tool_search_tool_regex"`. Carries a `caller` field. |
 | `thinking` | Extended-thinking output (when `thinking` enabled) |
 | `redacted_thinking` | Thinking content the API redacted before returning |
-| `tool_reference` | Assistant: reference to a tool returned by the tool-search server tool. |
-| `container_upload` | Assistant: file uploaded to the code-execution container. `{ file_id, type: "container_upload" }` |
+| `tool_reference` | Reference to a tool returned by the tool-search server tool. |
+| `container_upload` | File uploaded to the code-execution container. `{ file_id, type: "container_upload" }` |
+| `web_search_tool_result` | Server-executed web search result. Wraps `WebSearchResultBlock` or error. Carries `tool_use_id` and `caller`. |
+| `web_fetch_tool_result` | Server-executed web fetch result. Carries `tool_use_id` and `caller`. |
+| `code_execution_tool_result` | Server-executed code execution result (stdout/stderr/return code + output files). Carries `tool_use_id`. |
+| `bash_code_execution_tool_result` | Bash result from code execution context. Carries `tool_use_id`. |
+| `text_editor_code_execution_tool_result` | Text editor result from code execution context. Carries `tool_use_id`. |
+| `tool_search_tool_result` | Tool search result (server-executed). Carries `tool_use_id`. |
+
+#### `caller` field on `tool_use` and `server_tool_use` blocks
+
+Both `ToolUseBlock` and `ServerToolUseBlock` carry a `caller` discriminated union:
+
+| `caller.type` | Meaning |
+|---|---|
+| `"direct"` | Invocation directly from the model. |
+| `"code_execution_20250825"` | Invoked from within a code-execution server tool. Carries `tool_id`. |
+| `"code_execution_20260120"` | Same, newer variant. |
+
+Source: [`messages/create.md`](https://platform.claude.com/docs/en/api/messages/create.md) (updated 2026-05-19).
 
 ### Server tools vs. client tools
 
