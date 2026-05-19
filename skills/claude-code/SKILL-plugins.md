@@ -56,6 +56,8 @@ Minimal valid manifest:
 
 Skills, commands, agents, hooks, and other components are **auto-discovered** from convention paths inside the plugin directory — they are NOT enumerated in `plugin.json`.
 
+> **Root-level SKILL.md shortcut:** A plugin with a `SKILL.md` at its root and no `skills/` subdirectory is automatically surfaced as a single skill. This lets simple single-skill plugins skip creating a `skills/<name>/` directory.
+
 ## Plugin directory structure
 
 | Directory/file | Location | Purpose |
@@ -185,6 +187,9 @@ claude plugin install my-plugin@my-marketplace
 # List installed plugins
 claude plugin list
 
+# Show a plugin's component inventory and projected per-session token cost
+claude plugin details my-plugin@my-marketplace
+
 # Enable/disable a plugin
 claude plugin enable my-plugin@my-marketplace
 claude plugin disable my-plugin@my-marketplace
@@ -195,7 +200,7 @@ claude plugin marketplace add
 # Update plugins
 claude plugin update
 
-# Interactive management
+# Interactive management (also lists LSP servers provided by each plugin)
 /plugin
 ```
 

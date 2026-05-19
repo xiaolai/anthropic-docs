@@ -74,7 +74,7 @@ Commands marked **[Skill]** are bundled skills — prompts handed to Claude that
 | `/reload-plugins` | Reload all active plugins without restarting |
 | `/remote-control` | Make this session available for remote control from claude.ai. Alias: `/rc` |
 | `/rename [name]` | Rename the current session |
-| `/resume [session]` | Resume a conversation by ID or name. Alias: `/continue` |
+| `/resume [session]` | Resume a conversation by ID or name, or open the session picker. As of v2.1.144, [background sessions](SKILL-cli.md) appear in the picker marked with `bg`. Alias: `/continue` |
 | `/review [PR]` | Review a pull request locally |
 | `/rewind` | Rewind conversation and/or code to a previous point. Aliases: `/checkpoint`, `/undo` |
 | `/sandbox` | Toggle sandbox mode |
@@ -94,6 +94,7 @@ Commands marked **[Skill]** are bundled skills — prompts handed to Claude that
 | `/ultraplan <prompt>` | Draft a plan in the cloud and review in browser |
 | `/ultrareview [PR]` | Run deep multi-agent code review in cloud sandbox |
 | `/usage` | Show session cost and plan usage. Aliases: `/cost`, `/stats` |
+| `/usage-credits` | Configure usage credits to keep working when you hit a rate limit. Previously `/extra-usage` (old name still works) |
 | `/voice [hold\|tap\|off]` | Toggle voice dictation |
 
 **MCP prompts** from connected servers appear as `/mcp__<server>__<prompt>` and are dynamically discovered.

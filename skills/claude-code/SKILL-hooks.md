@@ -135,6 +135,7 @@ Five handler types:
 | `timeout` | no | Seconds before canceling. Defaults: 600 for command/http/mcp_tool; 30 for prompt; 60 for agent |
 | `statusMessage` | no | Custom spinner message while hook runs |
 | `once` | no | If `true`, runs once per session then removed (skill frontmatter only) |
+| `continueOnBlock` | no | `PostToolUse` only. If `true`, when the hook returns `decision: "block"`, feeds the rejection reason back to Claude and continues the turn instead of ending it |
 
 ### Command hook fields
 
@@ -237,6 +238,19 @@ Or to inject a message into the conversation:
   "additionalContext": "Tests passed: 42/42"
 }
 ```
+
+### Terminal sequences (`terminalSequence`)
+
+Any hook can include a `terminalSequence` string in its JSON output. Claude Code emits the sequence to the terminal, enabling desktop notifications, window title changes, and bell characters — even when no controlling terminal is attached:
+
+<!-- skip-validate -->
+```json
+{
+  "terminalSequence": ""
+}
+```
+
+Combine with `additionalContext` or other fields as needed.
 
 ### WorktreeCreate output
 

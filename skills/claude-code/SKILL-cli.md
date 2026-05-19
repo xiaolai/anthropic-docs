@@ -32,7 +32,7 @@ source: https://code.claude.com/docs/en/cli-reference.md
 | `claude auth login` | Sign in. Flags: `--email`, `--sso`, `--console` | `claude auth login --console` |
 | `claude auth logout` | Log out | `claude auth logout` |
 | `claude auth status` | Show auth status as JSON (`--text` for human-readable); exits 0 if logged in, 1 if not | `claude auth status` |
-| `claude agents` | Open agent view. Flags: `--cwd`, `--permission-mode`, `--model`, `--effort` | `claude agents --cwd ~/projects/my-app` |
+| `claude agents` | Open agent view (research preview). Flags: `--cwd`, `--add-dir`, `--settings`, `--mcp-config`, `--plugin-dir`, `--permission-mode`, `--model`, `--effort`, `--dangerously-skip-permissions`. `--cwd <path>` scopes the session list to a directory. | `claude agents --cwd ~/projects/my-app` |
 | `claude attach <id>` | Attach to a background session | `claude attach 7c5dcf5d` |
 | `claude auto-mode defaults` | Print built-in auto mode classifier rules as JSON | `claude auto-mode defaults > rules.json` |
 | `claude daemon status` | Print background-session supervisor state | `claude daemon status` |
@@ -159,6 +159,7 @@ Environment variables can also be set in `settings.json` under `env`. See `code.
 | `CLAUDE_CODE_IDE_SKIP_AUTO_INSTALL` | Skip IDE extension auto-install |
 | `CLAUDE_CODE_AUTO_CONNECT_IDE` | Auto-connect to IDE on startup |
 | `ENABLE_TOOL_SEARCH` | Set to `false` to disable MCP tool search |
+| `CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE` | Set to `1` to pin `/fast` mode to Opus 4.6 instead of the default Opus 4.7 |
 
 Precedence (highest wins): CLI flags > `settings.local.json` > `settings.json` (project) > `settings.json` (user) > built-in default.
 
@@ -199,6 +200,8 @@ Two authentication methods:
 `claude auth login --console` for API billing. `claude setup-token` generates a long-lived OAuth token for CI/scripts.
 
 Third-party providers (Bedrock, Vertex AI, Foundry, Microsoft Foundry) use provider-specific credentials instead.
+
+> **Note:** Remote Control, `/schedule`, Claude.ai MCP connectors, and notification preferences are disabled when `ANTHROPIC_API_KEY`, `apiKeyHelper`, or `ANTHROPIC_AUTH_TOKEN` is set — even if a Claude.ai login is also present. Unset the API key to use these features.
 
 ## `~/.claude/` directory layout
 
