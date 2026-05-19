@@ -93,6 +93,102 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
 | [`sessions.md`](https://platform.claude.com/docs/en/managed-agents/sessions.md) | Session lifecycle |
 | [`permission-policies.md`](https://platform.claude.com/docs/en/managed-agents/permission-policies.md) | What each agent may do |
 
+## Self-hosted sandboxes
+
+By default Managed Agents executes tools inside Anthropic-managed cloud
+containers. Self-hosted sandboxes keep orchestration on Anthropic's
+side but move tool execution into infrastructure you control — agent
+code, filesystem, and network egress never leave your environment.
+
+> **Not yet available** on Claude Platform on AWS.
+
+### Cloud vs self-hosted comparison
+
+| | Cloud environment | Self-hosted sandbox |
+|---|---|---|
+| Where tools run | Anthropic-managed containers | Your infrastructure |
+| Network reach | Anthropic's egress controls | Your network policy |
+| File / GitHub repo mounting | Managed by Anthropic | Managed by you |
+| Lifecycle | Managed by Anthropic | Managed by you |
+
+Use self-hosting when the agent needs to operate on data that cannot
+leave your network, reach internal services not publicly routable, or
+run under your own compliance and audit controls.
+
+**Combining with MCP Tunnels:** Self-hosted sandboxes control *where
+code executes*; MCP Tunnels control *how Anthropic reaches private MCP
+servers*. They are independent and can be combined. See
+[MCP Tunnels](https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/overview.md).
+
+### Environment worker
+
+An **environment worker** is a process you run on your own
+infrastructure. It:
+
+1. Polls the `self_hosted` environment's work queue for sessions.
+2. Spawns an execution context per session.
+3. Downloads the agent's skills to `/workspace/skills/<name>/`.
+4. Runs tool calls locally.
+5. Posts results back to Anthropic.
+
+**Sandbox filesystem:**
+- `/workspace` — default working directory; skills downloaded here.
+- `/mnt/session/outputs` — agent writes final output files here.
+
+**Worker patterns:**
+
+| Pattern | Tooling |
+|---|---|
+| Always-on (in-process) | `ant beta:worker poll` (ant CLI) or `EnvironmentWorker.run()` (SDK) |
+| Always-on (container per session) | `ant beta:worker poll --on-work <spawn-script>` |
+| Webhook-triggered | SDK `work.poller()` + `session.status_run_started` webhook |
+
+The ant CLI supports the always-on pattern only; the SDK supports both
+always-on and webhook-triggered.
+
+**SDK requirements:** `/bin/bash` at that exact path; TypeScript SDK
+also requires `unzip`, `tar`, and Node.js 22+.
+
+**Environment key:** The environment service key
+(`ANTHROPIC_ENVIRONMENT_KEY`) authorizes polling the work queue and
+submitting results. Authenticate the worker with this key, not your
+organization API key. Generate it in the Console under the environment.
+
+**Memory** is not yet supported with self-hosted sandboxes.
+
+### Monitoring
+
+`work.stats` returns queue state — `depth` (waiting), `pending`
+(claimed), `oldest_queued_at`, `workers_polling`. Scale or alert based
+on `depth`. Call with your organization API key from outside the worker
+host (not `ANTHROPIC_ENVIRONMENT_KEY`).
+
+`work.stop` gracefully stops a session; pass `force: true` to interrupt
+immediately.
+
+### Security model (shared responsibility)
+
+**You are responsible for:**
+- Container image quality and runtime hardening (drop capabilities, non-root user, read-only root FS).
+- Network egress controls — no Anthropic-side restriction on your container's outbound traffic.
+- Storing and rotating `ANTHROPIC_ENVIRONMENT_KEY` (treat like a database password; rotate immediately if leaked).
+- Isolating untrusted workloads — provision separate environments per trust boundary.
+- Tool-execution blast radius — apply least privilege to the process user.
+- Log retention and session content once delivered to your worker.
+
+**What Anthropic cannot do for you:**
+- Instantly invalidate a leaked key faster than you can detect it.
+- Verify your worker build or container image.
+- Sandbox tool executions inside your container.
+- Enforce data retention after content reaches your worker.
+
+### Source pages
+
+| Page | Topic |
+|---|---|
+| [`self-hosted-sandboxes.md`](https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes.md) | Environment worker setup, worker patterns, filesystem, monitoring, reference |
+| [`self-hosted-sandboxes-security.md`](https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes-security.md) | Shared responsibility model, hardening guidance |
+
 ## Integrations
 
 | Page | Topic |
@@ -116,9 +212,9 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
 
 ## Page index
 
-20 source pages under
+22 source pages under
 [`https://platform.claude.com/docs/en/managed-agents/`](https://platform.claude.com/docs/en/managed-agents/).
 
 ---
 
-*Source pages: 20 under `platform.claude.com/docs/en/managed-agents/`.*
+*Source pages: 22 under `platform.claude.com/docs/en/managed-agents/`.*
