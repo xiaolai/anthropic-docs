@@ -47,18 +47,22 @@ MDM profile should explicitly NOT set `inferenceProvider: foundry`.
 
 ## Rule 4 — Telemetry kill switches
 
-Three independent telemetry toggles:
+Five independent telemetry/update toggles (all `false` by default):
 
-- `disableCrashReporting`: boolean, scrubs and disables crash reports
-- `disableProductAnalytics`: boolean, disables usage telemetry
-- `disableAutoUpdate`: boolean, disables auto-update checks
-
-All three are off-by-default (telemetry enabled). For air-gapped or
-compliance-hardened deployments, set all three to `true`.
+- `disableEssentialTelemetry`: boolean — block crash reports and error telemetry to Anthropic. **Enabling this opts you into a manual support model** (your team must collect and send logs).
+- `disableNonessentialTelemetry`: boolean — block product-usage analytics.
+- `disableNonessentialServices`: boolean — block non-critical third-party services (connector favicons, artifact-preview iframe).
+- `disableAutoUpdates`: boolean — block update checks and downloads (IT team must redistribute new builds).
+- `autoUpdaterEnforcementHours`: integer (1–72) — force a pending update to install after this many hours. Ignored when `disableAutoUpdates` is `true`.
 
 Telemetry NEVER contains user prompts or completions, but if your
-audit posture requires zero Anthropic-bound network traffic, disable
-all three.
+audit posture requires zero Anthropic-bound network traffic, set all
+four boolean toggles to `true`.
+
+> **Key-name change:** The former keys `disableCrashReporting`,
+> `disableProductAnalytics`, and `disableAutoUpdate` (no trailing "s")
+> are **no longer valid** — use the names above.
+> Source: [`3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md)
 
 ## Rule 5 — Don't mix per-user and admin profiles
 
@@ -85,12 +89,54 @@ JSON file your org publishes. **Pin plugin versions** in that
 manifest; bare references resolve to "latest" and inherit any
 breaking change immediately.
 
-## Rule 8 — Spend caps are workspace-monthly, not per-request
+## Rule 8 — Token caps are per-device, per-window
 
-`workspaceSpendCapUSD` caps monthly usage per workspace. When hit,
-requests return 429 `cap_exceeded` until the next billing month.
-Set to a value above your monthly forecast, with a buffer.
+`inferenceMaxTokensPerWindow` (integer) caps total input + output tokens per
+device per rolling window. `inferenceTokenWindowHours` (integer, 1–720) sets
+the window length. When the cap is hit, the app refuses new messages until
+the window resets. Both values are enforced locally and persist across
+restarts.
+
+> Note: the former `workspaceSpendCapUSD` key (USD spend cap) has been
+> replaced by the token-based cap above.
+> Source: [`3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md)
+
+## Rule 9 — `deploymentOrganizationUuid` must be set before rollout
+
+Generate a UUID for your org and set `deploymentOrganizationUuid` before
+fleet deployment. Anthropic uses this value to locate crash reports and
+telemetry from your fleet when you open a support case. Without it, your
+telemetry is tagged with a shared placeholder UUID that every unconfigured
+deployment also uses, making fleet-specific debugging impossible.
+
+## Rule 10 — `inferenceModels` entries may be strings or objects
+
+The `inferenceModels` key takes a JSON-stringified `(string | object)[]`.
+Plain strings use the provider's exact model ID. Objects allow:
+
+- `name` (required): provider model ID.
+- `labelOverride`: friendly display name for IDs the picker can't parse
+  (e.g. Bedrock ARNs, provisioned-throughput ARNs, gateway aliases).
+- `supports1m`: set `true` only if you've confirmed the deployed model
+  supports the 1M-token context window. Do NOT set speculatively — sessions
+  will fail mid-conversation once the context grows past the real limit.
+
+```text
+inferenceModels: '[{"name":"claude-opus-4","supports1m":true},"claude-sonnet-4"]'
+```
+
+## Rule 11 — `inferenceCredentialHelper` for short-lived tokens
+
+If static API keys are not permitted, set `inferenceCredentialHelper` to an
+absolute path to an executable on the host. Its stdout is used as the
+inference credential. Set `inferenceCredentialHelperTtlSec` (default `3600`)
+to control how long the output is cached before re-invoking.
+
+The helper runs **outside the sandbox**, at session start and on cache expiry.
+Pair with your SSO / secrets manager / PKI tooling.
+**Not applicable to Vertex AI**, which uses file-based credentials or Google
+sign-in.
 
 ---
 
-*Source: claude.com/docs/cowork/3p/configuration.md + feature-matrix.md.*
+*Source: [`claude.com/docs/cowork/3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md) + [`feature-matrix.md`](https://claude.com/docs/cowork/3p/feature-matrix.md).*

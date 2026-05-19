@@ -9,7 +9,7 @@ description: |
   enterprise admin setup (OpenTelemetry audit, usage analytics,
   spend tracking), and the one-time Microsoft Graph consent required
   for Outlook.
-source: https://claude.com/docs/office-agents/overview.md
+source: https://claude.com/docs/office-agents/
 ---
 
 # Claude for M365 (Office Agents)
@@ -28,7 +28,7 @@ Word, and Outlook without leaving the app.
 
 | App        | Capabilities                                                                         | Source page |
 |------------|--------------------------------------------------------------------------------------|-------------|
-| **Excel**      | Read/write cells, formulas, formatting, pivot tables, charts                     | [`excel.md`](https://claude.com/docs/office-agents/excel.md) |
+| **Excel**      | Read/write cells, formulas, formatting, pivot tables, charts; external data via connectors (S&P Global, LSEG, Daloopa, etc.) | [`excel.md`](https://claude.com/docs/office-agents/excel.md) |
 | **PowerPoint** | Read, edit, generate slides using existing templates                             | [`powerpoint.md`](https://claude.com/docs/office-agents/powerpoint.md) |
 | **Word**       | Draft, redline, review documents with tracked changes and comment-driven editing | [`word.md`](https://claude.com/docs/office-agents/word.md) |
 | **Outlook**    | Inbox triage, voice-matched reply drafts, thread summaries, meeting-time finding | [`outlook.md`](https://claude.com/docs/office-agents/outlook.md) |
@@ -87,7 +87,23 @@ supported by [Cowork on 3P](SKILL-cowork.md). This decouples M365
 deployment from Anthropic's API for organizations with the same
 residency / regulatory drivers.
 
-See [`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md).
+**Connection paths:**
+
+| Path | How it works |
+|---|---|
+| LLM gateway | Routes through your gateway (LiteLLM, Portkey, Kong, etc.) to your provider. |
+| Bedrock direct | Add-in authenticates via Microsoft Entra ID → calls Bedrock directly. |
+| Vertex AI direct | Add-in authenticates via Google OAuth → calls Vertex AI directly. |
+| Foundry direct | Add-in authenticates to Azure AI Foundry via API key. Deployment names must use default model IDs (e.g. `claude-opus-4-6`), not custom names. |
+
+**Common requirements for all 3P paths:** Claude for M365 add-in from
+AppSource or admin deployment, Microsoft 365 with Entra ID. For Outlook:
+Microsoft Graph admin consent (`Mail.ReadWrite`, `Calendars.Read`,
+`User.Read`, `offline_access`) via Anthropic's app or your own Entra
+registration.
+
+For the full network allowlist (1P and 3P domain tables), see
+[`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md).
 
 ## Enterprise readiness
 
@@ -105,12 +121,11 @@ Highlights:
 
 ## Page index
 
-All 11 source pages mirrored under
+All 10 source pages mirrored under
 [`https://claude.com/docs/office-agents/`](https://claude.com/docs/office-agents/):
 
 | Page | Topic |
 |---|---|
-| `overview.md` | What's available, deployment overview |
 | `excel.md` | Claude for Excel |
 | `powerpoint.md` | Claude for PowerPoint |
 | `word.md` | Claude for Word |
@@ -124,4 +139,4 @@ All 11 source pages mirrored under
 
 ---
 
-*Source pages: 11 under `claude.com/docs/office-agents/`.*
+*Source pages: 10 under `claude.com/docs/office-agents/`.*

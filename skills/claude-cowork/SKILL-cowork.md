@@ -25,6 +25,12 @@ a desired outcome and return later to completed work — polished
 documents, organized files, synthesized research, Excel spreadsheets
 with formulas, PowerPoint decks.
 
+**Claude in Chrome** (standard Cowork, not 3P) pairs with Cowork to
+automate tasks on any website. Sub-agent coordination divides complex
+work into parallel workstreams.
+
+Source: [`cowork/overview.md`](https://claude.com/docs/cowork/overview.md) (2026-05-19).
+
 **Standard Cowork vs Cowork on 3P:**
 
 | Component              | Standard Cowork              | Cowork on 3P                                            |
@@ -124,16 +130,43 @@ APJ, and other sovereign regions).
 
 Every managed-configuration key lives in
 [`3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
-That page is the source of truth for:
+Key groups:
 
-- Inference provider selection (`inferenceProvider`)
-- Region pinning (`inferenceVertexRegion`, `inferenceBedrockRegion`)
-- Feature toggles (web search, local MCP, etc.)
-- Telemetry toggles
-- MCP server allowlist
-- Plugin / skill / hook distribution settings
-- Per-user spend caps
-- Auto-update policy
+**Connection / activation:**
+- `inferenceProvider` — enum: `vertex`, `bedrock`, `foundry`, `gateway`
+- `deploymentOrganizationUuid` — **required before rollout** for support attribution
+- `disableDeploymentModeChooser` — hide Anthropic sign-in option
+- `inferenceCredentialHelper` + `inferenceCredentialHelperTtlSec` — path to executable that emits a short-lived credential (not used with Vertex)
+- `inferenceModels` — `(string|object)[]` JSON; objects support `name`, `labelOverride`, `supports1m`
+- Provider-specific region pins: `inferenceVertexRegion`, `inferenceBedrockRegion`
+
+**Sandbox & workspace:**
+- `disabledBuiltinTools` — `string[]` of tool names to remove (e.g. `["WebSearch","Bash"]`)
+- `allowedWorkspaceFolders` — restrict which paths users may attach
+- `coworkEgressAllowedHosts` — hostname allowlist for web-fetch/shell; `["*"]` disables filtering
+- `isClaudeCodeForDesktopEnabled` — show/hide Code tab (default `true`)
+- `disableDeepLinkRegistration` — stop registering as `claude://` handler
+
+**Connectors & extensions:**
+- `managedMcpServers` — `object[]` JSON; fields: `name`, `url`, `transport` (`http`/`sse`/`stdio`), `headers`, `headersHelper`, `headersHelperTtlSec`, `oauth`, `toolPolicy`, `command`, `args`, `env`
+- `isLocalDevMcpEnabled`, `isDesktopExtensionEnabled`, `isDesktopExtensionSignatureRequired`
+- `orgPluginSettings` — per-tool policy for org-plugin servers
+
+**Telemetry & updates** (see [`rules/mdm-config.md`](rules/mdm-config.md) Rule 4):
+- `disableEssentialTelemetry`, `disableNonessentialTelemetry`, `disableNonessentialServices`
+- `disableAutoUpdates`, `autoUpdaterEnforcementHours`
+
+**OpenTelemetry export:**
+- `otlpEndpoint`, `otlpProtocol` (`http/protobuf`/`http/json`/`grpc`), `otlpHeaders`, `otlpResourceAttributes`
+
+**Usage limits:**
+- `inferenceMaxTokensPerWindow`, `inferenceTokenWindowHours` (1–720 h)
+
+**Appearance:**
+- `banner` — JSON object with `enabled`, `text`, `backgroundColor`, `textColor`, `linkUrl`
+
+Three security-profile presets (Standard / Restricted / Locked-down) are
+illustrated in [`3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
 
 ## Data residency
 
@@ -189,19 +222,25 @@ Google Workspace connector is not currently supported in 3P (planned).
 
 Full comparison: [`3p/feature-matrix.md`](https://claude.com/docs/cowork/3p/feature-matrix.md).
 
+Features available in 3P (same as Enterprise): Projects, Code execution,
+File access, Local + Remote MCP, Skills/plugins/hooks, Artifacts, Memory
+(device-stored), Scheduled tasks, Global languages, org-scoped plugin
+marketplace, auto-updates (configurable), OpenTelemetry export.
+
 Salient gaps in 3P (versus full Claude Enterprise):
 
 - No Chat tab (Cowork + Code tabs only).
-- No Anthropic 1P connectors (except M365).
-- No Project / plugin sharing across orgs.
-- No public plugin marketplace.
+- No Anthropic 1P connectors (except M365; Google Workspace coming soon).
+- No cross-org project or plugin sharing.
+- No public Anthropic plugin marketplace (org-scoped marketplace works).
 - No mobile dispatch.
 - No voice mode.
 - No Claude in Chrome.
 - No web-based admin console — admin functions delivered via MDM.
 - Per-user spend caps are blanket-only (not differentiated by role).
-- Compliance / Analytics APIs are not exposed; equivalent capability
-  via OpenTelemetry export.
+- Compliance / Analytics APIs not exposed; equivalent via OpenTelemetry.
+
+Source: [`3p/feature-matrix.md`](https://claude.com/docs/cowork/3p/feature-matrix.md) (2026-05-19).
 
 ## Cowork guide (standard mode)
 
