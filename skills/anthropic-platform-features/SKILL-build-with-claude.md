@@ -34,12 +34,20 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
   (system prompt → tools → static context → user turn).
 - **Cache diagnostics (beta):** When cache hits drop unexpectedly, pass
   `diagnostics: { previous_message_id: <prev_id> }` with beta header
-  `cache-diagnosis-2026-04-07`. The response's `diagnostics.cache_miss_reason`
-  reports the first divergence point (`model_changed`, `system_changed`,
-  `tools_changed`, `messages_changed`, `previous_message_not_found`, or
-  `unavailable`). Claude API only — not available on Bedrock or Vertex AI.
-  **ZDR eligible (qualified)** — only fingerprints (hashes + token counts) are
-  retained, not raw prompt content. See
+  `cache-diagnosis-2026-04-07`. The `diagnostics` field on the response has
+  four possible states: absent (beta header missing), `null` (first turn or
+  no divergence), `{"cache_miss_reason": null}` (comparison still running —
+  treat as inconclusive, check next turn), or `{"cache_miss_reason": {...}}`
+  (divergence found). The `type` field inside `cache_miss_reason` is one of:
+  `model_changed`, `system_changed`, `tools_changed`, `messages_changed`,
+  `previous_message_not_found`, or `unavailable`. The `unavailable` type covers
+  cases where other prompt-affecting params differ (`tool_choice`, `thinking`,
+  `context_management`, `output_config`, `output_format`, active
+  `anthropic-beta` headers), or the divergence is beyond the comparison
+  horizon. `*_changed` types also carry `cache_missed_input_tokens` (estimate
+  of tokens lost after the divergence). Claude API only — not available on
+  Bedrock or Vertex AI. **ZDR eligible (qualified)** — only fingerprints
+  (hashes + token counts) are retained, not raw prompt content. See
   [`cache-diagnostics.md`](https://platform.claude.com/docs/en/build-with-claude/cache-diagnostics.md).
 - **Batches return within 24h** at 50% discount. Submit via
   `POST /v1/messages/batches`; poll for results. Not for interactive use.
@@ -78,6 +86,15 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
   older models the API returns a validation error by default; opt in to
   the new behavior with beta header
   `model-context-window-exceeded-2025-08-26`.
+  Source: [`context-windows.md`](https://platform.claude.com/docs/en/build-with-claude/context-windows.md).
+- **Context awareness (Sonnet 4.6 / Sonnet 4.5 / Haiku 4.5):** These
+  models automatically track their remaining context window. At
+  conversation start the platform injects a system-level
+  `<budget:token_budget>1000000</budget:token_budget>` message (200k
+  for smaller-context models). After each tool call, the model receives
+  `<system_warning>Token usage: X/Y; Z remaining</system_warning>`.
+  This is automatic platform behavior — no API flag needed. Helps models
+  manage long agentic workflows without guessing their remaining budget.
   Source: [`context-windows.md`](https://platform.claude.com/docs/en/build-with-claude/context-windows.md).
 
 ## Platform foundation (top-level intro pages)
