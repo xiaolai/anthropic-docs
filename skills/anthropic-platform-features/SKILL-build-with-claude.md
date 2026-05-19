@@ -32,14 +32,21 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
   is `5m`; `1h` is also available. The whole prefix up to the
   breakpoint is cached, so place breakpoints at stable boundaries
   (system prompt → tools → static context → user turn).
-- **Cache diagnostics (beta):** When cache hits drop unexpectedly, pass
-  `diagnostics: { previous_message_id: <prev_id> }` with beta header
-  `cache-diagnosis-2026-04-07`. The response's `diagnostics.cache_miss_reason`
-  reports the first divergence point (`model_changed`, `system_changed`,
-  `tools_changed`, `messages_changed`, `previous_message_not_found`, or
-  `unavailable`). Claude API only — not available on Bedrock or Vertex AI.
-  **ZDR eligible (qualified)** — only fingerprints (hashes + token counts) are
-  retained, not raw prompt content. See
+- **Cache diagnostics (beta):** Pass `diagnostics: { previous_message_id: <prev_id> }`
+  with beta header `cache-diagnosis-2026-04-07`. First turn: pass
+  `"previous_message_id": null` to opt in without a prior message. The response
+  `diagnostics` field has four states: **absent** (no beta header), **`null`**
+  (first turn or no divergence found), `{"cache_miss_reason": null}` (comparison
+  still pending — check next turn), or `{"cache_miss_reason": {...}}` (divergence
+  found). `cache_miss_reason.type` values: `model_changed`, `system_changed`,
+  `tools_changed`, `messages_changed`, `previous_message_not_found`, `unavailable`.
+  The `*_changed` types carry `cache_missed_input_tokens` (token-count estimate of
+  lost cacheable prefix). `unavailable` fires when prompt-affecting params differ
+  (`tool_choice`, `thinking`, `context_management`, `output_config`, `output_format`,
+  or active beta headers) or for very long conversations. **Streaming:** `diagnostics`
+  appears on the `message_start` event. Claude API only — not available on Bedrock
+  or Vertex AI. **ZDR eligible (qualified)** — fingerprints only, not raw prompt
+  content. See
   [`cache-diagnostics.md`](https://platform.claude.com/docs/en/build-with-claude/cache-diagnostics.md).
 - **Batches return within 24h** at 50% discount. Submit via
   `POST /v1/messages/batches`; poll for results. Not for interactive use.
@@ -78,6 +85,18 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
   older models the API returns a validation error by default; opt in to
   the new behavior with beta header
   `model-context-window-exceeded-2025-08-26`.
+  Source: [`context-windows.md`](https://platform.claude.com/docs/en/build-with-claude/context-windows.md).
+- **Context awareness (Sonnet 4.6, Sonnet 4.5, Haiku 4.5):** These models
+  track their remaining token budget. At conversation start the API injects
+  `<budget:token_budget>N</budget:token_budget>` (1M or 200K depending on
+  model). After each tool call Claude receives
+  `<system_warning>Token usage: X/N; Y remaining</system_warning>`.
+  Image tokens count toward these budgets. Enables sustained execution on
+  long-running agent tasks.
+  Source: [`context-windows.md`](https://platform.claude.com/docs/en/build-with-claude/context-windows.md).
+- **Image/PDF count limits:** A single request supports up to **600 images or
+  PDF pages** (100 for 200K-context models). Request-size limits may be hit
+  before the token limit when sending many images or large documents.
   Source: [`context-windows.md`](https://platform.claude.com/docs/en/build-with-claude/context-windows.md).
 
 ## Platform foundation (top-level intro pages)
