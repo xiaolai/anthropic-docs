@@ -11,117 +11,118 @@
   },
   "docs": {
     "indexUrl": "https://claude.com/docs/llms.txt",
-    "indexSha256": "84b7d4e7bcfe2b16ec93d8935e1ef5b700a087c2c2071f43755c9b0c1ef5afd0",
+    "indexSha256": "33c21db31a258cebb454c9b3edb618c3666fd971935861ea26d75b32c3874374",
     "pageCount": 34,
     "knownPages": {
       "https://claude.com/docs/connectors/building/after-publishing.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/connectors/building/authentication.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/connectors/building/directory-vs-custom.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/connectors/building/index.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/connectors/building/lazy-authentication.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/connectors/building/mcp-apps/cross-compatibility.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/connectors/building/mcp-apps/design-guidelines.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/connectors/building/mcp-apps/external-links.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/connectors/building/mcp-apps/getting-started.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/connectors/building/mcp-apps/instance-supersession.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/connectors/building/mcp-apps/transparent-theming.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/connectors/building/mcp-apps/troubleshooting.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/connectors/building/mcp.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/connectors/building/mcpb.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/connectors/building/review-criteria.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/connectors/building/submission.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/connectors/building/testing.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/connectors/building/troubleshooting.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/connectors/building/what-to-build.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/connectors/custom/desktop-extensions.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/connectors/custom/remote-mcp.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/connectors/directory.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/connectors/getting-started.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/connectors/github/index.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/connectors/google/calendar.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/connectors/google/drive.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/connectors/google/gmail.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/connectors/microsoft/365.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/connectors/overview.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/connectors/slack/index.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/plugins/overview.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/plugins/submit.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/skills/how-to.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       },
       "https://claude.com/docs/skills/overview.md": {
-        "lastSeen": "2026-05-17T23:08:07Z"
+        "lastSeen": "2026-05-19T07:22:15Z"
       }
     }
   },
   "trackedIssues": {},
   "researchedIssues": {},
   "lastAuditedVersion": "none",
-  "lastUpdated": "2026-05-18T00:00:00Z",
+  "lastUpdated": "2026-05-19T07:22:15Z",
   "scaffoldComplete": true,
-  "lastRunWarnings": []
+  "lastRunWarnings": [],
+  "lastScannedIssueNumber": null
 }

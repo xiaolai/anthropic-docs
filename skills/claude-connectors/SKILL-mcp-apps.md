@@ -164,17 +164,35 @@ happen to appear alongside.
 
 ### Display modes
 
+Three display modes; declare support via `appCapabilities.availableDisplayModes`
+in `ui/initialize` and request a switch with `ui/request-display-mode`.
+Supported mode values: `inline`, `fullscreen`, `pip`.
+
 - **Inline card** — compact, embedded directly in conversation. Good
-  for summaries, confirmations, quick actions.
-- **Expanded view** — larger surface for richer interactions.
-- **Sidebar** — persistent context alongside the conversation.
+  for summaries, confirmations, quick actions. Max height 500px; max
+  2 actions; max 4-5 data points; no nested scroll.
+- **Inline carousel** — side-by-side items (3–8) for browsing options
+  (product listings, venue options, media galleries). Each card: image +
+  title + metadata (≤3 lines) + optional CTA. Consistent card dimensions
+  required.
+- **Full screen** — immersive interfaces for data visualizations, detailed
+  analysis, or document editing. Conversation composer stays visible.
+  Apps provide their own fullscreen button; a close button appears in
+  the native header. No floating panels — use collapsible sidebars, tabs,
+  or pagination instead.
+
+Source: [`mcp-apps/design-guidelines.md`](https://claude.com/docs/connectors/building/mcp-apps/design-guidelines.md).
 
 ### Transparent theming
 
 Make your widget background transparent and style with Claude's
-style variables — blends seamlessly into the host UI across themes.
+CSS custom properties — blends seamlessly into the host UI across themes.
+The host injects color tokens (`color-background-*`, `color-text-*`,
+`color-border-*`), typography (`font-sans`, `font-mono`, `font-weight-*`),
+and spacing variables. All tokens adapt automatically to light/dark mode.
 
 Reference: [`mcp-apps/transparent-theming.md`](https://claude.com/docs/connectors/building/mcp-apps/transparent-theming.md).
+Full CSS token table: [`mcp-apps/design-guidelines.md#style-variables`](https://claude.com/docs/connectors/building/mcp-apps/design-guidelines.md).
 
 ### Instance supersession
 
