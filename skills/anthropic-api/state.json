@@ -3,7 +3,14 @@
   "github": null,
   "docs": null,
   "trackedIssues": null,
-  "researchedIssues": {},
+  "researchedIssues": {
+    "793": {
+      "title": "Streaming responses missing cache_creation TTL breakdown (ephemeral_5m/1h_input_tokens)",
+      "verdict": "added_known_issue",
+      "reason": "Reproducible bug: BetaMessageDeltaUsage missing cache_creation sub-object in streaming mode. 1 reaction, labeled spec-change. PR #1048 claims fix, not yet merged.",
+      "researchedAt": "2026-05-19T00:00:00Z"
+    }
+  },
   "lastAuditedVersion": null,
   "lastUpdated": null,
   "scaffoldComplete": true,

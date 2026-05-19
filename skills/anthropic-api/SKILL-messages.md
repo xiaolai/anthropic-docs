@@ -41,7 +41,7 @@ single queries or stateless multi-turn conversations.
 | `tool_choice` | `auto` / `any` / `tool` / `none` |
 | `metadata` | `{ user_id: "..." }` for abuse signaling |
 | `service_tier` | `auto` / `standard_only` |
-| `thinking` | `{ type: "enabled", budget_tokens: N }` for extended thinking |
+| `thinking` | `{ type: "enabled", budget_tokens: N, display: "summarized" \| "omitted" }` for extended thinking. `display` controls whether thinking content is returned normally (`summarized`, default) or redacted with a signature for multi-turn continuity (`omitted`). |
 | `output_config` | Output configuration — see below |
 
 ### `output_config` parameter
@@ -86,11 +86,15 @@ There are two classes of tools in `tools`:
 
 Known server tool types (specify in `tools` array):
 
-| Tool type string | Description |
-|---|---|
-| `web_search_20250305` / `web_search_20260209` | Web search. Supports `allowed_domains`, `blocked_domains`, `user_location`, `max_uses`. |
-| `web_fetch_20250910` | Fetch a URL. Supports `allowed_domains`, `blocked_domains`, `max_content_tokens`, `citations`. |
-| `code_execution_20250825` / `code_execution_20260120` | Execute code in a sandbox. |
+| Tool name | Tool type string(s) | Description |
+|---|---|---|
+| `web_search` | `web_search_20250305`, `web_search_20260209` | Web search. Supports `allowed_domains`, `blocked_domains`, `user_location`, `max_uses`. |
+| `web_fetch` | `web_fetch_20250910`, `web_fetch_20260209`, `web_fetch_20260309` | Fetch a URL. Supports `allowed_domains`, `blocked_domains`, `max_content_tokens`, `citations`. |
+| `code_execution` | `code_execution_20250522`, `code_execution_20250825`, `code_execution_20260120` | Execute code in a sandbox. |
+| `bash_code_execution` | `bash_20250124` | Bash shell execution (computer-use variant). |
+| `text_editor_code_execution` | `text_editor_20250124`, `text_editor_20250429`, `text_editor_20250728` | Text editor tool for file operations (computer-use variant). |
+
+Source: [`messages/create.md`](https://platform.claude.com/docs/en/api/messages/create.md)
 
 Server tools also support `defer_loading: true` to exclude from the initial system prompt (loaded on demand) and `strict: true` for schema validation.
 

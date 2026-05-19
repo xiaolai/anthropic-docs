@@ -3,6 +3,10 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-19
+
+*(pending review — see draft PR `auto/2026-05-19-pending-review`)* Research agent added known issue #793 (streaming missing cache_creation TTL breakdown); checkDocsDrift + checkDiffSize gates failed — changes await human review.
+
 ## 2026-05-18
 
 *(pending review — see draft PR `auto/2026-05-18-pending-review`)* Research agent performed first full baseline audit of all surfaces; diff size exceeded gate threshold — changes await human review before merge.
