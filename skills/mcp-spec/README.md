@@ -38,5 +38,5 @@ SKILL_NAME=mcp-spec npm run update
 
 | Date | Update | Research | Mending | Report | Total | Notes |
 |------|--------|----------|---------|--------|-------|-------|
-| 2026-05-19 | success | research + report (no upstream change) |
+| 2026-05-19 | review | research + report (no upstream change) |
 

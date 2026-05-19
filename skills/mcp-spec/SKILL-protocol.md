@@ -76,11 +76,52 @@ features that the peer advertised. Typical capabilities:
 - `prompts` — provides prompt templates.
 - `logging` — accepts client log messages.
 - `completions` — provides argument completion for prompts/resource URIs.
+- `extensions` — declares supported optional extensions (see below).
 
 **Client capabilities** (subset):
 - `sampling` — server may request the client to sample from the host LLM.
 - `roots` — server may request the list of filesystem roots, optionally with `listChanged`.
 - `elicitation` — server may request structured input from the user.
+- `extensions` — declares supported optional extensions (see below).
+
+### Extension capability field
+
+Both clients and servers may advertise optional protocol extensions in an
+`extensions` object within their capabilities during the `initialize`
+handshake. Extension identifiers use the format `{vendor-prefix}/{name}`,
+where official extensions use the `io.modelcontextprotocol` prefix
+(e.g., `io.modelcontextprotocol/ui`). Third-party extensions should use a
+reversed domain name you own as the prefix.
+
+```json
+{
+  "capabilities": {
+    "roots": { "listChanged": true },
+    "extensions": {
+      "io.modelcontextprotocol/ui": {
+        "mimeTypes": ["text/html;profile=mcp-app"]
+      }
+    }
+  }
+}
+```
+
+Extensions are always **disabled by default** and require explicit opt-in.
+If one side supports an extension but the other doesn't, the supporting
+side must either fall back to core protocol behavior or reject the
+connection with an appropriate error if the extension is mandatory.
+
+Official extensions and their identifiers:
+
+| Identifier | Extension | Description |
+|---|---|---|
+| `io.modelcontextprotocol/ui` | [MCP Apps](https://modelcontextprotocol.io/extensions/apps/overview.md) | Interactive HTML UI in clients |
+| `io.modelcontextprotocol/oauth-client-credentials` | [OAuth Client Credentials](https://modelcontextprotocol.io/extensions/auth/oauth-client-credentials.md) | Machine-to-machine auth |
+| `io.modelcontextprotocol/enterprise-managed-authorization` | [Enterprise Auth](https://modelcontextprotocol.io/extensions/auth/enterprise-managed-authorization.md) | Centralized IdP access control |
+| `io.modelcontextprotocol/tasks` | [MCP Tasks](https://modelcontextprotocol.io/extensions/tasks/overview.md) | Async long-running task handles |
+
+Source: [`extensions/overview.md`](https://modelcontextprotocol.io/extensions/overview.md),
+[`extensions/client-matrix.md`](https://modelcontextprotocol.io/extensions/client-matrix.md).
 
 ## Lifecycle
 
