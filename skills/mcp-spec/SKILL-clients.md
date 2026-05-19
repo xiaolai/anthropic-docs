@@ -196,15 +196,41 @@ servers and tools:
   block fast ones).
 - Graceful degradation when a server disconnects mid-conversation.
 
+## Client capability features
+
+The [`clients.md`](https://modelcontextprotocol.io/clients.md) matrix
+uses feature badges to indicate what each client supports. Key feature
+identifiers relevant to implementers:
+
+| Feature | What it means |
+|---|---|
+| `Tools` | Client can call server tools |
+| `Resources` | Client can read server resources |
+| `Prompts` | Client can use server prompt templates |
+| `Sampling` | Client supports `sampling/createMessage` from server |
+| `Elicitation` | Client supports `elicitation/create` from server |
+| `Roots` | Client provides `roots/list` to server |
+| `Discovery` | Client supports server discovery |
+| `Instructions` | Client uses server `instructions` field |
+| `Tasks` | Client supports async task handles (`io.modelcontextprotocol/tasks` extension) |
+| `Apps` | Client supports MCP Apps (`io.modelcontextprotocol/ui` extension) |
+| `DCR` | OAuth 2.0 Dynamic Client Registration (RFC 7591) |
+| `CIMD` | OAuth Client ID Metadata Documents — client's `client_id` is a URL pointing to a metadata document; avoids per-server registration |
+| `OAuth Client Credentials` | Machine-to-machine OAuth Client Credentials flow extension |
+| `Enterprise-Managed Authorization` | Centralized IdP access control extension |
+
+Source: [`clients.md`](https://modelcontextprotocol.io/clients.md)
+
 ## Existing clients
 
 [`clients.md`](https://modelcontextprotocol.io/clients.md) is
 the registry of applications that support MCP. Notable entries:
 
 - Claude Desktop, Claude Code, Claude Cowork (Anthropic).
+- GitHub Copilot CLI (supports Tools, Discovery, Instructions, Sampling, Elicitation, DCR, OAuth Client Credentials, Tasks).
 - VS Code (via the MCP extension).
-- Cline, Zed, other editor integrations.
-- Third-party IDE / agent platforms.
+- Cline, Zed (with Discovery support), other editor integrations.
+- Third-party IDE / agent platforms including Archestra (enterprise AI platform, supports CIMD).
 
 The list grows constantly — consult the source page for the
 current state.

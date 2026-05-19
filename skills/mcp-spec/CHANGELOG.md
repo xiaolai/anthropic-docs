@@ -3,6 +3,9 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-19 (run 5)
+*(pending review — see PR auto/2026-05-19-pending-review)* Research pass added 3 rules (NumberSchema types, HTTP fallback body-inspection, notifications/message scoping) — checkDocsDrift gate failed; changes pending human review before merge
+
 ## 2026-05-19 (run 4)
 - Routine research pass — no upstream change; @modelcontextprotocol/sdk v1.29.0 / mcp v1.27.1 stable; all gates pass
 

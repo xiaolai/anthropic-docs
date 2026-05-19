@@ -108,6 +108,32 @@ Standard HTTP authentication methods:
 - Servers behind enterprise SSO.
 - Servers needing centralized logging / audit.
 
+### Backward compatibility: detecting transport version
+
+Clients that support both streamable HTTP and legacy SSE SHOULD use
+this disambiguation algorithm when connecting to an unknown server:
+
+1. POST an `InitializeRequest` to the server URL.
+2. **If the POST succeeds** (HTTP 200) → streamable HTTP confirmed.
+3. **If the POST returns 400 / 404 / 405**:
+   - **Inspect the response body first.**
+   - If the body is a recognizable JSON-RPC error object (has `error.code` /
+     `error.message`) → the server is a *modern* streamable HTTP server that
+     returned a protocol error (version mismatch, missing capability, etc.).
+     Do NOT fall back to legacy SSE; handle the error directly.
+   - If the body is empty or not a JSON-RPC object → the server may be a
+     legacy SSE server. Issue a GET to the same URL; if the response is an
+     SSE stream with an `endpoint` event, use the legacy transport.
+
+**Rationale**: `400` can signal `UnsupportedProtocolVersionError`,
+`MissingRequiredClientCapabilityError`, or header-validation failure on
+modern servers, all of which have JSON-RPC error bodies. Falling back
+to legacy SSE on any `400` (without body inspection) would cause
+clients to incorrectly enter legacy mode against modern servers.
+
+Source: [`specification/2025-11-25/basic/transports.md`](https://modelcontextprotocol.io/specification/2025-11-25/basic/transports.md)
+(via [#2727](https://github.com/modelcontextprotocol/modelcontextprotocol/issues/2727))
+
 ## Legacy SSE transport (deprecated)
 
 The earlier transport used two endpoints:

@@ -263,6 +263,14 @@ properties (`string`, `number`/`integer`, `boolean`) at the top level.
 Servers MUST NOT use form mode to request passwords, API keys, or
 other secrets.
 
+> **Schema type note (fix in 2025-11-25 schema)**: For `number`-typed
+> properties in `requestedSchema`, the constraint fields `minimum`,
+> `maximum`, and `default` are correctly typed as `number` (not
+> `integer`) in the canonical JSON Schema. This means non-integer
+> floats (e.g. `0.5`, `1.5`) are valid constraint values when the
+> property `type` is `"number"`.
+> Source: [#2713](https://github.com/modelcontextprotocol/modelcontextprotocol/issues/2713)
+
 ### URL mode (out-of-band, sensitive interactions)
 
 ```

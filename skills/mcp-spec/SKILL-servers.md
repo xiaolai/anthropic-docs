@@ -100,6 +100,15 @@ log messages:
 
 `level` is one of `debug | info | notice | warning | error | critical | alert | emergency`.
 
+> **Scoping rule**: `notifications/message` is **request-scoped**.
+> The server MAY emit it on the response stream of the request whose
+> `_meta` object included `io.modelcontextprotocol/logLevel`.
+> It MUST NOT be delivered on a `subscriptions/listen` stream or any
+> other unrelated stream. The `subscriptions/listen` stream carries only
+> opted-in change-notification types (resources, tools, prompts, etc.),
+> not per-request log output.
+> Source: [#2728](https://github.com/modelcontextprotocol/modelcontextprotocol/issues/2728)
+
 ## Server-initiated requests
 
 If the client declared the corresponding capability, the server
