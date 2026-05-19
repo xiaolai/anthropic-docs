@@ -54,6 +54,23 @@ content blocks per request. Adding more is silently ignored at best
 and rejected at worst — keep cache breakpoints to the boundaries that
 actually pay off (typically system + tools + last large doc).
 
+## Rule 7 — `zodOutputFormat` / `betaZodTool` require zod v4
+
+The SDK's `zodOutputFormat`, `betaZodOutputFormat`, and `betaZodTool`
+helpers call `z.toJSONSchema` from `zod/v4`. If the project's `zod`
+dependency resolves to v3.x (`import { z } from "zod"` gives zod v3),
+these helpers crash with a confusing `TypeError: Cannot read properties
+of undefined`. Fix: import from `"zod/v4"` explicitly, or upgrade to
+`zod ^4.0.0`.
+
+```typescript
+// Wrong — breaks if zod resolves to v3
+import { z } from "zod";
+
+// Correct
+import { z } from "zod/v4";   // works with zod 3.25+ or 4.x
+```
+
 ---
 
 *Auto-updated daily. If a rule conflicts with current API behavior,

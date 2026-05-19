@@ -72,8 +72,8 @@ block) or an array of typed blocks:
 | `image` | `{ source: { type: "base64" \| "url", media_type, data \| url } }` |
 | `document` | PDF or other document input |
 | `tool_use` | Assistant turn: model invoked a **client** tool. Carries `id`, `name`, `input`. |
-| `tool_result` | User turn: result of a previous `tool_use`. **Must reference the matching `tool_use_id`**. |
-| `server_tool_use` | Assistant turn: model invoked a **server** tool (e.g. web_search, web_fetch, code_execution). Different return path — see server tools below. |
+| `tool_result` | User turn: result of a previous `tool_use`. **Must reference the matching `tool_use_id`**. Content array may include a `tool_reference` block (`type: "tool_reference"`, field `tool_name`) to reference a deferred server tool. |
+| `server_tool_use` | Assistant turn: model invoked a **server** tool (e.g. web_search, bash, code_execution). Different return path — see server tools below. |
 | `thinking` | Extended-thinking output (when `thinking` enabled) |
 | `redacted_thinking` | Thinking content the API redacted before returning |
 
@@ -84,15 +84,24 @@ There are two classes of tools in `tools`:
 - **Client tools** — fully defined by the caller via `input_schema`; the model returns a `tool_use` block, and the caller executes and returns `tool_result`.
 - **Server tools** — built-in tools executed by Anthropic's infrastructure. Appear as a typed object in `tools` (not a schema definition). The model returns a `server_tool_use` block; the result comes back in the same response without a round-trip.
 
-Known server tool types (specify in `tools` array):
+Known server tool types (specify in `tools` array by `type` field):
 
-| Tool type string | Description |
-|---|---|
-| `web_search_20250305` / `web_search_20260209` | Web search. Supports `allowed_domains`, `blocked_domains`, `user_location`, `max_uses`. |
-| `web_fetch_20250910` | Fetch a URL. Supports `allowed_domains`, `blocked_domains`, `max_content_tokens`, `citations`. |
-| `code_execution_20250825` / `code_execution_20260120` | Execute code in a sandbox. |
+| Tool type string | `name` value | Description |
+|---|---|---|
+| `web_search_20250305` / `web_search_20260209` | `web_search` | Web search. Supports `allowed_domains`, `blocked_domains`, `user_location`, `max_uses`. |
+| `web_fetch_20250910` / `web_fetch_20260209` | `web_fetch` | Fetch a URL. Supports `allowed_domains`, `blocked_domains`, `max_content_tokens`, `citations`. |
+| `web_fetch_20260309` | `web_fetch` | Web fetch with `use_cache: boolean` — set `false` to bypass cached content and fetch fresh. |
+| `code_execution_20250522` / `code_execution_20250825` / `code_execution_20260120` | `code_execution` | Execute code in a sandbox. Returns `code_execution_tool_result`. |
+| `bash_20250124` | `bash` | Execute bash in a sandbox. Returns `bash_code_execution_tool_result`. |
+| `text_editor_20250124` | `str_replace_editor` | Text editor tool. Returns `text_editor_code_execution_tool_result`. |
+| `text_editor_20250429` / `text_editor_20250728` | `str_replace_based_edit_tool` | Newer text editor variants. |
+| `memory_20250818` | `memory` | Memory store read/write tool. |
+| `tool_search_tool_bm25_20251119` | `tool_search_tool_bm25` | BM25-ranked tool search — finds relevant tools for the current turn. |
+| `tool_search_tool_regex_20251119` | `tool_search_tool_regex` | Regex-based tool search. |
 
-Server tools also support `defer_loading: true` to exclude from the initial system prompt (loaded on demand) and `strict: true` for schema validation.
+All server tools support `defer_loading: true` (exclude from initial system prompt; loaded on demand via `tool_reference` blocks) and `strict: true` (schema validation). `allowed_callers` restricts which caller contexts (`"direct"`, `"code_execution_20250825"`, etc.) may invoke the tool.
+
+Source: [`messages/create.md`](https://platform.claude.com/docs/en/api/messages/create.md)
 
 ### Prompt caching: `cache_control`
 

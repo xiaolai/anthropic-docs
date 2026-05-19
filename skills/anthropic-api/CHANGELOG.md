@@ -4,7 +4,7 @@ All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
 ## 2026-05-19
-- Research-only run: no upstream version change detected; research agent audited surfaces (77 turns); all 8 quality gates passed.
+*(pending review — see draft PR `auto/2026-05-19-pending-review`)* Research agent crashed (SDK JS runtime error); check-docs-drift gate failed; no upstream version change; changes pending human review.
 
 ## 2026-05-18
 

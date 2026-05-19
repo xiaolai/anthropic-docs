@@ -3,12 +3,38 @@
   "github": null,
   "docs": null,
   "trackedIssues": null,
-  "researchedIssues": {},
+  "researchedIssues": {
+    "793": {
+      "title": "Streaming responses missing cache_creation TTL breakdown (ephemeral_5m/1h_input_tokens)",
+      "verdict": "added_known_issue",
+      "reason": "Clear reproduction given; 1 reaction; streaming beta usage response missing cache_creation.ephemeral_5m/1h_input_tokens fields that are present in non-streaming. Fix PR #1048 pending. Added as KI 1.",
+      "researchedAt": "2026-05-19T12:00:00Z"
+    },
+    "pr-1040": {
+      "title": "fix(helpers): give a clear error when a zod v3 schema is passed to the zod helpers",
+      "verdict": "added_rule",
+      "reason": "PR fixing confusing crash when zodOutputFormat/betaZodTool used with zod v3; added auto-correction rule 7 to rules/messages-api.md.",
+      "researchedAt": "2026-05-19T12:00:00Z"
+    },
+    "pr-1050": {
+      "title": "fix(client): default redirect to manual to avoid forwarding non-standard headers",
+      "verdict": "skipped",
+      "reason": "Security edge case affecting custom baseURL + untrusted proxy redirect scenarios only. No user-filed issue; fix PR open. Low general user impact.",
+      "researchedAt": "2026-05-19T12:00:00Z"
+    },
+    "pr-1049": {
+      "title": "fix(stream): detect mixed newline SSE boundaries",
+      "verdict": "skipped",
+      "reason": "Internal SSE parser fix for mixed \\n\\r\\n boundaries; no user-filed issue and low observed impact in practice.",
+      "researchedAt": "2026-05-19T12:00:00Z"
+    }
+  },
   "lastAuditedVersion": null,
   "lastUpdated": null,
-  "scaffoldComplete": true,
+  "scaffoldComplete": false,
   "lastRunWarnings": [
-    "2026-05-19: Part B GitHub issues research skipped — gh api repos/anthropics/anthropic-sdk-typescript/issues returned HTTP 403 (Resource not accessible by integration); no bug tracker access in this environment."
+    "2026-05-19: Part B GitHub issues research skipped — gh api repos/anthropics/anthropic-sdk-typescript/issues returned HTTP 403 (Resource not accessible by integration); no bug tracker access in this environment.",
+    "2026-05-19T12:00:00Z: Part B GitHub issues research skipped — gh api call returns 403; bug tracker access not available in this runner environment."
   ],
   "lastScannedIssueNumber": null
 }

@@ -39,9 +39,26 @@ repo. For each:
 
 ## Entries
 
-> *No confirmed user-impacting bugs surfaced yet. First entries will
-> appear after the research agent's first run that detects a
-> substantive bug worth surfacing.*
+### KI 1 — Streaming beta responses missing `cache_creation` TTL breakdown
+
+**Symptom:** When using the beta prompt-caching feature (with `extended-cache-ttl-2025-04-11` header) and `stream: true`, the `BetaMessageDeltaUsage` object in streaming events does **not** include the `cache_creation.ephemeral_5m_input_tokens` / `cache_creation.ephemeral_1h_input_tokens` breakdown. Only the aggregate `cache_creation_input_tokens` is present. This makes it impossible to calculate per-TTL costs when streaming.
+
+**Reproduction:**
+```typescript
+// stream: true, beta cache header set
+for await (const event of stream) {
+  if (event.type === 'message_delta') {
+    console.log(event.usage.cache_creation);
+    // → undefined (missing in streaming, present in non-streaming)
+  }
+}
+```
+
+**Workaround:** Use `stream: false` when you need the TTL-specific `cache_creation` breakdown for cost calculation. Non-streaming responses include `cache_creation.ephemeral_5m_input_tokens` and `cache_creation.ephemeral_1h_input_tokens` correctly.
+
+**Status:** Open. Fix pending in [`anthropics/anthropic-sdk-typescript#1048`](https://github.com/anthropics/anthropic-sdk-typescript/pull/1048) — not yet merged/released as of 2026-05-19.
+
+**Link:** [`anthropics/anthropic-sdk-typescript#793`](https://github.com/anthropics/anthropic-sdk-typescript/issues/793)
 
 ---
 
