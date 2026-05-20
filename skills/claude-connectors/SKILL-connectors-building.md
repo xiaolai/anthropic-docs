@@ -92,9 +92,30 @@ Additional auth features:
 - Dynamic Client Registration (DCR) enabled.
 - OAuth callback: `https://claude.ai/api/mcp/auth_callback` (hosted surfaces); loopback redirect for Claude Code — see [callback URLs](https://claude.com/docs/connectors/building/authentication#callback-urls).
 - Token refresh: reactive on `401`, plus proactive refresh up to **5 minutes** before stored expiry. Your `/token` endpoint must accept `Content-Type: application/x-www-form-urlencoded` (RFC 6749 §4.1.3) — registration uses `application/json`, but token exchange does not.
+  - When a refresh token is no longer valid, return `invalid_grant` (not `invalid_request` or a custom code).
+  - DCR and CIMD register Claude as a **public client** — the MCP auth spec requires you to rotate or sender-constrain refresh tokens for public clients. Return the new refresh token in the same response that invalidates the old one.
 - Custom credentials for non-DCR servers supported.
 - PKCE (S256) is included on every authorization request; your authorization server must support it.
 - **For high-traffic servers, prefer CIMD or `oauth_anthropic_creds` over DCR.** DCR registers a new client on every fresh connection — this creates large numbers of registered clients on your authorization server at scale. CIMD and Anthropic-held credentials avoid the registration call entirely.
+- **CIMD selection criteria:** Claude selects CIMD only when the authorization server metadata advertises **both** `"client_id_metadata_document_supported": true` **and** `"none"` in `token_endpoint_auth_methods_supported`. If either is missing, Claude falls back to DCR.
+
+### Cross-host authorization servers
+
+If your authorization server lives on a different host from your MCP server, always return a `401` with a `WWW-Authenticate` header pointing at your protected resource metadata:
+
+```http
+HTTP/1.1 401 Unauthorized
+WWW-Authenticate: Bearer resource_metadata="https://mcp.example.com/.well-known/oauth-protected-resource"
+```
+
+Key rules:
+- **`401` is required** — Claude does not honor `WWW-Authenticate` on a `200` response.
+- The `resource_metadata` URL does not have to be on the MCP server's origin (important for platforms like Cloudflare Workers or Lambda that can't serve `/.well-known/*` at root).
+- Fallback: if no `resource_metadata` pointer is present, Claude probes the MCP server's origin at `/.well-known/oauth-protected-resource/<path>` then `/.well-known/oauth-protected-resource` — treat this as a last resort.
+- The metadata document's `resource` field must match your MCP server URL **exactly** as the user entered it, including any path component.
+- If `authorization_servers` lists more than one entry, Claude uses the **first** and does not fall back to later entries — put your primary issuer first.
+
+Source: [`authentication.md`](https://claude.com/docs/connectors/building/authentication.md).
 
 ### Enterprise and custom connector auth
 

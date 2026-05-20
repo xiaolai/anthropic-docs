@@ -38,7 +38,7 @@ A connector can do two things:
 | **Prebuilt integrations** | First-party Anthropic-maintained — Google Workspace, GitHub, M365, Slack | [`getting-started.md`](https://claude.com/docs/connectors/getting-started.md) |
 | **Remote MCP servers** | Cloud-hosted MCP servers reachable over HTTPS | [`custom/remote-mcp.md`](https://claude.com/docs/connectors/custom/remote-mcp.md) |
 | **MCP Apps** | MCP servers that render UI in the conversation | [`building/mcp-apps/getting-started.md`](https://claude.com/docs/connectors/building/mcp-apps/getting-started.md) |
-| **MCP Bundles (MCPB)** | Local MCP servers packaged as Desktop extensions (.mcpb) | [`custom/desktop-extensions.md`](https://claude.com/docs/connectors/custom/desktop-extensions.md) |
+| **MCP Bundles (MCPB)** | Local MCP servers packaged as Desktop extensions (.mcpb) — **Team and Enterprise plans only** | [`custom/desktop-extensions.md`](https://claude.com/docs/connectors/custom/desktop-extensions.md) |
 | **Self-serve local MCP** | Local servers distributed via npm/PyPI (not directly directory-listable — package as MCPB or bundle in a plugin using `.mcp.json` for directory listing) | [`overview.md`](https://claude.com/docs/connectors/overview.md) |
 
 ## Connectors Directory
@@ -50,6 +50,16 @@ for tool annotations, privacy policy, working examples, and test
 credentials (where applicable).
 
 To submit your own: see [`building/submission.md`](https://claude.com/docs/connectors/building/submission.md).
+
+### Directory characteristics
+
+| Characteristic | Detail |
+|---|---|
+| **Suggested Connectors** | Every directory entry is eligible for in-chat recommendations when relevant to the user's task; ranking is usage-based (similar to app stores) |
+| **Domain-ownership proof** | Not required for the Anthropic Directory — no DNS TXT or `.well-known` verification needed. (This requirement applies to the open MCP Registry, not here.) |
+| **Help-docs link** | The link shown in the in-product connector setup flow is Anthropic-controlled and not partner-customizable |
+
+Source: [`connectors/directory.md`](https://claude.com/docs/connectors/directory.md).
 
 ## First-party integrations
 
