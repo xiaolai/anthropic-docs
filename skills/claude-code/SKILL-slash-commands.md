@@ -49,7 +49,7 @@ Commands marked **[Skill]** are bundled skills — prompts handed to Claude that
 | `/exit` | Exit the CLI. Aliases: `/quit` |
 | `/export [filename]` | Export current conversation as plain text |
 | `/fast [on\|off]` | Toggle fast mode |
-| `/feedback [report]` | Submit feedback. Alias: `/bug` |
+| `/feedback [report]` | Submit feedback. Aliases: `/bug`, `/share` |
 | `/fewer-permission-prompts` | **[Skill]** Add allowlist to reduce permission prompts |
 | `/focus` | Toggle focus view (last prompt + one-line tool summary + final response) |
 | `/goal [condition\|clear]` | Set a completion condition; Claude keeps working until met |

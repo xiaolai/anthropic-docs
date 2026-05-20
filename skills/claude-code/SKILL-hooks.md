@@ -105,7 +105,7 @@ Per-event: what the matcher filters:
 | `SubagentStart`, `SubagentStop` | Agent type: `general-purpose`, `Explore`, `Plan`, or custom names |
 | `PreCompact`, `PostCompact` | What triggered compaction: `manual`, `auto` |
 | `ConfigChange` | Configuration source: `user_settings`, `project_settings`, `local_settings`, `policy_settings`, `skills` |
-| `StopFailure` | Error type: `rate_limit`, `authentication_failed`, `oauth_org_not_allowed`, `billing_error`, `invalid_request`, `server_error`, `max_output_tokens`, `unknown` |
+| `StopFailure` | Error type: `rate_limit`, `authentication_failed`, `oauth_org_not_allowed`, `billing_error`, `invalid_request`, `model_not_found`, `server_error`, `max_output_tokens`, `unknown` |
 | `InstructionsLoaded` | Load reason: `session_start`, `nested_traversal`, `path_glob_match`, `include`, `compact` |
 | `UserPromptExpansion` | Command name |
 | `Elicitation`, `ElicitationResult` | MCP server name |
@@ -187,7 +187,8 @@ Claude Code writes a JSON object to stdin (or POST body for HTTP hooks). Common 
 | `tool_response` | PostToolUse | What the tool returned |
 | `tool_error` | PostToolUseFailure | Error message from the failed tool call |
 | `prompt` | UserPromptSubmit | The user's just-submitted prompt text |
-| `source` | SessionStart | `"startup"`, `"resume"`, or `"compact"` |
+| `source` | SessionStart | `"startup"`, `"resume"`, `"clear"` (after `/clear`), or `"compact"` (after compaction) |
+| `model` | SessionStart only | Active model identifier (e.g. `"claude-sonnet-4-6"`). Only present in `SessionStart` — there is no `$CLAUDE_MODEL` env var. Does not update when `/model` changes mid-session |
 | `effort` | `PreToolUse`, `PostToolUse`, `Stop`, `SubagentStop` (when model supports it) | Object `{"level": "low"\|"medium"\|"high"\|"xhigh"\|"max"}` — the active effort level. Also available as `$CLAUDE_EFFORT` env var in command hooks |
 | `agent_id` | When hook fires inside a subagent | Unique identifier for the subagent. Use to distinguish subagent hook calls from main-thread calls |
 | `agent_type` | When session uses `--agent` or fires inside a subagent | Agent name (e.g. `"Explore"`, `"security-reviewer"`). For custom subagents, this is the `name` from frontmatter, not the filename |
