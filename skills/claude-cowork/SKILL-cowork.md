@@ -366,6 +366,10 @@ restrict Web Search (server-side at your provider — add `"WebSearch"` to
 which runs on the host with normal network access. To remove the Code tab,
 set `isClaudeCodeForDesktopEnabled` to `false`.
 
+**Default when unset:** only the configured inference endpoint is reachable.
+Agent package installs (`pip install`, `npm install`) and web fetches to
+other hosts will fail until you add those hosts to the list or set `["*"]`.
+
 URLs returned in search results are **automatically allowed** for a
 follow-up Web Fetch even if they are not in your `coworkEgressAllowedHosts`
 list.

@@ -4,6 +4,7 @@ description: Edit-time rules for Cowork-on-3P MDM configuration profiles (macOS 
 appliesTo:
   - "**/*.plist"
   - "**/*.mobileconfig"
+  - "**/*.reg"
   - "**/cowork-config*.json"
   - "**/intune-cowork*.json"
 ---

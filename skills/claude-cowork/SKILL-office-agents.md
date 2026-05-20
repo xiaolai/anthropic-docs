@@ -98,6 +98,63 @@ residency / regulatory drivers.
 
 See [`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md).
 
+### 3P setup wizard (`claude-for-msft-365-install`)
+
+A guided plugin provisions cloud resources, generates the add-in manifest,
+and handles Microsoft admin consent in one flow.
+
+```bash
+# Add marketplace and install
+claude plugin marketplace add anthropics/financial-services
+claude plugin install claude-for-msft-365-install@financial-services
+```
+
+Then from inside Claude:
+
+```
+/claude-for-msft-365-install:setup
+```
+
+| Command | Function |
+|---|---|
+| `/claude-for-msft-365-install:setup` | Interactive wizard — provisions resources, admin consent, writes manifest |
+| `/claude-for-msft-365-install:manifest` | Generates add-in manifest XML |
+| `/claude-for-msft-365-install:consent` | Generates Azure admin-consent URL |
+| `/claude-for-msft-365-install:update-user-attrs` | Writes per-user config via Microsoft Graph extension attributes |
+
+**Manifest keys set by the wizard:**
+- `gateway_api_format` — `anthropic` (default) | `bedrock` | `vertex`
+- `gateway_auth_header` — `x-api-key` (default) | `authorization` (for `Authorization: Bearer`)
+
+**Outlook on 3P note:** Amazon Bedrock is not supported for Claude for
+Outlook on 3P. Outlook on third-party platforms currently supports
+Claude Opus 4.7 only. Foundry: deployment names must use default model
+IDs (e.g. `claude-opus-4-6`) — custom deployment names are not supported.
+
+**Gateway CORS requirement:** The add-in loads from `https://pivot.claude.ai`;
+all responses (including errors) must include `Access-Control-Allow-Origin:
+https://pivot.claude.ai` (or `*`). List explicit headers:
+`x-api-key, authorization, content-type, anthropic-version`.
+
+Source: [`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md).
+
+### Features on 3P vs Claude account
+
+| Feature | Claude account | Third-party (3P) |
+|---|---|---|
+| Chat with spreadsheet / deck / doc / email | Yes | Yes |
+| Read and edit cells, slides, formulas, document text | Yes | Yes |
+| Mailbox/calendar triage (Outlook) | Yes | Yes, except Bedrock |
+| Connectors (S&P, FactSet, etc.) | Yes | Coming soon |
+| Work across apps | Yes | No |
+| Dictation | Yes | No |
+| Skills | Yes | Coming soon |
+| File uploads | Yes | No |
+| Web search | Yes | Vertex direct, Foundry direct, and compatible gateways |
+| Code execution | Yes | Foundry direct and compatible gateways |
+
+Source: [`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md).
+
 ## Enterprise readiness
 
 Security architecture diagrams, OpenTelemetry audit setup, usage
@@ -127,26 +184,39 @@ Highlights:
 
 ## Network allowlist
 
-Claude for M365 add-ins require access to domains that differ between
-standard (1P, Claude accounts) and third-party (3P, Entra ID) deployments.
-Full tables are in
+Full domain tables are in
 [`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md).
+Prompts and responses travel only to your inference provider — `pivot.claude.ai` serves the task-pane UI, feature flags, and telemetry only.
 
-Always required (both 1P and 3P):
+**1P (Claude account sign-in → `api.anthropic.com`):**
 
-- `pivot.claude.ai` — task pane UI, telemetry
-- `appsforoffice.microsoft.com` — Office.js runtime
-- `login.microsoftonline.com` — Entra ID sign-in / token issuance
+| Domain | Required when |
+|---|---|
+| `pivot.claude.ai` | Always |
+| `claude.ai` | Always (OAuth + feature flags) |
+| `api.anthropic.com` | Always (inference, file uploads, code execution, MCP registry) |
+| `appsforoffice.microsoft.com` | Always (Office.js runtime) |
+| `login.microsoftonline.com` | If using Outlook (Entra Nested App Auth for Graph token) |
+| `graph.microsoft.com` | If using Outlook |
+| `mcp-proxy.anthropic.com` | If using MCP connectors |
+| `bridge.claudeusercontent.com` | If using work-across-apps |
+| `o1158394.ingest.us.sentry.io` | Optional (crash reporting) |
 
-3P adds provider-specific domains: `sts.amazonaws.com` +
-`bedrock-runtime.<region>.amazonaws.com` (Bedrock); Google OAuth +
-`aiplatform.googleapis.com` + regional Vertex endpoint (Vertex AI);
-`<resource>.services.ai.azure.com` (Foundry); your gateway URL.
-Outlook always needs `graph.microsoft.com` regardless of 1P/3P.
+**3P (Entra ID sign-in → gateway / Bedrock / Vertex / Foundry):**
 
-> **Prompts/responses never travel through `pivot.claude.ai`.** That
-> domain serves only the add-in's task-pane UI, feature config, and
-> telemetry — inference goes directly to your chosen provider.
+| Domain | Required when |
+|---|---|
+| `pivot.claude.ai` | Always |
+| `claude.ai/api/` | Always (feature-flag evaluation, no sign-in) |
+| `appsforoffice.microsoft.com` | Always |
+| `login.microsoftonline.com` | Always (Entra ID sign-in + token issuance for all 3P) |
+| `graph.microsoft.com` | If using Outlook |
+| Your LLM gateway URL | If using LLM gateway |
+| `sts.amazonaws.com` | If using Bedrock direct |
+| `bedrock-runtime.<region>.amazonaws.com` | If using Bedrock direct |
+| `accounts.google.com` + `oauth2.googleapis.com` | If using Vertex AI direct |
+| `aiplatform.googleapis.com` + `<region>-aiplatform.googleapis.com` | If using Vertex AI direct |
+| `<resource>.services.ai.azure.com` | If using Foundry direct |
 
 ## Page index
 
