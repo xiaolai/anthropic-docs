@@ -3,6 +3,12 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-20 (run 9)
+*(pending review — see PR auto/2026-05-20-pending-review)* Routine research pass (50 turns, 170s) — no upstream change; checkDocsDrift gate failed; surface-file edits pending human review before merge
+
+## 2026-05-20 (run 8)
+- Routine research pass — docs index SHA256 updated (cosmetic change in llms.txt, 119 URLs identical); MANIFEST.json already current; no new bug issues (change-report.json empty, no open bug issues > #2752); Part C: all 5 spot-checked URLs resolve HTTP 200, versions consistent (SDK 1.29.0 / mcp 1.27.1 / spec 2025-11-25), no duplicate facts, all cross-references valid, rules globs cover documented patterns; updated docs.indexSha256 and lastScannedIssueNumber in state.json
+
 ## 2026-05-20 (run 7)
 *(pending review — see PR auto/2026-05-20-pending-review)* Routine research pass (86 turns, 468s) — no upstream change; checkDocsDrift gate failed; surface-file edits pending human review before merge
 
