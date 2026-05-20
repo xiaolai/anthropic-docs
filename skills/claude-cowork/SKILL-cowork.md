@@ -103,10 +103,11 @@ configuration keys, and the credential flow.
   existing MDM (Jamf, Intune, Workspace ONE, Group Policy) and cannot
   be overridden by end users when an admin profile is present.
 
-For threat-model and sandbox details, request access to the *Claude
-Cowork Desktop Security Architecture Overview* on Anthropic's Trust
-Center. For 3P-specific architecture / controls, see the *Claude
-Cowork Security Overview (Third-Party Platforms)*.
+For threat-model and sandbox details, see the
+[Claude Cowork Desktop Security Architecture Overview](https://trust.anthropic.com/resources?s=2a7bbzo1lyymvdt551q7kl&name=claude-cowork-desktop-security-architecture-overview)
+on Anthropic's Trust Center. For 3P-specific architecture / controls, see
+[Claude Cowork Security Overview (Third-Party Platforms)](https://trust.anthropic.com/resources?s=0c8rx4s7mm5ierz8ppetfs&name=claude-cowork-security-overview-\(third-party-platforms\))
+on the Trust Center.
 
 ## Installation & MDM rollout
 
@@ -182,6 +183,20 @@ That page is the source of truth for:
   `backgroundColor` (`#RRGGBB`), `textColor` (`#RRGGBB`), `linkUrl` (HTTPS URL))
 - **Token spend caps** — `inferenceMaxTokensPerWindow`, `inferenceTokenWindowHours`
   (1–720 hours)
+
+## Recommended security profiles
+
+Three named starting-point profiles from
+[`3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
+Layer the inference-provider keys for your cloud on top.
+
+| Profile | Description | Key settings |
+|---|---|---|
+| **Standard** | Most enterprise deployments — telemetry and auto-updates on; users can extend | `deploymentOrganizationUuid`, `autoUpdaterEnforcementHours: 24`, `isDesktopExtensionSignatureRequired: true`, `otlpEndpoint` |
+| **Restricted** | Regulated environments — control extensions and egress while keeping Anthropic supportability | + `disableNonessentialTelemetry: true`, `disableNonessentialServices: true`, `isLocalDevMcpEnabled: false`, `isDesktopExtensionEnabled: false`, `allowedWorkspaceFolders`, `coworkEgressAllowedHosts` |
+| **Locked down** | Air-gapped / maximally restricted — all Anthropic network traffic disabled; IT owns update distribution | + `disableEssentialTelemetry: true`, `disableAutoUpdates: true`, `disabledBuiltinTools: ["WebSearch","WebFetch"]`, `coworkEgressAllowedHosts: []` |
+
+The **Locked down** profile means the only traffic leaving the device goes to your inference endpoint and OTLP collector. With this profile Anthropic has zero remote visibility, so your team owns log collection and update distribution.
 
 ## Data residency
 

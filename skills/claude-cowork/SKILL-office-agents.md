@@ -106,17 +106,24 @@ analytics, and spend-tracking conventions live in
 
 Highlights:
 
-- Security architecture diagrams per app (first-party and 3P variants).
+- **Security architecture diagrams**: Trust Center publishes architecture
+  diagrams per deployment mode.
+  - First-party (Claude accounts): [architecture overview](https://trust.anthropic.com/resources?s=e3n7pvyjnxjyahmdmqujcx&name=claude-for-excel,-powerpoint,-word:-architecture-overview-%28anthropic-first-party%29)
+  - Third-party (Bedrock/Vertex/Foundry/gateway): see [Trust Center resources](https://trust.anthropic.com/resources?s=e3n7pvyjnxjyahmdmqujcx) and filter for "Claude for Excel, PowerPoint, Word"
 - **Custom OTLP collector**: when configured, spans are exported
   **unfiltered** — including the full audit trail: session IDs, surface,
   tool inputs/outputs, and **prompt and response content**. Scope access
   controls and retention accordingly. (Spans sent to Anthropic's own
   collector are allowlist-filtered and never include prompt content.)
-- Usage analytics (per-user and per-workspace) and spend tracking via
+  See [Configure a custom OTel collector for Claude for M365](https://support.claude.com/en/articles/14447276-configure-a-custom-opentelemetry-collector-for-office-agents)
+  for manifest parameters and endpoint requirements.
+- **Usage analytics** (per-user and per-workspace) and **spend tracking** via
   Claude Enterprise Analytics API — **available only for 1P (Claude
   account sign-in)**. On 3P platforms (Bedrock, Vertex, Foundry,
   gateway), usage and spend are tracked through your cloud provider's
   billing console and your gateway's logging instead.
+  - [Analytics API reference guide](https://support.claude.com/en/articles/13703965-claude-enterprise-analytics-api-reference-guide)
+  - [View usage analytics (Team/Enterprise)](https://support.claude.com/en/articles/12883420-view-usage-analytics-for-team-and-enterprise-plans)
 
 ## Network allowlist
 
