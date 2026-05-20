@@ -114,6 +114,14 @@ selects the auth header: `x-api-key` (default) or `authorization`
 (coming soon), File uploads, Dictation, and Work-across-apps are not
 available when connecting through a third-party platform.
 
+**Features partially available on 3P** (per the feature matrix in
+[`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md)):
+
+| Feature | 3P availability |
+|---|---|
+| **Web search** | Vertex direct, Foundry direct, and gateways the add-in detects as routing to a Foundry-compatible upstream |
+| **Code execution** | Foundry direct, and gateways the add-in detects as routing to a Foundry-compatible upstream |
+
 > **Bedrock + Outlook:** Amazon Bedrock is not supported for Claude for
 > Outlook. Claude for Outlook on 3P currently supports Claude Opus 4.7
 > only.
@@ -163,7 +171,8 @@ telemetry), `appsforoffice.microsoft.com` (Office.js runtime).
 (if using MCP connectors), `bridge.claudeusercontent.com` (if using
 work-across-apps).
 
-**3P (Entra ID)** always requires `login.microsoftonline.com`. Provider-
+**3P (Entra ID)** always requires `login.microsoftonline.com` and
+`claude.ai/api/` (feature-flag evaluation without sign-in). Provider-
 specific additions: `sts.amazonaws.com` +
 `bedrock-runtime.<region>.amazonaws.com` (Bedrock); `accounts.google.com`
 + `oauth2.googleapis.com` + `aiplatform.googleapis.com` +
