@@ -10,6 +10,10 @@ The newest entry is at the top.
 
 ---
 
+## 2026-05-20 (run 10)
+*(pending review — see draft PR on branch `auto/2026-05-20-pending-review`)*
+- Routine audit at CC v2.1.145 — research ran 94 turns; checkDocsDrift gate failed (upstream llms.txt hash diverged from docs-snapshot); 8/9 gates pass; changes queued for review pending snapshot refresh
+
 ## 2026-05-20 (run 9)
 - Routine audit at CC v2.1.145 — SKILL-cli.md: auto mode model requirements corrected (Max plan: Opus 4.7 only; Team/Enterprise/API: Sonnet 4.6, Opus 4.6, or Opus 4.7); SKILL-slash-commands.md: /resume version corrected to v2.1.144 for background-sessions-in-picker feature; all 8 gates pass
 
