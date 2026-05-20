@@ -145,15 +145,19 @@ Source: [`admin/usage_report/retrieve_messages.md`](https://platform.claude.com/
 |---|---|
 | `GET /v1/organizations/cost_report` | [`admin/cost_report/retrieve.md`](https://platform.claude.com/docs/en/api/admin/cost_report/retrieve.md) |
 
-Response schema — `CostReport.data[].results[]` key fields (source: [`admin/cost_report/retrieve.md`](https://platform.claude.com/docs/en/api/admin/cost_report/retrieve.md), updated 2026-05-20):
+Response schema — `CostReport.data[].results[]` fields (source: [`admin/cost_report/retrieve.md`](https://platform.claude.com/docs/en/api/admin/cost_report/retrieve.md), updated 2026-05-20):
 
 | Field | Type | Notes |
 |---|---|---|
+| `amount` | string | Cost amount in lowest currency units as a decimal string (e.g. `"123.45"` in USD = $1.23). |
 | `cost_type` | string | `"tokens"` \| `"web_search"` \| `"code_execution"` \| `"session_usage"`. `null` if not grouping by `description`. |
+| `currency` | string | Currency code for the cost amount. Currently always `"USD"`. |
 | `token_type` | string | `"uncached_input_tokens"` \| `"output_tokens"` \| `"cache_read_input_tokens"` \| `"cache_creation.ephemeral_1h_input_tokens"` \| `"cache_creation.ephemeral_5m_input_tokens"`. Token costs only. |
 | `service_tier` | string | `"standard"` \| `"batch"`. Token costs only; `null` otherwise. |
 | `context_window` | string | `"0-200k"` \| `"200k-1M"`. Token costs only; `null` otherwise. |
 | `inference_geo` | string | Geographic region (or `"not_available"` for models that don't support it). |
+| `model` | string | Model name. `null` if not grouping by description or for non-token costs. |
+| `workspace_id` | string | Workspace ID this cost is associated with. `null` if not grouping by workspace or for the default workspace. |
 | `description` | string | Human-readable cost description (only when `group_by` includes `"description"`). |
 
 Query `group_by` options: `"workspace_id"`, `"description"`. Only `"1d"` bucket width is supported.
