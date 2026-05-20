@@ -80,7 +80,7 @@ required:
 | `sessions/threads/` | [`beta/sessions/threads/`](https://platform.claude.com/docs/en/api/beta/sessions/threads.md) — list, retrieve, archive threads within a session; thread events (list/stream) via `GET /v1/sessions/{session_id}/threads` |
 | `skills/` | [`beta/skills/`](https://platform.claude.com/docs/en/api/beta/skills/) (Skills upload/management; `GET /v1/skills/{id}/versions/{ver}/content` downloads a version as a zip archive) |
 | `user_profiles/` | [`beta/user_profiles/`](https://platform.claude.com/docs/en/api/beta/user_profiles/) |
-| `vaults/` | [`beta/vaults/`](https://platform.claude.com/docs/en/api/beta/vaults/) |
+| `vaults/` | [`beta/vaults/`](https://platform.claude.com/docs/en/api/beta/vaults/) — standard CRUD for vaults + credential sub-resources; `POST /v1/vaults/{vault_id}/credentials/{credential_id}/mcp_oauth_validate` live-probes the credential against its configured MCP server and returns `BetaManagedAgentsCredentialValidation` (fields: `credential_id`, `has_refresh_token`, `mcp_probe` with failing step + HTTP response, `refresh` outcome). Use for OAuth credential diagnostics. Source: [`beta/vaults/credentials/mcp_oauth_validate.md`](https://platform.claude.com/docs/en/api/beta/vaults/credentials/mcp_oauth_validate.md) |
 | `webhooks.md` | [`beta/webhooks.md`](https://platform.claude.com/docs/en/api/beta/webhooks.md) |
 
 Most of these align with the Managed Agents product surface —
