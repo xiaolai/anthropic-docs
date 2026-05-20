@@ -235,6 +235,89 @@ Note: `~/.claude.json` is separate from `~/.claude/settings.json`. Project-scope
 
 Claude Code creates timestamped backups of config files and retains the 5 most recent.
 
+## Session management
+
+Sessions are saved conversations tied to a project directory, stored as JSONL transcripts locally.
+
+Source: [`code.claude.com/docs/en/sessions.md`](https://code.claude.com/docs/en/sessions.md)
+
+### Resume entry points
+
+| Command | What it does |
+|---|---|
+| `claude --continue` | Resumes the most recent session in the current directory |
+| `claude --resume` | Opens the interactive session picker |
+| `claude --resume <name>` | Resumes the named session directly |
+| `claude --from-pr <number>` | Resumes the session linked to that pull request |
+| `/resume` | Switches to a different conversation from inside an active session |
+
+Sessions created with `claude -p` or the Agent SDK do not appear in the session picker, but can still be resumed by passing their session ID to `claude --resume <session-id>`.
+
+### Naming sessions
+
+| When | How |
+|---|---|
+| At startup | `claude -n auth-refactor` |
+| During a session | `/rename auth-refactor` |
+| From the session picker | Highlight a session and press `Ctrl+R` |
+| On plan accept | Plan content is used as the name if no name is already set |
+
+Once named, return to a session with `claude --resume <name>` or `/resume <name>`.
+
+### Session picker keyboard shortcuts
+
+Open with `claude --resume` or `/resume`. By default, shows interactive sessions from the current worktree plus sessions that added the current directory with `/add-dir`.
+
+| Shortcut | Action |
+|---|---|
+| `↑` / `↓` | Navigate between sessions |
+| `→` / `←` | Expand or collapse grouped sessions |
+| `Enter` | Resume the highlighted session |
+| `Space` | Preview session content |
+| `Ctrl+R` | Rename the highlighted session |
+| `/` or any printable non-Space char | Enter search mode; paste a GitHub/GitLab/Bitbucket PR URL to find its session |
+| `Ctrl+A` | Show sessions from all projects on this machine (press again to return) |
+| `Ctrl+W` | Show sessions from all worktrees of the current repository (multi-worktree repos only) |
+| `Ctrl+B` | Filter to sessions from the current git branch |
+| `Esc` | Exit the picker or search mode |
+
+Name resolution: `claude --resume <name>` looks for an exact match across the current repository and its worktrees, resuming directly if found. An ambiguous name opens the picker pre-filled with the search term. `/resume <name>` with an ambiguous name reports an error — run `/resume` without arguments instead.
+
+### Branching a session
+
+Create a copy of the conversation so far without losing the original:
+
+```bash
+# From inside a session
+/branch try-streaming-approach
+
+# From the command line
+claude --continue --fork-session
+```
+
+The original session is unchanged and available in the picker. Permissions approved for "this session" do not carry over to the branch. If the same session is resumed in two terminals without forking, messages from both interleave into one transcript.
+
+### Managing context within a session
+
+| Command | Effect |
+|---|---|
+| `/clear` | Start fresh with empty context; previous conversation is saved and resumable |
+| `/compact [instructions]` | Replace history with a summary, optionally focused |
+| `/context` | Show what is currently consuming context |
+| `/export` | Copy conversation to clipboard or write to a file (pass a filename to write directly) |
+
+### Transcript storage
+
+Transcripts are stored as JSONL at:
+
+```
+~/.claude/projects/<project>/<session-id>.jsonl
+```
+
+where `<project>` is derived from the working directory path. Set `CLAUDE_CONFIG_DIR` to override the `~/.claude/` location. Local files are removed after 30 days by default; change this with [`cleanupPeriodDays`](SKILL-settings.md) in settings.
+
+To suppress transcript writes entirely: set `CLAUDE_CODE_SKIP_PROMPT_HISTORY`, or use `--no-session-persistence` in non-interactive mode.
+
 ## IDE integrations
 
 | IDE | Notes |
@@ -245,4 +328,4 @@ Claude Code creates timestamped backups of config files and retains the 5 most r
 
 ---
 
-*Source pages: `code.claude.com/docs/en/cli-reference.md`, `settings.md` (env section), `permissions.md`, `permission-modes.md`.*
+*Source pages: `code.claude.com/docs/en/cli-reference.md`, `settings.md` (env section), `permissions.md`, `permission-modes.md`, `sessions.md`.*

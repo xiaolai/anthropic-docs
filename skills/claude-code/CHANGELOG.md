@@ -10,6 +10,9 @@ The newest entry is at the top.
 
 ---
 
+## 2026-05-20 (run 7)
+- Docs index +3 pages (105→108): plugin-hints.md, prompt-library.md, sessions.md; SKILL-plugins.md added plugin-hint protocol, SKILL-cli.md added session management section; all 11 gates pass
+
 ## 2026-05-20 (run 6)
 - Routine audit at CC v2.1.145 — research confirmed all surface files current (105 pages, 104 turns); 1 issue evaluated (skipped — spam/bounty-claim); all 8 gates pass
 

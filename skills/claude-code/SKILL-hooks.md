@@ -266,6 +266,8 @@ Claude Code writes a JSON object to stdin (or POST body for HTTP hooks). Common 
 | `teammate_name` | (optional) Name of the teammate that is creating the task |
 | `team_name` | (optional) Name of the agent team |
 
+**TaskCompleted** receives the same additional fields as `TaskCreated` above (`task_id`, `task_subject`, `task_description`, `teammate_name`, `team_name`) — `teammate_name` here refers to the teammate completing the task.
+
 **TeammateIdle** additionally receives teammate-specific fields:
 
 | Field | Notes |
@@ -320,6 +322,22 @@ Claude Code writes a JSON object to stdin (or POST body for HTTP hooks). Common 
 | `schedule` | Cron expression (e.g. `0 9 * * 1-5`) |
 | `recurring` | `true` for tasks that re-fire on every match; `false` for one-shot wakeups |
 | `prompt` | Prompt submitted when the cron fires, capped at 1000 characters |
+
+**PostToolBatch** additionally receives `tool_calls`, an array describing every tool call in the batch. Each element:
+
+| Field | Notes |
+|---|---|
+| `tool_name` | Name of the tool (e.g. `"Read"`, `"Bash"`) |
+| `tool_input` | Arguments passed to the tool |
+| `tool_use_id` | Opaque identifier for this specific tool invocation |
+| `tool_response` | Serialized `tool_result` content the model sees — the same string or content-block array the tool emitted. For `Read`, this is line-number-prefixed text. Note: shape differs from `PostToolUse`'s structured `Output` object |
+
+**ConfigChange** additionally receives `source` and optionally `file_path`:
+
+| Field | Notes |
+|---|---|
+| `source` | Which configuration changed: `"user_settings"`, `"project_settings"`, `"local_settings"`, `"policy_settings"`, or `"skills"` |
+| `file_path` | (optional) Absolute path to the specific configuration file that was modified |
 
 Example payload for `PreToolUse` on a Bash call:
 
@@ -393,6 +411,22 @@ Fires when the permission dialog is about to appear. Uses `decision.behavior`, *
 | `decision.interrupt` | (`"deny"` only) If `true`, stops Claude entirely |
 
 Input also includes `permission_suggestions` array with the "always allow" options the user would normally see.
+
+### SubagentStart output
+
+SubagentStart is non-blocking (cannot prevent subagent creation), but supports injecting context into the subagent's conversation:
+
+<!-- skip-validate -->
+```json
+{
+  "hookSpecificOutput": {
+    "hookEventName": "SubagentStart",
+    "additionalContext": "Follow security guidelines for this task"
+  }
+}
+```
+
+The `additionalContext` string is prepended to the subagent's context before its first prompt.
 
 ### PermissionDenied output
 

@@ -212,6 +212,83 @@ Administrators can use `strictKnownMarketplaces` in `managed-settings.json` to r
 
 Cross-reference: [`SKILL-settings.md`](SKILL-settings.md) § *All documented settings keys* (`strictKnownMarketplaces`, `blockedMarketplaces`).
 
+## Recommending your plugin from a CLI tool
+
+If you maintain a CLI or SDK that has a plugin in the official Anthropic marketplace, your tool can prompt Claude Code users to install that plugin. Write a one-line `<claude-code-hint />` marker to stderr; Claude Code strips it from command output before sending to the model (zero token cost), then shows the user a one-time install prompt.
+
+Source: [`code.claude.com/docs/en/plugin-hints.md`](https://code.claude.com/docs/en/plugin-hints.md)
+
+### How it works
+
+Claude Code sets the [`CLAUDECODE`](SKILL-cli.md) environment variable to `1` for every Bash/PowerShell tool command. When your CLI detects that variable, write the hint tag to stderr:
+
+```text
+<claude-code-hint v="1" type="plugin" value="example-cli@claude-plugins-official" />
+```
+
+Claude Code then:
+1. Removes the hint line before output reaches the model
+2. Checks the plugin is in an official Anthropic marketplace (`claude-plugins-official`)
+3. Checks the plugin is not already installed and has not been prompted before
+4. Shows the user a named install prompt (user always confirms; no automatic install)
+
+If the hint fails either condition (unofficial marketplace, already installed), it is silently dropped.
+
+### Hint format
+
+| Attribute | Required | Description |
+|---|---|---|
+| `v` | Yes | Protocol version. `1` is the only supported value |
+| `type` | Yes | Hint kind. `plugin` is the only supported value |
+| `value` | Yes | Plugin identifier in `name@marketplace` form |
+
+The tag must occupy its own line (leading/trailing whitespace allowed). A tag embedded mid-line is ignored. Only `claude-plugins-official` (or other Anthropic-controlled marketplaces) are accepted — hints targeting other marketplaces are dropped.
+
+### Emit the hint
+
+Gate on `CLAUDECODE` so the tag never appears to users running your CLI outside Claude Code:
+
+```javascript
+// Node.js
+if (process.env.CLAUDECODE) {
+  process.stderr.write(
+    '<claude-code-hint v="1" type="plugin" value="example-cli@claude-plugins-official" />\n',
+  )
+}
+```
+
+```python
+# Python
+import os, sys
+if os.environ.get("CLAUDECODE"):
+    print(
+        '<claude-code-hint v="1" type="plugin" value="example-cli@claude-plugins-official" />',
+        file=sys.stderr,
+    )
+```
+
+### Recommended touchpoints
+
+| Placement | Why it works |
+|---|---|
+| `--help` output | Claude often runs help when exploring an unfamiliar CLI |
+| Unknown-subcommand errors | Reaches the moment Claude is confused about your interface |
+| Login or auth success | User is in a setup mindset |
+| First-run welcome message | Natural onboarding moment |
+
+Claude Code deduplicates by plugin, so emitting on every invocation has no downside.
+
+### Prompt frequency limits
+
+- **Once per plugin** — after the prompt is shown (any answer), Claude Code never prompts for it again.
+- **Once per session** — at most one hint prompt appears per Claude Code session across all CLIs on the machine.
+
+The user can permanently disable all hint prompts by selecting "No, and don't show plugin installation hints again".
+
+### Getting into the official marketplace
+
+The hint protocol only works for plugins in the official Anthropic marketplace (`claude-plugins-official`). The in-app `/plugin` submission forms add plugins to the community marketplace, not the official one. Contact an Anthropic partner contact to coordinate an official-marketplace listing.
+
 ## Common mistakes (auto-corrected by `rules/plugins.md`)
 
 See [`rules/plugins.md`](rules/plugins.md). Key pitfalls:
@@ -224,4 +301,4 @@ See [`rules/plugins.md`](rules/plugins.md). Key pitfalls:
 
 ---
 
-*Source pages: `code.claude.com/docs/en/plugins.md`, `plugins-reference.md`.*
+*Source pages: `code.claude.com/docs/en/plugins.md`, `plugins-reference.md`, `plugin-hints.md`.*
