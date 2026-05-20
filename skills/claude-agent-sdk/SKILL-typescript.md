@@ -311,7 +311,7 @@ await tagSession(sessionId, null);
 |--------|------|---------|-------------|
 | `model` | `string` | CLI default | Claude model to use |
 | `cwd` | `string` | `process.cwd()` | Working directory |
-| `systemPrompt` | `string \| { type: 'preset', preset: 'claude_code', append?: string }` | minimal | System prompt |
+| `systemPrompt` | `string \| { type: 'preset', preset: 'claude_code', append?: string, excludeDynamicSections?: boolean }` | minimal | System prompt. Set `excludeDynamicSections: true` to move per-session context into the first user message for better prompt-cache reuse across machines |
 | `settingSources` | `SettingSource[]` | `[]` | `'user' \| 'project' \| 'local'` |
 | `env` | `Dict<string>` | `process.env` | Environment variables (set `CLAUDE_AGENT_SDK_CLIENT_APP` to identify your app in User-Agent, e.g. `'my-app/1.0.0'`) |
 | `abortController` | `AbortController` | — | Cancellation controller |
@@ -327,6 +327,7 @@ await tagSession(sessionId, null);
 | `canUseTool` | `CanUseTool` | — | Custom permission callback |
 | `allowDangerouslySkipPermissions` | `boolean` | `false` | Required with `bypassPermissions` |
 | `permissionPromptToolName` | `string` | — | Route permission prompts through a named MCP tool |
+| `planModeInstructions` | `string` | — | Custom workflow instructions for plan mode. When `permissionMode` is `'plan'`, replaces the default plan-mode workflow body (CLI still wraps it with the read-only preamble and ExitPlanMode footer) |
 
 ### Models & Output
 
@@ -364,12 +365,14 @@ await tagSession(sessionId, null);
 | `agent` | `string` | — | Apply a named agent's config to main thread (like `--agent` CLI flag) |
 | `plugins` | `SdkPluginConfig[]` | `[]` | `{ type: 'local', path: string }` |
 | `strictMcpConfig` | `boolean` | `false` | Strict MCP validation |
+| `agentProgressSummaries` | `boolean` | `false` | When `true`, generate one-line progress summaries for subagents and forward them on `task_progress` events via the `summary` field. Applies to foreground and background subagents |
 
 ### Sessions (additional)
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `sessionStore` | `SessionStore` | — | Mirror transcripts to external backend so any host can resume. See [session-storage docs](https://code.claude.com/docs/en/agent-sdk/session-storage) |
+| `sessionStoreFlush` | `'batched' \| 'eager'` | `'batched'` | *(Alpha)* Flush mode for `sessionStore`. `'eager'` triggers a background flush after every frame; ignored when `sessionStore` is not set |
 
 ### Advanced
 
@@ -382,7 +385,7 @@ await tagSession(sessionId, null);
 | `additionalDirectories` | `string[]` | `[]` | Extra directories for Claude to access |
 | `skills` | `string[] \| 'all'` | — | Skills available to the session; `'all'` enables every discovered skill. SDK auto-enables the `Skill` tool |
 | `strictMcpConfig` | `boolean` | `false` | Use only `mcpServers` from SDK options; ignore `.mcp.json`, user settings, plugin MCP servers |
-| `outputStyle` | `string` | — | Name of an output style to activate; must exist in a loaded `settingSources` location |
+| `outputStyle` | N/A | — | **Not an Options field.** Set `outputStyle` inside the inline `settings` object (e.g., `settings: { outputStyle: "compact" }`) or in a settings file instead |
 | `includeHookEvents` | `boolean` | `false` | Include hook lifecycle events (`SDKHookStartedMessage`, `SDKHookProgressMessage`, `SDKHookResponseMessage`) in the message stream |
 | `debug` | `boolean` | — | Enable debug logging (v0.2.30) |
 | `debugFile` | `string` | — | Debug log file path (v0.2.30) |

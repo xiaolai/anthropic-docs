@@ -239,6 +239,7 @@ class SystemPromptPreset(TypedDict):
     type: Literal["preset"]
     preset: Literal["claude_code"]
     append: NotRequired[str]     # Optional text appended after the preset
+    exclude_dynamic_sections: NotRequired[bool]  # Move per-session context to first user message for better prompt-cache reuse across machines
 
 class ToolsPreset(TypedDict):
     type: Literal["preset"]
