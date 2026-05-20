@@ -389,19 +389,28 @@ Any hook can include a `terminalSequence` string in its JSON output. Claude Code
 
 Combine with `additionalContext` or other fields as needed.
 
-### WorktreeCreate output
+### WorktreeCreate / WorktreeRemove input and output
 
-Return shell commands to execute instead of the default `git worktree add`:
+**WorktreeCreate input:** In addition to common fields, receives `name` — a slug identifier for the new worktree (either user-specified or auto-generated, e.g. `bold-oak-a3f2`).
+
+**WorktreeCreate output:** The hook replaces the default `git worktree` behavior entirely. It must return the **absolute path** of the created worktree directory:
+
+- **Command hooks** (`type: "command"`): print the path on stdout. Redirect all other output to stderr.
+- **HTTP hooks** (`type: "http"`): return `hookSpecificOutput.worktreePath`.
 
 <!-- skip-validate -->
 ```json
 {
   "hookSpecificOutput": {
     "hookEventName": "WorktreeCreate",
-    "shellCommands": "git worktree add \"$WORKTREE_PATH\" \"$BASE_REF\" && cp .env \"$WORKTREE_PATH/.env\""
+    "worktreePath": "/absolute/path/to/worktree"
   }
 }
 ```
+
+If the hook fails or produces no path, worktree creation fails. Unlike most events, **any non-zero exit code** (not just 2) aborts creation. `.worktreeinclude` is not processed when WorktreeCreate is configured — copy extra files (e.g. `.env`) inside the hook script.
+
+**WorktreeRemove input:** In addition to common fields, receives `worktree_path` — the absolute path returned by the WorktreeCreate hook. WorktreeRemove hooks have no decision control; failures are logged in debug mode only.
 
 ## Blocking vs non-blocking
 
