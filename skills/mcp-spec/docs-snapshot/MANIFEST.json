@@ -3,7 +3,7 @@
   "indexSha256": "2a3dc7cff742a97809e44f71b140d50fb43b02d90d2808192f008fec522206f6",
   "indexBytes": 17922,
   "pageCount": 119,
-  "refreshedAt": "2026-05-20T16:13:03Z",
+  "refreshedAt": "2026-05-20T18:17:07Z",
   "pages": [
     {
       "path": "clients.md",
@@ -512,8 +512,8 @@
     {
       "path": "seps/2575-stateless-mcp.md",
       "url": "https://modelcontextprotocol.io/seps/2575-stateless-mcp.md",
-      "sha256": "8e1068ffaf32e67449c849301905450699a4a96efbfafc948981b256610c5be3",
-      "bytes": 35554
+      "sha256": "f933fe452f935ea783a9cd8dedf10c515a81dd679829a0864902db31b5c85a80",
+      "bytes": 35621
     },
     {
       "path": "seps/2577-deprecate-roots-sampling-and-logging.md",
