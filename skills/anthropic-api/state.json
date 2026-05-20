@@ -6,7 +6,7 @@
   "researchedIssues": {},
   "lastAuditedVersion": null,
   "lastUpdated": null,
-  "scaffoldComplete": true,
+  "scaffoldComplete": false,
   "lastRunWarnings": [
     "2026-05-20: Part B skipped — GitHub issues API returned 403 (integration lacks read:issues scope for anthropics/anthropic-sdk-typescript)",
     "2026-05-20: Part B: change-report.json showed empty newBugIssues; no new bugs to process"
