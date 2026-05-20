@@ -92,12 +92,14 @@ features that the peer advertised. Typical capabilities:
 - `prompts` — provides prompt templates.
 - `logging` — accepts client log messages.
 - `completions` — provides argument completion for prompts/resource URIs.
+- `tasks` *(experimental, `2025-11-25`)* — supports task-augmented requests from clients. Sub-capabilities: `tasks.list` (supports `tasks/list`), `tasks.cancel` (supports `tasks/cancel`), `tasks.requests.tools.call` (clients may augment `tools/call` with a task). See also `execution.taskSupport` on individual tools in [`SKILL-tools-resources-prompts.md`](SKILL-tools-resources-prompts.md#tools). Source: [`specification/2025-11-25/basic/utilities/tasks.md`](https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/tasks.md).
 - `extensions` — declares supported optional extensions (see below).
 
 **Client capabilities** (subset):
 - `sampling` — server may request the client to sample from the host LLM. Sub-capability: `tools` — declare `{ "sampling": { "tools": {} } }` to receive tool-enabled sampling requests (SEP-1577; see [`SKILL-tools-resources-prompts.md`](SKILL-tools-resources-prompts.md#sampling)).
 - `roots` — server may request the list of filesystem roots, optionally with `listChanged`.
 - `elicitation` — server may request input from the user. Sub-capabilities: `form` (structured data, flat JSON schema) and/or `url` (out-of-band URL navigation for sensitive flows). Empty `{}` is treated as `form`-only for backwards compatibility.
+- `tasks` *(experimental, `2025-11-25`)* — supports task-augmented requests from servers. Sub-capabilities: `tasks.list`, `tasks.cancel`, `tasks.requests.sampling.createMessage` (servers may augment `sampling/createMessage` with a task), `tasks.requests.elicitation.create` (servers may augment `elicitation/create` with a task). Source: [`specification/2025-11-25/basic/utilities/tasks.md`](https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/tasks.md).
 - `extensions` — declares supported optional extensions (see below).
 
 ### Extension capability field
