@@ -36,6 +36,11 @@ Characteristics:
 
 Reference: [`building/mcpb.md`](https://claude.com/docs/connectors/building/mcpb.md).
 
+> **Note:** MCPB is the **secondary** distribution path for the
+> Connectors Directory — remote MCP servers are recommended for
+> directory listing. Use MCPB for local/internal deployments,
+> firewall-restricted environments, and offline use cases.
+
 ### MCPB vs remote: which to build
 
 Build MCPB when you need:
@@ -204,6 +209,27 @@ SDK helpers (all from `@modelcontextprotocol/ext-apps`):
 To suppress the host border card: set `prefersBorder: false` in your
 resource's `_meta.ui`. To allow host font loading: add
 `csp: { resourceDomains: ["https://assets.claude.ai"] }` in `_meta.ui`.
+
+**Content security policy:** All external origins are blocked by default.
+Declare allowed origins per `ui://` resource via `_meta.ui.csp`:
+
+```json
+{
+  "_meta": {
+    "ui": {
+      "csp": {
+        "connectDomains": ["https://api.example.com"],
+        "resourceDomains": ["https://cdn.example.com"],
+        "baseUriDomains": []
+      }
+    }
+  }
+}
+```
+
+`frameDomains` (embedding third-party iframes) is currently restricted
+pending security review.
+
 Listen for `hostcontextchanged` on the `App` instance to re-apply on
 theme switch.
 
@@ -268,6 +294,29 @@ node -e 'const u="https://example.com/mcp"; console.log(require("crypto").create
 This domain is used for `BroadcastChannel` scope in instance supersession.
 
 Reference: [`mcp-apps/cross-compatibility.md`](https://claude.com/docs/connectors/building/mcp-apps/cross-compatibility.md).
+
+### Mobile guidelines
+
+Claude Mobile renders MCP Apps in a native WebView (WKWebView on iOS,
+WebView on Android) — not a sandboxed iframe. Mobile-specific constraints:
+
+- Inline display only (fullscreen mode **coming soon** on mobile — apps render
+  inline only for now).
+- No camera, microphone, or location access.
+- Connectors must be added via web or desktop before they appear on mobile.
+
+**Layout hints from host:** `hostContext.safeAreaInsets` — `{top, right,
+bottom, left}` in pixels. Honor these to avoid notches, home indicators,
+and the composer overlay.
+
+Apps fill the container width — design responsively from 320px up using
+container queries and host CSS variables. Inline max height is 500px.
+
+Tap targets minimum 44×44pt (Apple HIG / Material guidelines). Test at
+360px viewport width minimum. Dark mode is required — use the host's style
+tokens; never hardcode colors.
+
+Show skeleton screens (not spinners) while inline content loads.
 
 ### Getting started
 
