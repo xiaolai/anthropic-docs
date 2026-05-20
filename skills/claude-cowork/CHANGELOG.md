@@ -3,6 +3,9 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-20 (run 11)
+*(pending review — see branch `auto/2026-05-20-pending-review`)* Research agent re-ran (55 turns, 263 s, $0.81); check-docs-drift still failing — surface edits pending human review before merge.
+
 ## 2026-05-20 (run 10)
 - Sync to docs index 84b7d4e7 — added office-agents/overview.md (34 → 35 pages); 19 verify checks pass; all gates green; $1.74 total.
 

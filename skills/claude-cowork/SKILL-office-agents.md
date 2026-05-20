@@ -102,8 +102,17 @@ residency / regulatory drivers.
 `/claude-for-msft-365-install:manifest` (generate manifest),
 `/claude-for-msft-365-install:consent` (admin-consent URL),
 `/claude-for-msft-365-install:update-user-attrs` (per-user config via
-Microsoft Graph). See
+Microsoft Graph),
+`/claude-for-msft-365-install:debug` (diagnose deployment issues: stale
+config after manifest updates, connection failures, add-in not appearing,
+sign-in or admin-consent loops, parsing the add-in's error paste). See
 [github.com/anthropics/financial-services/…/claude-for-msft-365-install](https://github.com/anthropics/financial-services/tree/main/claude-for-msft-365-install).
+
+**Outlook manifest.** Outlook requires a **separate** manifest file from
+Excel, PowerPoint, and Word. The wizard generates `manifest-outlook.xml`
+alongside `manifest.xml`. Upload each as its own custom app in the
+Microsoft 365 admin center. Source:
+[`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md).
 
 **Manifest keys:** `gateway_api_format` selects the API dialect —
 `anthropic` (default), `bedrock`, or `vertex`. `gateway_auth_header`
