@@ -165,8 +165,10 @@ and `git pull`.
 | Date | Update | Research | Mending | Report | Total | Notes |
 |------|--------|----------|---------|--------|-------|-------|
 | 2026-05-20 | success | research + report (no upstream change) |
+| 2026-05-20 (run 6) | — | $1.62 | — | — | **$1.62** | success — no upstream change, routine audit v2.1.145, all 8 gates pass |
 | 2026-05-20 (run 5) | — | $1.55 | — | — | **$1.55** | success — no upstream change, routine audit v2.1.145, all 8 gates pass |
 | 2026-05-20 (run 4) | — | $1.66 | — | — | **$1.66** | success — no upstream change, routine audit v2.1.145, all 8 gates pass |
+| 2026-05-20 (run 1–3) | — | — | — | — | — | success — routine audit v2.1.145; hooks+slash-commands updates |
 | 2026-05-19 | $0.23 | $1.23 | $0.05 | — | **$1.51** | success — CC v2.1.144 → v2.1.145; 8 runs; all 11 gates pass |
 
 ## For maintainers

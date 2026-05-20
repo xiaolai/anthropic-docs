@@ -273,6 +273,31 @@ Claude Code writes a JSON object to stdin (or POST body for HTTP hooks). Common 
 | `teammate_name` | Name of the teammate that is about to go idle |
 | `team_name` | Name of the agent team |
 
+**CwdChanged** additionally receives `old_cwd` and `new_cwd`:
+
+| Field | Notes |
+|---|---|
+| `old_cwd` | The previous working directory |
+| `new_cwd` | The new working directory after the change |
+
+**FileChanged** additionally receives `file_path` and `event`:
+
+| Field | Notes |
+|---|---|
+| `file_path` | Absolute path to the file that changed |
+| `event` | What happened: `"change"` (file modified), `"add"` (file created), or `"unlink"` (file deleted) |
+
+**InstructionsLoaded** additionally receives instruction-file-specific fields:
+
+| Field | Notes |
+|---|---|
+| `file_path` | Absolute path to the instruction file that was loaded |
+| `memory_type` | Scope of the file: `"User"`, `"Project"`, `"Local"`, or `"Managed"` |
+| `load_reason` | Why the file was loaded: `"session_start"`, `"nested_traversal"`, `"path_glob_match"`, `"include"`, or `"compact"` (re-loaded after compaction) |
+| `globs` | Path glob patterns from the file's `paths:` frontmatter. Present only for `path_glob_match` loads |
+| `trigger_file_path` | Path to the file whose access triggered this load (lazy loads only) |
+| `parent_file_path` | Path to the parent instruction file that included this one (`include` loads only) |
+
 **`background_tasks` sub-fields** (each entry in the array):
 
 | Field | Notes |
@@ -394,6 +419,21 @@ To override the user's response before it is sent to the MCP server, return `hoo
 | `content` | object | Overrides form field values (only meaningful when `action` is `"accept"`) |
 
 Exit code 2 blocks the response, changing the effective action to `"decline"`.
+
+### CwdChanged / FileChanged output
+
+These events are non-blocking and cannot prevent the change. However, they support a special `watchPaths` return field:
+
+<!-- skip-validate -->
+```json
+{
+  "watchPaths": ["/home/me/project/.env", "/home/me/project/.envrc"]
+}
+```
+
+| Field | Notes |
+|---|---|
+| `watchPaths` | Array of absolute paths. Replaces the current dynamic watch list for `FileChanged`. Returning an empty array clears the dynamic list (typical when entering a new directory). Paths from your static `matcher` configuration are always watched regardless |
 
 ### TeammateIdle / TaskCreated / TaskCompleted output
 
