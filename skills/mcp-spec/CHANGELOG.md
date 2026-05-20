@@ -3,6 +3,9 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-20 (run 11)
+- Routine research pass (74 turns, 386s) — no upstream change; @modelcontextprotocol/sdk v1.29.0 / mcp v1.27.1 stable; 5 issues evaluated, 0 added; all gates pass
+
 ## 2026-05-20 (run 10)
 *(pending review — see PR auto/2026-05-20-pending-review)* Routine research pass (68 turns, 291s) — no upstream change; checkDocsDrift gate failed; surface-file edits pending human review before merge
 

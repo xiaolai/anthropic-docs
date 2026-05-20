@@ -1,15 +1,15 @@
 {
   "indexUrl": "https://modelcontextprotocol.io/llms.txt",
-  "indexSha256": "0c42badbaa1863fa0daffb4cf5c9f47b3ed9b73fa2b5a1393f4d95ce864affd2",
-  "indexBytes": 17923,
+  "indexSha256": "2a3dc7cff742a97809e44f71b140d50fb43b02d90d2808192f008fec522206f6",
+  "indexBytes": 17922,
   "pageCount": 119,
-  "refreshedAt": "2026-05-20T10:30:00Z",
+  "refreshedAt": "2026-05-20T16:13:03Z",
   "pages": [
     {
       "path": "clients.md",
       "url": "https://modelcontextprotocol.io/clients.md",
-      "sha256": "a7576338e108cd266ab84a11bc7cbc6cb3b2d5214830d0207f811eb1c213628d",
-      "bytes": 97791
+      "sha256": "25771b40f89d7da3c8bd7f82f542202948603114d51b40414c07f908ad4affd4",
+      "bytes": 97790
     },
     {
       "path": "community/antitrust.md",
@@ -230,8 +230,8 @@
     {
       "path": "extensions/apps/overview.md",
       "url": "https://modelcontextprotocol.io/extensions/apps/overview.md",
-      "sha256": "e7683f19ffc5f2d43f8afe538b10be6a5f203463ad7448bce70d4236f9c2c63b",
-      "bytes": 12450
+      "sha256": "1aeabc29d6608c66c094f8526ad2d41bf19e646381f7f69997df1326d3edfd6c",
+      "bytes": 12449
     },
     {
       "path": "extensions/auth/enterprise-managed-authorization.md",
@@ -254,20 +254,20 @@
     {
       "path": "extensions/client-matrix.md",
       "url": "https://modelcontextprotocol.io/extensions/client-matrix.md",
-      "sha256": "bf6393ae12d809459d22c0c7ea732deb2a9dfcae895a2eebb0aa7bf76cf98a9d",
-      "bytes": 5480
+      "sha256": "1ca4e37f7664b6175da2a1b7bf8a7fb4c5a5e3e5b5e5c37d22da7b4974a7d070",
+      "bytes": 5479
     },
     {
       "path": "extensions/overview.md",
       "url": "https://modelcontextprotocol.io/extensions/overview.md",
-      "sha256": "822962fb721b9baacb504f8d857f01dcf076f6129d97b1d8a8cdef7030ebe658",
-      "bytes": 8710
+      "sha256": "16089f17c4a92ef5096bde19ab938a3b5b56c543e19e750e40a891fc7aa11418",
+      "bytes": 8709
     },
     {
       "path": "extensions/tasks/overview.md",
       "url": "https://modelcontextprotocol.io/extensions/tasks/overview.md",
-      "sha256": "1922e05fb96773aad922f5551bd3d8f1e20f9c5fbc913d7e48be12eee0c5136e",
-      "bytes": 9932
+      "sha256": "3b84ca8eab9962478822bd303641ae7adcd63e68f5b3472057afff5e6ea5ee24",
+      "bytes": 9931
     },
     {
       "path": "registry/about.md",
@@ -596,8 +596,8 @@
     {
       "path": "specification/2025-11-25/basic/authorization.md",
       "url": "https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization.md",
-      "sha256": "b5eaaf20d167e073d93bfbdfdc6e3f643bf12d9adeddf28e121c23dc13ff21c3",
-      "bytes": 41647
+      "sha256": "1fe19c78a2c5b84f5402372ce26394658835453ca67b8e43b74403e73bba7e1e",
+      "bytes": 41646
     },
     {
       "path": "specification/2025-11-25/basic/index.md",
@@ -608,14 +608,14 @@
     {
       "path": "specification/2025-11-25/basic/lifecycle.md",
       "url": "https://modelcontextprotocol.io/specification/2025-11-25/basic/lifecycle.md",
-      "sha256": "884720004be3ab0e2c65562c33ce8903b30e7c763c4764baed04a2ef8dfd7fa6",
-      "bytes": 9686
+      "sha256": "b86de627fee3576fe9c001c29ab8dccf8008414a880a262f82c029460e4340c4",
+      "bytes": 9685
     },
     {
       "path": "specification/2025-11-25/basic/transports.md",
       "url": "https://modelcontextprotocol.io/specification/2025-11-25/basic/transports.md",
-      "sha256": "5a86d66ae0ab08f29460229f3b7f56d504388d1f106e21097575621717fc0e7a",
-      "bytes": 16191
+      "sha256": "522122c5b85ec17f5089b1d91caebd015f0b57be1c48bb1208364d5a538b5495",
+      "bytes": 16190
     },
     {
       "path": "specification/2025-11-25/basic/utilities/cancellation.md",
@@ -644,14 +644,14 @@
     {
       "path": "specification/2025-11-25/changelog.md",
       "url": "https://modelcontextprotocol.io/specification/2025-11-25/changelog.md",
-      "sha256": "0c6f3a313c714462168ef29d3ba07b45e185405ef1fd06d324c7c6eea51250a1",
-      "bytes": 5435
+      "sha256": "3ef68d1518643a5c2f319810a2660c9ff13a633c44e9f2bb977e7f7826d38edc",
+      "bytes": 5434
     },
     {
       "path": "specification/2025-11-25/client/elicitation.md",
       "url": "https://modelcontextprotocol.io/specification/2025-11-25/client/elicitation.md",
-      "sha256": "01bfb448d361caee08861e093e8a40f27906e30d71ca28e297a1ad6b8d83274f",
-      "bytes": 31010
+      "sha256": "55a23f2d0929eea6de043ff21406e377eb987aef007bd91a18a612e3fbc70925",
+      "bytes": 31009
     },
     {
       "path": "specification/2025-11-25/client/roots.md",
@@ -662,8 +662,8 @@
     {
       "path": "specification/2025-11-25/client/sampling.md",
       "url": "https://modelcontextprotocol.io/specification/2025-11-25/client/sampling.md",
-      "sha256": "3498fca5668fae8df57d2936845fb4f2bb14be3eb67ecb55634a26d7841b0bf2",
-      "bytes": 17958
+      "sha256": "24a54e2052431af3e69fc5115048076c741bddf27241e539ef220addbd9f8d12",
+      "bytes": 17957
     },
     {
       "path": "specification/2025-11-25/index.md",
@@ -692,14 +692,14 @@
     {
       "path": "specification/2025-11-25/server/resources.md",
       "url": "https://modelcontextprotocol.io/specification/2025-11-25/server/resources.md",
-      "sha256": "37de412ba819a7cc9816c2ac619c881620d5cb46ffbc805b41cf9f487b953dfc",
-      "bytes": 10380
+      "sha256": "7ae03d76560af0232d3b07b3b3bb73d49c7b5c44f2a38c5223f0833f670a06d2",
+      "bytes": 10379
     },
     {
       "path": "specification/2025-11-25/server/tools.md",
       "url": "https://modelcontextprotocol.io/specification/2025-11-25/server/tools.md",
-      "sha256": "8ed43301d44f1b15317963b8553eb025c3bd72f433ee873565338e727b106b55",
-      "bytes": 13906
+      "sha256": "34a5787989abbdda1546c37d2adb698cd0ec1fe9cd9d86a9bfad260b833c0f14",
+      "bytes": 13905
     },
     {
       "path": "specification/2025-11-25/server/utilities/completion.md",
