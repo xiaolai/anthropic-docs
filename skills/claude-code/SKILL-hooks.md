@@ -199,6 +199,16 @@ Claude Code writes a JSON object to stdin (or POST body for HTTP hooks). Common 
 
 **SubagentStop** additionally receives `agent_transcript_path` — the path to the subagent's own transcript stored in a nested `subagents/` folder (distinct from `transcript_path`, which is the main session's transcript).
 
+**UserPromptExpansion** additionally receives `expansion_type`, `command_name`, `command_args`, and `command_source`:
+
+| Field | Notes |
+|---|---|
+| `expansion_type` | `"slash_command"` for skill / custom commands; `"mcp_prompt"` for MCP server prompts |
+| `command_name` | Name of the command being expanded (e.g. `"example-skill"`) |
+| `command_args` | Arguments the user passed after the command name (e.g. `"arg1 arg2"`) |
+| `command_source` | Where the command was defined: `"plugin"`, `"user"`, `"project"`, or `"mcp"` |
+| `prompt` | The original slash command string typed by the user (e.g. `"/example-skill arg1 arg2"`) |
+
 Example payload for `PreToolUse` on a Bash call:
 
 ```json
