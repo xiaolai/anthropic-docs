@@ -96,7 +96,29 @@ supported by [Cowork on 3P](SKILL-cowork.md). This decouples M365
 deployment from Anthropic's API for organizations with the same
 residency / regulatory drivers.
 
-See [`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md).
+**Deployment wizard.** Install `claude-for-msft-365-install` from the
+`anthropics/financial-services` marketplace, then run
+`/claude-for-msft-365-install:setup` inside Claude. Other commands:
+`/claude-for-msft-365-install:manifest` (generate manifest),
+`/claude-for-msft-365-install:consent` (admin-consent URL),
+`/claude-for-msft-365-install:update-user-attrs` (per-user config via
+Microsoft Graph). See
+[github.com/anthropics/financial-services/…/claude-for-msft-365-install](https://github.com/anthropics/financial-services/tree/main/claude-for-msft-365-install).
+
+**Manifest keys:** `gateway_api_format` selects the API dialect —
+`anthropic` (default), `bedrock`, or `vertex`. `gateway_auth_header`
+selects the auth header: `x-api-key` (default) or `authorization`
+(sends `Authorization: Bearer <token>`).
+
+**Features not available on 3P:** Connectors (coming soon), Skills
+(coming soon), File uploads, Dictation, and Work-across-apps are not
+available when connecting through a third-party platform.
+
+> **Bedrock + Outlook:** Amazon Bedrock is not supported for Claude for
+> Outlook. Claude for Outlook on 3P currently supports Claude Opus 4.7
+> only.
+
+Source: [`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md).
 
 ## Enterprise readiness
 
@@ -132,16 +154,22 @@ standard (1P, Claude accounts) and third-party (3P, Entra ID) deployments.
 Full tables are in
 [`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md).
 
-Always required (both 1P and 3P):
+Always required (both 1P and 3P): `pivot.claude.ai` (task-pane UI,
+telemetry), `appsforoffice.microsoft.com` (Office.js runtime).
 
-- `pivot.claude.ai` — task pane UI, telemetry
-- `appsforoffice.microsoft.com` — Office.js runtime
-- `login.microsoftonline.com` — Entra ID sign-in / token issuance
+**1P (Claude accounts)** additionally requires: `api.anthropic.com`
+(inference), `claude.ai` (OAuth + feature flags),
+`login.microsoftonline.com` (Outlook only), `mcp-proxy.anthropic.com`
+(if using MCP connectors), `bridge.claudeusercontent.com` (if using
+work-across-apps).
 
-3P adds provider-specific domains: `sts.amazonaws.com` +
-`bedrock-runtime.<region>.amazonaws.com` (Bedrock); Google OAuth +
-`aiplatform.googleapis.com` + regional Vertex endpoint (Vertex AI);
+**3P (Entra ID)** always requires `login.microsoftonline.com`. Provider-
+specific additions: `sts.amazonaws.com` +
+`bedrock-runtime.<region>.amazonaws.com` (Bedrock); `accounts.google.com`
++ `oauth2.googleapis.com` + `aiplatform.googleapis.com` +
+`<region>-aiplatform.googleapis.com` (Vertex AI);
 `<resource>.services.ai.azure.com` (Foundry); your gateway URL.
+
 Outlook always needs `graph.microsoft.com` regardless of 1P/3P.
 
 > **Prompts/responses never travel through `pivot.claude.ai`.** That
