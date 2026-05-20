@@ -3,6 +3,9 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-20 (run 7)
+- Research agent completed cleanly (95 turns, 482 s, $1.20); all gates pass including check-docs-drift — surface edits now accepted on main; docs index 33c21db3, 34 pages; no upstream version change.
+
 ## 2026-05-20 (run 6)
 *(pending review — see branch `auto/2026-05-20-pending-review`)* Research agent re-ran (40 turns, 178 s, $0.49); check-docs-drift still failing — surface edits pending human review before merge.
 
