@@ -1,9 +1,9 @@
 {
   "indexUrl": "https://code.claude.com/llms.txt",
-  "indexSha256": "a24a094dc53cedec0a42354d746f3e703af343b9993280e78b8d47252af73f9c",
-  "indexBytes": 28299,
+  "indexSha256": "c0a299b72f553a2a5d1ee3828af0ad27ed94022c8ca370e649dd4f7d0c6aa681",
+  "indexBytes": 28298,
   "pageCount": 105,
-  "refreshedAt": "2026-05-19T23:30:00Z",
+  "refreshedAt": "2026-05-20T00:08:50Z",
   "pages": [
     {
       "path": "en/admin-setup.md",

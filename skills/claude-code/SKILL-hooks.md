@@ -181,6 +181,7 @@ Claude Code writes a JSON object to stdin (or POST body for HTTP hooks). Common 
 | `session_id` | always | Stable ID for the current session |
 | `transcript_path` | most events | Path to the rolling conversation transcript |
 | `cwd` | most events | Working directory the session was launched from |
+| `permission_mode` | most events | Current permission mode: `"default"`, `"plan"`, `"acceptEdits"`, `"auto"`, `"dontAsk"`, or `"bypassPermissions"`. Not present for all events; check the event's example JSON |
 | `tool_name` | PreToolUse / PostToolUse / PostToolUseFailure / PermissionRequest / PermissionDenied | Tool name (e.g. `"Bash"`, `"Edit"`, `"mcp__github__search"`) |
 | `tool_input` | PreToolUse / PostToolUse tool events | Arguments passed to the tool |
 | `tool_response` | PostToolUse | What the tool returned |
@@ -188,8 +189,14 @@ Claude Code writes a JSON object to stdin (or POST body for HTTP hooks). Common 
 | `prompt` | UserPromptSubmit | The user's just-submitted prompt text |
 | `source` | SessionStart | `"startup"`, `"resume"`, or `"compact"` |
 | `effort` | `PreToolUse`, `PostToolUse`, `Stop`, `SubagentStop` (when model supports it) | Object `{"level": "low"\|"medium"\|"high"\|"xhigh"\|"max"}` — the active effort level. Also available as `$CLAUDE_EFFORT` env var in command hooks |
+| `agent_id` | When hook fires inside a subagent | Unique identifier for the subagent. Use to distinguish subagent hook calls from main-thread calls |
+| `agent_type` | When session uses `--agent` or fires inside a subagent | Agent name (e.g. `"Explore"`, `"security-reviewer"`). For custom subagents, this is the `name` from frontmatter, not the filename |
+| `stop_hook_active` | `Stop`, `SubagentStop` | `true` when Claude Code is already continuing as a result of a stop hook. After 8 consecutive blocks Claude overrides and ends the turn |
+| `last_assistant_message` | `Stop`, `SubagentStop`, `StopFailure` | Text content of Claude's final response (Stop/SubagentStop) or the API error string (StopFailure), so hooks can access it without parsing the transcript |
 | `background_tasks` | `Stop`, `SubagentStop` | Array of background task objects still running when the turn ended. Each object has `id`, `status`, and `command` fields |
 | `session_crons` | `Stop`, `SubagentStop` | Array of active session-scoped cron entries. Each object has `id`, `schedule`, and `command` fields |
+
+**SubagentStop** additionally receives `agent_transcript_path` — the path to the subagent's own transcript stored in a nested `subagents/` folder (distinct from `transcript_path`, which is the main session's transcript).
 
 Example payload for `PreToolUse` on a Bash call:
 

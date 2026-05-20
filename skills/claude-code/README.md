@@ -15,7 +15,7 @@ names, flags, env vars) flow in.
 
 <!-- The two stamps below are auto-filled by the pipeline. -->
 **Claude Code version**: v2.1.145
-**Last updated**: 2026-05-19
+**Last updated**: 2026-05-20
 **Pipeline status**: see [`reports/`](reports/) for per-run records.
 
 ## What it does
@@ -164,7 +164,8 @@ and `git pull`.
 
 | Date | Update | Research | Mending | Report | Total | Notes |
 |------|--------|----------|---------|--------|-------|-------|
-| 2026-05-19 | success | CC v2.1.144 → v2.1.145 |
+| 2026-05-20 | success | research + report (no upstream change) |
+| 2026-05-19 | $0.23 | $1.23 | $0.05 | — | **$1.51** | success — CC v2.1.144 → v2.1.145; 8 runs; all 11 gates pass |
 
 ## For maintainers
 
