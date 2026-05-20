@@ -6,10 +6,9 @@
   "researchedIssues": {},
   "lastAuditedVersion": null,
   "lastUpdated": null,
-  "scaffoldComplete": false,
+  "scaffoldComplete": true,
   "lastRunWarnings": [
-    "2026-05-20: Part B skipped — GitHub issues API returned 403 (integration lacks read:issues scope for anthropics/anthropic-sdk-typescript)",
-    "2026-05-20: Part B: change-report.json showed empty newBugIssues; no new bugs to process"
+    "2026-05-20T00:00:00Z: Part A: no doc changes detected (llms.txt SHA matches MANIFEST; compliance.md 1-byte cosmetic diff, no schema changes). Part B: no new bug issues (change-report.json empty; 0 open bug-labeled issues). Part C: all checks passed."
   ],
   "lastScannedIssueNumber": null
 }
