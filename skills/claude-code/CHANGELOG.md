@@ -10,6 +10,9 @@ The newest entry is at the top.
 
 ---
 
+## 2026-05-20 (run 2)
+- Routine audit at CC v2.1.145 — research confirmed all surface files current (105 pages, 83 turns); no new issues; all 11 gates pass
+
 ## 2026-05-20
 - Routine audit at CC v2.1.145 — SKILL-hooks.md: added `model` to SessionStart input, `clear` to SessionStart source values, `model_not_found` to StopFailure error types; SKILL-slash-commands.md: added `/share` alias to /feedback; all 11 gates pass
 

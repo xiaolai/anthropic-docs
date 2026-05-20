@@ -231,7 +231,7 @@ Source: `code.claude.com/docs/en/hooks.md`.
 
 Your hook can write a JSON object to stdout to influence Claude's behavior.
 
-### PreToolUse / PermissionRequest / PermissionDenied output
+### PreToolUse output
 
 <!-- skip-validate -->
 ```json
@@ -244,9 +244,56 @@ Your hook can write a JSON object to stdout to influence Claude's behavior.
 }
 ```
 
-`permissionDecision` values: `"allow"`, `"deny"`, `"ask"`.
+`permissionDecision` values: `"allow"`, `"deny"`, `"ask"`, `"defer"`.
+
+| Field | Notes |
+|---|---|
+| `permissionDecision` | `"allow"` skips the prompt; `"deny"` blocks; `"ask"` prompts user; `"defer"` pauses and exits (`-p` mode only, v2.1.89+). Precedence when multiple hooks return: `deny` > `defer` > `ask` > `allow` |
+| `permissionDecisionReason` | For `"allow"`/`"ask"`: shown to user. For `"deny"`: shown to Claude. |
+| `updatedInput` | Replaces entire tool input before execution. Combine with `"allow"` or `"ask"`. |
+| `additionalContext` | String added to Claude's context alongside the tool result. Ignored for `"defer"`. |
+
+**Deprecated:** top-level `decision`/`reason` fields for PreToolUse. Use `hookSpecificOutput.permissionDecision` instead.
+
+### PermissionRequest output
+
+Fires when the permission dialog is about to appear. Uses `decision.behavior`, **not** `permissionDecision`.
+
+<!-- skip-validate -->
+```json
+{
+  "hookSpecificOutput": {
+    "hookEventName": "PermissionRequest",
+    "decision": {
+      "behavior": "allow",
+      "updatedInput": { "command": "npm run lint" }
+    }
+  }
+}
+```
+
+| Field | Notes |
+|---|---|
+| `decision.behavior` | `"allow"` grants permission; `"deny"` denies it |
+| `decision.updatedInput` | (`"allow"` only) Modifies tool input before execution |
+| `decision.updatedPermissions` | (`"allow"` only) Permission update entries (addRules, setMode, etc.) to persist |
+| `decision.message` | (`"deny"` only) Tells Claude why permission was denied |
+| `decision.interrupt` | (`"deny"` only) If `true`, stops Claude entirely |
+
+Input also includes `permission_suggestions` array with the "always allow" options the user would normally see.
+
+### PermissionDenied output
 
 For `PermissionDenied`, return `{ "retry": true }` to tell the model it may retry the denied tool call.
+
+### TeammateIdle / TaskCreated / TaskCompleted output
+
+Exit code 2 blocks these events (prevents teammate from going idle / rolls back task creation / prevents task completion). Or return JSON:
+
+<!-- skip-validate -->
+```json
+{ "continue": false, "stopReason": "Not ready to complete" }
+```
 
 ### Stop / PostToolUse / other events: inject messages
 
@@ -297,9 +344,15 @@ Return shell commands to execute instead of the default `git worktree add`:
 
 ## Blocking vs non-blocking
 
-- **Blocking:** `PreToolUse`, `UserPromptSubmit`, `UserPromptExpansion`, `PermissionRequest`. Exit code 0 = allow; non-zero = block. JSON output with `permissionDecision: "deny"` also blocks.
-- **Non-blocking / async:** `PostToolUse`, `Stop`, `SessionEnd`, `Notification`, and all events when handler has `async: true`.
-- `StopFailure`: output and exit code are always ignored.
+Events where exit code 2 (or JSON block decision) prevents the action from proceeding:
+
+**Blocking events:** `PreToolUse`, `PermissionRequest`, `UserPromptSubmit`, `UserPromptExpansion`, `Stop`, `SubagentStop`, `TeammateIdle`, `TaskCreated`, `TaskCompleted`, `ConfigChange` (except `policy_settings`), `PostToolBatch`, `PreCompact`, `Elicitation`, `ElicitationResult`, `WorktreeCreate`.
+
+**Non-blocking events:** `PostToolUse`, `PostToolUseFailure`, `PermissionDenied`, `Notification`, `SubagentStart`, `SessionStart`, `Setup`, `SessionEnd`, `CwdChanged`, `FileChanged`, `PostCompact`, `WorktreeRemove`, `InstructionsLoaded`. For non-blocking events, non-zero exit code shows stderr to user/Claude but does not block.
+
+**`StopFailure`:** output and exit code are always ignored.
+
+Events with `async: true` on the handler always run non-blocking.
 
 ## Exit codes for command hooks
 
