@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-05-20
+- *(pending review — see PR on `auto/2026-05-20-pending-review`)* Research-only run (TS v0.3.145, PY v0.2.82 unchanged); check-docs-drift failed; no new issues or version bump; 51 research turns, $0.82
+
 ## 2026-05-19 (run 23:52Z — review)
 
 - *(pending review — see draft PR on `auto/2026-05-19-pending-review`)* Research-only run (TS v0.3.145, Python v0.2.82 unchanged); check-docs-drift failed; no surface-file edits (state.json internal corrections only: indexSha256 and lastScannedIssueNumber); 43 research turns, $0.75
