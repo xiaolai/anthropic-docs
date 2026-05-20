@@ -93,6 +93,86 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
 | [`sessions.md`](https://platform.claude.com/docs/en/managed-agents/sessions.md) | Session lifecycle |
 | [`permission-policies.md`](https://platform.claude.com/docs/en/managed-agents/permission-policies.md) | What each agent may do |
 
+### Self-hosted sandboxes
+
+By default, Managed Agents executes tools and code inside
+Anthropic-managed cloud containers. **Self-hosted sandboxes** keep
+orchestration on Anthropic's side but move tool execution into
+infrastructure you control — the agent's code, filesystem, and network
+egress never leave your environment.
+
+> **Not yet available on Claude Platform on AWS.**
+
+#### Cloud containers vs. self-hosted
+
+| | Cloud environment | Self-hosted sandbox |
+|---|---|---|
+| Where tools run | Anthropic-managed containers | Your infrastructure |
+| Network reach | Anthropic's egress controls | Your network policy |
+| File / repo mounting | Managed by Anthropic | Managed by you |
+| Lifecycle | Managed by Anthropic | Managed by you |
+
+Use self-hosting when the agent must operate on data that cannot leave
+your network, reach internal services, or run under your own compliance
+and audit controls.
+
+#### Relationship to MCP tunnels
+
+Self-hosting controls *where the agent's code executes*. MCP tunnels
+controls *how Anthropic reaches MCP servers in your network*. They are
+independent and composable: a cloud-container session can use tunneled
+MCP servers, and a self-hosted session can use tunneled or public MCP
+servers.
+
+#### Environment worker
+
+An **environment worker** is a process you run on your own
+infrastructure that receives tool execution requests from Anthropic and
+runs them locally. The `self_hosted` environment is a work queue
+connecting Anthropic's orchestration to your worker.
+
+Create a self-hosted environment:
+
+```json
+POST /v1/environments
+{"name": "self-hosted", "config": {"type": "self_hosted"}}
+```
+
+Requires `anthropic-beta: managed-agents-2026-04-01`.
+
+Generate an **environment key** (`sk-ant-oat01-…`) from the Console —
+workers authenticate with this key, not with your API key.
+
+**Worker patterns:**
+
+| Pattern | Tool |
+|---|---|
+| Always-on in-process | `ant beta:worker poll` (CLI) or `EnvironmentWorker.run()` (SDK) |
+| Always-on container-per-session | `ant beta:worker poll --on-work ./spawn.sh` (CLI) |
+| Webhook-triggered | `EnvironmentWorker.handle_item()` on `session.status_run_started` (SDK) |
+
+**Filesystem conventions:**
+
+| Path | Purpose |
+|---|---|
+| `/workspace` | Default working directory; skills downloaded to `/workspace/skills/<name>/` |
+| `/mnt/session/outputs` | Agent writes final output files here; mount a host directory to retrieve them |
+
+**Monitoring:**
+
+- `GET /v1/environments/{id}/work/stats` — returns `depth` (queued),
+  `pending` (in-flight), `oldest_queued_at`, `workers_polling`
+  (liveness: workers active in last 30 s). Use your API key, not the
+  environment key.
+- `POST /v1/environments/{id}/work/{work_id}/stop` — graceful (finishes
+  current tool call) or `force: true` for immediate interrupt.
+
+**Note:** Memory stores are not yet supported with self-hosted sandboxes.
+
+**Source pages:**
+- [`self-hosted-sandboxes.md`](https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes.md) — full guide
+- [`self-hosted-sandboxes-security.md`](https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes-security.md) — shared responsibility model and hardening guidance
+
 ## Integrations
 
 | Page | Topic |
@@ -116,9 +196,9 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
 
 ## Page index
 
-20 source pages under
+22 source pages under
 [`https://platform.claude.com/docs/en/managed-agents/`](https://platform.claude.com/docs/en/managed-agents/).
 
 ---
 
-*Source pages: 20 under `platform.claude.com/docs/en/managed-agents/`.*
+*Source pages: 22 under `platform.claude.com/docs/en/managed-agents/`.*

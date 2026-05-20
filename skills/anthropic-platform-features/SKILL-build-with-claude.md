@@ -80,13 +80,6 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
   `model-context-window-exceeded-2025-08-26`.
   Source: [`context-windows.md`](https://platform.claude.com/docs/en/build-with-claude/context-windows.md).
 
-## Platform foundation (top-level intro pages)
-
-| Page | Topic |
-|---|---|
-| [`intro.md`](https://platform.claude.com/docs/en/intro.md) | Platform overview |
-| [`get-started.md`](https://platform.claude.com/docs/en/get-started.md) | First-API-call walkthrough |
-
 ## Foundation (build-with-claude)
 
 | Page | Topic |
