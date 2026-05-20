@@ -66,6 +66,11 @@ A tool is a callable function the server exposes to the host LLM.
 - `outputSchema` — optional JSON Schema for the `structuredContent` field of the response.
 - `annotations` — *non-binding* hints for clients (UI rendering, permission prompts). All Boolean fields default to safe-pessimistic values when absent.
 - `execution.taskSupport` — optional. Values: `"forbidden"` (default), `"optional"`, `"required"`. Indicates whether this tool supports [task-augmented execution](https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/tasks) (experimental feature in `2025-11-25`).
+- `_meta.ui.resourceUri` — optional `ui://` URI pointing to an [MCP App](https://modelcontextprotocol.io/extensions/apps/overview) resource. When present, the host can preload the interactive UI before the tool is called, and renders it in a sandboxed iframe after the call completes.
+  - `_meta.ui.csp` — optional string; Content-Security-Policy directives controlling which external origins the app may load resources from.
+  - `_meta.ui.permissions` — optional array of browser permission strings (e.g., `"microphone"`, `"camera"`) the app may request from the host.
+
+Source: [`extensions/apps/overview.md`](https://modelcontextprotocol.io/extensions/apps/overview)
 
 > **JSON Schema 2020-12 is now the spec default** (as of `2025-11-25`):
 > When no `$schema` field is present, `inputSchema` and `outputSchema` are interpreted

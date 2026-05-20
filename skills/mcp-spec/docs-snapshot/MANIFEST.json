@@ -3,7 +3,7 @@
   "indexSha256": "0c42badbaa1863fa0daffb4cf5c9f47b3ed9b73fa2b5a1393f4d95ce864affd2",
   "indexBytes": 17923,
   "pageCount": 119,
-  "refreshedAt": "2026-05-20T06:30:00Z",
+  "refreshedAt": "2026-05-20T10:30:00Z",
   "pages": [
     {
       "path": "clients.md",
@@ -230,8 +230,8 @@
     {
       "path": "extensions/apps/overview.md",
       "url": "https://modelcontextprotocol.io/extensions/apps/overview.md",
-      "sha256": "1aeabc29d6608c66c094f8526ad2d41bf19e646381f7f69997df1326d3edfd6c",
-      "bytes": 12449
+      "sha256": "e7683f19ffc5f2d43f8afe538b10be6a5f203463ad7448bce70d4236f9c2c63b",
+      "bytes": 12450
     },
     {
       "path": "extensions/auth/enterprise-managed-authorization.md",
@@ -254,8 +254,8 @@
     {
       "path": "extensions/client-matrix.md",
       "url": "https://modelcontextprotocol.io/extensions/client-matrix.md",
-      "sha256": "1ca4e37f7664b6175da2a1b7bf8a7fb4c5a5e3e5b5e5c37d22da7b4974a7d070",
-      "bytes": 5479
+      "sha256": "bf6393ae12d809459d22c0c7ea732deb2a9dfcae895a2eebb0aa7bf76cf98a9d",
+      "bytes": 5480
     },
     {
       "path": "extensions/overview.md",
@@ -650,8 +650,8 @@
     {
       "path": "specification/2025-11-25/client/elicitation.md",
       "url": "https://modelcontextprotocol.io/specification/2025-11-25/client/elicitation.md",
-      "sha256": "55a23f2d0929eea6de043ff21406e377eb987aef007bd91a18a612e3fbc70925",
-      "bytes": 31009
+      "sha256": "01bfb448d361caee08861e093e8a40f27906e30d71ca28e297a1ad6b8d83274f",
+      "bytes": 31010
     },
     {
       "path": "specification/2025-11-25/client/roots.md",

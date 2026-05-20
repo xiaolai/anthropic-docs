@@ -177,7 +177,44 @@ as `form`-only. Servers MUST NOT send URL mode requests unless the
 client declared `elicitation.url`.
 
 An optional `notifications/elicitation/complete` notification may
-be sent by the server to signal completion of a URL mode flow.
+be sent by the server to signal completion of a URL mode flow. It
+MUST include the `elicitationId` from the original request:
+
+```
+← notifications/elicitation/complete { elicitationId }
+```
+
+### URLElicitationRequiredError (server-initiated elicitation)
+
+A server may return error code **`-32042`** (`URLElicitationRequiredError`)
+in response to *any* request to indicate that URL mode elicitation must
+be completed before the request can proceed. The error's `data` field
+embeds the pending elicitation:
+
+```json
+{
+  "code": -32042,
+  "message": "URL Elicitation Required",
+  "data": {
+    "elicitations": [
+      {
+        "mode": "url",
+        "elicitationId": "550e8400-e29b-41d4-a716-446655440000",
+        "url": "https://mcp.example.com/connect?elicitationId=...",
+        "message": "Authorize access to continue."
+      }
+    ]
+  }
+}
+```
+
+The client MUST:
+1. Extract and display the embedded elicitation URL to the user.
+2. Wait for `notifications/elicitation/complete` (matching `elicitationId`).
+3. Retry the original request.
+
+The server MUST NOT return this error except when URL mode elicitation is
+genuinely required to proceed.
 
 Source: [`specification/2025-11-25/client/elicitation.md`](https://modelcontextprotocol.io/specification/2025-11-25/client/elicitation.md)
 
@@ -220,6 +257,29 @@ identifiers relevant to implementers:
 | `Enterprise-Managed Authorization` | Centralized IdP access control extension |
 
 Source: [`clients.md`](https://modelcontextprotocol.io/clients.md)
+
+## Extension Support Matrix
+
+The [`extensions/client-matrix.md`](https://modelcontextprotocol.io/extensions/client-matrix.md)
+page tracks which clients implement which official extensions (declared via
+`extensions` capability in `initialize`):
+
+| Client | MCP Apps | OAuth Client Credentials | Enterprise Auth |
+|---|:---:|:---:|:---:|
+| Claude (web) | ✓ | | |
+| Claude Desktop | ✓ | | |
+| VS Code GitHub Copilot | ✓ | | |
+| Goose | ✓ | | |
+| Postman | ✓ | | |
+| MCPJam | ✓ | | |
+| ChatGPT | ✓ | | |
+| Cursor | ✓ | | |
+
+Extension identifiers: MCP Apps = `io.modelcontextprotocol/ui`,
+OAuth Client Credentials = `io.modelcontextprotocol/oauth-client-credentials`,
+Enterprise Auth = `io.modelcontextprotocol/enterprise-managed-authorization`.
+
+Source: [`extensions/client-matrix.md`](https://modelcontextprotocol.io/extensions/client-matrix.md)
 
 ## Existing clients
 
