@@ -55,7 +55,7 @@ shape, and pagination.
 | Endpoint | Source |
 |---|---|
 | Compliance API section index | [`compliance`](https://platform.claude.com/docs/en/api/compliance) |
-| `GET /v1/compliance/activities` | [`compliance/activities.md`](https://platform.claude.com/docs/en/api/compliance/activities.md) — activity feed (filter by `activity_types`; 290+ event type enum values) |
+| `GET /v1/compliance/activities` | [`compliance/activities.md`](https://platform.claude.com/docs/en/api/compliance/activities.md) — activity feed (filter by `activity_types`; 305+ event type enum values) |
 | `GET /v1/compliance/apps/chats` | [`compliance/apps/chats/list.md`](https://platform.claude.com/docs/en/api/compliance/apps/chats/list.md) — list chat metadata; requires `user_ids` (1–10 IDs) |
 | `GET /v1/compliance/apps/chats/{chat_id}/messages` | [`compliance/apps/chats/messages/list.md`](https://platform.claude.com/docs/en/api/compliance/apps/chats/messages/list.md) — list chat messages with cursor pagination (`after_id`, `before_id`, `created_at` range filters); includes `artifacts[]` and `generated_files[]` |
 | `DELETE /v1/compliance/apps/chats/{chat_id}` | [`compliance/apps/chats/delete.md`](https://platform.claude.com/docs/en/api/compliance/apps/chats/delete.md) — permanently delete a chat + messages + files; returns `{id, type: "claude_chat_deleted"}` |
