@@ -27,11 +27,24 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
   `thinking: { type: "enabled", budget_tokens: N }`. Tokens used in
   thinking blocks are billed at input-token rates and **count against
   `max_tokens`** for the final response.
-- **Prompt caching has 4-breakpoint limit per request.** Each
-  `cache_control: { type: "ephemeral" }` is one breakpoint. Default TTL
-  is `5m`; `1h` is also available. The whole prefix up to the
-  breakpoint is cached, so place breakpoints at stable boundaries
-  (system prompt → tools → static context → user turn).
+- **Prompt caching — two modes:** (1) **Explicit breakpoints** (existing):
+  place `cache_control: { type: "ephemeral" }` on individual content
+  blocks; up to 4 breakpoints per request; caches the whole prefix up
+  to the block. (2) **Automatic caching** (new): pass
+  `cache_control: { type: "ephemeral" }` at the top level of the
+  request body; the system automatically applies the breakpoint to the
+  last cacheable block and moves it forward as conversations grow —
+  ideal for multi-turn conversations. Both modes share the same
+  5-min (default) or 1-hour TTL and the 4-breakpoint slot limit.
+  **Platform note:** automatic caching is available on the Claude API,
+  Claude Platform on AWS, and Microsoft Foundry (beta). Bedrock and
+  Vertex AI do **not** support automatic caching.
+  **Automatic caching edge cases:** → 400 if 4 explicit block-level
+  breakpoints already exist (no slot left); → 400 if the last block
+  has an explicit `cache_control` with a *different* TTL; → no-op if
+  the last block already has the same TTL; → silently skips if no
+  eligible block found. Source:
+  [`prompt-caching.md`](https://platform.claude.com/docs/en/build-with-claude/prompt-caching.md).
 - **Cache diagnostics (beta):** When cache hits drop unexpectedly, pass
   `diagnostics: { previous_message_id: <prev_id> }` with beta header
   `cache-diagnosis-2026-04-07`. The response's `diagnostics.cache_miss_reason`
@@ -116,7 +129,7 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
 
 | Feature | Page | What it does |
 |---|---|---|
-| **Prompt caching** | [`prompt-caching.md`](https://platform.claude.com/docs/en/build-with-claude/prompt-caching.md) | `cache_control: ephemeral` breakpoints, 5-min TTL |
+| **Prompt caching** | [`prompt-caching.md`](https://platform.claude.com/docs/en/build-with-claude/prompt-caching.md) | Two modes: explicit block-level breakpoints (up to 4 per request) **or** automatic top-level `cache_control` (new, auto-tracks last cacheable block); 5-min or 1-hour TTL; automatic mode not available on Bedrock/Vertex |
 | **Cache diagnostics** | [`cache-diagnostics.md`](https://platform.claude.com/docs/en/build-with-claude/cache-diagnostics.md) | Beta (`cache-diagnosis-2026-04-07`) — identify where a prompt prefix diverged and caused a cache miss; Claude API only |
 | **Batch processing** | [`batch-processing.md`](https://platform.claude.com/docs/en/build-with-claude/batch-processing.md) | Submit many requests at lower price, returns in 24h |
 | **Compaction** | [`compaction.md`](https://platform.claude.com/docs/en/build-with-claude/compaction.md) | Auto-summarize older messages when nearing context limit. Supported on: `claude-mythos-preview`, Opus 4.7, Opus 4.6, Sonnet 4.6 |

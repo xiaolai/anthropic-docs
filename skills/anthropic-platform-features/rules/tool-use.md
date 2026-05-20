@@ -157,6 +157,23 @@ tool_choice={"type": "auto"}   # default, always safe
 tool_choice={"type": "none"}   # also valid
 ```
 
+## Rule 10 — Automatic caching conflicts with 4 existing block-level breakpoints
+
+Prompt caching now supports **automatic caching** (pass
+`cache_control: { type: "ephemeral" }` at the top level of the
+request, not on individual blocks). The auto-breakpoint uses one of
+the 4 allowed slots. If 4 explicit block-level breakpoints are already
+present, adding a top-level `cache_control` returns a **400 error**.
+
+Also: if the last block has an explicit `cache_control` with a
+**different** TTL than the top-level one, the API returns a 400.
+
+**Platforms:** automatic top-level `cache_control` works on the Claude
+API, Claude Platform on AWS, and Microsoft Foundry (beta). It is **not**
+supported on Amazon Bedrock or Google Vertex AI.
+
+Source: [`prompt-caching.md`](https://platform.claude.com/docs/en/build-with-claude/prompt-caching.md).
+
 ---
 
 *Source: distilled from anthropic-sdk-typescript + anthropic-sdk-python
