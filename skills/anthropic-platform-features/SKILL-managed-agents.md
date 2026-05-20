@@ -46,9 +46,17 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
 - **Permission policies** gate what each agent may do (which tools,
   which file paths, which network endpoints). Set on the agent
   definition; enforced server-side. Default-deny.
-- **Cloud containers** are the execution sandbox for code-running
+- **Cloud containers** are the default execution sandbox for code-running
   agents. Limited CPU / memory / network egress. Configure per agent
   via the environments resource.
+- **Self-hosted sandboxes** keep orchestration on Anthropic's side but
+  move tool execution (code, filesystem, network egress) into your own
+  infrastructure. An *environment worker* process — run via the `ant`
+  CLI or an SDK helper — polls Anthropic's work queue, claims sessions,
+  downloads skills, and runs tool calls locally. Not available on Claude
+  Platform on AWS. Memory stores are not yet supported with self-hosted
+  sandboxes. Combine with MCP Tunnels when you want both code execution
+  and MCP tool access to stay inside your network boundary.
 - **Beta API surface.** All Managed-Agents endpoints currently live
   under `/v1/...` with the `anthropic-beta` header
   (`managed-agents-2026-04-01`). Pin the beta string to a specific
@@ -89,7 +97,9 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
 | Page | Topic |
 |---|---|
 | [`environments.md`](https://platform.claude.com/docs/en/managed-agents/environments.md) | Environment concept (dev / staging / prod) |
-| [`cloud-containers.md`](https://platform.claude.com/docs/en/managed-agents/cloud-containers.md) | Container-backed agent runtime |
+| [`cloud-containers.md`](https://platform.claude.com/docs/en/managed-agents/cloud-containers.md) | Container-backed agent runtime (Anthropic-managed) |
+| [`self-hosted-sandboxes.md`](https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes.md) | Run sessions in your own infrastructure (environment worker pattern) |
+| [`self-hosted-sandboxes-security.md`](https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes-security.md) | Shared responsibility model for self-hosted sandbox environments |
 | [`sessions.md`](https://platform.claude.com/docs/en/managed-agents/sessions.md) | Session lifecycle |
 | [`permission-policies.md`](https://platform.claude.com/docs/en/managed-agents/permission-policies.md) | What each agent may do |
 
@@ -116,9 +126,9 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
 
 ## Page index
 
-20 source pages under
+22 source pages under
 [`https://platform.claude.com/docs/en/managed-agents/`](https://platform.claude.com/docs/en/managed-agents/).
 
 ---
 
-*Source pages: 20 under `platform.claude.com/docs/en/managed-agents/`.*
+*Source pages: 22 under `platform.claude.com/docs/en/managed-agents/`.*
