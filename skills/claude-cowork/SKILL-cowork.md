@@ -27,15 +27,14 @@ with formulas, PowerPoint decks.
 
 **Standard Cowork vs Cowork on 3P:**
 
-| Component              | Standard Cowork              | Cowork on 3P                                            |
-| ---------------------- | ---------------------------- | ------------------------------------------------------- |
-| Model inference        | Anthropic API                | Your Vertex AI / Bedrock / Foundry / gateway endpoint   |
-| Web application        | Loaded from claude.ai        | Bundled inside the desktop app                          |
-| User identity          | Anthropic account            | Local device identity only                              |
-| Conversation storage   | Anthropic backend            | Local disk on the user's machine                        |
-| Code execution sandbox | Local VM                     | Local VM (identical)                                    |
-| Configuration          | Admin console at claude.ai   | OS-native (MDM-managed or per-user)                     |
-| Billing                | Anthropic seat / consumption | Token-based, billed by your cloud provider              |
+| Component              | Standard Cowork              | Cowork on 3P                                                              |
+| ---------------------- | ---------------------------- | ------------------------------------------------------------------------- |
+| Model inference        | Anthropic API                | Your Vertex AI / Bedrock / Foundry / gateway endpoint, or the Anthropic API |
+| Web application        | Loaded from claude.ai        | Bundled inside the desktop app                                            |
+| User identity          | Anthropic account            | Local device identity only                                                |
+| Conversation storage   | Anthropic backend            | Local disk on the user's machine                                          |
+| Code execution sandbox | Local VM                     | Local VM (identical)                                                      |
+| Configuration          | Admin console at claude.ai   | OS-native (MDM-managed or per-user)                                       |
 
 The desktop app detects 3P mode at launch from the configured
 inference provider. When credentials are present, the sign-in screen
@@ -70,7 +69,8 @@ option.
 > zero-data-retention availability). The "no conversation egress to
 > Anthropic" guarantees apply to **Vertex AI and Bedrock**, and to
 > **gateway** mode as long as the gateway does not itself route to
-> Anthropic infrastructure.
+> Anthropic infrastructure. They do **not** apply to Microsoft Foundry
+> or when `inferenceProvider` is `anthropic`.
 
 ## Inference providers (3P)
 
@@ -129,43 +129,59 @@ That page is the source of truth for:
 - **Deployment identity** — `deploymentOrganizationUuid` (UUID to attribute
   your fleet's telemetry; shared placeholder used if unset), `disableDeploymentModeChooser`
   (hides Anthropic sign-in option on launch screen)
-- **Inference provider** — `inferenceProvider` (`vertex` | `bedrock` | `foundry` | `gateway`)
-- **Region pinning** — `inferenceVertexRegion`, `inferenceBedrockRegion`
-- **Model picker** — `inferenceModels` (JSON array; each entry may be a plain
-  string ID or `{"name":"<id>","labelOverride":"<label>","supports1m":true}`)
+- **Inference provider** — `inferenceProvider` (`anthropic` | `vertex` | `bedrock` |
+  `foundry` | `gateway`); `anthropic` routes directly to the Anthropic API (no
+  3P data-residency guarantees)
+- **Anthropic API key** — `inferenceAnthropicApiKey` (for `inferenceProvider: anthropic`)
+- **Custom inference headers** — `inferenceCustomHeaders` (JSON object or `"Name: Value"`
+  array sent on every inference request; legacy alias `inferenceGatewayHeaders` still
+  accepted)
+- **Region pinning / base URL** — `inferenceVertexRegion`, `inferenceBedrockRegion`;
+  `inferenceVertexBaseUrl`, `inferenceBedrockBaseUrl` (override the default inference
+  endpoint host for firewall / private endpoint scenarios)
+- **Model discovery** — `modelDiscoveryEnabled` (boolean, default `true`; set `false`
+  to use a fixed list without querying the provider's model-list endpoint); `inferenceModels`
+  (JSON array; each entry may be a plain string ID or
+  `{"name":"<id>","labelOverride":"<label>","supports1m":true}`)
 - **Credential helper** — `inferenceCredentialHelper` (path to executable whose
-  stdout becomes the API credential), `inferenceCredentialHelperTtlSec` (cache
-  TTL, default 3600 s; applies to Bedrock/Foundry/gateway, not Vertex AI)
-- **Sandbox & workspace** — `disabledBuiltinTools` (JSON string[] of tool names
-  to remove; valid: `Bash`, `Read`, `Write`, `Edit`, `Glob`, `Grep`,
-  `NotebookEdit`, `WebFetch`, `WebSearch`, `Task`, `TodoWrite`, `TaskCreate`,
-  `TaskUpdate`, `TaskGet`, `TaskList`, `TaskStop`, `Skill`, `REPL`,
-  `JavaScript`, `AskUserQuestion`, `ToolSearch`, `SendUserMessage`),
-  `allowedWorkspaceFolders` (restrict attachable paths), `coworkEgressAllowedHosts`
-  (agent egress allowlist; `["*"]` disables filtering), `isClaudeCodeForDesktopEnabled`
-  (show/hide Code tab, default `true`), `disableDeepLinkRegistration`
+  stdout becomes the API credential; may print a bare token or
+  `{"token":"...","headers":{...}}`), `inferenceCredentialHelperTtlSec` (cache
+  TTL, default 3600 s), `inferenceCredentialHelperTimeoutSec` (max seconds to wait
+  for helper, default 60 s; applies to Bedrock/Foundry/gateway/anthropic, not Vertex AI)
+- **Sandbox & workspace** — `builtinToolPolicy` (JSON object mapping tool name →
+  `"allow"` | `"ask"`, controls per-tool approval prompts without removing the tool);
+  `disabledBuiltinTools` (JSON string[] of tool names to remove entirely; valid:
+  `Bash`, `Read`, `Write`, `Edit`, `Glob`, `Grep`, `NotebookEdit`, `WebFetch`,
+  `WebSearch`, `Task`, `TodoWrite`, `TaskCreate`, `TaskUpdate`, `TaskGet`,
+  `TaskList`, `TaskStop`, `Skill`, `REPL`, `JavaScript`, `AskUserQuestion`,
+  `ToolSearch`, `SendUserMessage`), `allowedWorkspaceFolders` (restrict attachable
+  paths), `coworkEgressAllowedHosts` (agent egress allowlist; `["*"]` disables
+  filtering), `isClaudeCodeForDesktopEnabled` (show/hide Code tab, default `true`),
+  `disableDeepLinkRegistration`
 - **Telemetry toggles** — `disableEssentialTelemetry`, `disableNonessentialTelemetry`,
   `disableNonessentialServices`, `disableAutoUpdates`; `autoUpdaterEnforcementHours`
   (force pending update after N hours, 1–72, default 72)
 - **MCP & extensions** — `managedMcpServers` (JSON array; each server supports
   `transport` (`"http"` (default) | `"sse"` | `"stdio"`), `headers`,
-  `headersHelper`/`headersHelperTtlSec` (default 300 s), `oauth` object
-  for pre-registered OAuth clients (`clientId`, `tenantId`, `scope`,
-  `callbackPort` (default `53280`), `callbackHost` (`"127.0.0.1"` default |
-  `"localhost"`); redirect URI is `http://<callbackHost>:<callbackPort>/callback`),
-  `toolPolicy`; `stdio` transport also takes `command`, `args`, `env`);
-  `orgPluginSettings` (per-tool policy for
-  org-plugin servers, keyed as `{"mcpServers":{"<name>":{"toolPolicy":{...}}}}`);
+  `headersHelper`/`headersHelperTtlSec` (default 300 s), `oauth` (`true` for
+  dynamic client registration, or an object for pre-registered clients: `clientId`,
+  `tenantId`, `scope`, `callbackPort` (default `53280`), `callbackHost`
+  (`"127.0.0.1"` default | `"localhost"`); redirect URI is
+  `http://<callbackHost>:<callbackPort>/callback`), `toolPolicy` (map tool name →
+  `"allow"` | `"ask"` | `"blocked"`); `stdio` transport also takes `command`,
+  `args`, `env`); `orgPluginSettings` (per-tool policy for org-plugin servers,
+  keyed as `{"mcpServers":{"<name>":{"toolPolicy":{...}}}}`);
   `isLocalDevMcpEnabled`; `isDesktopExtensionEnabled`;
   `isDesktopExtensionSignatureRequired`
 - **OTLP export** — `otlpEndpoint` (OTLP collector base URL; endpoint host is
   auto-added to sandbox allowlist), `otlpProtocol` (`"http/protobuf"` (default)
-  | `"http/json"` | `"grpc"`), `otlpHeaders` (JSON object of header→value pairs),
-  `otlpResourceAttributes` (JSON object of extra resource attributes; built-in
-  keys such as `service.name` are dropped if they collide)
+  | `"http/json"` | `"grpc"`), `otlpHeaders` (JSON object or `key=value` string),
+  `otlpResourceAttributes` (JSON object or `key=value` string of extra resource
+  attributes; built-in keys such as `service.name` are dropped if they collide)
 - **Appearance** — `banner` (JSON object: `enabled`, `text` (≤ 200 chars),
   `backgroundColor` (`#RRGGBB`), `textColor` (`#RRGGBB`), `linkUrl` (HTTPS URL))
 - **Token spend caps** — `inferenceMaxTokensPerWindow`, `inferenceTokenWindowHours`
+  (1–720 hours)
 
 ## Data residency
 
@@ -203,6 +219,23 @@ allowlist live in [`3p/telemetry.md`](https://claude.com/docs/cowork/3p/telemetr
 With Anthropic-bound telemetry and updates disabled, the compliance
 posture of your deployment is determined entirely by your inference
 provider.
+
+**Always-required egress:** `downloads.claude.ai` — VM workspace bundle and
+Claude CLI binary are fetched at session start. Without this host, Cowork
+sessions cannot start, regardless of which telemetry options are enabled.
+
+**Proxy support:** The Cowork sandbox honors the host OS proxy configuration,
+including PAC files. On macOS with TLS-intercepting proxies, add the corporate
+CA with full root trust:
+```bash
+sudo security add-trusted-cert -d -r trustRoot \
+  -k /Library/Keychains/System.keychain /path/to/corp-ca.pem
+```
+If the certificate is MDM-managed and cannot be changed, use `launchctl setenv
+NODE_EXTRA_CA_CERTS "$HOME/corp-ca.pem"` as a fallback (applies to Finder/Dock
+launches; lasts until reboot — add to a LaunchAgent for persistence).
+
+Source: [`cowork/3p/telemetry.md`](https://claude.com/docs/cowork/3p/telemetry.md).
 
 ## Extensions (skills, plugins, hooks, MCP)
 

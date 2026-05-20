@@ -12,9 +12,14 @@ appliesTo:
 
 ## Rule 1 — `inferenceProvider` is a fixed enum
 
-Valid values: `vertex`, `bedrock`, `foundry`, `gateway`. Anything else
-makes the desktop app fall back to standard Cowork (Anthropic-hosted
+Valid values: `anthropic`, `vertex`, `bedrock`, `foundry`, `gateway`. Anything
+else makes the desktop app fall back to standard Cowork (Anthropic-hosted
 inference) — defeating the 3P deployment.
+
+> **Note:** `anthropic` routes directly to the Anthropic API. Use it only when
+> you want 3P app delivery with Anthropic inference (e.g., for credential-helper
+> management). It does **not** provide 3P data-residency guarantees — for those,
+> use `vertex` or `bedrock`.
 
 ```xml
 <key>inferenceProvider</key>
@@ -160,6 +165,27 @@ Affected keys: `inferenceModels`, `managedMcpServers`, `coworkEgressAllowedHosts
 > is supported.
 
 Source: [`cowork/3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md#value-types).
+
+---
+
+## Rule 11 — `builtinToolPolicy` vs `disabledBuiltinTools`
+
+Two keys control built-in tool access; they operate at different levels:
+
+- **`builtinToolPolicy`** — keeps the tool available but adds a per-call user
+  approval prompt. JSON object mapping tool name → `"allow"` (default, no prompt)
+  or `"ask"` (requires user approval each call).
+- **`disabledBuiltinTools`** — removes the tool from the agent entirely.
+
+> **Common mistake:** setting `"blocked"` as a value in `builtinToolPolicy` — it
+> is not accepted there. To block a tool, add it to `disabledBuiltinTools`.
+
+> **Common mistake:** using the old `inferenceGatewayHeaders` key for custom
+> inference headers. The canonical name is now `inferenceCustomHeaders`;
+> `inferenceGatewayHeaders` is still accepted as an alias but may be removed in
+> a future version.
+
+Source: [`cowork/3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md#workspace-restrictions).
 
 ---
 
