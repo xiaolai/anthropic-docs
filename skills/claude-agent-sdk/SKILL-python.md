@@ -19,6 +19,7 @@
 - [Permissions](#permissions) — 4 modes, `can_use_tool` callback
 - [MCP Servers](#mcp-servers) — stdio, HTTP, SSE, SDK in-process
 - [Todo Tracking](#todo-tracking-v0282) — TaskCreate/TaskUpdate (replaces TodoWrite as of v0.2.82)
+- [Observability](#observability) — OpenTelemetry env vars (cross-reference to TypeScript surface)
 - [Subagents](#subagents) — `AgentDefinition`, tool enforcement
 - [Extended Thinking](#extended-thinking) — `ThinkingConfig`, `effort`
 - [Structured Outputs](#structured-outputs)
@@ -1170,6 +1171,38 @@ async for message in query(prompt="Refactor authentication module"):
 ```
 
 For full `TaskCreate`/`TaskUpdate`/`TaskList` schema and ID-capture pattern, see [`SKILL-typescript.md` → Todo Tracking](SKILL-typescript.md#todo-tracking). Source: [todo-tracking.md](https://code.claude.com/docs/en/agent-sdk/todo-tracking.md).
+
+---
+
+## Observability
+
+Source: [observability.md](https://code.claude.com/docs/en/agent-sdk/observability.md)
+
+The Python SDK passes OpenTelemetry configuration to the bundled CLI via `env` in `ClaudeAgentOptions`. Python's `env` **merges** on top of the inherited environment (unlike TypeScript, which replaces it). See [`SKILL-typescript.md` — Observability](SKILL-typescript.md#observability) for the full env var reference table (`CLAUDE_CODE_ENABLE_TELEMETRY`, `OTEL_*_EXPORTER`, `OTEL_EXPORTER_OTLP_*`, etc.).
+
+Also note: `ENABLE_TOOL_SEARCH` (values: `"true"`, `"false"`, `"auto"`, `"auto:N"`) controls tool search for large tool sets — see [`SKILL-typescript.md` — Tool Search](SKILL-typescript.md#tool-search-enable_tool_search).
+
+```python
+import asyncio
+from claude_agent_sdk import query, ClaudeAgentOptions
+
+OTEL_ENV = {
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "1",
+    "CLAUDE_CODE_ENHANCED_TELEMETRY_BETA": "1",
+    "OTEL_TRACES_EXPORTER": "otlp",
+    "OTEL_METRICS_EXPORTER": "otlp",
+    "OTEL_LOGS_EXPORTER": "otlp",
+    "OTEL_EXPORTER_OTLP_PROTOCOL": "http/protobuf",
+    "OTEL_EXPORTER_OTLP_ENDPOINT": "http://collector.example.com:4318",
+}
+
+async def main():
+    # Python env merges on top of inherited environment — no need to spread os.environ
+    async for message in query(prompt="List files", options=ClaudeAgentOptions(env=OTEL_ENV)):
+        print(message)
+
+asyncio.run(main())
+```
 
 ---
 

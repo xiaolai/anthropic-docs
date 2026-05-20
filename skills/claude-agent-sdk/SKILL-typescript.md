@@ -22,6 +22,7 @@
 - [Sandbox](#sandbox)
 - [Sessions](#sessions)
 - [Todo Tracking](#todo-tracking) — TaskCreate/TaskUpdate (replaces TodoWrite as of v0.3.142)
+- [Observability](#observability) — OpenTelemetry env vars for traces, metrics, and log events
 - [V2 Session API (Removed)](#v2-session-api-removed-in-v03142) — removed in v0.3.142; use `query()` instead
 - [Debugging & Error Handling](#debugging--error-handling)
 - [Known Issues](#known-issues)
@@ -1030,6 +1031,31 @@ const myTool = tool("delete_record", "Delete a record", {
 myTool.annotations = { destructiveHint: true, readOnlyHint: false };
 ```
 
+### Tool Search (`ENABLE_TOOL_SEARCH`)
+
+Source: [tool-search.md](https://code.claude.com/docs/en/agent-sdk/tool-search.md)
+
+When using many tools (e.g. remote MCP servers with hundreds of endpoints), tool search loads only relevant tools per turn instead of all definitions upfront. Set via `options.env`:
+
+| Value | Behavior |
+|-------|----------|
+| *(unset)* | On by default; disabled on Vertex AI and non-first-party `ANTHROPIC_BASE_URL` |
+| `"true"` | Always on (even Vertex AI / proxies) |
+| `"false"` | Off — all tool definitions loaded every turn |
+| `"auto"` | Activates if tool definitions exceed 10% of context window |
+| `"auto:N"` | Same as `auto` with N% threshold (e.g. `"auto:5"`) |
+
+```typescript
+for await (const msg of query({
+  prompt: "...",
+  options: {
+    env: { ...process.env, ENABLE_TOOL_SEARCH: "auto:5" },
+    mcpServers: { myServer: { type: "http", url: "https://api.example.com/mcp" } },
+    allowedTools: ["mcp__myServer__*"]
+  }
+})) { ... }
+```
+
 ### MCP Gotchas
 
 - **URL-based servers require `type` field** — missing it causes opaque "exit code 1" (see [Known Issue #3](#3-mcp-config-missing-type-field))
@@ -1381,6 +1407,69 @@ Use `status: "deleted"` to remove a task. `addBlocks` / `addBlockedBy` accept ta
 
 **Input**: `{}` (empty)
 **Output**: `{ tasks: Array<{ id: string, subject: string, status: "pending" | "in_progress" | "completed", owner?: string, blockedBy: string[] }> }`
+
+---
+
+## Observability
+
+Source: [observability.md](https://code.claude.com/docs/en/agent-sdk/observability.md)
+
+The SDK passes OpenTelemetry configuration to the bundled CLI subprocess via environment variables. The CLI exports traces, metrics, and log events — the SDK itself does not produce telemetry. Set env vars in `options.env` (TypeScript: `env` **replaces** inherited env, so spread `...process.env`) or in the process environment.
+
+**Required to enable telemetry:**
+
+| Env var | Value | Purpose |
+|---------|-------|---------|
+| `CLAUDE_CODE_ENABLE_TELEMETRY` | `"1"` | Master switch — must be set to enable any signal |
+| `CLAUDE_CODE_ENHANCED_TELEMETRY_BETA` | `"1"` | Required for traces (beta); metrics/log events work without it |
+
+**Signal exporters (set at least one):**
+
+| Env var | Example value | Signal |
+|---------|---------------|--------|
+| `OTEL_TRACES_EXPORTER` | `"otlp"` | Spans per interaction, model request, tool call |
+| `OTEL_METRICS_EXPORTER` | `"otlp"` | Token/cost counters, session counts |
+| `OTEL_LOGS_EXPORTER` | `"otlp"` | Prompt records, API errors, tool results |
+
+**OTLP transport:**
+
+| Env var | Example value |
+|---------|---------------|
+| `OTEL_EXPORTER_OTLP_PROTOCOL` | `"http/protobuf"` |
+| `OTEL_EXPORTER_OTLP_ENDPOINT` | `"http://collector.example.com:4318"` |
+| `OTEL_EXPORTER_OTLP_HEADERS` | `"Authorization=Bearer your-token"` |
+
+**Flush intervals (lower to reduce data loss on short-lived calls):**
+
+| Env var | Default | Purpose |
+|---------|---------|---------|
+| `OTEL_METRIC_EXPORT_INTERVAL` | CLI default | Milliseconds between metric flushes |
+| `OTEL_LOGS_EXPORT_INTERVAL` | CLI default | Milliseconds between log flushes |
+| `OTEL_TRACES_EXPORT_INTERVAL` | CLI default | Milliseconds between trace flushes |
+
+**Minimal example:**
+
+```typescript
+import { query } from "@anthropic-ai/claude-agent-sdk";
+
+for await (const msg of query({
+  prompt: "List files here",
+  options: {
+    env: {
+      ...process.env,  // Required: env replaces inherited env in TypeScript
+      CLAUDE_CODE_ENABLE_TELEMETRY: "1",
+      CLAUDE_CODE_ENHANCED_TELEMETRY_BETA: "1",
+      OTEL_TRACES_EXPORTER: "otlp",
+      OTEL_METRICS_EXPORTER: "otlp",
+      OTEL_LOGS_EXPORTER: "otlp",
+      OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf",
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://collector.example.com:4318",
+    }
+  }
+})) { ... }
+```
+
+> ⚠️ **`OTEL_*_EXPORTER=none`** causes "process exited with code 1" — remove or change the value (see [Debugging checklist](#diagnostic-checklist-for-process-exited-with-code-1)). Python's `env` merges on top of inherited env, so this issue mainly affects TypeScript.
 
 ---
 
