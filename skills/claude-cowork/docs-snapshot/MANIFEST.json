@@ -3,19 +3,19 @@
     "indexSha256": "49628647363beee70ed0e7782490e3e5521635ffd95a8aaf057e9bc7cc38afdc",
     "indexBytes": 12123,
     "pageCount": 34,
-    "refreshedAt": "2026-05-20T00:00:00Z",
+    "refreshedAt": "2026-05-20T08:00:00Z",
     "pages": [
         {
             "path": "cowork/3p/bedrock-aws-sign-in.md",
             "url": "https://claude.com/docs/cowork/3p/bedrock-aws-sign-in.md",
-            "sha256": "10a498eb04828a0ec548da980345ddf4a5f320a4f16e233f0225df5c9c294bab",
-            "bytes": 11221
+            "sha256": "55ebdff209108b8d920c1b2cabb61c64e33b09458f39954cd132af7755c9393e",
+            "bytes": 11210
         },
         {
             "path": "cowork/3p/bedrock.md",
             "url": "https://claude.com/docs/cowork/3p/bedrock.md",
-            "sha256": "ad54319e2f3381ab513fa00316fc4e7feb085bee7f1de532b25a4595c88c1246",
-            "bytes": 17660
+            "sha256": "9a186ca7b25b76931a64c77a70aaa2e6f10e9045db8cf72523381202a2df0427",
+            "bytes": 17649
         },
         {
             "path": "cowork/3p/code.md",
@@ -56,8 +56,8 @@
         {
             "path": "cowork/3p/foundry.md",
             "url": "https://claude.com/docs/cowork/3p/foundry.md",
-            "sha256": "559ec7046041648e6959763246443ba77b1295b28cde677ca432c0e1ea13593a",
-            "bytes": 2804
+            "sha256": "055a4f9199efe9d93c73da0e8795b5870c2e984b376b26ceabfb5b437fd4c5c5",
+            "bytes": 2793
         },
         {
             "path": "cowork/3p/gateway-sso.md",
@@ -68,8 +68,8 @@
         {
             "path": "cowork/3p/gateway.md",
             "url": "https://claude.com/docs/cowork/3p/gateway.md",
-            "sha256": "c15ebe12a46eee1b748ff174e5a8950005049b19617969dd6385c50b93e4ae75",
-            "bytes": 5897
+            "sha256": "1c79869c943ffd34571c8bc4591303e57caee08afbdd3fc9df7e21d04d97f562",
+            "bytes": 5525
         },
         {
             "path": "cowork/3p/installation.md",
@@ -110,8 +110,8 @@
         {
             "path": "cowork/3p/vertex.md",
             "url": "https://claude.com/docs/cowork/3p/vertex.md",
-            "sha256": "f40cb5da9d519d51dae337ceca3a0174d9858e2741eefc3640bad0efc4d1b3e5",
-            "bytes": 14088
+            "sha256": "15ee37874408dbbbd85f433339055ae7ff2dc0ad8465895b6ec0b8bbe41c2162",
+            "bytes": 14077
         },
         {
             "path": "cowork/3p/web-tools.md",

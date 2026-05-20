@@ -40,6 +40,20 @@ defeats data-residency guarantees.
 <string>europe-west4</string>
 ```
 
+> **Common mistake (Bedrock SSO):** Setting only some of the `inferenceBedrockSso*`
+> keys causes the app to silently ignore the partial configuration and fall back
+> to bearer-token or named-profile auth. All four must be present together:
+> `inferenceBedrockSsoStartUrl`, `inferenceBedrockSsoRegion`,
+> `inferenceBedrockSsoAccountId`, `inferenceBedrockSsoRoleName`.
+> Requires app version 1.6.0 or later.
+> See [`3p/bedrock-aws-sign-in.md`](https://claude.com/docs/cowork/3p/bedrock-aws-sign-in.md).
+
+> **Common mistake (Vertex credential helper):** `inferenceCredentialHelper` is
+> **not invoked** when `inferenceProvider` is `vertex`. Vertex authentication is
+> file-based — use `inferenceVertexCredentialsFile` (service-account key or ADC
+> JSON) or `inferenceVertexOAuthClientId` + `inferenceVertexOAuthClientSecret`
+> (in-app Google sign-in) instead.
+
 ## Rule 3 — Foundry preview caveat
 
 `inferenceProvider: foundry` is a **preview integration** — model

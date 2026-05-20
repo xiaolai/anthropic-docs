@@ -32,6 +32,8 @@ SKILL_NAME=claude-cowork npm run update
 | Date | Update | Research | Mending | Report | Total | Notes |
 |------|--------|----------|---------|--------|-------|-------|
 | 2026-05-20 | review | research + report (no upstream change) |
+| 2026-05-20 (run 4) | — | $1.23 | — | — | **$1.23** | review — check-docs-drift fail; 34 pages audited, no upstream change; 76 turns 484s |
 | 2026-05-20 (run 3) | — | $0.90 | — | — | **$0.90** | review — check-docs-drift fail; 34 pages audited, no upstream change |
-| 2026-05-19 | review | research + report (no upstream change) |
+| 2026-05-20 (run 2) | — | $0.93 | — | — | **$0.93** | review — check-docs-drift fail; 34 pages audited, no upstream change |
+| 2026-05-19 | — | — | — | — | — | review — research + report (no upstream change) |
 
