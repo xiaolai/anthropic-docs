@@ -335,7 +335,7 @@ await tagSession(sessionId, null);
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `outputFormat` | `{ type: 'json_schema', schema: JSONSchema }` | — | Structured output schema |
-| `thinking` | `ThinkingConfig` | — | `{ type: 'enabled', budgetTokens?: number } \| { type: 'disabled' } \| { type: 'adaptive' }` |
+| `thinking` | `ThinkingConfig` | `{ type: 'adaptive' }` (supported models) | `{ type: 'enabled', budgetTokens?: number, display?: ThinkingDisplay } \| { type: 'disabled' } \| { type: 'adaptive', display?: ThinkingDisplay }` where `ThinkingDisplay = 'summarized' \| 'omitted'`. On Opus 4.7+ the API default is `'omitted'` — set `'summarized'` to receive thinking blocks in the output |
 | `effort` | `'low' \| 'medium' \| 'high' \| 'xhigh' \| 'max'` | `'high'` (supported models) | Controls response effort level; `'xhigh'` is Opus 4.7+ only |
 | `maxThinkingTokens` | `number` | — | **Deprecated** — use `thinking` instead |
 | `fallbackModel` | `string` | — | Fallback model on failure |

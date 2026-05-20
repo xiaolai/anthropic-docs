@@ -1233,17 +1233,26 @@ Control Claude's extended thinking behavior with the `thinking` and `effort` opt
 ### ThinkingConfig Types
 
 ```python
-from claude_agent_sdk.types import ThinkingConfig
+from claude_agent_sdk.types import ThinkingConfig, ThinkingDisplay
 
-# Adaptive mode - Claude decides when to think
-ThinkingConfigAdaptive = {"type": "adaptive"}
+ThinkingDisplay = Literal["summarized", "omitted"]
 
-# Enabled mode - budget-limited thinking
-ThinkingConfigEnabled = {"type": "enabled", "budget_tokens": int}
+class ThinkingConfigAdaptive(TypedDict):
+    type: Literal["adaptive"]
+    display: NotRequired[ThinkingDisplay]  # Controls whether thinking text is returned
 
-# Disabled mode - no thinking blocks
-ThinkingConfigDisabled = {"type": "disabled"}
+class ThinkingConfigEnabled(TypedDict):
+    type: Literal["enabled"]
+    budget_tokens: int
+    display: NotRequired[ThinkingDisplay]
+
+class ThinkingConfigDisabled(TypedDict):
+    type: Literal["disabled"]
+
+ThinkingConfig = ThinkingConfigAdaptive | ThinkingConfigEnabled | ThinkingConfigDisabled
 ```
+
+The optional `display` field controls whether thinking text is returned `"summarized"` or `"omitted"`. On Claude Opus 4.7 and later, the API default is `"omitted"` — set `display="summarized"` to receive thinking content in [`ThinkingBlock`](#content-block-types) outputs. Source: [python.md](https://code.claude.com/docs/en/agent-sdk/python.md)
 
 ### Examples
 
