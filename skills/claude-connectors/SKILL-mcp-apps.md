@@ -112,8 +112,8 @@ Key fields (see [MCPB Manifest Spec](https://github.com/modelcontextprotocol/mcp
   - `mcp_config` — launch config: `command`, `args`, optional `env`.
 - `compatibility` — supported OS list; valid platforms: `darwin`, `win32`.
 - `tools` — declared tool list with annotations.
-- `icons` — icon paths, optionally per theme (light/dark) and size.
-- `user_config` — generates a settings UI in Claude Desktop.
+- `icons` — icon paths, optionally per theme (light/dark) and size. Recommended: `icon.png` in the bundle root, 512×512px (minimum 256×256px), PNG with transparency. See [manifest spec icons section](https://github.com/modelcontextprotocol/mcpb/blob/main/MANIFEST.md#icons).
+- `user_config` — generates a settings UI in Claude Desktop. Full schema, config types, and sensitive-data handling: [manifest spec user configuration section](https://github.com/modelcontextprotocol/mcpb/blob/main/MANIFEST.md#user-configuration).
 
 ### Installation paths (user-facing)
 
@@ -205,6 +205,14 @@ SDK helpers (all from `@modelcontextprotocol/ext-apps`):
 - `applyHostStyleVariables(variables)` — writes tokens to `:root`
 - `applyHostFonts(fontCss)` — injects `@font-face` rules
 - React: `useApp(options)`, `useHostStyles(app, hostContext)`
+
+**`color-scheme` meta tag (required for correct dark-mode rendering):** Add
+`<meta name="color-scheme" content="light dark" />` in your `<head>`. Without
+it, browsers give iframes an opaque canvas backdrop in dark mode; this tag opts
+your document into the host's current mode so the backdrop is dropped and
+`light-dark()` tokens resolve correctly. Keep the tag even when `applyDocumentTheme`
+also sets `color-scheme` at runtime — it covers the first paint before your
+script runs.
 
 To suppress the host border card: set `prefersBorder: false` in your
 resource's `_meta.ui`. To allow host font loading: add

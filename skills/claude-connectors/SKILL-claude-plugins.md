@@ -72,6 +72,14 @@ Directory tiers:
 Install only plugins from developers you trust — Anthropic cannot
 exhaustively review every submission.
 
+> **Exercise caution with community plugins.** Best practices before installing:
+> - Review the plugin's source code before installing.
+> - Check which MCP connectors are included and what permissions they request.
+> - Prefer Anthropic Verified plugins for production workflows.
+> - Report any suspicious activity to Anthropic.
+>
+> Source: [`plugins/submit.md`](https://claude.com/docs/plugins/submit.md).
+
 ## Plugin marketplaces
 
 A marketplace is a directory of installable plugins, identified by

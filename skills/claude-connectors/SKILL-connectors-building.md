@@ -99,6 +99,20 @@ Additional auth features:
 - PKCE (S256) is included on every authorization request; your authorization server must support it.
 - **For high-traffic servers, prefer CIMD or `oauth_anthropic_creds` over DCR.** DCR registers a new client on every fresh connection — this creates large numbers of registered clients on your authorization server at scale. CIMD and Anthropic-held credentials avoid the registration call entirely.
 - **CIMD selection criteria:** Claude selects CIMD only when the authorization server metadata advertises **both** `"client_id_metadata_document_supported": true` **and** `"none"` in `token_endpoint_auth_methods_supported`. If either is missing, Claude falls back to DCR.
+- **Scope parameter:** To control which scopes Claude requests, include a `scope` parameter in the `WWW-Authenticate` header on your `401` response. If absent, Claude requests the scopes advertised in your protected resource metadata's `scopes_supported`. Claude also appends `offline_access` when your authorization server metadata lists it in `scopes_supported`, to obtain a refresh token.
+
+### `oauth_anthropic_creds` — how the flow works
+
+The consent-gated alternative to machine-to-machine grants (source: [`authentication.md`](https://claude.com/docs/connectors/building/authentication.md)):
+
+1. You create an OAuth `client_id` and `client_secret` on your authorization server and send them to Anthropic.
+2. Anthropic stores those credentials securely and associates them with your directory entry.
+3. When a user connects your server, they go through a standard OAuth consent screen.
+4. After consent, Anthropic uses the stored credentials to complete the token exchange on the user's behalf.
+
+> **Claude Code uses its own OAuth flow.** It identifies itself with its own [Client ID Metadata Document](https://claude.ai/oauth/claude-code-client-metadata) and does **not** use Anthropic-held credentials. Claude Managed Agents uses a separate credential set.
+
+> **Credentials are bound to one authorization server.** If you migrate to a new authorization server, email `mcp-review@anthropic.com` with the new `client_id` and `client_secret` before cutting over. CIMD-based connectors don't have this constraint.
 
 ### Cross-host authorization servers
 
@@ -204,8 +218,11 @@ documents exactly what Anthropic reviewers test. Key requirements:
 - **No prompt-injection patterns** in tool descriptions. Rejected if descriptions: instruct Claude to call external software not requested by the user; interfere with Claude calling other tools; direct Claude to pull behavioral instructions from external sources; contain hidden, obfuscated, or encoded instructions; or tell Claude to behave in ways unrelated to the tool's function, override system instructions, or promote products/services.
 - **No collecting conversation data** beyond what the tool needs for its function. Tools must not query Claude's memory, chat history, conversation summaries, or user files.
 - **API ownership:** Your server must call your own first-party APIs, or APIs you legitimately proxy. The MCP server domain should match your service.
-- **Unsupported use cases (automatic rejection):** money/crypto/asset transfers; AI-generated images, video, or audio.
+- **Unsupported use cases (automatic rejection):** money/crypto/asset transfers; AI-generated images, video, or audio. (Design tools producing diagrams, charts, or UI mockups are allowed.)
 - **Allowed link URIs** are recommended if your server calls `ui/open-link`.
+- **Test credentials** must be a **fully populated account** — a bare/empty account that can't exercise the tools will fail review.
+- **Public documentation** must be live by your publish date; a blog post or help-center article is sufficient. You can share docs privately with Anthropic during review.
+- **MCPB submissions:** the open-source and "spec will evolve" clauses in the [Software Directory Terms](https://support.claude.com/en/articles/13145338-anthropic-software-directory-terms) are **required and not waivable**.
 
 Run `claude plugin validate` on plugins before submitting.
 
@@ -219,6 +236,8 @@ examples), and the review timeline.
 **Submission form URLs:**
 - Desktop extensions (MCPB): [clau.de/desktop-extention-submission](https://clau.de/desktop-extention-submission)
 - Remote MCPs (including MCP Apps): [clau.de/mcp-directory-submission](https://clau.de/mcp-directory-submission)
+
+If a corporate firewall blocks the form, email `mcp-review@anthropic.com`. A self-serve status dashboard is rolling out on Claude.ai; until then, email the same address for escalations.
 
 MCP Apps require 3–5 carousel screenshots (PNG, ≥1000px wide, cropped to the app response only — no prompt visible). See [asset specifications](https://claude.com/docs/connectors/building/submission#asset-specifications).
 
