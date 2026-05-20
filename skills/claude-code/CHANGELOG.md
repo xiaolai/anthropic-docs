@@ -10,6 +10,9 @@ The newest entry is at the top.
 
 ---
 
+## 2026-05-20 (run 8)
+- Routine audit at CC v2.1.145 — SKILL-hooks.md: added PreToolUse tool-specific tool_input fields section (Bash, Write, Edit, Read, Glob, Grep, WebFetch, WebSearch, Agent, AskUserQuestion, ExitPlanMode) and Agent PostToolUse tool_response sub-field table; GitHub Part B skipped (403); all 11 gates pass
+
 ## 2026-05-20 (run 7)
 - Docs index +3 pages (105→108): plugin-hints.md, prompt-library.md, sessions.md; SKILL-plugins.md added plugin-hint protocol, SKILL-cli.md added session management section; all 11 gates pass
 

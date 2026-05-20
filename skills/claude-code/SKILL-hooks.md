@@ -357,6 +357,38 @@ Example payload for `PreToolUse` on a Bash call:
 
 Source: `code.claude.com/docs/en/hooks.md`.
 
+### PreToolUse tool-specific `tool_input` fields
+
+The `tool_input` object shape depends on the tool being called. Source: `code.claude.com/docs/en/hooks.md#pretooluse`.
+
+| Tool | Key `tool_input` fields |
+|---|---|
+| `Bash` | `command` (string), `description` (string, optional), `timeout` (ms, optional), `run_in_background` (boolean, optional) |
+| `Write` | `file_path` (string), `content` (string) |
+| `Edit` | `file_path` (string), `old_string` (string), `new_string` (string), `replace_all` (boolean, optional) |
+| `Read` | `file_path` (string), `offset` (number, optional line start), `limit` (number, optional line count) |
+| `Glob` | `pattern` (string), `path` (string, optional directory) |
+| `Grep` | `pattern` (string), `path` (string, optional), `glob` (string, optional), `output_mode` (`"content"` / `"files_with_matches"` / `"count"`), `-i` (boolean), `multiline` (boolean) |
+| `WebFetch` | `url` (string), `prompt` (string) |
+| `WebSearch` | `query` (string), `allowed_domains` (array, optional), `blocked_domains` (array, optional) |
+| `Agent` | `prompt` (string), `description` (string), `subagent_type` (string, optional), `model` (string, optional) |
+| `AskUserQuestion` | `questions` (array of `{question, header, options, multiSelect?}` objects), `answers` (object, optional; supply via `updatedInput` to answer programmatically) |
+| `ExitPlanMode` | `plan` (string, markdown injected from file), `planFilePath` (string), `allowedPrompts` (array of `{tool, prompt}`) |
+
+**Agent `PostToolUse` response** — `tool_response` fields after a completed Agent call:
+
+| Field | Notes |
+|---|---|
+| `status` | `"completed"` (synchronous) or `"async_launched"` (background) |
+| `agentId` | Identifier for the subagent run |
+| `content` | Array of text blocks with the subagent's final response |
+| `totalTokens` | Total tokens billed across the subagent's turns |
+| `totalDurationMs` | Wall-clock duration in milliseconds |
+| `totalToolUseCount` | Count of tool calls the subagent made |
+| `usage` | Per-type breakdown: `input_tokens`, `output_tokens`, `cache_creation_input_tokens`, `cache_read_input_tokens` |
+
+For `run_in_background: true` calls, `tool_response` has `status: "async_launched"` and `agentId`/`description`/`prompt`/`outputFile` instead of usage fields.
+
 ## Hook output shape
 
 Your hook can write a JSON object to stdout to influence Claude's behavior.
