@@ -90,12 +90,26 @@ connector. Microsoft Graph admin consent must complete first (see
 Without the consent, the connector is visible but every operation
 errors with "permissions not granted by an admin."
 
-## Rule 7 — Org-plugins directory: pin versions
+## Rule 7 — Org-plugins directory: bump `version.json`, not a config key
 
-The `orgPluginsDirectory` config takes a URL to a marketplace-style
-JSON file your org publishes. **Pin plugin versions** in that
-manifest; bare references resolve to "latest" and inherit any
-breaking change immediately.
+There is **no `orgPluginsDirectory` configuration key**. Organization plugins
+are distributed by placing plugin bundles in a well-known filesystem directory
+on each device (MDM-managed or software-distribution channel):
+
+| Platform | Directory |
+|---|---|
+| macOS | `/Library/Application Support/Claude/org-plugins/` |
+| Windows | `C:\Program Files\Claude\org-plugins\` |
+
+Each subdirectory is one plugin and must contain `.claude-plugin/plugin.json`.
+To push an update, bump the `version` string in the plugin's `version.json`
+(`{"version": "1.2.3"}`). **Any string change triggers re-sync on next
+launch — there is no semver ordering.** If `version.json` is absent,
+Cowork falls back to the directory's modification time.
+
+> **Common mistake:** setting `orgPluginsDirectory` or `orgPluginsManifestUrl`
+> as a config key — neither exists. The directory path is fixed by the
+> platform; only its contents are managed by the admin.
 
 ## Rule 8 — Token caps are per-device and token-based, not USD per-workspace
 

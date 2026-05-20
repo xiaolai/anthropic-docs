@@ -252,15 +252,33 @@ marketplace is not available in 3P.
 | Windows | `C:\Program Files\Claude\org-plugins\` |
 
 Each subdirectory is one plugin and must contain `.claude-plugin/plugin.json`.
-Use `version.json` (`{"version":"<string>"}`) to trigger re-sync on next launch.
+Use `version.json` (`{"version":"<string>"}`) to trigger re-sync on next
+launch. **Any string change triggers re-sync — there is no semver ordering,
+so a "downgrade" is just another version string.** If `version.json` is absent,
+the directory's modification time is used instead.
+
 Set `installationPreference` in `plugin.json` to control rollout:
-- `"required"` — auto-installs; Uninstall action hidden
-- `"auto_install"` — auto-installs; users can uninstall
+- `"required"` — auto-installs; Uninstall action hidden; reinstalls if removed from disk
+- `"auto_install"` — auto-installs; users can uninstall and it stays uninstalled
 - `"available"` (default) — users install manually
+
+**Plugin symlink handling:** Symlinks inside a plugin directory are followed
+as long as they resolve to a path inside that plugin. Symlinks pointing outside
+(e.g. `skills/foo/SKILL.md → /etc/hosts`) are skipped. A symlinked top-level
+plugin directory (`org-plugins/my-plugin → /opt/shared/my-plugin`) is also followed.
+
+**MCP servers in `.mcp.json` do not carry a `toolPolicy` field.** To apply tool
+policy to a plugin-delivered MCP server, set `orgPluginSettings` in managed
+configuration keyed on the server's name — not in the plugin file itself.
 
 End users **cannot add remote MCP servers** — only local ones (when
 `isLocalDevMcpEnabled` is `true`). Remote servers come only via
 `managedMcpServers` or org-plugins.
+
+**`isLocalDevMcpEnabled: false` and `isDesktopExtensionEnabled: false` restrict
+local MCP servers and `.mcpb` desktop extensions only.** Users can still install
+skills and plugins (which bundle skills, commands, hooks, sub-agents) regardless
+of these settings.
 
 Every connector in the [Claude connector directory](https://claude.com/connectors)
 not labeled "Made by Anthropic" is accessible in 3P via `managedMcpServers` or
@@ -331,6 +349,16 @@ set `isClaudeCodeForDesktopEnabled` to `false`.
 URLs returned in search results are **automatically allowed** for a
 follow-up Web Fetch even if they are not in your `coworkEgressAllowedHosts`
 list.
+
+**Wildcard semantics for `coworkEgressAllowedHosts`:** `*.example.com`
+matches `a.example.com` and `a.b.example.com` (one or more leading
+subdomain labels) but does **not** match the apex domain `example.com`
+itself. Add both `example.com` and `*.example.com` if both are needed.
+`["*"]` disables all filtering (use with caution).
+
+The allowlist governs all in-sandbox network activity — Web Fetch,
+`curl`, `pip install`, and other shell network calls — not just the
+Web Fetch tool.
 
 Source: [`cowork/3p/web-tools.md`](https://claude.com/docs/cowork/3p/web-tools.md).
 
