@@ -83,6 +83,34 @@ Without these protections, a remote website can use DNS rebinding to reach and i
 
 Source: [`specification/2025-11-25/basic/transports.md`](https://modelcontextprotocol.io/specification/2025-11-25/basic/transports.md)
 
+### Required HTTP headers
+
+Clients using streamable HTTP MUST include these headers on every request:
+
+- **`Accept: application/json, text/event-stream`** — declares that the client can
+  handle both plain JSON responses and SSE streams.
+- **`MCP-Protocol-Version: <version>`** — on all requests *after* `initialize`, the
+  client MUST include the negotiated protocol version (e.g., `MCP-Protocol-Version: 2025-11-25`).
+  If the server receives an invalid/unsupported version, it MUST respond with HTTP 400.
+  For backwards compatibility, if no `MCP-Protocol-Version` is sent and the server
+  has no other way to identify the version, the server SHOULD assume `2025-03-26`.
+
+### Session management (`MCP-Session-Id`)
+
+Servers may optionally assign a session ID to a client:
+
+1. After a successful `initialize`, the server MAY return an `Mcp-Session-Id` HTTP header
+   containing a globally unique, cryptographically secure ID (e.g., UUID, JWT, or hash).
+   The ID MUST contain only visible ASCII characters (0x21–0x7E).
+2. Once assigned, the client MUST include `MCP-Session-Id: <id>` on all subsequent requests.
+3. If the server terminates a session, it responds to requests with that session ID with
+   HTTP 404. The client MUST start a new session (fresh `InitializeRequest`, no session ID).
+4. To explicitly terminate a session, the client SHOULD send an HTTP DELETE to the MCP
+   endpoint with the `MCP-Session-Id` header. The server MAY respond with HTTP 405 if it
+   does not support client-initiated session termination.
+
+Source: [`specification/2025-11-25/basic/transports.md`](https://modelcontextprotocol.io/specification/2025-11-25/basic/transports.md)
+
 ### Framing
 
 - **Request**: `POST <endpoint>` with `Content-Type: application/json`

@@ -304,9 +304,22 @@ via the host's UI. Two modes:
 ```
 
 `requestedSchema` is a restricted flat JSON Schema — only primitive
-properties (`string`, `number`/`integer`, `boolean`) at the top level.
-Servers MUST NOT use form mode to request passwords, API keys, or
-other secrets.
+properties at the top level. Servers MUST NOT use form mode to request
+passwords, API keys, or other secrets.
+
+**Supported property types in `requestedSchema`:**
+
+| Type | Key constraints | Notes |
+|---|---|---|
+| `"string"` | `minLength`, `maxLength`, `pattern`, `format`, `default` | `format` values: `email`, `uri`, `date`, `date-time` |
+| `"number"` / `"integer"` | `minimum`, `maximum`, `default` | |
+| `"boolean"` | `default` | |
+| `"string"` with `enum` | `enum: [...]`, `default` | Single-select picklist |
+| `"string"` with `oneOf` | `oneOf: [{const, title}, ...]`, `default` | Single-select with display titles |
+| `"array"` (enum multi-select) | `items.type: "string"`, `items.enum: [...]`, `minItems`, `maxItems`, `default` | Multi-select picklist |
+| `"array"` with `anyOf` items | `items.anyOf: [{const, title}, ...]`, `minItems`, `maxItems`, `default` | Multi-select with display titles |
+
+All primitive types support an optional `title` field for display and a `description` field for help text.
 
 > **Schema type note (fix in 2025-11-25 schema)**: For `number`-typed
 > properties in `requestedSchema`, the constraint fields `minimum`,
