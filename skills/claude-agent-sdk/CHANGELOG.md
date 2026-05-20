@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2026-05-20
+- *(pending review — see PR on `auto/2026-05-20-pending-review`)* Research-only run (TS v0.3.145, PY v0.2.82 unchanged); check-docs-drift failed; no upstream changes detected; 44 research turns, $0.48 (thirteenth run 22:52Z)
 - *(pending review — see PR on `auto/2026-05-20-pending-review`)* Research-only run (TS v0.3.145, PY v0.2.82 unchanged); check-docs-drift failed; no upstream changes detected; 49 research turns, $0.63 (twelfth run 22:00Z)
 - *(pending review — see PR on `auto/2026-05-20-pending-review`)* Research-only run (TS v0.3.145, PY v0.2.82 unchanged); check-docs-drift failed; SKILL-typescript.md updated with ENABLE_TOOL_SEARCH env var and full OTEL Observability section; SKILL-python.md updated with Observability cross-reference; 115 research turns, $1.78 (eleventh run 21:10Z)
 - *(pending review — see PR on `auto/2026-05-20-pending-review`)* Research-only run (TS v0.3.145, PY v0.2.82 unchanged); check-docs-drift failed; no upstream changes detected; 52 research turns, $0.55 (tenth run 20:19Z)
