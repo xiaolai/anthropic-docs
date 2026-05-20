@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2026-05-20
+- *(pending review — see PR on `auto/2026-05-20-pending-review`)* Research-only run (TS v0.3.145, PY v0.2.82 unchanged); check-docs-drift failed; no upstream changes detected; 52 research turns, $0.55 (tenth run 20:19Z)
 - *(pending review — see PR on `auto/2026-05-20-pending-review`)* Research-only run (TS v0.3.145, PY v0.2.82 unchanged); check-docs-drift failed; no upstream changes detected; 48 research turns, $0.59 (ninth run 19:20Z)
 - New upstream docs page `session-storage.md` added (29→30 pages); SKILL files updated; TS v0.3.145, PY v0.2.82 unchanged; 21/21 verify checks pass; $1.52 (eighth run 17:34Z — success)
 - Research-only run (TS v0.3.145, PY v0.2.82 unchanged); all 11 gates pass; no upstream changes; 67 research turns, $1.05 (seventh run 13:27Z — success)
