@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2026-05-20
+- *(pending review — see PR on `auto/2026-05-20-pending-review`)* Research-only run (TS v0.3.145, PY v0.2.82 unchanged); check-docs-drift failed; SKILL-typescript.md: `SDKMessage` union expanded 24→30 types, new Options (`toolAliases`, `forwardSubagentText`, `loadTimeoutMs`, `managedSettings`, `onElicitation`, `taskBudget`), V2 Session API marked removed in v0.3.142, hook input fields updated; MANIFEST.json regenerated; 107 research turns, $2.61 (fourth run 07:47Z)
 - *(pending review — see PR on `auto/2026-05-20-pending-review`)* Research-only run (TS v0.3.145, PY v0.2.82 unchanged); check-docs-drift failed; added `planModeInstructions`, `agentProgressSummaries`, `sessionStoreFlush` (alpha) to SKILL-typescript.md Options and `excludeDynamicSections` to SystemPromptPreset in both SKILL files; 134 research turns, $1.79 (third run 05:47Z)
 - *(pending review — see PR on `auto/2026-05-20-pending-review`)* Research-only run (TS v0.3.145, PY v0.2.82 unchanged); check-docs-drift failed; no new issues or version bump; 43 research turns, $0.50 (second run 03:37Z)
 - *(pending review — see PR on `auto/2026-05-20-pending-review`)* Research-only run (TS v0.3.145, PY v0.2.82 unchanged); check-docs-drift failed; no new issues or version bump; 51 research turns, $0.82 (first run)
