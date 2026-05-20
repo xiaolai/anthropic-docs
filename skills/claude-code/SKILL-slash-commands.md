@@ -85,6 +85,8 @@ Commands marked **[Skill]** are bundled skills — prompts handed to Claude that
 | `/resume [session]` | Resume a conversation by ID or name, or open the session picker. As of v2.1.145, [background sessions](SKILL-cli.md) appear in the picker marked with `bg`. Alias: `/continue` |
 | `/review [PR]` | Review a pull request locally |
 | `/rewind` | Rewind conversation and/or code to a previous point. Aliases: `/checkpoint`, `/undo` |
+| `/run` | **[Skill]** Launch and drive your project's app to see a change working in the running app. Requires v2.1.145+. See `/run-skill-generator` |
+| `/run-skill-generator` | **[Skill]** Teach `/run` and `/verify` how to build and launch your project from a clean environment; writes a per-project skill at `.claude/skills/run-<name>/`. Requires v2.1.145+ |
 | `/sandbox` | Toggle sandbox mode |
 | `/schedule [description]` | Create/manage routines on Anthropic-managed cloud infrastructure. Alias: `/routines` |
 | `/scroll-speed` | Adjust mouse wheel scroll speed interactively. Available in fullscreen rendering only |
@@ -108,6 +110,7 @@ Commands marked **[Skill]** are bundled skills — prompts handed to Claude that
 | `/upgrade` | Open the upgrade page to switch to a higher plan tier |
 | `/usage` | Show session cost and plan usage. Aliases: `/cost`, `/stats` |
 | `/usage-credits` | Configure usage credits to keep working when you hit a rate limit. Previously `/extra-usage` (old name still works) |
+| `/verify` | **[Skill]** Confirm a code change does what it should by building and running the app, observing the result — not just running tests. Requires v2.1.145+ |
 | `/voice [hold\|tap\|off]` | Toggle voice dictation |
 | `/web-setup` | Connect your GitHub account to Claude Code on the web using your local `gh` CLI credentials. `/schedule` prompts for this automatically if GitHub isn't connected |
 

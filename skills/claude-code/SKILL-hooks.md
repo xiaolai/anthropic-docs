@@ -171,6 +171,35 @@ Calls a tool on an already-connected MCP server. The tool's text output is treat
 
 If the named server is not connected, or the tool returns `isError: true`, the hook produces a non-blocking error and execution continues. `SessionStart` and `Setup` hooks typically fire before servers finish connecting.
 
+### Prompt hook fields
+
+Set `type: "prompt"` to have Claude evaluate a condition with a single LLM call. Use `$ARGUMENTS` to inject the hook's JSON input into the prompt.
+
+| Field | Required | Notes |
+|---|---|---|
+| `type` | yes | `"prompt"` |
+| `prompt` | yes | Prompt text sent to the LLM. Use `$ARGUMENTS` as a placeholder for hook input JSON; if absent, input is appended |
+| `model` | no | Model for evaluation. Defaults to a fast model (Haiku) |
+| `timeout` | no | Seconds. Default: 30 |
+| `continueOnBlock` | no | When LLM returns `ok: false`, feed the reason back to Claude and continue the turn instead of stopping. Default: `false` |
+
+The LLM must return `{"ok": true}` to allow or `{"ok": false, "reason": "..."}` to block. Effect of `ok: false` by event: `Stop`/`SubagentStop` → reason fed back as next instruction; `PreToolUse` → tool denied, reason returned as tool error; `PostToolUse` → turn ends (or continues if `continueOnBlock: true`); `PermissionRequest` → `ok: false` has no effect (use a command hook to deny).
+
+Events supporting prompt and agent hooks: `PermissionRequest`, `PostToolBatch`, `PostToolUse`, `PostToolUseFailure`, `PreToolUse`, `Stop`, `SubagentStop`, `TaskCompleted`, `TaskCreated`, `UserPromptExpansion`, `UserPromptSubmit`. Other events support only `command`, `http`, `mcp_tool`. `SessionStart`/`Setup` support `command` and `mcp_tool` only.
+
+### Agent hook fields
+
+Set `type: "agent"` to spawn a subagent with tool access (Read, Grep, Glob) for multi-turn verification. **Experimental** — prefer command hooks for production.
+
+| Field | Required | Notes |
+|---|---|---|
+| `type` | yes | `"agent"` |
+| `prompt` | yes | Verification prompt. Use `$ARGUMENTS` as placeholder for hook input JSON |
+| `model` | no | Defaults to a fast model |
+| `timeout` | no | Seconds. Default: 60. Subagent runs up to 50 turns |
+
+Returns `{"ok": true}` to allow or `{"ok": false, "reason": "..."}` to block. Supports the same events as prompt hooks.
+
 ## Hook input shape
 
 Claude Code writes a JSON object to stdin (or POST body for HTTP hooks). Common top-level fields:
@@ -208,6 +237,16 @@ Claude Code writes a JSON object to stdin (or POST body for HTTP hooks). Common 
 | `command_args` | Arguments the user passed after the command name (e.g. `"arg1 arg2"`) |
 | `command_source` | Where the command was defined: `"plugin"`, `"user"`, `"project"`, or `"mcp"` |
 | `prompt` | The original slash command string typed by the user (e.g. `"/example-skill arg1 arg2"`) |
+
+**ElicitationResult** additionally receives `mcp_server_name`, `action`, and optional `mode`, `elicitation_id`, and `content`:
+
+| Field | Notes |
+|---|---|
+| `mcp_server_name` | Name of the MCP server that raised the elicitation |
+| `action` | User's chosen action: `"accept"`, `"decline"`, or `"cancel"` |
+| `mode` | Elicitation mode (e.g. `"form"`) |
+| `elicitation_id` | Stable identifier for the elicitation request |
+| `content` | Form field values submitted by the user (when `action` is `"accept"`) |
 
 Example payload for `PreToolUse` on a Bash call:
 
@@ -285,6 +324,28 @@ Input also includes `permission_suggestions` array with the "always allow" optio
 ### PermissionDenied output
 
 For `PermissionDenied`, return `{ "retry": true }` to tell the model it may retry the denied tool call.
+
+### ElicitationResult output
+
+To override the user's response before it is sent to the MCP server, return `hookSpecificOutput`:
+
+<!-- skip-validate -->
+```json
+{
+  "hookSpecificOutput": {
+    "hookEventName": "ElicitationResult",
+    "action": "decline",
+    "content": {}
+  }
+}
+```
+
+| Field | Values | Notes |
+|---|---|---|
+| `action` | `"accept"`, `"decline"`, `"cancel"` | Overrides the user's action |
+| `content` | object | Overrides form field values (only meaningful when `action` is `"accept"`) |
+
+Exit code 2 blocks the response, changing the effective action to `"decline"`.
 
 ### TeammateIdle / TaskCreated / TaskCompleted output
 
