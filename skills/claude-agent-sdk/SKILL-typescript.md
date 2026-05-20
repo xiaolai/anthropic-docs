@@ -13,7 +13,7 @@
 - [Core API](#core-api) — `query()`, `startup()`, `tool()`, `createSdkMcpServer()`, `listSessions()`, `getSessionMessages()`, `getSessionInfo()`, `renameSession()`, `forkSession()`, `tagSession()`, `resolveSettings()`
 - [Options](#options) — Core, Tools & Permissions, Models & Output, Sessions, MCP & Agents, Advanced
 - [Query Object Methods](#query-object-methods)
-- [Message Types](#message-types) — All 24 SDKMessage types
+- [Message Types](#message-types) — All 30 SDKMessage types
 - [Hooks](#hooks) — 22 hook events, matchers, return values, async hooks
 - [Permissions](#permissions) — 5 modes, `canUseTool` callback
 - [MCP Servers](#mcp-servers) — stdio, HTTP, SSE, SDK, claudeai-proxy
