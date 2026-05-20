@@ -202,6 +202,23 @@ conversation, typically as if the user had typed them.
 the host's LLM. Lets MCP servers leverage the host's model without
 their own API key.
 
+### Capabilities
+
+Basic sampling (no tool use):
+```json
+{ "capabilities": { "sampling": {} } }
+```
+
+Sampling with tool use support (declare `sampling.tools` to receive tool-enabled requests):
+```json
+{ "capabilities": { "sampling": { "tools": {} } } }
+```
+
+Clients **MUST** declare `sampling.tools` to receive tool-enabled sampling requests.
+Servers **MUST NOT** send `tools`/`toolChoice` to a client that has not declared `sampling.tools`.
+
+### Basic request
+
 ```
 ← sampling/createMessage {
     messages: [...],
@@ -215,9 +232,32 @@ their own API key.
   }
 ```
 
+### Sampling with tools (SEP-1577 — `2025-11-25`)
+
+Servers that need the LLM to call tools during sampling include `tools` (and optionally
+`toolChoice`) in `sampling/createMessage`. The client executes the multi-turn loop
+(send request → get tool_use response → return tool results) and returns the final result.
+
+```
+← sampling/createMessage {
+    messages: [...],
+    tools: [ { name, description, inputSchema } ],
+    toolChoice?: { mode: "auto" | "any" | "none" | "specific", name?: "..." },
+    ...
+  }
+```
+
+`toolChoice.mode` values:
+- `"auto"` — model decides (default when omitted)
+- `"any"` — model must use at least one tool
+- `"none"` — model must not use any tools (useful to force a final text response)
+- `"specific"` — model must use the named tool (`name` required)
+
 The client typically asks the user for permission before fulfilling
 sampling requests — servers can effectively spend the user's tokens
 otherwise.
+
+Source: [`specification/2025-11-25/client/sampling.md`](https://modelcontextprotocol.io/specification/2025-11-25/client/sampling.md)
 
 ## Roots
 

@@ -134,6 +134,27 @@ clients to incorrectly enter legacy mode against modern servers.
 Source: [`specification/2025-11-25/basic/transports.md`](https://modelcontextprotocol.io/specification/2025-11-25/basic/transports.md)
 (via [#2727](https://github.com/modelcontextprotocol/modelcontextprotocol/issues/2727))
 
+### SSE polling and stream resumption (SEP-1699, clarified `2025-11-25`)
+
+Streamable HTTP SSE streams support server-initiated disconnection with client reconnect
+(polling). Key rules:
+
+- **Servers MAY close the HTTP *connection* without terminating the *SSE stream*.**
+  Before closing, the server SHOULD send an SSE `retry` field so the client knows to
+  reconnect after a delay.
+- **GET streams also support polling** — the same server-initiated close + retry pattern
+  applies to streams opened via HTTP GET, not only to POST responses.
+- **Resumption is always via HTTP GET** with a `Last-Event-ID` header, regardless of
+  whether the original stream was started by a POST or GET.
+- **Event IDs SHOULD encode the originating stream identity** so the server can correlate
+  a `Last-Event-ID` back to the correct stream and replay messages from that point.
+  Servers MUST NOT replay messages intended for a different stream.
+- Servers SHOULD send an empty-data SSE event with an event ID at stream start to
+  prime the client for reconnection.
+
+Source: [`specification/2025-11-25/basic/transports.md`](https://modelcontextprotocol.io/specification/2025-11-25/basic/transports.md)
+(SEP-1699, issue [#1847](https://github.com/modelcontextprotocol/modelcontextprotocol/issues/1847))
+
 ## Legacy SSE transport (deprecated)
 
 The earlier transport used two endpoints:
