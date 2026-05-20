@@ -162,6 +162,36 @@ capabilities: {
 }
 ```
 
+## Rule 9 — Return HTTP 404 (not 400) when rejecting an invalid MCP-Session-Id
+
+When a request arrives with an invalid or expired `MCP-Session-Id`, respond with
+**HTTP 404**, not 400. The spec mandates that clients restart the session when they
+receive 404 on a session-bearing request:
+
+> "When a client receives HTTP 404 in response to a request containing an
+> MCP-Session-Id, it MUST start a new session by sending a new InitializeRequest
+> without a session ID attached."
+
+Returning 400 instead prevents this automatic re-initialization — clients treat 400
+as a generic error and surface it to users rather than transparently re-connecting.
+
+```typescript
+// WRONG — 400 blocks client re-initialization
+if (!sessions.has(sessionId)) {
+  res.status(400).json({ error: "Unknown session" });
+  return;
+}
+
+// RIGHT — 404 triggers client to transparently start a new session
+if (!sessions.has(sessionId)) {
+  res.status(404).json({ error: "Session not found" });
+  return;
+}
+```
+
+Source: [`specification/draft/basic/transports#session-management`](https://modelcontextprotocol.io/specification/draft/basic/transports#session-management)
+(issue [#2690](https://github.com/modelcontextprotocol/modelcontextprotocol/pull/2690))
+
 ---
 
 *Source: modelcontextprotocol.io/specification/2025-11-25 +
