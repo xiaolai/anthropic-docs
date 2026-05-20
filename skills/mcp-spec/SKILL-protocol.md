@@ -127,6 +127,33 @@ If one side supports an extension but the other doesn't, the supporting
 side must either fall back to core protocol behavior or reject the
 connection with an appropriate error if the extension is mandatory.
 
+#### Per-request capabilities
+
+Some extensions (notably MCP Tasks) use **per-request** capability
+declarations rather than (or in addition to) the initialization-handshake
+declaration. The client includes an `io.modelcontextprotocol/clientCapabilities`
+key inside the request's `_meta` object:
+
+```json
+{
+  "params": {
+    "_meta": {
+      "io.modelcontextprotocol/clientCapabilities": {
+        "extensions": {
+          "io.modelcontextprotocol/tasks": {}
+        }
+      }
+    }
+  }
+}
+```
+
+Servers check this per-request field before returning a non-standard result
+shape (e.g., `CreateTaskResult` for MCP Tasks). Never return a task to a
+client that did not declare support in the per-request capabilities.
+
+Source: [`extensions/tasks/overview.md`](https://modelcontextprotocol.io/extensions/tasks/overview.md).
+
 Official extensions and their identifiers:
 
 | Identifier | Extension | Description |
@@ -134,7 +161,7 @@ Official extensions and their identifiers:
 | `io.modelcontextprotocol/ui` | [MCP Apps](https://modelcontextprotocol.io/extensions/apps/overview.md) | Interactive HTML UI in clients |
 | `io.modelcontextprotocol/oauth-client-credentials` | [OAuth Client Credentials](https://modelcontextprotocol.io/extensions/auth/oauth-client-credentials.md) | Machine-to-machine auth |
 | `io.modelcontextprotocol/enterprise-managed-authorization` | [Enterprise Auth](https://modelcontextprotocol.io/extensions/auth/enterprise-managed-authorization.md) | Centralized IdP access control |
-| `io.modelcontextprotocol/tasks` | [MCP Tasks](https://modelcontextprotocol.io/extensions/tasks/overview.md) | Async long-running task handles |
+| `io.modelcontextprotocol/tasks` | [MCP Tasks](https://modelcontextprotocol.io/extensions/tasks/overview.md) | Async long-running task handles (experimental; spec in [`experimental-ext-tasks`](https://github.com/modelcontextprotocol/experimental-ext-tasks)) |
 
 Source: [`extensions/overview.md`](https://modelcontextprotocol.io/extensions/overview.md),
 [`extensions/client-matrix.md`](https://modelcontextprotocol.io/extensions/client-matrix.md).

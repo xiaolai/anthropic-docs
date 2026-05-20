@@ -3,7 +3,7 @@
   "indexSha256": "0c42badbaa1863fa0daffb4cf5c9f47b3ed9b73fa2b5a1393f4d95ce864affd2",
   "indexBytes": 17923,
   "pageCount": 119,
-  "refreshedAt": "2026-05-20T00:30:00Z",
+  "refreshedAt": "2026-05-20T06:30:00Z",
   "pages": [
     {
       "path": "clients.md",
@@ -260,14 +260,14 @@
     {
       "path": "extensions/overview.md",
       "url": "https://modelcontextprotocol.io/extensions/overview.md",
-      "sha256": "16089f17c4a92ef5096bde19ab938a3b5b56c543e19e750e40a891fc7aa11418",
-      "bytes": 8709
+      "sha256": "822962fb721b9baacb504f8d857f01dcf076f6129d97b1d8a8cdef7030ebe658",
+      "bytes": 8710
     },
     {
       "path": "extensions/tasks/overview.md",
       "url": "https://modelcontextprotocol.io/extensions/tasks/overview.md",
-      "sha256": "3b84ca8eab9962478822bd303641ae7adcd63e68f5b3472057afff5e6ea5ee24",
-      "bytes": 9931
+      "sha256": "1922e05fb96773aad922f5551bd3d8f1e20f9c5fbc913d7e48be12eee0c5136e",
+      "bytes": 9932
     },
     {
       "path": "registry/about.md",

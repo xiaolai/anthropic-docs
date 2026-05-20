@@ -163,6 +163,44 @@ gallery.
 documents experimental protocol extensions — features under
 discussion that haven't made it into the core spec yet.
 
+### MCP Tasks extension (`io.modelcontextprotocol/tasks`)
+
+MCP Tasks is an experimental extension that lets servers return a **durable
+task handle** instead of blocking on long-running operations (CI pipelines,
+batch jobs, human-approval gates). Full spec:
+[`experimental-ext-tasks`](https://github.com/modelcontextprotocol/experimental-ext-tasks).
+
+**How it works:**
+
+1. Client declares support per-request via `_meta.io.modelcontextprotocol/clientCapabilities.extensions`
+   (see [`SKILL-protocol.md`](SKILL-protocol.md#per-request-capabilities)).
+2. Server returns `CreateTaskResult` (`resultType: "task"`) containing:
+   `taskId`, initial `status`, `ttlMs`, `pollIntervalMs`.
+3. Client polls via `tasks/get { taskId }` until terminal status.
+4. If status is `input_required`, `tasks/get` response includes an
+   `inputRequests` map; client submits responses via `tasks/update`.
+5. Client may cancel via `tasks/cancel` (cooperative — server may ignore).
+
+**Task lifecycle states:**
+
+| Status | Meaning |
+|---|---|
+| `working` | Operation in progress |
+| `input_required` | Server paused; needs client input via `tasks/update` |
+| `completed` | Done; `result` field contains the final output |
+| `failed` | Error; `error` field contains JSON-RPC error object |
+| `cancelled` | Cancelled (not guaranteed) |
+
+`completed`, `failed`, and `cancelled` are terminal — task state does not
+change after reaching them.
+
+**Push notifications (optional):** Servers may push status updates via
+`notifications/tasks/status`. Clients receive them through the
+`subscriptions/listen` mechanism. Polling is the default; notifications
+are an optimization.
+
+Source: [`extensions/tasks/overview.md`](https://modelcontextprotocol.io/extensions/tasks/overview.md).
+
 ## SDK tiering
 
 [`community/sdk-tiers.md`](https://modelcontextprotocol.io/community/sdk-tiers.md)
