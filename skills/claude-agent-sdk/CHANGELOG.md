@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2026-05-20
+- Research-only run (TS v0.3.145, PY v0.2.82 unchanged); all 11 gates pass; no upstream changes; 67 research turns, $1.05 (seventh run 13:27Z — success)
 - *(pending review — see PR on `auto/2026-05-20-pending-review`)* Research-only run (TS v0.3.145, PY v0.2.82 unchanged); check-docs-drift failed; no upstream changes detected; 46 research turns, $0.68 (sixth run 11:27Z)
 - *(pending review — see PR on `auto/2026-05-20-pending-review`)* Research-only run (TS v0.3.145, PY v0.2.82 unchanged); check-docs-drift failed; no upstream changes detected; 57 research turns, $0.86 (fifth run 09:39Z)
 - *(pending review — see PR on `auto/2026-05-20-pending-review`)* Research-only run (TS v0.3.145, PY v0.2.82 unchanged); check-docs-drift failed; SKILL-typescript.md: `SDKMessage` union expanded 24→30 types, new Options (`toolAliases`, `forwardSubagentText`, `loadTimeoutMs`, `managedSettings`, `onElicitation`, `taskBudget`), V2 Session API marked removed in v0.3.142, hook input fields updated; MANIFEST.json regenerated; 107 research turns, $2.61 (fourth run 07:47Z)

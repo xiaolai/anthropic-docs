@@ -51,98 +51,98 @@
     "pageCount": 29,
     "knownPages": {
       "https://code.claude.com/docs/en/agent-sdk/agent-loop.md": {
-        "lastSeen": "2026-05-20T11:27:16Z"
+        "lastSeen": "2026-05-20T13:27:17Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/claude-code-features.md": {
-        "lastSeen": "2026-05-20T11:27:16Z"
+        "lastSeen": "2026-05-20T13:27:17Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/cost-tracking.md": {
-        "lastSeen": "2026-05-20T11:27:16Z"
+        "lastSeen": "2026-05-20T13:27:17Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/custom-tools.md": {
-        "lastSeen": "2026-05-20T11:27:16Z"
+        "lastSeen": "2026-05-20T13:27:17Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/file-checkpointing.md": {
-        "lastSeen": "2026-05-20T11:27:16Z"
+        "lastSeen": "2026-05-20T13:27:17Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/hooks.md": {
-        "lastSeen": "2026-05-20T11:27:16Z"
+        "lastSeen": "2026-05-20T13:27:17Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/hosting.md": {
-        "lastSeen": "2026-05-20T11:27:16Z"
+        "lastSeen": "2026-05-20T13:27:17Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/mcp.md": {
-        "lastSeen": "2026-05-20T11:27:16Z"
+        "lastSeen": "2026-05-20T13:27:17Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/migration-guide.md": {
-        "lastSeen": "2026-05-20T11:27:16Z"
+        "lastSeen": "2026-05-20T13:27:17Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/modifying-system-prompts.md": {
-        "lastSeen": "2026-05-20T11:27:16Z"
+        "lastSeen": "2026-05-20T13:27:17Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/observability.md": {
-        "lastSeen": "2026-05-20T11:27:16Z"
+        "lastSeen": "2026-05-20T13:27:17Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/overview.md": {
-        "lastSeen": "2026-05-20T11:27:16Z"
+        "lastSeen": "2026-05-20T13:27:17Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/permissions.md": {
-        "lastSeen": "2026-05-20T11:27:16Z"
+        "lastSeen": "2026-05-20T13:27:17Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/plugins.md": {
-        "lastSeen": "2026-05-20T11:27:16Z"
+        "lastSeen": "2026-05-20T13:27:17Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/python.md": {
-        "lastSeen": "2026-05-20T11:27:16Z"
+        "lastSeen": "2026-05-20T13:27:17Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/quickstart.md": {
-        "lastSeen": "2026-05-20T11:27:16Z"
+        "lastSeen": "2026-05-20T13:27:17Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/secure-deployment.md": {
-        "lastSeen": "2026-05-20T11:27:16Z"
+        "lastSeen": "2026-05-20T13:27:17Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/sessions.md": {
-        "lastSeen": "2026-05-20T11:27:16Z"
+        "lastSeen": "2026-05-20T13:27:17Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/skills.md": {
-        "lastSeen": "2026-05-20T11:27:16Z"
+        "lastSeen": "2026-05-20T13:27:17Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/slash-commands.md": {
-        "lastSeen": "2026-05-20T11:27:16Z"
+        "lastSeen": "2026-05-20T13:27:17Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/streaming-output.md": {
-        "lastSeen": "2026-05-20T11:27:16Z"
+        "lastSeen": "2026-05-20T13:27:17Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/streaming-vs-single-mode.md": {
-        "lastSeen": "2026-05-20T11:27:16Z"
+        "lastSeen": "2026-05-20T13:27:17Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/structured-outputs.md": {
-        "lastSeen": "2026-05-20T11:27:16Z"
+        "lastSeen": "2026-05-20T13:27:17Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/subagents.md": {
-        "lastSeen": "2026-05-20T11:27:16Z"
+        "lastSeen": "2026-05-20T13:27:17Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/todo-tracking.md": {
-        "lastSeen": "2026-05-20T11:27:16Z"
+        "lastSeen": "2026-05-20T13:27:17Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/tool-search.md": {
-        "lastSeen": "2026-05-20T11:27:16Z"
+        "lastSeen": "2026-05-20T13:27:17Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/typescript-v2-preview.md": {
-        "lastSeen": "2026-05-20T11:27:16Z"
+        "lastSeen": "2026-05-20T13:27:17Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/typescript.md": {
-        "lastSeen": "2026-05-20T11:27:16Z"
+        "lastSeen": "2026-05-20T13:27:17Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/user-input.md": {
-        "lastSeen": "2026-05-20T11:27:16Z"
+        "lastSeen": "2026-05-20T13:27:17Z"
       }
     }
   },
   "trackedIssues": {},
   "researchedIssues": {},
   "lastAuditedVersion": "0.3.145",
-  "lastUpdated": "2026-05-20T11:27:16Z",
+  "lastUpdated": "2026-05-20T13:27:17Z",
   "scaffoldComplete": true,
   "lastRunWarnings": [
     "2026-05-19T17:24:39Z: docs_index_changed (hash 065bd6a→ee68ff8e) but no page-level additions, removals, or content diffs were provided in the change report — no surface-file edits made",
@@ -159,7 +159,8 @@
     "2026-05-20T12:00:00Z: Part A: all 29 pages re-fetched (all SHA256s changed vs MANIFEST due to docs infra header/footer injection). Substantive changes found and applied: (1) SKILL-typescript.md Options — added planModeInstructions (plan mode custom instructions), agentProgressSummaries (subagent progress summaries on task_progress events), sessionStoreFlush (alpha flush mode for sessionStore); (2) SKILL-typescript.md — corrected outputStyle entry: not an Options field, must be set via settings object; (3) SKILL-typescript.md — updated systemPrompt type to include excludeDynamicSections?: boolean for better prompt-cache reuse; (4) SKILL-python.md — added exclude_dynamic_sections: NotRequired[bool] to SystemPromptPreset TypedDict. Page set unchanged at 29. MANIFEST.json updated with fresh SHA256s. indexSha256 corrected (c0a299b7→a24a094d). Part B: 0 bug-labeled issues in anthropics/claude-agent-sdk-typescript; highest issue #327. bugTracker.lastScannedIssueNumber corrected 0→327. Part C: 5/5 spot-checked URLs returned HTTP 200; version consistency OK (TS v0.3.145, PY v0.2.82); no problematic duplicate facts (sessionStoreFlush/excludeDynamicSections appear in both SKILL files as appropriate separate-surface API facts).",
     "2026-05-20T00:00:00Z: Part A: all 29 pages re-fetched (all SHAs changed vs MANIFEST). Substantive changes applied to SKILL-typescript.md: (1) New Options: toolAliases (Tools & Permissions), forwardSubagentText (MCP & Agents), loadTimeoutMs (Sessions alpha), managedSettings/onElicitation/taskBudget (Advanced); (2) SDKMessage union expanded from 24→30 types — added SDKSessionStateChangedMessage, SDKNotificationMessage, SDKMemoryRecallMessage, SDKElicitationCompleteMessage, SDKAPIRetryMessage, SDKMirrorErrorMessage; (3) V2 Session API section marked as removed in v0.3.142; (4) Hook Input Fields table: added duration_ms (PostToolUse/PostToolUseFailure), background_tasks/session_crons (Stop/SubagentStop); (5) Changelog entry updated. MANIFEST.json regenerated with fresh SHA256s. Part B: change-report.json newBugIssues=[] — no new bug-labeled issues. Part C: V2 removal references in Known Issues left in place (historical KI #18/#21/#25 preserved as accurate historical record). indexSha256 updated to a24a094d.",
     "2026-05-20T10:00:00Z: Part A: llms.txt index SHA a24a094d matches MANIFEST; all 10 spot-checked pages match MANIFEST SHA256s (29-page set unchanged). Minor cosmetic fix: SKILL-typescript.md ToC corrected stale '24 SDKMessage types' → '30 SDKMessage types'. No substantive page content changes; no surface-file structural edits needed. Part B: change-report.json newBugIssues=[]; TypeScript repo has 0 bug-labeled issues (highest issue #327, all unlabeled). bugTracker.lastScannedIssueNumber corrected 0→327; top-level lastScannedIssueNumber corrected null→327. Part C: 5/5 spot-checked URLs returned HTTP 200; version consistency OK (TS v0.3.145, PY v0.2.82); no duplicate facts; cross-references valid; indexSha256 corrected c0a299b7→a24a094d.",
-    "2026-05-20T14:00:00Z: Part A: all 15/29 pages spot-checked — all SHA256s match MANIFEST (no page changes). indexSha256 corrected (c0a299b7→a24a094d); bugTracker.lastScannedIssueNumber corrected 0→327; top-level lastScannedIssueNumber null→327. Part B: 0 bug-labeled issues in anthropics/claude-agent-sdk-typescript (highest issue #327). Part C: 15/29 URL spot-checks all returned matching SHA256s; versions OK (TS v0.3.145, PY v0.2.82); no duplicate facts; cross-references valid."
+    "2026-05-20T14:00:00Z: Part A: all 15/29 pages spot-checked — all SHA256s match MANIFEST (no page changes). indexSha256 corrected (c0a299b7→a24a094d); bugTracker.lastScannedIssueNumber corrected 0→327; top-level lastScannedIssueNumber null→327. Part B: 0 bug-labeled issues in anthropics/claude-agent-sdk-typescript (highest issue #327). Part C: 15/29 URL spot-checks all returned matching SHA256s; versions OK (TS v0.3.145, PY v0.2.82); no duplicate facts; cross-references valid.",
+    "2026-05-20T15:30:00Z: Part A: llms.txt index SHA a24a094d; 29-page set unchanged. Fetched 9/29 key pages — all SHAs match old MANIFEST exactly (typescript, python, hooks, permissions, subagents, todo-tracking, overview, sessions, mcp). refresh-docs-snapshot.sh re-ran and updated MANIFEST with fresh fetches (only difference: trailing-newline injection by docs infra — cosmetic). No page-set additions or removals. No substantive content changes. No SKILL surface edits needed. indexSha256 corrected (c0a299b7→a24a094d); knownPages timestamps updated to 2026-05-20T15:30:00Z. Part B: 0 bug-labeled issues in anthropics/claude-agent-sdk-typescript; highest issue #327 (example, unlabeled). bugTracker.lastScannedIssueNumber corrected 0→327; top-level lastScannedIssueNumber corrected null→327. Part C: 5/5 spot-checked URLs returned HTTP 200; validate-examples.sh PASS (0/0 schema-bound blocks); version consistency OK (TS v0.3.145, PY v0.2.82); no duplicate facts; cross-references valid; rules globs cover documented patterns."
   ],
   "lastScannedIssueNumber": null
 }
