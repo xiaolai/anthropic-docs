@@ -185,7 +185,7 @@ Precedence (highest wins): CLI flags > `settings.local.json` > `settings.json` (
 | Mode | What runs without asking | `Shift+Tab` cycle |
 |---|---|---|
 | `default` | Reads only | Yes (default position) |
-| `acceptEdits` | Reads, file edits, common filesystem commands (`mkdir`, `touch`, `mv`, `cp`, `sed`, etc.) | Yes |
+| `acceptEdits` | Reads, file edits, common filesystem commands (`mkdir`, `touch`, `mv`, `cp`, `sed`, etc.). When the PowerShell tool is enabled, also auto-approves `Set-Content`, `Add-Content`, `Clear-Content`, and `Remove-Item` on in-scope paths | Yes |
 | `plan` | Reads only; Claude proposes but doesn't edit | Yes |
 | `auto` | Everything, with background classifier checks | Optional (requires requirements) |
 | `dontAsk` | Only pre-approved tools from `permissions.allow` | Never in cycle; `--permission-mode dontAsk` only |

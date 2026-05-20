@@ -63,6 +63,8 @@ Hooks fire at specific points in the Claude Code lifecycle. There are three cade
 | `ElicitationResult` | After user responds to an MCP elicitation |
 | `SessionEnd` | When a session terminates |
 
+**`SessionEnd` timeout:** These hooks have a default timeout of 1.5 seconds. Override with `CLAUDE_CODE_SESSIONEND_HOOKS_TIMEOUT_MS` (e.g. `CLAUDE_CODE_SESSIONEND_HOOKS_TIMEOUT_MS=5000 claude`). Applies to session exit, `/clear`, and switching sessions via `/resume`.
+
 Source: `code.claude.com/docs/en/hooks.md`.
 
 ## Configuration: where hooks live
