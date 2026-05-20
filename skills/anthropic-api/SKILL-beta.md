@@ -69,18 +69,23 @@ required:
 | Resource | Source dir |
 |---|---|
 | Beta API section index | [`beta.md`](https://platform.claude.com/docs/en/api/beta.md) |
-| `agents/` | [`beta/agents/`](https://platform.claude.com/docs/en/api/beta/agents/) |
+| `agents/` | [`beta/agents/`](https://platform.claude.com/docs/en/api/beta/agents/) — CRUD + archive; `GET /v1/agents/{id}` retrieve |
+| `agents/versions/` | [`beta/agents/versions/`](https://platform.claude.com/docs/en/api/beta/agents/versions.md) — list historical snapshots: `GET /v1/agents/{agent_id}/versions` (opaque `page` cursor, max 100); each item is a full `BetaManagedAgentsAgent` |
 | `environments/` | [`beta/environments/`](https://platform.claude.com/docs/en/api/beta/environments/) |
 | `environments/work/` | [`beta/environments/work/`](https://platform.claude.com/docs/en/api/beta/environments/work.md) — work-item queue for self-hosted sandbox environments (poll, ack, heartbeat, stop, stats); called automatically by SDK/CLI environment worker |
 | `files/` | [`beta/files/`](https://platform.claude.com/docs/en/api/beta/files/) |
 | `memory_stores/` | [`beta/memory_stores/`](https://platform.claude.com/docs/en/api/beta/memory_stores/) |
+| `memory_stores/memory_versions/` | [`beta/memory_stores/memory_versions/`](https://platform.claude.com/docs/en/api/beta/memory_stores/memory_versions.md) — list/retrieve/redact individual memory write events. Filter by `api_key_id`, `memory_id`, `session_id`, `operation` (`created`/`modified`/`deleted`), or time range. `view=full` includes `content` + `path`; `view=basic` omits them. `POST .../redact` removes a version's content (sets `redacted_at`, nulls `content`/`path`). Response field `created_by`/`redacted_by` are typed `BetaManagedAgentsActor`. |
 | `messages/` | [`beta/messages/`](https://platform.claude.com/docs/en/api/beta/messages/) (extends stable messages) |
 | `models/` | [`beta/models/`](https://platform.claude.com/docs/en/api/beta/models/) |
 | `sessions/` | [`beta/sessions/`](https://platform.claude.com/docs/en/api/beta/sessions/) |
+| `sessions/events/` | [`beta/sessions/events/`](https://platform.claude.com/docs/en/api/beta/sessions/events.md) — list, send, and stream events within a session. `GET /v1/sessions/{id}/events` supports `types[]` filter and `created_at` range (gt/gte/lt/lte). `POST /v1/sessions/{id}/events` sends an event synchronously. Known event types: `user.message`, `user.interrupt`, `user.tool_confirmation`, `user.custom_tool_result`, `user.define_outcome`; `agent.message`, `agent.tool_use`, `agent.mcp_tool_use`, `agent.thinking`; `session.status_running`, `session.status_idle`, `session.error`, `session.terminated`; `span.outcome_evaluation_start`, `span.outcome_evaluation_end`. |
+| `sessions/resources/` | [`beta/sessions/resources/`](https://platform.claude.com/docs/en/api/beta/sessions/resources.md) — add, list, retrieve, update, delete resources attached to a session |
 | `sessions/threads/` | [`beta/sessions/threads/`](https://platform.claude.com/docs/en/api/beta/sessions/threads.md) — list, retrieve, archive threads within a session; thread events (list/stream) via `GET /v1/sessions/{session_id}/threads` |
 | `skills/` | [`beta/skills/`](https://platform.claude.com/docs/en/api/beta/skills/) (Skills upload/management; `GET /v1/skills/{id}/versions/{ver}/content` downloads a version as a zip archive) |
 | `user_profiles/` | [`beta/user_profiles/`](https://platform.claude.com/docs/en/api/beta/user_profiles/) |
 | `vaults/` | [`beta/vaults/`](https://platform.claude.com/docs/en/api/beta/vaults/) |
+| `vaults/credentials/mcp_oauth_validate` | [`beta/vaults/credentials/mcp_oauth_validate.md`](https://platform.claude.com/docs/en/api/beta/vaults/credentials/mcp_oauth_validate.md) — `POST /v1/vaults/{vault_id}/credentials/{credential_id}/mcp_oauth_validate`. Validates and optionally refreshes an OAuth credential. Response: `{ credential_id, vault_id, status: "valid"\|"invalid"\|"unknown", has_refresh_token, validated_at, refresh: { status: "succeeded"\|"failed"\|"connect_error"\|"no_refresh_token" }, mcp_probe: { method, http_response } }`. |
 | `webhooks.md` | [`beta/webhooks.md`](https://platform.claude.com/docs/en/api/beta/webhooks.md) |
 
 Most of these align with the Managed Agents product surface —
@@ -104,11 +109,11 @@ When a beta is retired:
 
 ## Source pages
 
-118 pages under
+166 pages under
 [`https://platform.claude.com/docs/en/api/beta/`](https://platform.claude.com/docs/en/api/beta/)
 — see directory listing for the current per-endpoint set across
-the 12 beta resources.
+the 15 beta resources. (Updated 2026-05-20: added agents/versions, memory_stores/memory_versions, sessions/events, sessions/resources, vaults/credentials/mcp_oauth_validate.)
 
 ---
 
-*Source pages: 118 under `platform.claude.com/docs/en/api/beta/`.*
+*Source pages: 166 under `platform.claude.com/docs/en/api/beta/`.*

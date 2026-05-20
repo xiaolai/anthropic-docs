@@ -4,6 +4,7 @@ All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
 ## 2026-05-20
+- *(pending review — see draft PR `auto/2026-05-20-pending-review`)* Research-only run: no upstream version change; research agent (67 turns, 411 s, $1.01) added known issue #964 (toolRunner container.id drop / duplicate tool call loop); checkDiffSize gate failed — changes pending human review.
 - Research-only run: no upstream version change detected; research agent audited all 6 surfaces (91 turns, 399 s, $1.30); all 8 quality gates passed.
 - Research-only run: no upstream version change detected; research agent audited all 6 surfaces (64 turns, 317 s, $0.72); all 8 quality gates passed.
 - Research-only run (earlier): no upstream version change detected; research agent audited all 6 surfaces (54 turns, 167s, $0.69); all 8 quality gates passed.

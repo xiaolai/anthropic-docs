@@ -3,7 +3,14 @@
   "github": null,
   "docs": null,
   "trackedIssues": null,
-  "researchedIssues": {},
+  "researchedIssues": {
+    "964": {
+      "title": "Bug: toolRunner does not propagate container.id across iterations, and setMessagesParams causes duplicate tool call loops",
+      "verdict": "added_known_issue",
+      "reason": "Substantive confirmed bug (2 detailed comments, 1 reaction, clear reproduction). container.id dropped in MessageStream accumulation; workaround exists but imperfect.",
+      "researchedAt": "2026-05-20T00:00:00Z"
+    }
+  },
   "lastAuditedVersion": null,
   "lastUpdated": null,
   "scaffoldComplete": true,
