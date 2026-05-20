@@ -10,6 +10,9 @@ The newest entry is at the top.
 
 ---
 
+## 2026-05-20 (run 9)
+- Routine audit at CC v2.1.145 — SKILL-cli.md: auto mode model requirements corrected (Max plan: Opus 4.7 only; Team/Enterprise/API: Sonnet 4.6, Opus 4.6, or Opus 4.7); SKILL-slash-commands.md: /resume version corrected to v2.1.144 for background-sessions-in-picker feature; all 8 gates pass
+
 ## 2026-05-20 (run 8)
 - Routine audit at CC v2.1.145 — SKILL-hooks.md: added PreToolUse tool-specific tool_input fields section (Bash, Write, Edit, Read, Glob, Grep, WebFetch, WebSearch, Agent, AskUserQuestion, ExitPlanMode) and Agent PostToolUse tool_response sub-field table; GitHub Part B skipped (403); all 11 gates pass
 

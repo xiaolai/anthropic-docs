@@ -191,7 +191,9 @@ Precedence (highest wins): CLI flags > `settings.local.json` > `settings.json` (
 | `dontAsk` | Only pre-approved tools from `permissions.allow` | Never in cycle; `--permission-mode dontAsk` only |
 | `bypassPermissions` | Everything (no safety checks). **Isolated containers/VMs only** | Optional (requires enabling flag) |
 
-**Auto mode requirements:** Claude Code v2.1.83+, Max/Team/Enterprise/API plan (not Pro), Sonnet 4.6/Opus 4.6/Opus 4.7 model, Anthropic API only (not Bedrock/Vertex/Foundry). Team/Enterprise requires admin to enable in admin settings.
+**Auto mode requirements:** Claude Code v2.1.83+, Max/Team/Enterprise/API plan (not Pro), Anthropic API only (not Bedrock/Vertex/Foundry), and an eligible model. Model availability depends on plan: Team/Enterprise/API allow Sonnet 4.6, Opus 4.6, or Opus 4.7; Max allows Opus 4.7 only (Haiku and claude-3 models are not supported on any plan). Team/Enterprise require an admin to enable it in Claude Code admin settings.
+
+Source: `code.claude.com/docs/en/permission-modes.md`.
 
 **`defaultMode: "auto"` is ignored in `.claude/settings.json` and `.claude/settings.local.json`** — a repository cannot grant itself auto mode. Use `~/.claude/settings.json` instead.
 
