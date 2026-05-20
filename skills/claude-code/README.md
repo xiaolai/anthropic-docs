@@ -164,7 +164,8 @@ and `git pull`.
 
 | Date | Update | Research | Mending | Report | Total | Notes |
 |------|--------|----------|---------|--------|-------|-------|
-| 2026-05-20 | success | research + report (no upstream change) |
+| 2026-05-20 (run 7) | — | $1.75 | — | — | **$1.75** | success — no upstream change, routine audit v2.1.145, 131 turns, all 8 gates pass |
+| 2026-05-20 (run 6) | — | $1.62 | — | — | **$1.62** | success — no upstream change, routine audit v2.1.145, all 8 gates pass |
 | 2026-05-20 (run 6) | — | $1.62 | — | — | **$1.62** | success — no upstream change, routine audit v2.1.145, all 8 gates pass |
 | 2026-05-20 (run 5) | — | $1.55 | — | — | **$1.55** | success — no upstream change, routine audit v2.1.145, all 8 gates pass |
 | 2026-05-20 (run 4) | — | $1.66 | — | — | **$1.66** | success — no upstream change, routine audit v2.1.145, all 8 gates pass |

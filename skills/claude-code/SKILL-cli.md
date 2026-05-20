@@ -118,6 +118,7 @@ Source: `code.claude.com/docs/en/cli-reference.md`.
 | `--verbose` | Enable verbose logging; overrides `viewMode` setting | |
 | `--version`, `-v` | Output the version number | `claude -v` |
 | `--worktree`, `-w` | Start in isolated git worktree. Pass `#<number>` or PR URL to fetch that PR | `claude -w feature-auth` |
+| ~~`--enable-auto-mode`~~ | **Removed in v2.1.111.** Auto mode is now in the `Shift+Tab` cycle by default. Use `--permission-mode auto` to start in auto mode | |
 
 ### System prompt flags
 

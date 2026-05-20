@@ -273,6 +273,23 @@ Claude Code writes a JSON object to stdin (or POST body for HTTP hooks). Common 
 | `teammate_name` | Name of the teammate that is about to go idle |
 | `team_name` | Name of the agent team |
 
+**SessionEnd** additionally receives `reason` indicating why the session ended:
+
+| Field | Notes |
+|---|---|
+| `reason` | `"clear"`, `"resume"`, `"logout"`, `"prompt_input_exit"`, `"bypass_permissions_disabled"`, or `"other"` |
+
+SessionEnd hooks cannot block session termination. Default timeout is 1.5 seconds (auto-raised to the highest per-hook timeout in settings files, up to 60 seconds).
+
+**ConfigChange** additionally receives `source` and optional `file_path`:
+
+| Field | Notes |
+|---|---|
+| `source` | Which config type changed: `"user_settings"`, `"project_settings"`, `"local_settings"`, `"policy_settings"`, or `"skills"` |
+| `file_path` | (optional) Absolute path to the specific file that changed |
+
+Note: `policy_settings` changes cannot be blocked; all other `source` values are blockable.
+
 **CwdChanged** additionally receives `old_cwd` and `new_cwd`:
 
 | Field | Notes |
@@ -476,6 +493,14 @@ Any hook can include a `terminalSequence` string in its JSON output. Claude Code
 ```
 
 Combine with `additionalContext` or other fields as needed.
+
+### SubagentStart output
+
+`SubagentStart` hooks are non-blocking — they cannot prevent subagent creation. They can inject context into the new subagent by returning `additionalContext`:
+
+| Field | Notes |
+|---|---|
+| `additionalContext` | String added to the subagent's context at the start of its conversation, before its first prompt |
 
 ### WorktreeCreate / WorktreeRemove input and output
 

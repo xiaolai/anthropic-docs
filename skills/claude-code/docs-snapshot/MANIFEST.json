@@ -3,7 +3,7 @@
   "indexSha256": "c0a299b72f553a2a5d1ee3828af0ad27ed94022c8ca370e649dd4f7d0c6aa681",
   "indexBytes": 28298,
   "pageCount": 105,
-  "refreshedAt": "2026-05-20T13:43:32Z",
+  "refreshedAt": "2026-05-20T15:49:37Z",
   "pages": [
     {
       "path": "en/admin-setup.md",
@@ -86,8 +86,8 @@
     {
       "path": "en/checkpointing.md",
       "url": "https://code.claude.com/docs/en/checkpointing.md",
-      "sha256": "1a228be6a41e8863b67fcbab4c4bb6fdbaa2bf8282f4ff56cf98531e0c8ec4f3",
-      "bytes": 5195
+      "sha256": "9d7038434c08f39b098b67c4ebb9c253f7e94adb98e7b2c181c2ad73b7fec704",
+      "bytes": 5419
     },
     {
       "path": "en/chrome.md",
@@ -308,7 +308,7 @@
     {
       "path": "en/interactive-mode.md",
       "url": "https://code.claude.com/docs/en/interactive-mode.md",
-      "sha256": "48d4b632ab57d820a1aaa32c2b957c6f222d57d34593b7a8cdd503b9a2e1bfcf",
+      "sha256": "3288f17322d479620df7df3533db5208e1be944b4265ad2b8aef43ea46facb04",
       "bytes": 33295
     },
     {
@@ -410,8 +410,8 @@
     {
       "path": "en/plugin-marketplaces.md",
       "url": "https://code.claude.com/docs/en/plugin-marketplaces.md",
-      "sha256": "c87aedfe99ba3d999d0d31185acb771fa303ff5545519f4dc6d362d1907d3b21",
-      "bytes": 54626
+      "sha256": "c45e3f92c6a72128512149f9e6a46b04752c5501136221b1f6d9ca405d107120",
+      "bytes": 55340
     },
     {
       "path": "en/plugins-reference.md",
