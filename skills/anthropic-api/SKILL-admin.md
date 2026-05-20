@@ -123,6 +123,20 @@ Workspace members:
 
 **Messages usage report** filter params: `account_ids`, `api_key_ids`, `workspace_ids`, `models`, `service_tiers`, `speeds`, `inference_geos`, `service_account_ids`.
 
+**Messages usage report** `bucket_width` options (time granularity of the response):
+
+| `bucket_width` | Default | Maximum |
+|---|---|---|
+| `"1d"` (default) | 7 days | 31 days |
+| `"1h"` | 24 hours | 168 hours (7 days) |
+| `"1m"` | 60 minutes | 1440 minutes (24 hours) |
+
+**Messages usage report** `speeds` filter: `"standard"` or `"fast"` (Claude Code research preview; requires `fast-mode-2026-02-01` beta header when `group_by` includes `speed`).
+
+**Messages usage report** `inference_geos` filter values: `"global"`, `"us"`, `"not_available"` (use `not_available` for models that do not support specifying `inference_geo`).
+
+**Messages usage report** response `results[]` key fields: `account_id`, `api_key_id`, `cache_creation` (`ephemeral_1h_input_tokens`, `ephemeral_5m_input_tokens`), `cache_read_input_tokens`, `context_window`, `inference_geo`, `model`, `output_tokens`, `server_tool_use.web_search_requests`, `service_account_id`, `service_tier`, `uncached_input_tokens`, `workspace_id`.
+
 Source: [`admin/usage_report/retrieve_messages.md`](https://platform.claude.com/docs/en/api/admin/usage_report/retrieve_messages.md) (updated 2026-05-20).
 
 ## Cost report

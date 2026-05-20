@@ -80,13 +80,54 @@ required:
 | `sessions/threads/` | [`beta/sessions/threads/`](https://platform.claude.com/docs/en/api/beta/sessions/threads.md) — list, retrieve, archive threads within a session; thread events (list/stream) via `GET /v1/sessions/{session_id}/threads` |
 | `skills/` | [`beta/skills/`](https://platform.claude.com/docs/en/api/beta/skills/) (Skills upload/management; `GET /v1/skills/{id}/versions/{ver}/content` downloads a version as a zip archive) |
 | `user_profiles/` | [`beta/user_profiles/`](https://platform.claude.com/docs/en/api/beta/user_profiles/) |
-| `vaults/` | [`beta/vaults/`](https://platform.claude.com/docs/en/api/beta/vaults/) — standard CRUD for vaults + credential sub-resources; `POST /v1/vaults/{vault_id}/credentials/{credential_id}/mcp_oauth_validate` live-probes the credential against its configured MCP server and returns `BetaManagedAgentsCredentialValidation` (fields: `credential_id`, `has_refresh_token`, `mcp_probe` with failing step + HTTP response, `refresh` outcome). Use for OAuth credential diagnostics. Source: [`beta/vaults/credentials/mcp_oauth_validate.md`](https://platform.claude.com/docs/en/api/beta/vaults/credentials/mcp_oauth_validate.md) |
-| `webhooks.md` | [`beta/webhooks.md`](https://platform.claude.com/docs/en/api/beta/webhooks.md) |
+| `vaults/` | [`beta/vaults/`](https://platform.claude.com/docs/en/api/beta/vaults/) — standard CRUD for vaults + credential sub-resources; `POST /v1/vaults/{vault_id}/credentials/{credential_id}/mcp_oauth_validate` live-probes the credential against its configured MCP server and returns `BetaManagedAgentsCredentialValidation`. Full response schema: `credential_id` (string), `has_refresh_token` (boolean), `mcp_probe` (`method`: failing MCP method, `http_response`: `{body, body_truncated, content_type, status_code}`), `refresh` (`status`: `"succeeded"|"failed"|"connect_error"|"no_refresh_token"`, `http_response`), `status` (`"valid"|"invalid"|"unknown"` — overall verdict), `type: "vault_credential_validation"`, `validated_at` (RFC 3339 timestamp), `vault_id` (string). Use for OAuth credential diagnostics. Source: [`beta/vaults/credentials/mcp_oauth_validate.md`](https://platform.claude.com/docs/en/api/beta/vaults/credentials/mcp_oauth_validate.md) (updated 2026-05-20) |
+| `webhooks.md` | [`beta/webhooks.md`](https://platform.claude.com/docs/en/api/beta/webhooks.md) — webhook event delivery for Managed Agents (sessions, vaults, vault credentials). See [Webhooks event types](#webhooks-event-types) below. |
 
 Most of these align with the Managed Agents product surface —
 see [`anthropic-platform-features → SKILL-managed-agents.md`](../anthropic-platform-features/SKILL-managed-agents.md)
 for conceptual coverage of agents / sessions / skills / vaults /
 memory.
+
+## Webhooks event types
+
+Webhook events are defined in [`beta/webhooks.md`](https://platform.claude.com/docs/en/api/beta/webhooks.md).
+The top-level shape is `BetaWebhookEvent { id, created_at, type, data }`. Event types and their `data` object types:
+
+**Session events:**
+
+| `type` | `data` type |
+|---|---|
+| `session.created` | `BetaWebhookSessionCreatedEventData` (`id`, `organization_id`, `type`, `workspace_id`) |
+| `session.pending` | `BetaWebhookSessionPendingEventData` |
+| `session.running` | `BetaWebhookSessionRunningEventData` |
+| `session.idled` | `BetaWebhookSessionIdledEventData` |
+| `session.requires_action` | `BetaWebhookSessionRequiresActionEventData` |
+| `session.archived` | `BetaWebhookSessionArchivedEventData` |
+| `session.deleted` | `BetaWebhookSessionDeletedEventData` |
+| `session.status_rescheduled` | `BetaWebhookSessionStatusRescheduledEventData` |
+| `session.status_run_started` | `BetaWebhookSessionStatusRunStartedEventData` |
+| `session.status_idled` | `BetaWebhookSessionStatusIdledEventData` |
+| `session.status_terminated` | `BetaWebhookSessionStatusTerminatedEventData` |
+| `session.thread_created` | `BetaWebhookSessionThreadCreatedEventData` |
+| `session.thread_idled` | `BetaWebhookSessionThreadIdledEventData` |
+| `session.thread_terminated` | `BetaWebhookSessionThreadTerminatedEventData` |
+| `session.outcome_evaluation_ended` | `BetaWebhookSessionOutcomeEvaluationEndedEventData` |
+
+**Vault events:**
+
+| `type` | `data` type |
+|---|---|
+| `vault.created` | `BetaWebhookVaultCreatedEventData` |
+| `vault.archived` | `BetaWebhookVaultArchivedEventData` |
+| `vault.deleted` | `BetaWebhookVaultDeletedEventData` |
+| `vault_credential.created` | `BetaWebhookVaultCredentialCreatedEventData` |
+| `vault_credential.archived` | `BetaWebhookVaultCredentialArchivedEventData` |
+| `vault_credential.deleted` | `BetaWebhookVaultCredentialDeletedEventData` |
+| `vault_credential.refresh_failed` | `BetaWebhookVaultCredentialRefreshFailedEventData` |
+
+All event data objects carry at minimum: `id` (resource ID), `organization_id`, `type`, `workspace_id`.
+
+Source: [`beta/webhooks.md`](https://platform.claude.com/docs/en/api/beta/webhooks.md) (updated 2026-05-20).
 
 ## Graduation
 
