@@ -3,6 +3,9 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-20
+- Routine research pass (94 turns, 402s) — no upstream change; @modelcontextprotocol/sdk v1.29.0 / mcp v1.27.1 stable; all gates pass
+
 ## 2026-05-19 (run 9)
 - Routine research pass (102 turns, 506s) — no upstream change; all gates pass; no new rules added
 
