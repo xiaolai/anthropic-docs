@@ -3,6 +3,9 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-20 (run 8)
+Research agent succeeded (265 s, 76 turns); 34 pages audited; all gates passed — clean push to main
+
 ## 2026-05-20 (run 7)
 *(pending review — see PR auto/2026-05-20-pending-review)* — Research agent succeeded (254 s, 51 turns); 34 pages audited; check-docs-drift gate failed — content on review branch pending inspection
 
