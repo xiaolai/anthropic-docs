@@ -3,13 +3,13 @@
   "indexSha256": "c037e8136d42bb3e6f9ced4b388d09a7320c617658a6617a15f2d76fb44a4f85",
   "indexBytes": 166612,
   "pageCount": 225,
-  "refreshedAt": "2026-05-20T08:00:00Z",
+  "refreshedAt": "2026-05-20T09:00:00Z",
   "pages": [
     {
       "path": "en/api/admin.md",
       "url": "https://platform.claude.com/docs/en/api/admin.md",
-      "sha256": "d108b357811794c6a0b3c1dbaae9732ffba3f84f29aec0d6f958909af2b54f8a",
-      "bytes": 90896
+      "sha256": "e39f996f9c045e99b88a4588627108952b67e03601fa5df137835a208580af0c",
+      "bytes": 90897
     },
     {
       "path": "en/api/admin/api_keys.md",
@@ -302,8 +302,8 @@
     {
       "path": "en/api/beta.md",
       "url": "https://platform.claude.com/docs/en/api/beta.md",
-      "sha256": "60ddc79fb3a92ee5f28e35976420934c5fe05c603cd01d57e5b67fe63e9dc3c0",
-      "bytes": 2885977
+      "sha256": "d4337d74061935e28721b3aebb123ceacc06c8734744dc0f7766264cbfd78191",
+      "bytes": 2885978
     },
     {
       "path": "en/api/beta/agents.md",
@@ -1022,8 +1022,8 @@
     {
       "path": "en/api/compliance.md",
       "url": "https://platform.claude.com/docs/en/api/compliance.md",
-      "sha256": "64ced51754b835a7e79205472de9b623e52b24c73459dff13d62d1ba2df85188",
-      "bytes": 852129
+      "sha256": "41f1e57c15c55cb19607895b9923c01f44aa2429db5d5e72aa18e79186d49178",
+      "bytes": 852130
     },
     {
       "path": "en/api/compliance/activities.md",
@@ -1286,8 +1286,8 @@
     {
       "path": "en/api/messages/batches.md",
       "url": "https://platform.claude.com/docs/en/api/messages/batches.md",
-      "sha256": "081a0db6f50e16215b8f8c71ddc00cdc89f9b8f7a633742eac6c57da53d570be",
-      "bytes": 258035
+      "sha256": "687aef495cead82982a6ccee5da162e36ec6fc8cfb572a8873bb106564784f47",
+      "bytes": 258036
     },
     {
       "path": "en/api/messages/batches/cancel.md",
