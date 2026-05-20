@@ -49,6 +49,10 @@ source: https://platform.claude.com/docs/en/api/admin/
   or `"unrestricted"`), `default_inference_geo` (string), and
   `workspace_geo` (string, immutable after creation). Update via
   `POST /v1/organizations/workspaces/{id}`.
+- **Workspace tags:** the `Workspace` object includes a `tags: map[string]`
+  field — user-defined string key-value pairs. Keys may not begin with
+  `anthropic`. Settable on create and update. Source:
+  [`admin.md`](https://platform.claude.com/docs/en/api/admin.md) (updated 2026-05-20).
 - **Idempotency:** mutating endpoints (create / update / delete) do
   NOT currently support an `Idempotency-Key` header. Build retry
   logic with caller-side de-duplication.
@@ -71,7 +75,7 @@ Workspaces partition an organization for cost / quota / member scope.
 | `POST /v1/organizations/workspaces` | [`admin/workspaces/create.md`](https://platform.claude.com/docs/en/api/admin/workspaces/create.md) |
 | `GET /v1/organizations/workspaces` | [`admin/workspaces/list.md`](https://platform.claude.com/docs/en/api/admin/workspaces/list.md) |
 | `GET /v1/organizations/workspaces/{id}` | [`admin/workspaces/retrieve.md`](https://platform.claude.com/docs/en/api/admin/workspaces/retrieve.md) |
-| `POST /v1/organizations/workspaces/{id}` | [`admin/workspaces/update.md`](https://platform.claude.com/docs/en/api/admin/workspaces/update.md) — update name or `data_residency` |
+| `POST /v1/organizations/workspaces/{id}` | [`admin/workspaces/update.md`](https://platform.claude.com/docs/en/api/admin/workspaces/update.md) — update name, `data_residency`, or `tags` |
 | `POST /v1/organizations/workspaces/{id}/archive` | [`admin/workspaces/archive.md`](https://platform.claude.com/docs/en/api/admin/workspaces/archive.md) |
 
 Workspace members:
