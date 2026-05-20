@@ -49,19 +49,19 @@ every property optional — the model can skip them, which surfaces as
 
 If a tool needs a required field, list it in `required: [...]`.
 
-## Rule 3 — `cache_control` is per-block, not per-message
+## Rule 3 — `cache_control` placement: two valid modes
 
-A `cache_control: { type: "ephemeral" }` breakpoint lives on a content
-block, not on the message object. Up to **4 breakpoints per request**.
-Placing one on the system role's string form is also wrong — convert
-`system` to the array form first.
+Two valid placements, not three. Up to **4 explicit breakpoints per request**.
 
-**WRONG (cache_control on message):**
+**Mode A — Automatic caching (top-level request body):**
 ```json
-{ "role": "user", "cache_control": { "type": "ephemeral" }, "content": "..." }
+{ "model": "...", "max_tokens": 1024, "cache_control": { "type": "ephemeral" } }
 ```
+The system automatically applies the breakpoint to the last cacheable block and
+moves it forward each turn. Uses one of the 4 breakpoint slots if combined with
+explicit breakpoints. Optional 1-hour TTL: `{ "type": "ephemeral", "ttl": "1h" }`.
 
-**RIGHT (on the block):**
+**Mode B — Explicit breakpoints (on content blocks):**
 ```json
 {
   "role": "user",
@@ -71,6 +71,14 @@ Placing one on the system role's string form is also wrong — convert
   ]
 }
 ```
+
+**WRONG (on the message object, not the block or request top level):**
+```json
+{ "role": "user", "cache_control": { "type": "ephemeral" }, "content": "..." }
+```
+
+Placing `cache_control` on the system role's string form is also wrong — convert
+`system` to the array form first for explicit mode.
 
 ## Rule 4 — Extended thinking needs `budget_tokens` and counts against `max_tokens`
 

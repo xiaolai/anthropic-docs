@@ -45,6 +45,14 @@ source: https://platform.claude.com/docs/en/manage-claude/admin-api.md
 - **Audit log retention** defaults to 30 days; enterprise plans
   extend to longer windows. Verify your plan's setting before relying
   on long-tail audit availability.
+- **HIPAA-ready API access** (new): Organizations handling PHI can now
+  sign a Business Associate Agreement (BAA) without enabling ZDR first.
+  Anthropic provisions a dedicated HIPAA-enabled org that auto-blocks
+  ineligible features (returns `400` if request uses a non-eligible
+  feature). Not available on Claude Platform on AWS, Foundry, or Claude
+  Code. Feature eligibility (ZDR and HIPAA) is tabulated at
+  [`api-and-data-retention.md`](https://platform.claude.com/docs/en/manage-claude/api-and-data-retention.md).
+  Contact [Anthropic sales](https://claude.com/contact-sales) to sign a BAA.
 
 ## Foundations
 
@@ -53,7 +61,7 @@ source: https://platform.claude.com/docs/en/manage-claude/admin-api.md
 | [`admin-api.md`](https://platform.claude.com/docs/en/manage-claude/admin-api.md) | Admin API conceptual overview |
 | [`authentication.md`](https://platform.claude.com/docs/en/manage-claude/authentication.md) | API key auth, header conventions |
 | [`workspaces.md`](https://platform.claude.com/docs/en/manage-claude/workspaces.md) | Workspace concept (cost / quota / member scope) |
-| [`api-and-data-retention.md`](https://platform.claude.com/docs/en/manage-claude/api-and-data-retention.md) | What's retained, for how long, ZDR opt-out |
+| [`api-and-data-retention.md`](https://platform.claude.com/docs/en/manage-claude/api-and-data-retention.md) | What's retained, ZDR opt-out, HIPAA-ready API (BAA), feature eligibility table |
 | [`data-residency.md`](https://platform.claude.com/docs/en/manage-claude/data-residency.md) | Per-region API endpoints, residency guarantees |
 | [`rate-limits-api.md`](https://platform.claude.com/docs/en/manage-claude/rate-limits-api.md) | Programmatic rate-limit inspection |
 | [`usage-cost-api.md`](https://platform.claude.com/docs/en/manage-claude/usage-cost-api.md) | Usage + cost reports |

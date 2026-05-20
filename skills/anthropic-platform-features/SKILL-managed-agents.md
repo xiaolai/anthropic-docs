@@ -57,6 +57,9 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
   Platform on AWS. Memory stores are not yet supported with self-hosted
   sandboxes. Combine with MCP Tunnels when you want both code execution
   and MCP tool access to stay inside your network boundary.
+  **Platform-specific guides** available for Cloudflare, Daytona, Modal,
+  and Vercel — see
+  [`self-hosted-sandboxes.md`](https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes.md).
 - **Beta API surface.** All Managed-Agents endpoints currently live
   under `/v1/...` with the `anthropic-beta` header
   (`managed-agents-2026-04-01`). Pin the beta string to a specific

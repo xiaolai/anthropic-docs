@@ -27,11 +27,16 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
   `thinking: { type: "enabled", budget_tokens: N }`. Tokens used in
   thinking blocks are billed at input-token rates and **count against
   `max_tokens`** for the final response.
-- **Prompt caching has 4-breakpoint limit per request.** Each
-  `cache_control: { type: "ephemeral" }` is one breakpoint. Default TTL
-  is `5m`; `1h` is also available. The whole prefix up to the
-  breakpoint is cached, so place breakpoints at stable boundaries
-  (system prompt → tools → static context → user turn).
+- **Prompt caching: two modes.** (1) **Automatic caching** — add
+  `cache_control: {"type": "ephemeral"}` at the request body top level;
+  the system automatically applies the breakpoint to the last cacheable
+  block and advances it each turn. TTL option: `{"type": "ephemeral",
+  "ttl": "1h"}` at top level. (2) **Explicit breakpoints** — place
+  `cache_control` on individual content blocks for fine-grained control
+  (up to 4 breakpoints per request). Automatic caching uses one of the 4
+  slots if combined with explicit breakpoints. Default TTL is `5m`; `1h`
+  is available at 2× base input price.
+  Source: [`prompt-caching.md`](https://platform.claude.com/docs/en/build-with-claude/prompt-caching.md).
 - **Cache diagnostics (beta):** When cache hits drop unexpectedly, pass
   `diagnostics: { previous_message_id: <prev_id> }` with beta header
   `cache-diagnosis-2026-04-07`. The response's `diagnostics.cache_miss_reason`
@@ -45,7 +50,17 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
   `POST /v1/messages/batches`; poll for results. Not for interactive use.
 - **Vision input:** images can be base64-inline or URL-referenced.
   Max ~5 MB per image. Document blocks (PDFs) are handled separately
-  via `type: "document"`.
+  via `type: "document"`. Claude Opus 4.7 supports **high-resolution
+  images** (2576px max long edge, ~4784 tokens/image vs ~1568 on other
+  models) — no beta header needed, automatic.
+  Source: [`vision.md`](https://platform.claude.com/docs/en/build-with-claude/vision.md).
+- **Context awareness** (Claude Sonnet 4.6, Sonnet 4.5, Haiku 4.5): The
+  API automatically injects a token-budget XML tag at conversation start
+  (`<budget:token_budget>1000000</budget:token_budget>`) and updates
+  remaining capacity after each tool call
+  (`<system_warning>Token usage: N/M; R remaining</system_warning>`).
+  Helps these models track context capacity during long agentic workflows.
+  Source: [`context-windows.md`](https://platform.claude.com/docs/en/build-with-claude/context-windows.md).
 - **Bedrock vs Vertex vs Foundry:** Bedrock + Vertex are true 3P
   (Anthropic doesn't see prompts). Foundry is currently a billing
   integration — models still run on Anthropic infra. See
@@ -59,12 +74,8 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
 - **Fast mode is beta (research preview) with a waitlist.** Use
   `speed: "fast"` in the request body **plus** beta header
   `anthropic-beta: fast-mode-2026-02-01`. Supported on
-  `claude-opus-4-6` and `claude-opus-4-7` only. Priced at 6× standard
-  Opus rates ($30/MTok input, $150/MTok output). Has its own dedicated
-  rate-limit bucket — headers: `anthropic-fast-{input,output}-tokens-{limit,remaining,reset}`.
-  Response `usage.speed` field returns `"fast"` or `"standard"`.
-  Falling back to standard speed on 429 causes a prompt-cache miss
-  (fast and standard don't share cached prefixes). ZDR eligible.
+  `claude-opus-4-6` and `claude-opus-4-7` only. Provides up to 2.5×
+  higher output tokens per second at premium pricing. ZDR eligible.
   Join waitlist at [claude.com/fast-mode](https://claude.com/fast-mode).
 - **Context windows** differ per model. Current sizes: **1M tokens** for
   Claude Mythos Preview (`claude-mythos-preview`), Opus 4.7, Opus 4.6, and
@@ -116,7 +127,7 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
 
 | Feature | Page | What it does |
 |---|---|---|
-| **Prompt caching** | [`prompt-caching.md`](https://platform.claude.com/docs/en/build-with-claude/prompt-caching.md) | `cache_control: ephemeral` breakpoints, 5-min TTL |
+| **Prompt caching** | [`prompt-caching.md`](https://platform.claude.com/docs/en/build-with-claude/prompt-caching.md) | Automatic (top-level `cache_control`) or explicit per-block breakpoints; 5-min or 1h TTL |
 | **Cache diagnostics** | [`cache-diagnostics.md`](https://platform.claude.com/docs/en/build-with-claude/cache-diagnostics.md) | Beta (`cache-diagnosis-2026-04-07`) — identify where a prompt prefix diverged and caused a cache miss; Claude API only |
 | **Batch processing** | [`batch-processing.md`](https://platform.claude.com/docs/en/build-with-claude/batch-processing.md) | Submit many requests at lower price, returns in 24h |
 | **Compaction** | [`compaction.md`](https://platform.claude.com/docs/en/build-with-claude/compaction.md) | Auto-summarize older messages when nearing context limit. Supported on: `claude-mythos-preview`, Opus 4.7, Opus 4.6, Sonnet 4.6 |
@@ -128,7 +139,7 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
 |---|---|
 | [`files.md`](https://platform.claude.com/docs/en/build-with-claude/files.md) | File uploads (Files API) |
 | [`pdf-support.md`](https://platform.claude.com/docs/en/build-with-claude/pdf-support.md) | PDF as input (text + vision modes) |
-| [`vision.md`](https://platform.claude.com/docs/en/build-with-claude/vision.md) | Image input (base64 or URL), max ~5 MB per image |
+| [`vision.md`](https://platform.claude.com/docs/en/build-with-claude/vision.md) | Image input (base64 or URL), max ~5 MB; Opus 4.7 high-res (2576px, ~4784 tok/img) |
 | [`embeddings.md`](https://platform.claude.com/docs/en/build-with-claude/embeddings.md) | Embeddings models |
 | [`multilingual-support.md`](https://platform.claude.com/docs/en/build-with-claude/multilingual-support.md) | Supported languages, quality notes |
 | [`search-results.md`](https://platform.claude.com/docs/en/build-with-claude/search-results.md) | Web search results as input format |
