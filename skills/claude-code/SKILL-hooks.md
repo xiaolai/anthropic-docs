@@ -223,8 +223,8 @@ Claude Code writes a JSON object to stdin (or POST body for HTTP hooks). Common 
 | `agent_type` | When session uses `--agent` or fires inside a subagent | Agent name (e.g. `"Explore"`, `"security-reviewer"`). For custom subagents, this is the `name` from frontmatter, not the filename |
 | `stop_hook_active` | `Stop`, `SubagentStop` | `true` when Claude Code is already continuing as a result of a stop hook. After 8 consecutive blocks Claude overrides and ends the turn |
 | `last_assistant_message` | `Stop`, `SubagentStop`, `StopFailure` | Text content of Claude's final response (Stop/SubagentStop) or the API error string (StopFailure), so hooks can access it without parsing the transcript |
-| `background_tasks` | `Stop`, `SubagentStop` | Array of background task objects still running when the turn ended. Each object has `id`, `status`, and `command` fields |
-| `session_crons` | `Stop`, `SubagentStop` | Array of active session-scoped cron entries. Each object has `id`, `schedule`, and `command` fields |
+| `background_tasks` | `Stop`, `SubagentStop` | Array of in-flight background task objects. See sub-field table below |
+| `session_crons` | `Stop`, `SubagentStop` | Array of active session-scoped scheduled wakeups (from `CronCreate`/`/loop`). See sub-field table below |
 
 **SubagentStop** additionally receives `agent_transcript_path` — the path to the subagent's own transcript stored in a nested `subagents/` folder (distinct from `transcript_path`, which is the main session's transcript).
 
@@ -247,6 +247,54 @@ Claude Code writes a JSON object to stdin (or POST body for HTTP hooks). Common 
 | `mode` | Elicitation mode (e.g. `"form"`) |
 | `elicitation_id` | Stable identifier for the elicitation request |
 | `content` | Form field values submitted by the user (when `action` is `"accept"`) |
+
+**StopFailure** additionally receives `error` (used for matcher filtering), optional `error_details`, and optional `last_assistant_message`:
+
+| Field | Notes |
+|---|---|
+| `error` | Error type: `rate_limit`, `authentication_failed`, `oauth_org_not_allowed`, `billing_error`, `invalid_request`, `model_not_found`, `server_error`, `max_output_tokens`, `unknown` |
+| `error_details` | (optional) Additional details about the error, when available |
+| `last_assistant_message` | The rendered error text (the API error string, not Claude's prose) |
+
+**TaskCreated** additionally receives task-specific fields:
+
+| Field | Notes |
+|---|---|
+| `task_id` | Identifier for the task being created |
+| `task_subject` | Subject/title of the task |
+| `task_description` | (optional) Additional description for the task |
+| `teammate_name` | (optional) Name of the teammate that is creating the task |
+| `team_name` | (optional) Name of the agent team |
+
+**TeammateIdle** additionally receives teammate-specific fields:
+
+| Field | Notes |
+|---|---|
+| `teammate_name` | Name of the teammate that is about to go idle |
+| `team_name` | Name of the agent team |
+
+**`background_tasks` sub-fields** (each entry in the array):
+
+| Field | Notes |
+|---|---|
+| `id` | Task identifier |
+| `type` | Task-type label: `shell`, `subagent`, `monitor`, `workflow`, `teammate`, `cloud session`, or `MCP task` |
+| `status` | Current task status |
+| `description` | Free-text description, capped at 1000 characters |
+| `command` | Shell command line (present only for `shell` tasks) |
+| `agent_type` | Subagent type name (present only for `subagent` tasks) |
+| `server` | MCP server name (present only for `monitor` and `MCP task` tasks) |
+| `tool` | MCP tool name (present only for `monitor` and `MCP task` tasks) |
+| `name` | Workflow name (present only for `workflow` tasks) |
+
+**`session_crons` sub-fields** (each entry in the array, sourced from `CronCreate` and `/loop`):
+
+| Field | Notes |
+|---|---|
+| `id` | Cron task identifier |
+| `schedule` | Cron expression (e.g. `0 9 * * 1-5`) |
+| `recurring` | `true` for tasks that re-fire on every match; `false` for one-shot wakeups |
+| `prompt` | Prompt submitted when the cron fires, capped at 1000 characters |
 
 Example payload for `PreToolUse` on a Bash call:
 
