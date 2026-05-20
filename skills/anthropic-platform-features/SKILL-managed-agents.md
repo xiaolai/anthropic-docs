@@ -92,6 +92,77 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
 | [`cloud-containers.md`](https://platform.claude.com/docs/en/managed-agents/cloud-containers.md) | Container-backed agent runtime |
 | [`sessions.md`](https://platform.claude.com/docs/en/managed-agents/sessions.md) | Session lifecycle |
 | [`permission-policies.md`](https://platform.claude.com/docs/en/managed-agents/permission-policies.md) | What each agent may do |
+| [`self-hosted-sandboxes.md`](https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes.md) | Run agent sessions in your own infrastructure (environment worker, CLI and SDK helpers, queue monitoring) |
+| [`self-hosted-sandboxes-security.md`](https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes-security.md) | Shared responsibility model — what you own vs. what Anthropic handles |
+
+### Self-hosted sandboxes
+
+By default, Managed Agents runs tools inside Anthropic-managed cloud
+containers. **Self-hosted sandboxes** keep orchestration on Anthropic's
+side but move tool execution into infrastructure you control — code,
+filesystem, and network egress never leave your environment.
+
+> **Not yet available** on Claude Platform on AWS.
+
+| | Cloud environment | Self-hosted sandbox |
+|---|---|---|
+| Where tools run | Anthropic-managed containers | Your infrastructure |
+| Network reach | Anthropic's egress controls | Your network policy |
+| File / GitHub repo mounting | Managed by Anthropic | Managed by you |
+| Lifecycle | Managed by Anthropic | Managed by you |
+
+Use self-hosting when the agent must operate on data that cannot leave
+your network, reach internal services, or run under your compliance
+controls. To also keep MCP tool traffic inside your boundary, combine
+with [MCP Tunnels](SKILL-agents-and-tools.md#mcp-tunnels-research-preview).
+
+#### Environment worker
+
+An **environment worker** is a process you run on your own
+infrastructure that receives tool-execution requests from Anthropic and
+runs them locally. The `self_hosted` environment is a work queue
+connecting Anthropic's orchestration to your worker.
+
+Create a self-hosted environment:
+
+```bash
+curl -sS https://api.anthropic.com/v1/environments \
+  -H "x-api-key: $ANTHROPIC_API_KEY" \
+  -H "anthropic-version: 2023-06-01" \
+  -H "anthropic-beta: managed-agents-2026-04-01" \
+  -H "content-type: application/json" \
+  -d '{"name": "self-hosted", "config": {"type": "self_hosted"}}'
+```
+
+Two worker patterns:
+
+| Pattern | Tool | When to use |
+|---|---|---|
+| **Always-on** | `ant beta:worker poll` (CLI) or `EnvironmentWorker.run()` (SDK) | Continuous background workers |
+| **Webhook-triggered** | SDK `EnvironmentWorker.handle_item()` + `session.status_run_started` webhook | Spin up on demand (e.g. per-session containers) |
+
+Sandbox filesystem conventions:
+- **`/workspace`** — default working directory; skills download to `/workspace/skills/<name>/`
+- **`/mnt/session/outputs`** — agent writes final output files here; mount a host directory to retrieve them
+
+SDK helpers available in Python, TypeScript, and Go:
+- `EnvironmentWorker` — out-of-the-box worker; handles polling, setup, and tool execution end-to-end
+- `work.poller()` — gives you each claimed session for custom dispatch (e.g. launch a container per session)
+- `work.stats()` — returns queue depth, pending count, oldest item, and active worker count
+
+#### Security responsibilities (self-hosted)
+
+You own:
+- Container image quality and runtime hardening (non-root user, drop capabilities)
+- Network egress controls for your container
+- `ANTHROPIC_ENVIRONMENT_KEY` storage and rotation (store in a secrets manager, not in images or env files)
+- Isolating untrusted workloads (provision separate environments per trust boundary)
+- Log retention and session content (outside Anthropic's data lifecycle once delivered to your worker)
+
+Anthropic handles:
+- Session and work-queue integrity
+- Multi-tenant isolation on the control plane
+- Agent-context minimization
 
 ## Integrations
 
@@ -116,9 +187,9 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
 
 ## Page index
 
-20 source pages under
+22 source pages under
 [`https://platform.claude.com/docs/en/managed-agents/`](https://platform.claude.com/docs/en/managed-agents/).
 
 ---
 
-*Source pages: 20 under `platform.claude.com/docs/en/managed-agents/`.*
+*Source pages: 22 under `platform.claude.com/docs/en/managed-agents/`.*
