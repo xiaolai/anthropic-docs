@@ -238,6 +238,18 @@ Claude Code writes a JSON object to stdin (or POST body for HTTP hooks). Common 
 | `command_source` | Where the command was defined: `"plugin"`, `"user"`, `"project"`, or `"mcp"` |
 | `prompt` | The original slash command string typed by the user (e.g. `"/example-skill arg1 arg2"`) |
 
+**Setup** additionally receives `trigger`:
+
+| Field | Notes |
+|---|---|
+| `trigger` | CLI flag that triggered Setup: `"init"` (from `--init-only` or `-p --init`) or `"maintenance"` (from `-p --maintenance`) |
+
+**PermissionDenied** additionally receives `reason` (in addition to `tool_name`, `tool_input`, `tool_use_id` from the common fields):
+
+| Field | Notes |
+|---|---|
+| `reason` | The auto mode classifier's explanation for why the tool call was denied |
+
 **ElicitationResult** additionally receives `mcp_server_name`, `action`, and optional `mode`, `elicitation_id`, and `content`:
 
 | Field | Notes |
@@ -443,6 +455,14 @@ Fires when the permission dialog is about to appear. Uses `decision.behavior`, *
 | `decision.interrupt` | (`"deny"` only) If `true`, stops Claude entirely |
 
 Input also includes `permission_suggestions` array with the "always allow" options the user would normally see.
+
+### Setup output
+
+Setup is non-blocking. To pass information into Claude's context, return `additionalContext` in `hookSpecificOutput`; plain stdout is written to the debug log only. Exit code 2 shows stderr to the user; other non-zero codes show stderr only with `--verbose`.
+
+| Field | Notes |
+|---|---|
+| `additionalContext` | String added to Claude's context. Multiple hooks' values are concatenated |
 
 ### SubagentStart output
 
