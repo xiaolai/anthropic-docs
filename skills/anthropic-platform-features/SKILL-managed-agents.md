@@ -92,6 +92,8 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
 | [`cloud-containers.md`](https://platform.claude.com/docs/en/managed-agents/cloud-containers.md) | Container-backed agent runtime |
 | [`sessions.md`](https://platform.claude.com/docs/en/managed-agents/sessions.md) | Session lifecycle |
 | [`permission-policies.md`](https://platform.claude.com/docs/en/managed-agents/permission-policies.md) | What each agent may do |
+| [`self-hosted-sandboxes.md`](https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes.md) | Run tool execution in your own infrastructure |
+| [`self-hosted-sandboxes-security.md`](https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes-security.md) | Shared responsibility model, hardening guidance |
 
 ## Integrations
 
@@ -114,11 +116,78 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
 |---|---|
 | [`dreams.md`](https://platform.claude.com/docs/en/managed-agents/dreams.md) | "Dreams" — long-running agent jobs that execute over hours/days |
 
+## Self-hosted sandboxes
+
+Run agent tool execution in **your own infrastructure** — Anthropic orchestrates the session but the agent's code, filesystem, and network egress never leave your environment. Not yet available on Claude Platform on AWS.
+
+| | Cloud environment | Self-hosted sandbox |
+|---|---|---|
+| Where tools run | Anthropic-managed containers | Your infrastructure |
+| Network reach | Anthropic's egress controls | Your network policy |
+| File / GitHub mounting | Managed by Anthropic | Managed by you |
+| Lifecycle | Managed by Anthropic | Managed by you |
+
+Good fit when: data cannot leave your network, the agent needs to reach private services, or your org's compliance controls require it.
+
+### Combine with MCP tunnels
+
+Self-hosting controls *where the agent's code executes*. [MCP tunnels](https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/overview.md) control *how Anthropic reaches MCP servers in your network*. They are independent — a cloud-container session can use tunneled MCP servers, and a self-hosted session can use tunneled or public MCP servers.
+
+### Environment worker
+
+An **environment worker** is a process you run that:
+
+1. Polls the environment's **work queue** for sessions assigned to the environment
+2. Downloads the agent's skills to `/workspace/skills/<name>/`
+3. Executes tool calls locally
+4. Posts results back to Anthropic
+
+Two worker architectures:
+
+| Architecture | Supported by | When to use |
+|---|---|---|
+| **Always-on** | `ant` CLI + SDK | Continuous polling; exit on SIGTERM; simplest setup |
+| **Webhook-triggered** | SDK only | Wakes on `session.status_run_started`; good for on-demand / ephemeral hosts |
+
+Pre-built workers: `EnvironmentWorker` (SDK) or `ant beta:worker poll` (CLI). Both manage polling, skill download, and execution end-to-end. For per-session container isolation, use `work.poller()` (SDK) or `--on-work <spawn-script>` (CLI) to launch a fresh container per claimed session.
+
+### Key paths in the sandbox
+
+| Path | Purpose |
+|---|---|
+| `/workspace` | Default working directory; skills land at `/workspace/skills/<name>/` |
+| `/mnt/session/outputs` | Agent writes final output files here; mount a host directory to retrieve them |
+
+> **SDK dependencies:** the SDK helpers require `/bin/bash` at that exact path. The TypeScript SDK additionally requires `unzip`, `tar`, and Node.js 22+.
+
+### Environment key
+
+The **environment key** (`sk-ant-oat01-...`) authenticates the worker to poll the work queue and submit results. It is **scoped to one environment**. Store it in a secrets manager; never bake it into images or env files. Rotate immediately if exposed.
+
+> Never set `ANTHROPIC_API_KEY` on the worker host — that is an org-scoped credential. Use `ANTHROPIC_ENVIRONMENT_KEY` inside the worker.
+
+### Monitoring queue depth and stopping sessions
+
+`work.stats` returns: `depth` (waiting), `pending` (in-progress), `oldest_queued_at`, `workers_polling` (active in last 30 s). Scale or alert based on `depth`.
+
+`work.stop` gracefully stops a session (finishes the current tool call then exits); pass `force: true` to interrupt immediately. These calls authenticate with the **org API key**, not the environment key — run them from outside the worker host.
+
+### Memory limitation
+
+Memory stores are **not yet supported** with self-hosted sandboxes.
+
+### Source pages
+
+| Page | Topic |
+|---|---|
+| [`self-hosted-sandboxes.md`](https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes.md) | Architecture, worker setup (CLI + SDK), monitoring, SDK reference |
+| [`self-hosted-sandboxes-security.md`](https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes-security.md) | Shared responsibility model, hardening guidance |
+
 ## Page index
 
-20 source pages under
+22 source pages under
 [`https://platform.claude.com/docs/en/managed-agents/`](https://platform.claude.com/docs/en/managed-agents/).
 
 ---
 
-*Source pages: 20 under `platform.claude.com/docs/en/managed-agents/`.*
+*Source pages: 22 under `platform.claude.com/docs/en/managed-agents/`.*
