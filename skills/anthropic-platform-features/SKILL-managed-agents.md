@@ -89,9 +89,82 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
 | Page | Topic |
 |---|---|
 | [`environments.md`](https://platform.claude.com/docs/en/managed-agents/environments.md) | Environment concept (dev / staging / prod) |
-| [`cloud-containers.md`](https://platform.claude.com/docs/en/managed-agents/cloud-containers.md) | Container-backed agent runtime |
+| [`cloud-containers.md`](https://platform.claude.com/docs/en/managed-agents/cloud-containers.md) | Container-backed agent runtime (Anthropic-managed) |
 | [`sessions.md`](https://platform.claude.com/docs/en/managed-agents/sessions.md) | Session lifecycle |
 | [`permission-policies.md`](https://platform.claude.com/docs/en/managed-agents/permission-policies.md) | What each agent may do |
+
+## Self-hosted sandboxes
+
+Keep tool execution inside your own infrastructure while Anthropic continues
+to run the orchestration control plane. Not available on Claude Platform on AWS.
+
+**When to self-host:**
+- Data cannot leave your network boundary.
+- Agent needs to reach internal services not publicly routable.
+- Compliance or audit controls require execution in your environment.
+
+**vs. cloud containers:**
+
+| | Cloud containers | Self-hosted sandbox |
+|---|---|---|
+| Where tools run | Anthropic-managed | Your infrastructure |
+| Network reach | Anthropic's egress controls | Your network policy |
+| File / repo mounting | Managed by Anthropic | Managed by you |
+| Lifecycle | Managed by Anthropic | Managed by you |
+
+**Combine with MCP Tunnels:** Self-hosting controls *where the agent's code
+executes*; MCP tunnels controls *how Anthropic reaches MCP servers in your
+network*. They are independent and complementary.
+
+**Setup:**
+
+Create an environment with `config: {"type": "self_hosted"}` via
+`POST /v1/environments` (beta header `managed-agents-2026-04-01`). Generate
+an **environment key** (`ANTHROPIC_ENVIRONMENT_KEY`, prefix `sk-ant-oat01-`)
+in the Console — scoped to one environment's work queue, not to your whole
+organization.
+
+**Sandbox filesystem:**
+
+| Path | Purpose |
+|---|---|
+| `/workspace` | Default workdir; skills downloaded to `/workspace/skills/<name>/` |
+| `/mnt/session/outputs` | Agent writes final output files here; mount a host volume to retrieve them |
+
+**Worker patterns:**
+
+| Pattern | Tool | Notes |
+|---|---|---|
+| **Always-on** | `ant beta:worker poll` | Continuous polling; simplest setup |
+| **Always-on** | SDK `EnvironmentWorker.run()` | Python / TypeScript / Go; supports custom tool list |
+| **Webhook-triggered** | SDK `EnvironmentWorker.handle_item()` | Wakes on `session.status_run_started`; exits when session ends |
+| **Custom per-session container** | SDK `work.poller()` | Claim each session and launch your own container |
+
+**SDK dependency requirements:** `/bin/bash` must exist at that exact path.
+TypeScript SDK additionally requires `unzip`, `tar`, and Node.js 22+.
+
+**Monitoring (call from operations tooling with org API key, not env key):**
+
+| Call | What it returns |
+|---|---|
+| `work.stats` | `depth` (queued), `pending` (in-flight), `oldest_queued_at`, `workers_polling` |
+| `work.stop` | Graceful shutdown; `force: true` interrupts immediately |
+
+**Limitations at launch:**
+- Memory stores not supported with self-hosted sandboxes.
+- Not available on Claude Platform on AWS.
+
+**Security:** Anthropic owns control-plane security (session integrity,
+multi-tenant isolation). You own: container image hardening, network egress
+controls, environment key storage and rotation, tool-execution blast radius,
+and log/data retention. See the security page for the full shared-responsibility model.
+
+**Third-party platform guides:** [Cloudflare](https://developers.cloudflare.com/sandbox/claude-managed-agents/), [Daytona](https://www.daytona.io/docs/en/guides/claude/claude-managed-agents), [Modal](https://github.com/modal-labs/claude-managed-agents-modal-sandbox), [Vercel](https://vercel.com/kb/guide/run-claude-managed-agent-tools-with-vercel-sandbox).
+
+| Page | Topic |
+|---|---|
+| [`self-hosted-sandboxes.md`](https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes.md) | Worker setup, SDK helpers, monitoring, session creation |
+| [`self-hosted-sandboxes-security.md`](https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes-security.md) | Shared responsibility model, what Anthropic cannot do for you |
 
 ## Integrations
 
@@ -116,9 +189,9 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
 
 ## Page index
 
-20 source pages under
+22 source pages under
 [`https://platform.claude.com/docs/en/managed-agents/`](https://platform.claude.com/docs/en/managed-agents/).
 
 ---
 
-*Source pages: 20 under `platform.claude.com/docs/en/managed-agents/`.*
+*Source pages: 22 under `platform.claude.com/docs/en/managed-agents/`.*
