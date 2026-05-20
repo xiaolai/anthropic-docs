@@ -92,6 +92,75 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
 | [`cloud-containers.md`](https://platform.claude.com/docs/en/managed-agents/cloud-containers.md) | Container-backed agent runtime |
 | [`sessions.md`](https://platform.claude.com/docs/en/managed-agents/sessions.md) | Session lifecycle |
 | [`permission-policies.md`](https://platform.claude.com/docs/en/managed-agents/permission-policies.md) | What each agent may do |
+| [`self-hosted-sandboxes.md`](https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes.md) | Run tool execution in your own infrastructure |
+| [`self-hosted-sandboxes-security.md`](https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes-security.md) | Shared responsibility model and hardening guidance |
+
+## Self-hosted sandboxes
+
+Self-hosted sandboxes move tool execution into infrastructure you control
+while keeping orchestration on Anthropic's side. The agent's code,
+filesystem, and network egress never leave your environment.
+
+> Not yet available on Claude Platform on AWS.
+
+| | Cloud environment | Self-hosted sandbox |
+|---|---|---|
+| Where tools run | Anthropic-managed containers | Your infrastructure |
+| Network reach | Anthropic's egress controls | Your network policy |
+| File and GitHub repo mounting | Managed by Anthropic | Managed by you |
+| Lifecycle | Managed by Anthropic | Managed by you |
+
+**When to use:** the agent needs to operate on data that cannot leave your
+network, reach internal services not publicly routable, or run under your
+organization's compliance and audit controls.
+
+**Combine with MCP Tunnels:** self-hosted sandboxes control *where the
+agent's code executes*; [MCP Tunnels](https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/overview.md)
+controls *how Anthropic reaches MCP servers in your network*. They are
+independent and composable.
+
+**Create a self-hosted environment:** set `config.type = "self_hosted"` in
+`POST /v1/environments`; requires `anthropic-beta: managed-agents-2026-04-01`.
+Generate an environment key in the Console and export it as
+`ANTHROPIC_ENVIRONMENT_KEY` on the worker host.
+
+**Environment worker patterns:**
+
+| Pattern | How | Tooling |
+|---|---|---|
+| **Always-on** | Worker polls continuously; handles sessions as they arrive | `ant beta:worker poll` (CLI) or `EnvironmentWorker.run()` (SDK) |
+| **Webhook-triggered** | Handler wakes on `session.status_run_started`, drains queue for that session, exits | Python / TypeScript / Go SDKs |
+
+**Sandbox filesystem conventions:**
+- `/workspace` — default working directory; skills downloaded to `/workspace/skills/<name>/`
+- `/mnt/session/outputs` — agent writes final output files here; mount a host directory to retrieve them
+
+**Per-session isolation:** use `--on-work <script>` (CLI) or `work.poller()` (SDK)
+to spawn a fresh container per session instead of running tool calls in-process.
+Pass `ANTHROPIC_ENVIRONMENT_KEY` into the container; never the org API key.
+
+**Queue monitoring** (`work.stats`, authenticated with org API key — not the
+environment key):
+- `depth` — items waiting to be claimed
+- `pending` — items currently being processed
+- `oldest_queued_at` — timestamp of oldest waiting item
+- `workers_polling` — workers that polled in the last 30 s
+
+**Graceful stop:** `work.stop` asks the worker handling a session to drain and
+release it. Pass `force: true` to interrupt the current tool call immediately.
+
+**Shared responsibility summary:**
+
+| Anthropic handles | Your organization handles |
+|---|---|
+| Session and work-queue integrity | Container image quality and runtime hardening |
+| Multi-tenant isolation | Network egress controls |
+| Agent-context minimization | Service key (`ANTHROPIC_ENVIRONMENT_KEY`) storage and rotation |
+| | Isolating untrusted workloads (separate workspace/environment per trust boundary) |
+| | Tool-execution blast radius (least privilege, minimal directory mounts) |
+| | Log retention and session-content data lifecycle |
+
+> **Note:** Memory stores are not yet supported with self-hosted sandboxes.
 
 ## Integrations
 
@@ -116,9 +185,9 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
 
 ## Page index
 
-20 source pages under
+22 source pages under
 [`https://platform.claude.com/docs/en/managed-agents/`](https://platform.claude.com/docs/en/managed-agents/).
 
 ---
 
-*Source pages: 20 under `platform.claude.com/docs/en/managed-agents/`.*
+*Source pages: 22 under `platform.claude.com/docs/en/managed-agents/`.*

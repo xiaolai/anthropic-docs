@@ -3,6 +3,9 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-20
+- *(pending review — see PR auto/2026-05-20-pending-review)* Docs index grew 109 → 119 pages — added 8 MCP Tunnels pages (`agents-and-tools/mcp-tunnels/*`) and 2 self-hosted sandboxes pages (`managed-agents/self-hosted-sandboxes*`); check-diff-size gate failed due to large batch
+
 ## 2026-05-19
 - Daily maintenance run — no upstream changes detected; research agent audited 109 pages across 4 surfaces in 49 turns ($0.76), all gates pass
 
