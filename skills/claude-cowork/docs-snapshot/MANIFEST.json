@@ -1,9 +1,9 @@
 {
   "indexUrl": "https://claude.com/docs/llms.txt",
-  "indexSha256": "49628647363beee70ed0e7782490e3e5521635ffd95a8aaf057e9bc7cc38afdc",
-  "indexBytes": 12123,
-  "pageCount": 34,
-  "refreshedAt": "2026-05-20T00:00:00Z",
+  "indexSha256": "e902363536c9acc513d54af3426bbbed42d810e267688e03faa4bb78006a7ab4",
+  "indexBytes": 12253,
+  "pageCount": 35,
+  "refreshedAt": "2026-05-20T23:00:00Z",
   "pages": [
     {
       "path": "cowork/3p/bedrock-aws-sign-in.md",
@@ -164,8 +164,8 @@
     {
       "path": "office-agents/enterprise-readiness.md",
       "url": "https://claude.com/docs/office-agents/enterprise-readiness.md",
-      "sha256": "ca98da93eca6afbe3757a3072469ba7c943802a57bd011b7db99907beed9164a",
-      "bytes": 4055
+      "sha256": "c39e7f5ce588325c3b97b318525ac42acf7e4aa83643241b7bd4a2baaf008be3",
+      "bytes": 4288
     },
     {
       "path": "office-agents/excel.md",
@@ -182,8 +182,14 @@
     {
       "path": "office-agents/outlook.md",
       "url": "https://claude.com/docs/office-agents/outlook.md",
-      "sha256": "84f27fd70d0b01058ffb1edd6b23e0f330e24a73cccbad96246ba8b4a5b60b86",
-      "bytes": 15551
+      "sha256": "89ae418161883fd8897ad3da121f5b49509560ce6d33c6c7e52e2ae5e174c76d",
+      "bytes": 16130
+    },
+    {
+      "path": "office-agents/overview.md",
+      "url": "https://claude.com/docs/office-agents/overview.md",
+      "sha256": "3ea8070b6afba5b823efa454ff342bc1e880475019536fe321939360115775ed",
+      "bytes": 2125
     },
     {
       "path": "office-agents/powerpoint.md",
@@ -194,8 +200,8 @@
     {
       "path": "office-agents/third-party-platforms.md",
       "url": "https://claude.com/docs/office-agents/third-party-platforms.md",
-      "sha256": "ad2a64a0cf2ca530feeabbb66a7ae24e620f9b9a8d7e5aedd733889f88ea334a",
-      "bytes": 33730
+      "sha256": "be665975bdd3c9a62e7aa116c6e3c9945762b1721af1a3f8f65379fcaeda5c08",
+      "bytes": 38633
     },
     {
       "path": "office-agents/word.md",

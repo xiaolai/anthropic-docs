@@ -110,6 +110,17 @@ Microsoft Graph). See
 selects the auth header: `x-api-key` (default) or `authorization`
 (sends `Authorization: Bearer <token>`).
 
+**Gateway CORS requirement.** The add-in taskpane loads from
+`https://pivot.claude.ai`. All gateway requests are cross-origin, so the
+gateway must return `Access-Control-Allow-Origin: https://pivot.claude.ai`
+(or `*`) on **every** response — including GET, POST, OPTIONS, and error
+responses. For preflight, also return `Access-Control-Allow-Headers`
+listing headers the add-in sends (e.g. `x-api-key, authorization,
+content-type, anthropic-version`). The `*` wildcard does not cover the
+`Authorization` header per the Fetch spec; list it explicitly when using
+`gateway_auth_header: authorization`. Source:
+[`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md).
+
 **Features not available on 3P:** Connectors (coming soon), Skills
 (coming soon), File uploads, Dictation, and Work-across-apps are not
 available when connecting through a third-party platform.
@@ -123,8 +134,11 @@ available when connecting through a third-party platform.
 | **Code execution** | Foundry direct, and gateways the add-in detects as routing to a Foundry-compatible upstream |
 
 > **Bedrock + Outlook:** Amazon Bedrock is not supported for Claude for
-> Outlook. Claude for Outlook on 3P currently supports Claude Opus 4.7
-> only.
+> Outlook. On direct platforms (Vertex AI, Foundry), Claude for Outlook
+> supports Opus 4.7, Opus 4.6, and Sonnet 4.6. When connecting through
+> a gateway, Opus 4.7 is the only officially supported model.
+>
+> Source: [`outlook.md`](https://claude.com/docs/office-agents/outlook.md)
 
 Source: [`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md).
 
@@ -164,6 +178,8 @@ Full tables are in
 
 Always required (both 1P and 3P): `pivot.claude.ai` (task-pane UI,
 telemetry), `appsforoffice.microsoft.com` (Office.js runtime).
+`o1158394.ingest.us.sentry.io` is **optional** (crash and error reporting;
+blocking this domain degrades diagnostics but does not break add-in functionality).
 
 **1P (Claude accounts)** additionally requires: `api.anthropic.com`
 (inference), `claude.ai` (OAuth + feature flags),
@@ -187,11 +203,12 @@ Outlook always needs `graph.microsoft.com` regardless of 1P/3P.
 
 ## Page index
 
-All 10 source pages mirrored under
+All 11 source pages mirrored under
 [`https://claude.com/docs/office-agents/`](https://claude.com/docs/office-agents/):
 
 | Page | Topic |
 |---|---|
+| [`overview.md`](https://claude.com/docs/office-agents/overview.md) | Product overview — available apps, enterprise deployment, add-on capabilities |
 | `excel.md` | Claude for Excel |
 | `powerpoint.md` | Claude for PowerPoint |
 | `word.md` | Claude for Word |
@@ -205,4 +222,4 @@ All 10 source pages mirrored under
 
 ---
 
-*Source pages: 10 under `claude.com/docs/office-agents/`.*
+*Source pages: 11 under `claude.com/docs/office-agents/`.*
