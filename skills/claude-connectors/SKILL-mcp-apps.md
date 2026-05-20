@@ -326,6 +326,10 @@ from `@modelcontextprotocol/ext-apps` repo): Customer Segmentation, Map,
 QR Code, ShaderToy, Sheet Music, [and more](https://github.com/modelcontextprotocol/ext-apps/tree/main/examples).
 Install via `npx -y @modelcontextprotocol/<name>-server --stdio`.
 
+**Testing remote MCP Apps locally:** Use [`mcp-remote`](https://www.npmjs.com/package/mcp-remote)
+as a proxy to bridge a local Claude Desktop stdio connection to a remote
+MCP server during development.
+
 **MCP Apps skills for AI coding agents:** Works with Claude Code, Cursor, Gemini CLI,
 and any agent that supports the [Agent Skills](https://agentskills.io) standard.
 Install in Claude Code with:
@@ -342,6 +346,16 @@ or ask an agent: "Migrate from OpenAI Apps SDK" / "Convert my OpenAI App to an M
 
 [`mcp-apps/troubleshooting.md`](https://claude.com/docs/connectors/building/mcp-apps/troubleshooting.md)
 covers common rendering, theming, and link-handling issues.
+
+**Large tool results — app doesn't render:** When a tool result exceeds
+approximately **150,000 characters** and Claude's code execution sandbox
+is active, the result is stored in the sandbox filesystem rather than
+being passed inline. Your widget receives a file pointer instead of
+`structuredContent`, so it never hydrates and stays invisible. Fix:
+keep initial payloads lean — paginate, fetch details on demand inside
+the widget, and defer large blobs (base64 images, full document text)
+to a separate tool call. (Note: Claude Code uses a separate 25,000-token
+default limit, configurable via `MAX_MCP_OUTPUT_TOKENS`.)
 
 ## Page index
 

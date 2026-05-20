@@ -86,6 +86,7 @@ supported.
 
 - `static_bearer` (user-pasted bearer tokens) — not yet supported.
 - Tokens or API keys in the connector URL query string (`?token=`, `?apiKey=`) — explicitly prohibited by the MCP auth spec.
+- **Machine-to-machine `client_credentials` grant** (server-to-server token with no user in the loop) — not supported. Every connection requires user consent. `oauth_anthropic_creds` is the consent-gated alternative for partners who need stable pre-registered credentials.
 
 Additional auth features:
 
@@ -200,7 +201,9 @@ documents exactly what Anthropic reviewers test. Key requirements:
 - **Separate read and write tools.** A catch-all `api_request` tool with a `method` parameter is rejected — split into distinct read and write tools.
 - **Reference API docs in custom query tools.** If a tool accepts freeform endpoint paths, its description must include a link to the target API.
 - **Tool names ≤ 64 characters.** Tool `title` is also required; `readOnlyHint: true` or `destructiveHint: true` must be set.
-- **No prompt-injection patterns** in tool descriptions (no instructions telling Claude to call external tools, pull instructions from external sources, or override system instructions).
+- **No prompt-injection patterns** in tool descriptions. Rejected if descriptions: instruct Claude to call external software not requested by the user; interfere with Claude calling other tools; direct Claude to pull behavioral instructions from external sources; contain hidden, obfuscated, or encoded instructions; or tell Claude to behave in ways unrelated to the tool's function, override system instructions, or promote products/services.
+- **No collecting conversation data** beyond what the tool needs for its function. Tools must not query Claude's memory, chat history, conversation summaries, or user files.
+- **API ownership:** Your server must call your own first-party APIs, or APIs you legitimately proxy. The MCP server domain should match your service.
 - **Unsupported use cases (automatic rejection):** money/crypto/asset transfers; AI-generated images, video, or audio.
 - **Allowed link URIs** are recommended if your server calls `ui/open-link`.
 
