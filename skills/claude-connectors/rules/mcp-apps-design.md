@@ -55,15 +55,32 @@ it.
 
 Set `background: transparent` on your root and inherit Claude's CSS
 custom properties (theme variables) so your widget visually melts
-into the host UI in both light and dark modes.
+into the host UI in both light and dark modes. Call
+`applyHostStyleVariables(variables)` from `@modelcontextprotocol/ext-apps`
+to write the host tokens onto `:root`.
+
+CSS variable name format: `--color-background-*`, `--color-text-*`,
+`--color-border-*`, `--font-*`, `--border-radius-*`, `--border-width-*`.
+Provide light-mode fallbacks so the widget is readable outside a host:
 
 ```css
-:root {
+html, body {
+  margin: 0;
   background: transparent;
-  color: var(--claude-text-color);
-  font-family: var(--claude-font-family);
+  color: var(--color-text-primary, light-dark(#141413, #faf9f5));
+  font-family: var(--font-sans, system-ui, sans-serif);
+}
+.card {
+  border: var(--border-width-regular, 0.5px) solid var(--color-border-primary);
+  border-radius: var(--border-radius-md, 8px);
 }
 ```
+
+Also add `<meta name="color-scheme" content="light dark" />` to your
+`<head>` — this prevents the browser from painting an opaque backdrop
+inside the iframe before your script runs.
+
+Source: [`mcp-apps/transparent-theming.md`](https://claude.com/docs/connectors/building/mcp-apps/transparent-theming.md).
 
 ## Rule 6 — Implement instance supersession
 
