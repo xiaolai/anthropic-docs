@@ -8,7 +8,8 @@ description: |
   hooks (PreToolUse / PostToolUse / Stop / etc.), subagents, MCP
   servers (stdio / HTTP / SSE / SDK in-process), permission modes,
   the sandbox (Docker / Kubernetes), structured outputs (JSON Schema
-  validation), and session capture / resume / fork.
+  validation), session capture / resume / fork, and session storage
+  adapters (`SessionStore`, `InMemorySessionStore`, S3/Redis/Postgres).
 
   Use when the user asks about: importing `@anthropic-ai/claude-agent-sdk`
   in TypeScript or `from claude_agent_sdk import ...` in Python, writing
@@ -17,7 +18,9 @@ description: |
   defining MCP servers in SDK options, configuring `permissionMode` /
   `permission_mode`, building subagents with `AgentDefinition`, enabling
   structured outputs, running agents in a Docker/K8s sandbox, capturing
-  and resuming sessions, or troubleshooting SDK-specific errors (the
+  and resuming sessions, mirroring session transcripts to external storage
+  (S3, Redis, Postgres) via `SessionStore`, or troubleshooting SDK-specific
+  errors (the
   SDK wraps Claude Code, so its errors differ from raw Messages API
   errors).
 
@@ -72,7 +75,7 @@ Both SDKs wrap the Claude Code CLI and share these concepts:
 - **Subagents**: Delegate tasks to child agents with scoped tools/permissions
 - **Structured Outputs**: JSON Schema validation on agent output
 - **Sandbox**: Container-based isolation (Docker/Kubernetes)
-- **Sessions**: Capture, resume, and fork conversation state
+- **Sessions**: Capture, resume, fork, and mirror transcripts to external storage (`SessionStore`)
 
 For API details, code examples, options tables, and known issues,
 read the language-specific reference file.

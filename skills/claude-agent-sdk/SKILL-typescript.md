@@ -1238,6 +1238,92 @@ for await (const msg of query({
 - Fork proactively before context gets too large ([Known Issue #2](#2-context-length-exceeded-session-breaking))
 - `persistSession: false` disables writing session state to disk
 
+### Session Storage
+
+Source: [session-storage.md](https://code.claude.com/docs/en/agent-sdk/session-storage.md)
+
+By default the SDK writes transcripts to `~/.claude/projects/` on the local filesystem. A `SessionStore` adapter mirrors them to an external backend (S3, Redis, a database) so that any host can resume a session — useful for serverless functions, autoscaled workers, and CI runners that do not share a filesystem.
+
+#### `SessionStore` interface
+
+```typescript
+// All three types exported from @anthropic-ai/claude-agent-sdk
+type SessionKey = {
+  projectKey: string;
+  sessionId: string;
+  subpath?: string;  // subagent transcripts: "subagents/agent-<id>"
+};
+
+type SessionStore = {
+  // Required
+  append(key: SessionKey, entries: SessionStoreEntry[]): Promise<void>;
+  load(key: SessionKey): Promise<SessionStoreEntry[] | null>;
+
+  // Optional
+  listSessions?(projectKey: string): Promise<Array<{ sessionId: string; mtime: number }>>;
+  delete?(key: SessionKey): Promise<void>;
+  listSubkeys?(key: { projectKey: string; sessionId: string }): Promise<string[]>;
+};
+```
+
+| Method | Required | Purpose |
+|--------|----------|---------|
+| `append` | Yes | Called after each batch of transcript entries is written locally |
+| `load` | Yes | Called once on resume; return `null` if session unknown |
+| `listSessions` | No | Required by `listSessions()` and `query()` with `continue: true` |
+| `delete` | No | Required by `deleteSession()`; must cascade to all subkeys |
+| `listSubkeys` | No | Required to restore subagent transcripts on resume |
+
+#### Quick start — `InMemorySessionStore`
+
+```typescript
+import { query, InMemorySessionStore } from "@anthropic-ai/claude-agent-sdk";
+
+const store = new InMemorySessionStore();
+
+let sessionId: string | undefined;
+for await (const message of query({
+  prompt: "List the TypeScript files under src/",
+  options: { sessionStore: store },
+})) {
+  if (message.type === "result") sessionId = message.session_id;
+}
+
+// Resume on any host that has access to the same store
+for await (const message of query({
+  prompt: "Summarize what those files do",
+  options: { sessionStore: store, resume: sessionId },
+})) {
+  if (message.type === "result" && message.subtype === "success") {
+    console.log(message.result);
+  }
+}
+```
+
+#### Reference adapters
+
+The repo ships runnable adapters under [`examples/session-stores/`](https://github.com/anthropics/claude-agent-sdk-typescript/tree/main/examples/session-stores) (not published to npm — copy the `src/` file you need):
+
+| Adapter | Backend client | Storage model |
+|---------|---------------|--------------|
+| `S3SessionStore` | `@aws-sdk/client-s3` | One JSONL part file per `append()`; `load()` lists, sorts, and concatenates |
+| `RedisSessionStore` | `ioredis` | `RPUSH`/`LRANGE` list per transcript + sorted-set session index |
+| `PostgresSessionStore` | `pg` | One row per entry in a `jsonb` table, ordered by `BIGSERIAL` |
+
+Each adapter takes a pre-configured client instance so you control credentials, TLS, region, and pooling.
+
+#### Conformance suite
+
+Copy [`shared/conformance.ts`](https://github.com/anthropics/claude-agent-sdk-typescript/blob/main/examples/session-stores/shared/conformance.ts) from the examples directory into your test suite to validate your adapter. Optional methods are skipped automatically when not implemented.
+
+#### Behavior notes
+
+- **Dual-write**: The store is a mirror, not a replacement. The subprocess always writes to local disk first; the SDK forwards each batch to `append()`. Cannot be combined with `persistSession: false` or `enableFileCheckpointing`.
+- **Best-effort mirror**: If `append()` rejects or times out, a `{ type: "system", subtype: "mirror_error" }` message is emitted into the iterator and the query continues. Failed batches are not retried — monitor for `mirror_error` if you need to detect store data loss.
+- **`getSessionMessages`**: Returns the post-compaction chain. For raw history including pre-compaction turns, call `store.load(key)` directly.
+- **`forkSession`**: Rewrites every `sessionId` field and remaps message UUIDs under the new key — it does not do an adapter-level copy.
+- **Retention**: The SDK never deletes from your store on its own. Implement TTLs, S3 lifecycle policies, or scheduled cleanup in your adapter.
+
 ---
 
 ## Todo Tracking

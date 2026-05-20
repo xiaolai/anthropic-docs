@@ -1493,6 +1493,97 @@ for msg in messages:
 
 > **Note**: `list_sessions()` uses only `stat` + head/tail reads — no full JSONL parsing — so it is fast even for large session files.
 
+### Session Storage
+
+Source: [session-storage.md](https://code.claude.com/docs/en/agent-sdk/session-storage.md)
+
+By default the SDK writes transcripts to `~/.claude/projects/` on the local filesystem. A `SessionStore` adapter mirrors them to an external backend (S3, Redis, a database) so that any host can resume a session — useful for serverless functions, autoscaled workers, and CI runners that do not share a filesystem.
+
+#### `SessionStore` protocol
+
+```python
+# All types exported from claude_agent_sdk
+from claude_agent_sdk import SessionStore, SessionKey, SessionStoreEntry
+from typing import Protocol, NotRequired
+from typing_extensions import TypedDict
+
+class SessionKey(TypedDict):
+    project_key: str
+    session_id: str
+    subpath: NotRequired[str]  # subagent transcripts: "subagents/agent-<id>"
+
+class SessionStore(Protocol):
+    # Required
+    async def append(self, key: SessionKey, entries: list[SessionStoreEntry]) -> None: ...
+    async def load(self, key: SessionKey) -> list[SessionStoreEntry] | None: ...
+
+    # Optional — omit or raise NotImplementedError
+    async def list_sessions(self, project_key: str) -> list[SessionStoreListEntry]: ...
+    async def delete(self, key: SessionKey) -> None: ...
+    async def list_subkeys(self, key: SessionListSubkeysKey) -> list[str]: ...
+```
+
+| Method | Required | Purpose |
+|--------|----------|---------|
+| `append` | Yes | Called after each batch of transcript entries is written locally |
+| `load` | Yes | Called once on resume; return `None` if session unknown |
+| `list_sessions` | No | Required by `list_sessions()` and `query()` with `continue_conversation=True` |
+| `delete` | No | Required by `delete_session()`; must cascade to all subkeys |
+| `list_subkeys` | No | Required to restore subagent transcripts on resume |
+
+#### Quick start — `InMemorySessionStore`
+
+```python
+import asyncio
+from claude_agent_sdk import (
+    ClaudeAgentOptions,
+    InMemorySessionStore,
+    ResultMessage,
+    query,
+)
+
+store = InMemorySessionStore()
+
+async def main():
+    session_id = None
+    async for message in query(
+        prompt="List the Python files under src/",
+        options=ClaudeAgentOptions(session_store=store),
+    ):
+        if isinstance(message, ResultMessage):
+            session_id = message.session_id
+
+    # Resume on any host that has access to the same store
+    async for message in query(
+        prompt="Summarize what those files do",
+        options=ClaudeAgentOptions(session_store=store, resume=session_id),
+    ):
+        if isinstance(message, ResultMessage) and message.subtype == "success":
+            print(message.result)
+
+asyncio.run(main())
+```
+
+#### Conformance suite
+
+The package ships a conformance suite that validates the behavioral contract. Optional methods are skipped automatically when not implemented:
+
+```python
+import pytest
+from claude_agent_sdk.testing import run_session_store_conformance
+
+@pytest.mark.asyncio
+async def test_my_store_conformance():
+    await run_session_store_conformance(MyRedisStore)
+```
+
+#### Behavior notes
+
+- **Dual-write**: The store is a mirror, not a replacement. The subprocess always writes to local disk first; the SDK forwards each batch to `append()`. Cannot be combined with `persist_session=False`.
+- **Best-effort mirror**: If `append()` rejects or times out, a `mirror_error` system message is emitted into the iterator and the query continues. Failed batches are not retried.
+- **`get_session_messages`**: Returns the post-compaction chain. For raw history including pre-compaction turns, call `store.load(key)` directly.
+- **Retention**: The SDK never deletes from your store on its own. Implement TTLs or scheduled cleanup in your adapter.
+
 ---
 
 ## Debugging & Error Handling
