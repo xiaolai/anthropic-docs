@@ -164,13 +164,13 @@ and `git pull`.
 
 | Date | Update | Research | Mending | Report | Total | Notes |
 |------|--------|----------|---------|--------|-------|-------|
-| 2026-05-20 | review | research + report (no upstream change) |
+| 2026-05-20 | success | research + report (no upstream change) |
+| 2026-05-20 (run 11) | — | $1.75 | — | — | **$1.75** | success — no upstream change, routine audit v2.1.145, 136 turns, all 11 gates pass |
 | 2026-05-20 (run 10) | — | $1.43 | — | — | **$1.43** | review — checkDocsDrift failed; draft PR auto/2026-05-20-pending-review; 8/9 gates pass |
 | 2026-05-20 (run 9) | — | $1.66 | — | — | **$1.66** | success — no upstream change, SKILL-cli.md auto-mode model requirements + SKILL-slash-commands.md /resume version corrected; 8 gates pass |
 | 2026-05-20 (run 8) | — | $1.62 | — | — | **$1.62** | success — no upstream change, SKILL-hooks.md PreToolUse tool_input + Agent PostToolUse response; all 11 gates pass |
 | 2026-05-20 (run 7) | $0.44 | $1.01 | — | — | **$1.45** | success — docs index +3 pages (plugin-hints, prompt-library, sessions; 105→108), all 11 gates pass |
 | 2026-05-20 (run 6) | — | $1.62 | — | — | **$1.62** | success — no upstream change, routine audit v2.1.145, all 8 gates pass |
-| 2026-05-20 (run 5) | — | $1.55 | — | — | **$1.55** | success — no upstream change, routine audit v2.1.145, all 8 gates pass |
 
 ## For maintainers
 
