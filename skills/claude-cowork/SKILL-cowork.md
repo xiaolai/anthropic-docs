@@ -170,7 +170,8 @@ That page is the source of truth for:
   `disableNonessentialServices`, `disableAutoUpdates`; `autoUpdaterEnforcementHours`
   (force pending update after N hours, 1–72, default 72)
 - **MCP & extensions** — `managedMcpServers` (JSON array; each server supports
-  `transport` (`"http"` (default) | `"sse"` | `"stdio"`), `headers`,
+  `name` (required — unique display name), `url` (required for `http`/`sse`,
+  must be `https://`), `transport` (`"http"` (default) | `"sse"` | `"stdio"`), `headers`,
   `headersHelper`/`headersHelperTtlSec` (default 300 s), `oauth` (`true` for
   dynamic client registration, or an object for pre-registered clients: `clientId`,
   `tenantId`, `scope`, `callbackPort` (default `53280`), `callbackHost`

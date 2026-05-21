@@ -130,7 +130,10 @@ names. Custom deployment names are not supported.
 **Manifest keys:** `gateway_api_format` selects the API dialect —
 `anthropic` (default), `bedrock`, or `vertex`. `gateway_auth_header`
 selects the auth header: `x-api-key` (default) or `authorization`
-(sends `Authorization: Bearer <token>`).
+(sends `Authorization: Bearer <token>`). For `gateway_api_format: vertex`,
+also set `gcp_project_id` (GCP project ID) and `gcp_region` (region, e.g.
+`us-east5`) — the add-in uses these to build Vertex's path-based endpoint URL.
+Source: [`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md).
 
 **Gateway CORS requirement.** The add-in taskpane loads from
 `https://pivot.claude.ai`. All gateway requests are cross-origin, so the
