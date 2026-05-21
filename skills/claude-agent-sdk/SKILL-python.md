@@ -950,7 +950,7 @@ PermissionMode = Literal[
 
 ### `can_use_tool`
 
-> **⚠️ Known Issue**: The `can_use_tool` callback is currently non-functional — callbacks are never invoked by the CLI even when correctly configured. See [KI #27](#27-can_use_tool-callback-never-invoked-issue-469). Use `PreToolUse` hooks instead for permission enforcement.
+> **⚠️ Workaround required**: `can_use_tool` only fires when paired with a dummy `PreToolUse` hook that returns `{"continue_": True}`. Without the hook, callbacks are silently never invoked. See [KI #27](#27-can_use_tool-requires-a-dummy-pretooluse-hook-to-activate-issue-469).
 
 ```python
 from claude_agent_sdk.types import PermissionResultAllow, PermissionResultDeny
@@ -1467,18 +1467,38 @@ async for msg in query(
 
 ### File Checkpointing
 
-Requires `enable_file_checkpointing=True`. Available on `ClaudeSDKClient` only.
+Requires `enable_file_checkpointing=True` plus `extra_args={"replay-user-messages": None}` to receive checkpoint UUIDs in the response stream. Available on `ClaudeSDKClient` only. Source: [file-checkpointing.md](https://code.claude.com/docs/en/agent-sdk/file-checkpointing.md)
 
 ```python
-async with ClaudeSDKClient(
-    options=ClaudeAgentOptions(enable_file_checkpointing=True)
-) as client:
+from claude_agent_sdk import ClaudeSDKClient, ClaudeAgentOptions, UserMessage, ResultMessage
+
+checkpoint_id = None
+session_id = None
+
+async with ClaudeSDKClient(ClaudeAgentOptions(
+    enable_file_checkpointing=True,
+    permission_mode="acceptEdits",
+    extra_args={"replay-user-messages": None},  # required to get UUIDs
+)) as client:
     await client.query("Refactor auth module")
     async for msg in client.receive_response():
-        pass
-    # Rewind to a specific user message checkpoint
-    await client.rewind_files(user_message_id)
+        if isinstance(msg, UserMessage) and msg.uuid and not checkpoint_id:
+            checkpoint_id = msg.uuid  # first message = pre-edit checkpoint
+        if isinstance(msg, ResultMessage) and not session_id:
+            session_id = msg.session_id
+
+# Later: resume and rewind
+if checkpoint_id and session_id:
+    async with ClaudeSDKClient(ClaudeAgentOptions(
+        enable_file_checkpointing=True, resume=session_id
+    )) as client:
+        await client.query("")  # empty prompt opens the connection
+        async for msg in client.receive_response():
+            await client.rewind_files(checkpoint_id)
+            break
 ```
+
+**Note**: Only Write, Edit, and NotebookEdit tool changes are tracked. Bash-based file changes (e.g. `echo`, `sed -i`) are not captured.
 
 ### Listing & Reading Sessions
 
@@ -1995,28 +2015,30 @@ options = ClaudeAgentOptions()  # No thinking configured
 pip install --upgrade claude-agent-sdk
 ```
 
-### #27: `can_use_tool` Callback Never Invoked (Issue #469)
-**Error**: `can_use_tool` callbacks are never called despite correct configuration — tools execute without triggering the permission handler. Confirmed across SDK versions 0.1.19–0.1.48+ and CLI versions 2.1.7–2.1.73+ ([#469](https://github.com/anthropics/claude-agent-sdk-python/issues/469))
-**Cause**: The CLI does not emit `control_request` messages with subtype `can_use_tool` as expected by the SDK, even when `--permission-prompt-tool stdio` is active. The SDK's permission callback infrastructure is implemented but never activated by the CLI.
-**Impact**: Any permission enforcement via `can_use_tool` is silently bypassed. Do not rely on `can_use_tool` for security-critical tool gating.
-**Workaround**: Use `PreToolUse` hooks for permission enforcement instead:
+### #27: `can_use_tool` requires a dummy `PreToolUse` hook to activate (Issue #469)
+**Error**: `can_use_tool` callbacks are never called when registered without a `PreToolUse` hook — the stream closes before the permission callback can be invoked ([#469](https://github.com/anthropics/claude-agent-sdk-python/issues/469))
+**Cause**: In streaming mode (required for `can_use_tool`), the SDK event loop exits when no hooks are registered. Without an active `PreToolUse` hook keeping the stream open, the permission callback has no opportunity to fire.
+**Workaround**: Add a dummy `PreToolUse` hook alongside `can_use_tool`. The hook must return `{"continue_": True}` to keep the stream open. Source: [user-input.md](https://code.claude.com/docs/en/agent-sdk/user-input.md)
 ```python
-# WRONG — can_use_tool never fires
-options = ClaudeAgentOptions(
-    can_use_tool=my_permission_handler
-)
+from claude_agent_sdk import ClaudeAgentOptions
+from claude_agent_sdk.types import HookMatcher, PermissionResultAllow, PermissionResultDeny
 
-# CORRECT — use PreToolUse hooks
-async def permission_hook(input_data, tool_use_id, context):
-    if input_data["tool_name"] == "Write":
-        # Enforce your permission logic here
-        return {"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny"}}
-    return {}
+# Required: dummy hook keeps the stream open for can_use_tool
+async def dummy_hook(input_data, tool_use_id, context):
+    return {"continue_": True}
+
+async def my_permission_handler(tool_name, input_data, context):
+    if tool_name == "Bash":
+        # prompt user, check allowlist, etc.
+        return PermissionResultAllow(updated_input=input_data)
+    return PermissionResultDeny(message="Not allowed")
 
 options = ClaudeAgentOptions(
-    hooks={"PreToolUse": [HookMatcher(hooks=[permission_hook])]}
+    can_use_tool=my_permission_handler,
+    hooks={"PreToolUse": [HookMatcher(matcher=None, hooks=[dummy_hook])]}
 )
 ```
+**Impact**: `can_use_tool` alone (without the dummy hook) is a silent no-op. Always pair it with the hook workaround. For pure permission enforcement without user interaction, `PreToolUse` hooks alone remain the simpler approach.
 
 ---
 

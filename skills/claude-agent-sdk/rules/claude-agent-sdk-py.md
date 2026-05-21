@@ -114,31 +114,33 @@ options = ClaudeAgentOptions(
 
 Issue [#553](https://github.com/anthropics/claude-agent-sdk-python/issues/553).
 
-### `can_use_tool` is silently never invoked — use `PreToolUse` hooks instead
+### `can_use_tool` requires a dummy `PreToolUse` hook to activate
 
-The `can_use_tool` callback shipped in v0.1.48+ never fires in
-practice because the CLI doesn't emit the underlying control protocol
-messages. All `can_use_tool` registrations are silent no-ops.
+The `can_use_tool` callback only fires when a `PreToolUse` hook is also
+registered — without it, the stream closes before the permission
+callback can be invoked. Always pair `can_use_tool` with a dummy hook.
 
 ```python
-# WRONG — silent no-op, permission enforcement bypassed
+# WRONG — silent no-op without the dummy hook
 options = ClaudeAgentOptions(can_use_tool=my_permission_handler)
 
-# CORRECT — use PreToolUse hooks
-async def permission_hook(input_data, tool_use_id, context):
-    if input_data.get("tool_name") == "Write":
-        return {"hookSpecificOutput": {
-            "hookEventName": "PreToolUse",
-            "permissionDecision": "deny",
-            "permissionDecisionReason": "Blocked"
-        }}
-    return {}
+# CORRECT — pair with dummy PreToolUse hook that keeps stream open
+async def _keep_open(input_data, tool_use_id, context):
+    return {"continue_": True}
+
+async def my_permission_handler(tool_name, input_data, context):
+    if tool_name == "Write":
+        return PermissionResultDeny(message="Write blocked")
+    return PermissionResultAllow(updated_input=input_data)
 
 options = ClaudeAgentOptions(
-    hooks={"PreToolUse": [HookMatcher(hooks=[permission_hook])]}
+    can_use_tool=my_permission_handler,
+    hooks={"PreToolUse": [HookMatcher(matcher=None, hooks=[_keep_open])]}
 )
 ```
 
+See [KI #27 in SKILL-python.md](../SKILL-python.md#27-can_use_tool-requires-a-dummy-pretooluse-hook-to-activate-issue-469)
+and [user-input.md](https://code.claude.com/docs/en/agent-sdk/user-input.md).
 Issue [#469](https://github.com/anthropics/claude-agent-sdk-python/issues/469).
 
 ### Use dict-key access on `TypedDict` types, not attribute access

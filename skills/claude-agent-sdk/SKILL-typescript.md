@@ -436,6 +436,7 @@ await q.toggleMcpServer("server-name", enabled); // Toggle MCP server (v0.2.21)
 await q.setMcpServers(newServersConfig);    // Replace MCP servers mid-session
 
 // File checkpointing (requires enableFileCheckpointing: true)
+// ALSO add extraArgs: { 'replay-user-messages': null } to receive UUID in stream
 await q.rewindFiles(userMessageUuid, { dryRun?: boolean }); // Rewind to checkpoint
 ```
 
@@ -1044,6 +1045,11 @@ When using many tools (e.g. remote MCP servers with hundreds of endpoints), tool
 | `"false"` | Off — all tool definitions loaded every turn |
 | `"auto"` | Activates if tool definitions exceed 10% of context window |
 | `"auto:N"` | Same as `auto` with N% threshold (e.g. `"auto:5"`) |
+
+**Limits** (source: [tool-search.md](https://code.claude.com/docs/en/agent-sdk/tool-search.md)):
+- Max catalog size: **10,000 tools**
+- Search returns **3–5 most relevant** tools per turn
+- Requires **Claude Sonnet 4 or Opus 4** or later — Haiku models do not support tool search
 
 ```typescript
 for await (const msg of query({
@@ -1955,11 +1961,26 @@ sandbox: {
 ```
 **Note**: There is no configuration option to invert this to "allow only CWD." A feature request for a `allowReadCwdOnly` or similar option is tracked in [#231](https://github.com/anthropics/claude-agent-sdk-typescript/issues/231).
 
-### #40: `enableFileCheckpointing` has no effect in SDK (non-interactive) mode — `rewindFiles()` always returns `canRewind: false`
-**Error**: `rewindFiles()` always returns `{ canRewind: false, error: "No file checkpoint found for this message." }` even with `enableFileCheckpointing: true` ([#236](https://github.com/anthropics/claude-agent-sdk-typescript/issues/236))
-**Cause**: The snapshot creation function that tags file state to each user message UUID is only invoked from React/Ink interactive UI render code. In non-interactive SDK mode (`isInteractive = false`), those call sites are never reached. Without an initial snapshot, the file-tracking code silently bails (`FileHistory: Missing most recent snapshot`), so no file state is ever recorded.
-**Impact**: The `enableFileCheckpointing` option and `Query.rewindFiles()` method are entirely non-functional when using the SDK programmatically. The option has no effect.
-**Status**: No workaround available. This is a CLI-side bug; the SDK cannot compensate.
+### #40: `enableFileCheckpointing` requires `extraArgs: { 'replay-user-messages': null }` to receive checkpoint UUIDs
+**Error**: `rewindFiles()` returns `{ canRewind: false, error: "No file checkpoint found for this message." }` when `enableFileCheckpointing: true` is set without the `extraArgs` flag ([#236](https://github.com/anthropics/claude-agent-sdk-typescript/issues/236))
+**Cause**: Without `extraArgs: { 'replay-user-messages': null }`, user messages are not replayed into the stream and their UUIDs are never surfaced — so there is no checkpoint UUID to pass to `rewindFiles()`.
+**Workaround**: Add `extraArgs: { 'replay-user-messages': null }` alongside `enableFileCheckpointing: true`. Capture `message.uuid` from `user`-typed messages, then pass it to `rewindFiles()`. See the [official file-checkpointing guide](https://code.claude.com/docs/en/agent-sdk/file-checkpointing.md) for a complete working example.
+```typescript
+const response = query({
+  prompt: "Refactor auth module",
+  options: {
+    enableFileCheckpointing: true,
+    permissionMode: "acceptEdits",
+    extraArgs: { "replay-user-messages": null }  // required to get checkpoint UUIDs
+  }
+});
+let checkpointId: string | undefined;
+for await (const msg of response) {
+  if (msg.type === "user" && msg.uuid && !checkpointId) checkpointId = msg.uuid;
+}
+// Then rewind by resuming the session
+```
+**Status**: Functional with the workaround above. Older SDK versions (pre-v0.3.x) lacked the `replay-user-messages` flag and were entirely non-functional in SDK mode.
 
 ### #41: `bypassPermissions` mode not propagated to subagents — `allowDangerouslySkipPermissions` hardcoded to false
 **Error**: Subagents spawned via the Task tool cannot use `bypassPermissions` mode even when the parent session has it enabled ([#117](https://github.com/anthropics/claude-agent-sdk-typescript/issues/117))
