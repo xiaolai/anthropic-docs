@@ -36,6 +36,7 @@ SKILL_NAME=claude-connectors npm run update
 | Date | Update | Research | Mending | Report | Total | Notes |
 |------|--------|----------|---------|--------|-------|-------|
 | 2026-05-21 | review | research + report (no upstream change) |
+| 2026-05-21 (run 4) | — | $0.65 | — | — | **$0.65** | review — check-docs-drift failed; draft PR auto/2026-05-21-pending-review |
 | 2026-05-21 (run 3) | — | $0.67 | — | — | **$0.67** | review — check-docs-drift failed; draft PR auto/2026-05-21-pending-review |
 | 2026-05-21 (run 2) | — | $0.95 | — | — | **$0.95** | review — check-docs-drift failed; draft PR auto/2026-05-21-pending-review |
 | 2026-05-20 | — | — | — | — | — | review — check-docs-drift failed (multiple runs) |
