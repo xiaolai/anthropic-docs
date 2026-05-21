@@ -3,7 +3,7 @@
   "indexSha256": "e902363536c9acc513d54af3426bbbed42d810e267688e03faa4bb78006a7ab4",
   "indexBytes": 12253,
   "pageCount": 35,
-  "refreshedAt": "2026-05-20T23:00:00Z",
+  "refreshedAt": "2026-05-21T00:00:00Z",
   "pages": [
     {
       "path": "cowork/3p/bedrock-aws-sign-in.md",
@@ -32,8 +32,8 @@
     {
       "path": "cowork/3p/connectors-m365.md",
       "url": "https://claude.com/docs/cowork/3p/connectors-m365.md",
-      "sha256": "62074812daaba783fd229e0f3eec95afe2ee0fd23b3ff0bee931b3eec3b5ef40",
-      "bytes": 10234
+      "sha256": "90a0c3464e4488b268da57e6c16459c7ff6e3c5b21d759aff5d307c9e25f29ad",
+      "bytes": 10538
     },
     {
       "path": "cowork/3p/data-storage.md",
@@ -92,8 +92,8 @@
     {
       "path": "cowork/3p/overview.md",
       "url": "https://claude.com/docs/cowork/3p/overview.md",
-      "sha256": "49f85315a422ebf6d10f9c82d2f5a19bc60116db119f3497b62a191aa95d3cef",
-      "bytes": 8905
+      "sha256": "593f9cae52cfca9714ff90d9f5e22e0b8bf7deee5bc4768827b11e20587813fa",
+      "bytes": 8878
     },
     {
       "path": "cowork/3p/telemetry.md",

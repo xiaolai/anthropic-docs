@@ -324,6 +324,44 @@ The Anthropic-built M365 connector **is** available in Cowork on 3P
 [`3p/connectors-m365.md`](https://claude.com/docs/cowork/3p/connectors-m365.md).
 Google Workspace connector is not currently supported in 3P (planned).
 
+**Connector app ID:** `07c030f6-5743-41b7-ba00-0a6e85f37c17` (Anthropic's multi-tenant Entra
+app). Use this ID in the tenant admin-consent URL and in the OAuth scope string.
+
+**`managedMcpServers` config for M365:**
+
+```json
+{
+  "name": "m365",
+  "url": "https://microsoft365.mcp.claude.com/mcp",
+  "transport": "http",
+  "oauth": {
+    "clientId": "APPLICATION_CLIENT_ID_FROM_YOUR_TENANT",
+    "tenantId": "DIRECTORY_TENANT_ID",
+    "scope": "api://07c030f6-5743-41b7-ba00-0a6e85f37c17/access_as_user offline_access"
+  }
+}
+```
+
+**Required egress hosts (M365 connector):** `login.microsoftonline.com` (Entra sign-in),
+`microsoft365.mcp.claude.com` (connector service). The connector service calls
+`graph.microsoft.com` from Anthropic's infrastructure; user devices do **not** need
+direct egress to Graph.
+
+> **FedRAMP / GovCloud:** Uses a different connector app ID and service hostname.
+> Contact your Anthropic representative for the correct values.
+
+**Common sign-in errors:**
+
+| Error | Cause | Fix |
+|---|---|---|
+| `AADSTS50011` redirect mismatch | Redirect URI not `http://127.0.0.1/callback` or wrong platform type | Re-check app registration step |
+| `AADSTS50194` multi-tenant required | Tenant ID missing from config | Add `tenantId` |
+| `AADSTS65001` admin consent required | Tenant consent step not completed | Run admin-consent URL |
+| `Client application is not authorized…` | Anthropic allowlist not yet updated | Wait for allowlist confirmation |
+| `AADSTS9000411` duplicate prompt | Older Claude Desktop build | Upgrade app |
+
+Source: [`3p/connectors-m365.md`](https://claude.com/docs/cowork/3p/connectors-m365.md).
+
 ## Feature matrix (Enterprise vs 3P)
 
 Full comparison: [`3p/feature-matrix.md`](https://claude.com/docs/cowork/3p/feature-matrix.md).
