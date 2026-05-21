@@ -42,7 +42,7 @@ SKILL_NAME=anthropic-api npm run update
 | Date | Update | Research | Mending | Report | Total | Notes |
 |------|--------|----------|---------|--------|-------|-------|
 | 2026-05-21 | success | research + report (no upstream change) |
-| 2026-05-20 | success | research + report (no upstream change) |
-| 2026-05-19 | — | — | — | — | — | success; no upstream change; research + report |
+| 2026-05-20 | — | ~$1.10 | — | — | **~$1.10** | success; no upstream change; all 8 gates pass |
+| 2026-05-19 | — | ~$1.44 | — | — | **~$1.44** | success; no upstream change; all 8 gates pass |
 | 2026-05-18 | — | — | — | — | — | review; first baseline audit; diff size gate failed |
 
