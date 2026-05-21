@@ -3,7 +3,7 @@
   "indexSha256": "74b86427321d85fc250695ad54819025fd61d40b0462c4a9c23e26487fe9752f",
   "indexBytes": 29065,
   "pageCount": 108,
-  "refreshedAt": "2026-05-21T15:35:20Z",
+  "refreshedAt": "2026-05-21T17:18:02Z",
   "pages": [
     {
       "path": "en/admin-setup.md",
@@ -224,8 +224,8 @@
     {
       "path": "en/errors.md",
       "url": "https://code.claude.com/docs/en/errors.md",
-      "sha256": "01f1667739a4b6160b7057feacac3d84d2fd250428880448288193ba4f9a7580",
-      "bytes": 42413
+      "sha256": "c94a13b35ffb93191cc87b0427601dd122ac2aaa340cf22451d1ab74793ef06b",
+      "bytes": 43194
     },
     {
       "path": "en/fast-mode.md",
@@ -470,8 +470,8 @@
     {
       "path": "en/scheduled-tasks.md",
       "url": "https://code.claude.com/docs/en/scheduled-tasks.md",
-      "sha256": "51f8ef7cbbf984147891dec33701282ad193f09be39f19284b043ae8b4d53363",
-      "bytes": 15630
+      "sha256": "7a722f5a8dbc3fbe2c27a4e279369def7504436ba5c7f82fb08e76c4a8810bff",
+      "bytes": 15453
     },
     {
       "path": "en/security.md",
