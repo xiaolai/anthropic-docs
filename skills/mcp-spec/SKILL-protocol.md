@@ -253,11 +253,19 @@ Notable recently-tracked SEPs (as of 2026-05-21):
 | [SEP-2575](https://modelcontextprotocol.io/seps/2575-stateless-mcp.md) | Make MCP Stateless — introduces `-32004` (UNSUPPORTED_PROTOCOL_VERSION) in draft spec | Accepted | Draft error codes; sessionless and stateless operation |
 | [SEP-2577](https://modelcontextprotocol.io/seps/2577-deprecate-roots-sampling-and-logging.md) | Deprecate Roots, Sampling, and Logging — effective in next spec revision (expected June 2026) | **Final** | Roots (`roots/list`), Sampling (`sampling/createMessage`), Logging (`logging/setLevel`, `notifications/message`) |
 | [SEP-2596](https://modelcontextprotocol.io/seps/2596-spec-feature-lifecycle-and-deprecation.md) | Specification feature lifecycle and deprecation policy | Draft | Governance process; grandfathers HTTP+SSE transport and `includeContext: "thisServer"/"allServers"` as formally Deprecated |
+| [SEP-2322](https://modelcontextprotocol.io/seps/2322-MRTR.md) | Multi Round-Trip Requests — replaces SSE for server-initiated requests (elicitation, sampling) during a client call; breaking change | Accepted | Transport; elicitation and sampling in tool-call context |
+| [SEP-2549](https://modelcontextprotocol.io/seps/2549-TTL-for-list-results.md) | TTL for List Results — adds `ttlMs` and `cacheScope` fields to `tools/list`, `resources/list`, `prompts/list`, and `resources/read` responses | Accepted | List response schema; caching |
+| [SEP-2567](https://modelcontextprotocol.io/seps/2567-sessionless-mcp.md) | Sessionless MCP via Explicit State Handles — removes `Mcp-Session-Id` and session-scoped state; complements SEP-2575 | **Final** | Session handling; transport headers |
+| [SEP-2663](https://modelcontextprotocol.io/seps/2663-tasks-extension.md) | Tasks Extension — formally defines the async-task extension (`tasks/get`, `tasks/update`, `tasks/cancel`; `resultType: "task"` discriminator) as an Extensions Track SEP | **Final** | MCP Tasks extension (already tracked in [`SKILL-tools-resources-prompts.md`](SKILL-tools-resources-prompts.md#tools)) |
 
 SEP-2596 also introduces the concept of a **deprecated registry** (`deprecated.mdx`) listing
 every feature in the Deprecated state, their migration targets, and earliest removal dates.
 When it reaches Final, the minimum deprecation window is 12 months measured from the revision
 release in which the feature is first marked Deprecated.
+
+**SEP-2549 schema additions (Accepted, not yet in `2025-11-25`):** The following fields will be added to list and read responses when SEP-2549 is incorporated:
+- `ttlMs` (integer, optional) — how many milliseconds the response may be cached before re-fetching.
+- `cacheScope` (`"session"` | `"user"` | `"global"`, optional) — controls who may cache the response.
 
 ---
 
@@ -266,4 +274,8 @@ release in which the feature is first marked Deprecated.
 `community/sep-guidelines.md`, `seps/*`
 (including `seps/2106-json-schema-2020-12.md`,
 `seps/2164-resource-not-found-error.md`,
-`seps/2596-spec-feature-lifecycle-and-deprecation.md`).*
+`seps/2322-MRTR.md`,
+`seps/2549-TTL-for-list-results.md`,
+`seps/2567-sessionless-mcp.md`,
+`seps/2596-spec-feature-lifecycle-and-deprecation.md`,
+`seps/2663-tasks-extension.md`).*
