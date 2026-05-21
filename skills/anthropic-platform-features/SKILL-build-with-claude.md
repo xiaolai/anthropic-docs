@@ -70,6 +70,19 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
     conversations.
   - **Streaming:** In streaming responses, the `diagnostics` object appears on
     the `message_start` SSE event (not in the final delta).
+  - **Reading diagnostics + usage together:** `diagnostics` answers "did my
+    request change?" while `usage.cache_read_input_tokens` answers "did the
+    cache hit?". The matrix below applies when a real `previous_message_id`
+    was passed; skip it when `cache_miss_reason` is `null` (comparison still
+    pending) or `type` is `previous_message_not_found`/`unavailable`.
+
+    | `cache_miss_reason` | Cache read tokens | Interpretation |
+    |---|---|---|
+    | `null` | high | Working correctly — prefix stable, cache hit |
+    | `null` | low or zero | Match found but cache entry expired; use 1h TTL |
+    | `*_changed` type | low or zero | Your request changed; fix the indicated cause |
+    | `*_changed` type | high | Late-prompt change with earlier breakpoint still hitting; low-impact |
+
   See
   [`cache-diagnostics.md`](https://platform.claude.com/docs/en/build-with-claude/cache-diagnostics.md).
 - **Batches return within 24h** at 50% discount. Submit via
