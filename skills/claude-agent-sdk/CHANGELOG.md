@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-05-21
+- *(pending review — see PR on `auto/2026-05-21-pending-review`)* Research-only run (TS v0.3.145, PY v0.2.82 unchanged); check-docs-drift failed; no upstream changes detected; 32 research turns, $0.33
+
 ## 2026-05-20
 - *(pending review — see PR on `auto/2026-05-20-pending-review`)* Research-only run (TS v0.3.145, PY v0.2.82 unchanged); check-docs-drift failed; no upstream changes detected; 48 research turns, $0.52 (fourteenth run 23:46Z)
 - *(pending review — see PR on `auto/2026-05-20-pending-review`)* Research-only run (TS v0.3.145, PY v0.2.82 unchanged); check-docs-drift failed; no upstream changes detected; 44 research turns, $0.48 (thirteenth run 22:52Z)
