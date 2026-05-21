@@ -719,7 +719,7 @@ HookInput = (
     | StopHookInput            # + stop_hook_active
     | SubagentStopHookInput    # + stop_hook_active, agent_id, agent_transcript_path, agent_type
     | PreCompactHookInput      # + trigger ("manual"|"auto"), custom_instructions
-    | NotificationHookInput    # + message, title (optional), notification_type
+    | NotificationHookInput    # + message, title (optional), notification_type ('permission_prompt'|'idle_prompt'|'auth_success'|'elicitation_dialog'|'elicitation_response'|'elicitation_complete')
     | SubagentStartHookInput   # + agent_id, agent_type
     | PermissionRequestHookInput  # + tool_name, tool_input, permission_suggestions; agent_id/agent_type (opt)
 )

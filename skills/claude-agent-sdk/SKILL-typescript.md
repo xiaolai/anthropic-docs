@@ -926,7 +926,7 @@ Common fields on all hooks: `session_id`, `transcript_path`, `cwd`, `permission_
 | `source` | SessionStart (`'startup' \| 'resume' \| 'clear' \| 'compact'`) |
 | `agent_type`, `model` | SessionStart |
 | `reason` | SessionEnd |
-| `message`, `title`, `notification_type` | Notification |
+| `message`, `title`, `notification_type` (`'permission_prompt' \| 'idle_prompt' \| 'auth_success' \| 'elicitation_dialog' \| 'elicitation_response' \| 'elicitation_complete'`) | Notification |
 | `permission_suggestions` | PermissionRequest |
 | `teammate_name`, `team_name` | TeammateIdle |
 | `task_id`, `task_subject`, `task_description`, `teammate_name`, `team_name` | TaskCompleted |
