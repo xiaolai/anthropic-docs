@@ -1,9 +1,9 @@
 {
   "indexUrl": "https://platform.claude.com/llms.txt",
-  "indexSha256": "c037e8136d42bb3e6f9ced4b388d09a7320c617658a6617a15f2d76fb44a4f85",
+  "indexSha256": "4537a29223635c7ee8e2baa89dcfc14b089026065d16a3b43c590d788c4d5994",
   "indexBytes": 166612,
   "pageCount": 119,
-  "refreshedAt": "2026-05-21T07:40:39Z",
+  "refreshedAt": "2026-05-21T13:30:21Z",
   "pages": [
     {
       "path": "en/agents-and-tools/agent-skills/best-practices.md",
