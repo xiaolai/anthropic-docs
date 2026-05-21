@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-05-21 (second run — review)
+- *(pending review — see PR on `auto/2026-05-21-pending-review`)* Research-only run (TS v0.3.146, PY v0.2.83 unchanged); check-docs-drift failed; no upstream changes detected; 40 research turns, $0.37
+
 ## 2026-05-21 (v0.3.146 / v0.2.83 — success run)
 - Sync to CC v2.1.146 — TS v0.3.145→v0.3.146, PY v0.2.82→v0.2.83; all 11 gates pass, 27/27 verify checks pass; 1 mending run; $1.41 total
 
