@@ -146,7 +146,7 @@ Environment variables can also be set in `settings.json` under `env`. See `code.
 | `DISABLE_AUTOUPDATER` | Disable auto-updates (`"1"`) |
 | `CLAUDE_CODE_SIMPLE` | Set by `--bare` flag; skips auto-discovery |
 | `MCP_TIMEOUT` | MCP server startup timeout (milliseconds) |
-| `MAX_MCP_OUTPUT_TOKENS` | Override MCP tool output size limit (default: 10,000) |
+| `MAX_MCP_OUTPUT_TOKENS` | Override MCP tool output size limit. Default max is 25,000 tokens; warning fires above 10,000 tokens. Cross-reference: [`SKILL-mcp.md`](SKILL-mcp.md) § *Dynamic features* |
 | `CLAUDE_CODE_EFFORT_LEVEL` | Override effort level for one session |
 | `CLAUDE_CODE_DISABLE_AUTO_MEMORY` | Disable auto memory |
 | `CLAUDE_CODE_SKIP_PROMPT_HISTORY` | Disable session persistence in any mode |
@@ -209,6 +209,26 @@ Set as default: `{ "permissions": { "defaultMode": "acceptEdits" } }` in `settin
 Switch during session: `Shift+Tab`
 
 Source: `code.claude.com/docs/en/permission-modes.md`.
+
+## PowerShell permission rules
+
+When the PowerShell tool is enabled (`CLAUDE_CODE_USE_POWERSHELL_TOOL=1`), permission rules follow the same `Tool(specifier)` syntax as Bash:
+
+```json
+{
+  "permissions": {
+    "allow": ["PowerShell(Get-ChildItem *)", "PowerShell(git commit *)"],
+    "deny": ["PowerShell(Remove-Item *)"]
+  }
+}
+```
+
+Key behaviors:
+- Wildcards with `*` match at any position; `:*` suffix is equivalent to a trailing ` *`; bare `PowerShell` or `PowerShell(*)` matches every command
+- Common aliases are canonicalized: `PowerShell(Get-ChildItem *)` also matches `gci`, `ls`, `dir`; matching is case-insensitive
+- Claude Code parses the PowerShell AST and checks each command in a compound statement independently. Pipeline `|`, separators `;`, and (PowerShell 7+) `&&`/`||` split compound commands into subcommands — a rule must match **every** subcommand for the compound to be allowed
+
+Source: `code.claude.com/docs/en/permissions.md`.
 
 ## Authentication
 
