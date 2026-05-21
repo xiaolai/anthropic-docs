@@ -293,6 +293,12 @@ plugin directory (`org-plugins/my-plugin → /opt/shared/my-plugin`) is also fol
 policy to a plugin-delivered MCP server, set `orgPluginSettings` in managed
 configuration keyed on the server's name — not in the plugin file itself.
 
+**`managedMcpServers` takes precedence over `orgPluginSettings`.** If a
+`managedMcpServers` entry and an org-plugin server share the same name, the
+`managedMcpServers` entry wins and its `toolPolicy` (if any) applies; the
+`orgPluginSettings` entry for that name is ignored.
+Source: [`3p/configuration.md` § orgPluginSettings](https://claude.com/docs/cowork/3p/configuration.md).
+
 End users **cannot add remote MCP servers** — only local ones (when
 `isLocalDevMcpEnabled` is `true`). Remote servers come only via
 `managedMcpServers` or org-plugins.

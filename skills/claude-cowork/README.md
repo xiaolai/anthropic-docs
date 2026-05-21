@@ -32,7 +32,7 @@ SKILL_NAME=claude-cowork npm run update
 | Date | Update | Research | Mending | Report | Total | Notes |
 |------|--------|----------|---------|--------|-------|-------|
 | 2026-05-21 | review | research + report (no upstream change) |
-| 2026-05-20 | review | research + report (no upstream change) |
+| 2026-05-21 (run 2) | — | $0.86 | — | — | **$0.86** | review — check-docs-drift fail; 35 pages audited, 59 turns, 299s; no upstream change |
 | 2026-05-20 (run 11) | — | $0.81 | — | — | **$0.81** | review — check-docs-drift fail; 35 pages audited, 55 turns, 263s; no upstream change |
 | 2026-05-20 (run 10) | $0.15 | $1.59 | — | — | **$1.74** | success — all gates pass; +1 page (office-agents/overview.md added, 34→35); 81 turns, 695s |
 | 2026-05-20 (run 9) | — | $1.06 | — | — | **$1.06** | review — check-docs-drift fail; 34 pages audited, 68 turns, 363s; no upstream change |
