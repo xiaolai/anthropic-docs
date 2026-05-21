@@ -14,8 +14,9 @@
     {
       "path": "en/api/admin/api_keys.md",
       "url": "https://platform.claude.com/docs/en/api/admin/api_keys.md",
-      "sha256": "09984603f1f85781780af11d0fd5ddecc00ccf167e689a01d4388f7ca56b04e0",
-      "bytes": 5574
+      "sha256": "5e6e893cb45d1635a2cae4a59b25ac13dae5c6ac3bacb55ce661b401436ed821",
+      "bytes": 5575,
+      "fetchedAt": "2026-05-21T16:00:00Z"
     },
     {
       "path": "en/api/admin/api_keys/list.md",
@@ -1328,8 +1329,9 @@
     {
       "path": "en/api/messages/count_tokens.md",
       "url": "https://platform.claude.com/docs/en/api/messages/count_tokens.md",
-      "sha256": "90d2cbf75ebdd77e8aa9584f9b712462a8ce4d3c4ea227de3e604faf50a451a7",
-      "bytes": 111649
+      "sha256": "341c0bc900b114e1299c58126c363ccc7cde9c4b53a75687b98477c71cc3a88d",
+      "bytes": 111650,
+      "fetchedAt": "2026-05-21T16:00:00Z"
     },
     {
       "path": "en/api/messages/create.md",
