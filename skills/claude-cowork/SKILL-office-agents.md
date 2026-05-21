@@ -286,6 +286,40 @@ Outlook always needs `graph.microsoft.com` regardless of 1P/3P.
 > domain serves only the add-in's task-pane UI, feature config, and
 > telemetry — inference goes directly to your chosen provider.
 
+## Gateway model discovery (3P)
+
+For gateways using `gateway_api_format: anthropic`, the add-in attempts `GET /v1/models` on login. If your gateway doesn't expose a model list there, the add-in falls back to prompting the user for a model ID manually.
+
+For `gateway_api_format: bedrock` and `vertex`, the add-in uses a built-in model list and probes the gateway to verify reachability of each model, rather than calling `GET /v1/models`.
+
+**Differences from Claude Code gateway setup:**
+
+| Aspect | Claude Code | Office add-ins |
+|---|---|---|
+| Credential storage | OS keychain or env vars | Browser localStorage (sandboxed iframe) |
+| Auth configuration | Env vars, settings file, helper scripts | Manual entry in add-in UI (gateway), Entra ID (Bedrock), Google OAuth (Vertex), Azure API key (Foundry) |
+| Token refresh | Supports helper scripts for rotation | Manual re-entry in settings (gateway), automatic via Entra ID or Google OAuth |
+| Custom model names | Configurable via env vars | Not configurable in v1 |
+
+Source: [`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md).
+
+## Troubleshooting (3P)
+
+Common errors when connecting through a third-party platform:
+
+| Error | Likely cause | Fix |
+|---|---|---|
+| "Connection refused" / network error | Gateway URL or cloud endpoint unreachable | Verify URL, confirm service is running, check firewall/VPN. See [Network allowlist](#network-allowlist). |
+| 401 Unauthorized / "Invalid token" | Token invalid or expired | Gateway: confirm token with IT team. Direct (Bedrock/Vertex/Foundry): verify Entra ID group assignment, OIDC trust, or OAuth client config. |
+| 403 Forbidden / "Access denied" | Valid token but insufficient permissions | Bedrock: verify IAM role has `bedrock:InvokeModel`. Vertex: verify Google account has Vertex AI User role. Gateway: check token scope with IT admin. |
+| 404 Not found | Wrong API path | Verify `gateway_url` is the base URL (e.g. `https://litellm.example.com:4000`) — do **not** include `/v1/messages`. |
+| 500 or other server errors | Gateway or provider internal error | Check gateway logs (e.g. `docker logs litellm`); retry; contact IT admin if persists. |
+| "No models available" | Model list endpoint absent or no models enabled | `anthropic` format: ensure gateway exposes `GET /v1/models`. `bedrock`/`vertex` format: confirm Claude models are enabled in your account and region. Foundry: confirm a model is deployed in the resource Model catalog. |
+| Streaming responses fail / hang | Gateway strips or buffers SSE | Ensure gateway supports Server-Sent Events (SSE) pass-through. |
+| Expected feature not available | Feature not yet supported on 3P | Connectors, Skills, File uploads, Dictation, and Work-across-apps are not yet available on 3P. |
+
+Run `/claude-for-msft-365-install:debug` to diagnose connection, sign-in, or manifest issues before escalating. Source: [`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md).
+
 ## Page index
 
 All 11 source pages mirrored under

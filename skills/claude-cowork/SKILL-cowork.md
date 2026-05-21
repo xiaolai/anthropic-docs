@@ -538,6 +538,15 @@ event produced while processing a single user prompt.
 - `tool_decision` — `event.timestamp`, `event.sequence`, `tool_name`,
   `decision` (`"accept"` / `"reject"`), `source`
 
+## Monitoring — security and privacy notes
+
+From [`cowork/monitoring.md`](https://claude.com/docs/cowork/monitoring.md#security-and-privacy):
+
+- Events are exported **only when an admin configures the OTLP endpoint** — no default export.
+- **User prompt content** (`prompt`) is included in `user_prompt` events. Configure your telemetry backend to filter or redact if needed.
+- **`tool_input`** in `tool_result` events contains file paths, URLs, search patterns, and other tool arguments — filter or redact at your collector if those may contain sensitive values.
+- **`user.email`** is included in standard attributes on all events — filter or redact if this is a concern for your privacy posture.
+
 ---
 
 *Source pages: 24 under `claude.com/docs/cowork/`. See
