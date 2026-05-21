@@ -240,6 +240,17 @@ Claude Code writes a JSON object to stdin (or POST body for HTTP hooks). Common 
 | `command_source` | Where the command was defined: `"plugin"`, `"user"`, `"project"`, or `"mcp"` |
 | `prompt` | The original slash command string typed by the user (e.g. `"/example-skill arg1 arg2"`) |
 
+**Elicitation** additionally receives `mcp_server_name`, `message`, and optional `mode`, `url`, `elicitation_id`, and `requested_schema`:
+
+| Field | Notes |
+|---|---|
+| `mcp_server_name` | Name of the MCP server requesting input |
+| `message` | Human-readable message the MCP server sent to explain the request |
+| `mode` | Elicitation mode: `"form"` (structured fields) or `"url"` (browser-based auth) |
+| `url` | (URL-mode only) Authentication URL to open in a browser |
+| `elicitation_id` | Stable identifier for the elicitation request |
+| `requested_schema` | (form-mode only) JSON Schema describing the form fields the server expects |
+
 **ElicitationResult** additionally receives `mcp_server_name`, `action`, and optional `mode`, `elicitation_id`, and `content`:
 
 | Field | Notes |
@@ -488,9 +499,51 @@ SubagentStart is non-blocking (cannot prevent subagent creation), but supports i
 
 The `additionalContext` string is prepended to the subagent's context before its first prompt.
 
+### SessionStart output
+
+SessionStart is non-blocking (cannot prevent session start), but supports injecting context and controlling the first turn:
+
+<!-- skip-validate -->
+```json
+{
+  "hookSpecificOutput": {
+    "hookEventName": "SessionStart",
+    "additionalContext": "Active branch: feat/auth\nRecent changes: src/auth.ts"
+  }
+}
+```
+
+| Field | Notes |
+|---|---|
+| `additionalContext` | String added to Claude's context before the first prompt. Since plain stdout also reaches Claude for this event, a hook that only loads context can print directly without building JSON |
+| `initialUserMessage` | (`-p` mode only) String used as the first user message. If a prompt is also provided via `-p`, it follows as the next turn. Unlike `additionalContext`, this creates a turn rather than attaching to one |
+| `watchPaths` | Array of absolute paths to watch for `FileChanged` events during this session. These are *dynamic* watch paths (added by the hook); static paths from the `matcher` field are always watched regardless |
+
 ### PermissionDenied output
 
 For `PermissionDenied`, return `{ "retry": true }` to tell the model it may retry the denied tool call.
+
+### Elicitation output
+
+To respond to an MCP elicitation programmatically (skipping the interactive dialog), return `hookSpecificOutput`. Exit code 2 denies the elicitation.
+
+<!-- skip-validate -->
+```json
+{
+  "hookSpecificOutput": {
+    "hookEventName": "Elicitation",
+    "action": "accept",
+    "content": {
+      "username": "alice"
+    }
+  }
+}
+```
+
+| Field | Values | Notes |
+|---|---|---|
+| `action` | `"accept"`, `"decline"`, `"cancel"` | Whether to accept, decline, or cancel the request |
+| `content` | object | Form field values to submit. Only used when `action` is `"accept"` |
 
 ### ElicitationResult output
 
