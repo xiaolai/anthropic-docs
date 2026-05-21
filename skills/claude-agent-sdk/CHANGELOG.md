@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-05-21 (v0.3.147 — version bump)
+
+- SDK TS v0.3.146 → v0.3.147 (parity with Claude Code v2.1.147); Python v0.2.83 unchanged
+- Version propagated to SKILL.md, SKILL-typescript.md, README.md, state.json
+- Docs index hash updated (74b86427 → 0792053b); page count unchanged at 30; no new API surface changes
+
 ## 2026-05-21 (second run — review)
 - *(pending review — see PR on `auto/2026-05-21-pending-review`)* Research-only run (TS v0.3.146, PY v0.2.83 unchanged); check-docs-drift failed; no upstream changes detected; 40 research turns, $0.37
 

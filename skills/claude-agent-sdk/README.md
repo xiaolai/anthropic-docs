@@ -12,7 +12,7 @@
 
 Auto-updated reference skill for the **Claude Agent SDK** — Anthropic's libraries for building autonomous AI agents that wrap the Claude Code CLI runtime. Covers both [TypeScript](https://github.com/anthropics/claude-agent-sdk-typescript) (`@anthropic-ai/claude-agent-sdk` on npm) and [Python](https://github.com/anthropics/claude-agent-sdk-python) (`claude-agent-sdk` on PyPI).
 
-**TypeScript SDK**: v0.3.146 | **Python SDK**: v0.2.83
+**TypeScript SDK**: v0.3.147 | **Python SDK**: v0.2.83
 
 Part of the [anthropic-docs](../../README.md) plugin.
 
