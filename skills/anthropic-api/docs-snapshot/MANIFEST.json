@@ -3,7 +3,7 @@
   "indexSha256": "c037e8136d42bb3e6f9ced4b388d09a7320c617658a6617a15f2d76fb44a4f85",
   "indexBytes": 166613,
   "pageCount": 225,
-  "refreshedAt": "2026-05-21T09:00:00Z",
+  "refreshedAt": "2026-05-21T15:00:00Z",
   "pages": [
     {
       "path": "en/api/admin.md",
@@ -962,8 +962,8 @@
     {
       "path": "en/api/beta/vaults/credentials/mcp_oauth_validate.md",
       "url": "https://platform.claude.com/docs/en/api/beta/vaults/credentials/mcp_oauth_validate.md",
-      "sha256": "132496d9e84e98dc9af99c80e62e4c8b5ee0406747ef45f1f232318a0514d778",
-      "bytes": 3937
+      "sha256": "40cd5b31bbb07751047ee632b537e6d153b9a38812866744d1737a91d02f3ba2",
+      "bytes": 3938
     },
     {
       "path": "en/api/beta/vaults/credentials/retrieve.md",
@@ -1028,8 +1028,8 @@
     {
       "path": "en/api/compliance/activities.md",
       "url": "https://platform.claude.com/docs/en/api/compliance/activities.md",
-      "sha256": "be75651328baf6090d9ec8f3609f34baac9fc65bc5459db8f868948e0828c4bf",
-      "bytes": 795825
+      "sha256": "cee5e3b425d1a91e9aaa45eecf38424fb1ce1ab7938cc306e19bea3a840081b1",
+      "bytes": 795826
     },
     {
       "path": "en/api/compliance/activities/list.md",
@@ -1286,8 +1286,8 @@
     {
       "path": "en/api/messages/batches.md",
       "url": "https://platform.claude.com/docs/en/api/messages/batches.md",
-      "sha256": "081a0db6f50e16215b8f8c71ddc00cdc89f9b8f7a633742eac6c57da53d570be",
-      "bytes": 258035
+      "sha256": "687aef495cead82982a6ccee5da162e36ec6fc8cfb572a8873bb106564784f47",
+      "bytes": 258036
     },
     {
       "path": "en/api/messages/batches/cancel.md",
