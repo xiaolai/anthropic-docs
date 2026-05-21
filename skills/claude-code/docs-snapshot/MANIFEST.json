@@ -1,9 +1,9 @@
 {
   "indexUrl": "https://code.claude.com/llms.txt",
-  "indexSha256": "0792053b824ad931c976937c77f5b449b5068f5858bfe935778a43f82464998c",
-  "indexBytes": 29282,
-  "pageCount": 109,
-  "refreshedAt": "2026-05-21T22:11:35Z",
+  "indexSha256": "986d8748e4a1fb27bfcce8b980c8b9398d6d100c8da07a5099211baeefb81ae6",
+  "indexBytes": 29567,
+  "pageCount": 110,
+  "refreshedAt": "2026-05-21T23:19:15Z",
   "pages": [
     {
       "path": "en/admin-setup.md",
@@ -206,8 +206,8 @@
     {
       "path": "en/devcontainer.md",
       "url": "https://code.claude.com/docs/en/devcontainer.md",
-      "sha256": "a5ce17808b72760193930dc89c56d8c19f08dc6a59520921166ead7ea9609d07",
-      "bytes": 17416
+      "sha256": "aed4b807960fe4f543c4b0426427688b59135316bad26b4fdd7b5a395d390885",
+      "bytes": 17550
     },
     {
       "path": "en/discover-plugins.md",
@@ -468,10 +468,16 @@
       "bytes": 28496
     },
     {
+      "path": "en/sandbox-environments.md",
+      "url": "https://code.claude.com/docs/en/sandbox-environments.md",
+      "sha256": "eea05467aaffad4e6a6d784d06f3ebda0117acb856f9bf1504696f729ef16a67",
+      "bytes": 15665
+    },
+    {
       "path": "en/sandboxing.md",
       "url": "https://code.claude.com/docs/en/sandboxing.md",
-      "sha256": "03743c8811bbe7e9119cb5ba3a1624a9f7ba199d25d452a42c8adee420818365",
-      "bytes": 22167
+      "sha256": "f81b9c889efc09ff86c51ebba22b151e4b4aa8cb0a8813d4ea14a7b6cf50116a",
+      "bytes": 31392
     },
     {
       "path": "en/scheduled-tasks.md",
@@ -482,8 +488,8 @@
     {
       "path": "en/security.md",
       "url": "https://code.claude.com/docs/en/security.md",
-      "sha256": "eb91d4b51260b350ac49c9911f6d8d8a00b384ff49f696bc80c29951594063e5",
-      "bytes": 10279
+      "sha256": "d5f1dbc544502dc4028ce1d83dbbc60554de26e6f5783dbfc9deff450157d325",
+      "bytes": 10392
     },
     {
       "path": "en/server-managed-settings.md",

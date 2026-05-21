@@ -347,6 +347,66 @@ where `<project>` is derived from the working directory path. Set `CLAUDE_CONFIG
 
 To suppress transcript writes entirely: set `CLAUDE_CODE_SKIP_PROMPT_HISTORY`, or use `--no-session-persistence` in non-interactive mode.
 
+## Sandbox environments
+
+Claude Code supports several isolation approaches that control what a session can read, write, and reach on the network. They range from a lightweight per-command sandbox to a full virtual machine.
+
+Source: [`code.claude.com/docs/en/sandbox-environments.md`](https://code.claude.com/docs/en/sandbox-environments.md)
+
+| Approach | What is isolated | Requires Docker | Setup effort |
+|---|---|---|---|
+| [Sandboxed Bash tool](https://code.claude.com/docs/en/sandboxing.md) | Bash commands and child processes | No | Minimal (macOS); low (Linux / WSL2) |
+| [Sandbox runtime](#sandbox-runtime) | Entire Claude Code process — file tools, MCP servers, hooks | No | Low (beta preview) |
+| Dev container | Full development environment | Yes | Medium |
+| Custom container | Full development environment | Yes | Medium to high |
+| Virtual machine | Full operating system | No | High |
+| Claude Code on the web | Full OS, hosted by Anthropic | No | None — requires Claude subscription + GitHub |
+
+The **sandboxed Bash tool** restricts only Bash commands; built-in file tools (Read, Edit, WebFetch), MCP servers, and hooks still run on the host. Every other approach puts the whole Claude Code process inside the isolation boundary.
+
+### Choosing an approach
+
+| Goal | Recommended approach |
+|---|---|
+| Reduce permission prompts during everyday work | Sandboxed Bash tool — enable with `/sandbox` |
+| Unattended runs with `--dangerously-skip-permissions` | Dev container, custom container, VM, or sandbox runtime |
+| Isolate MCP servers and hooks without Docker | Sandbox runtime |
+| Untrusted repository | Dedicated VM or Claude Code on the web |
+| Standardize environment across a team | Preconfigured dev container committed to your repo |
+| Use Claude Code from a device with no local setup | Claude Code on the web |
+| Enforce isolation for every developer | Managed settings or device management tools |
+| Native Windows host | Container, VM, or run the Bash sandbox inside WSL2 |
+
+### How isolation relates to permission modes
+
+[Permission modes](#permission-modes) decide **whether** a tool call runs and whether you are prompted first. Isolation restricts **what** a command can access once it runs. The two work together: when a permission mode allows actions without prompting, the isolation boundary limits what those actions can reach.
+
+`--dangerously-skip-permissions` removes all per-action review, so an isolation boundary is the only limit on what Claude can do. Always pair it with a container, VM, or the sandbox runtime so that file tools, MCP servers, and hooks are also inside the boundary.
+
+`auto` mode uses a background classifier to review and block escalating actions; it does not require an isolation boundary the way `--dangerously-skip-permissions` does, but adding one provides defense in depth for unattended runs.
+
+### Sandbox runtime
+
+The [`@anthropic-ai/sandbox-runtime`](https://github.com/anthropic-experimental/sandbox-runtime) package (beta research preview) wraps an entire process in the same Seatbelt (macOS) or bubblewrap (Linux / WSL2) isolation used by the built-in Bash sandbox. Running Claude Code through it constrains every tool, hook, and MCP server in the session — not only Bash.
+
+Configure allowed paths and domains in `~/.srt-settings.json` (or a file passed with `--settings`), then launch:
+
+```bash
+npx @anthropic-ai/sandbox-runtime claude
+```
+
+The runtime denies all write and network access by default. At minimum allow your project directory, `~/.claude`, `~/.claude.json`, and `api.anthropic.com` (or your configured provider endpoint). See the package [README](https://github.com/anthropic-experimental/sandbox-runtime) for the full configuration schema.
+
+### Enforcing sandbox isolation across an organization
+
+| Approach | Enforcement mechanism |
+|---|---|
+| Built-in Bash sandbox | Deliver `sandbox.*` keys via [managed settings](https://code.claude.com/docs/en/server-managed-settings.md) or MDM. See [Enforce sandboxing with managed settings](https://code.claude.com/docs/en/sandboxing.md#enforce-sandboxing-with-managed-settings). |
+| Dev container | Commit the [example dev container](https://code.claude.com/docs/en/devcontainer.md) to your repositories (convention, not hard enforcement). |
+| Custom container / VM | Distribute Claude Code through an approved image; use device management or software allowlisting to prevent installation outside it. |
+
+For all sandbox settings keys (`sandbox.enabled`, `sandbox.filesystem.*`, `sandbox.network.*`, etc.), see [`SKILL-settings.md`](SKILL-settings.md) § *sandbox block*.
+
 ## IDE integrations
 
 | IDE | Notes |
@@ -357,4 +417,4 @@ To suppress transcript writes entirely: set `CLAUDE_CODE_SKIP_PROMPT_HISTORY`, o
 
 ---
 
-*Source pages: `code.claude.com/docs/en/cli-reference.md`, `settings.md` (env section), `permissions.md`, `permission-modes.md`, `sessions.md`.*
+*Source pages: `code.claude.com/docs/en/cli-reference.md`, `settings.md` (env section), `permissions.md`, `permission-modes.md`, `sessions.md`, `sandbox-environments.md`.*

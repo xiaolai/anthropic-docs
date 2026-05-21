@@ -49,7 +49,7 @@ only need to Read the matching file(s), not all of them.
 | [`SKILL-slash-commands.md`](SKILL-slash-commands.md) | slash command authoring, frontmatter schema, argument syntax, `$ARGUMENTS`, command discovery paths |
 | [`SKILL-mcp.md`](SKILL-mcp.md) | `.mcp.json` schema, MCP transports (stdio / http / sse), server config, MCP tool naming, `mcp__` prefix |
 | [`SKILL-plugins.md`](SKILL-plugins.md) | plugin manifest (`.claude-plugin/plugin.json`), marketplaces (`marketplace.json`), plugin install / scope, plugin commands / agents / skills / hooks, CLI hint protocol (`<claude-code-hint />`) for recommending plugins from third-party CLIs |
-| [`SKILL-cli.md`](SKILL-cli.md) | CLI flags, subcommands, env vars (ANTHROPIC_* / CLAUDE_*), permission modes (`default` / `acceptEdits` / `plan` / `bypassPermissions`), `~/.claude/` directory layout, IDE integrations, session management (resume, naming, branching, picker, transcript storage) |
+| [`SKILL-cli.md`](SKILL-cli.md) | CLI flags, subcommands, env vars (ANTHROPIC_* / CLAUDE_*), permission modes (`default` / `acceptEdits` / `plan` / `bypassPermissions`), `~/.claude/` directory layout, IDE integrations, session management (resume, naming, branching, picker, transcript storage), sandbox environments and isolation approaches (sandboxed Bash tool, sandbox runtime, dev containers, VMs) |
 | [`SKILL-known-issues.md`](SKILL-known-issues.md) | a user reports a bug, asks about a workaround, mentions an error message, or asks "why does X not work" |
 
 ## When unsure which file to read

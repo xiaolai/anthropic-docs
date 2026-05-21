@@ -147,7 +147,7 @@ Five handler types:
 | `args` | no | Argument list; when present, spawns `command` directly without a shell |
 | `async` | no | Run in background without blocking |
 | `asyncRewake` | no | Background; wakes Claude on exit code 2 |
-| `shell` | no | `"bash"` (default) or `"powershell"` |
+| `shell` | no | `"bash"` (default) or `"powershell"`. On Windows, `"powershell"` spawns PowerShell directly — auto-detects `pwsh.exe` (PowerShell 7+) with fallback to `powershell.exe` (5.1). This works regardless of whether `CLAUDE_CODE_USE_POWERSHELL_TOOL` is set |
 
 **Shell form vs exec form:** When `args` is omitted, `command` is passed to `sh -c` (bash on macOS/Linux, Git Bash on Windows). When `args` is set, `command` is resolved as an executable and spawned directly (no shell, path placeholders substituted as plain strings).
 
@@ -747,6 +747,26 @@ hooks:
 ```
 
 When `once: true`, the hook runs once per session and is removed. Only honored in skill/agent frontmatter.
+
+## Debugging hooks
+
+Hook execution details — which hooks matched, exit codes, stdout/stderr — are written to the debug log.
+
+Enable debug logging:
+- `claude --debug-file /tmp/claude-debug.log` — writes to a known path
+- `claude --debug` — writes to `~/.claude/debug/<session-id>.txt` (no terminal output)
+
+Sample debug output:
+```
+[DEBUG] Executing hooks for PostToolUse:Write
+[DEBUG] Found 1 hook commands to execute
+[DEBUG] Executing hook command: /path/to/lint.sh with timeout 600000ms
+[DEBUG] Hook command completed with status 0: <stdout>
+```
+
+For more granular hook-matcher diagnostics, set `CLAUDE_CODE_DEBUG_LOG_LEVEL=verbose`. Cross-reference: [`SKILL-cli.md`](SKILL-cli.md) § *Environment variables*.
+
+Source: `code.claude.com/docs/en/hooks.md`.
 
 ## Common mistakes (auto-corrected by `rules/hooks.md`)
 
