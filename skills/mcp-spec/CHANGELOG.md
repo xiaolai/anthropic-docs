@@ -3,6 +3,9 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-21 (run 8)
+- Routine research pass — llms.txt index SHA256 updated (1-byte cosmetic change, 119 URLs identical); MANIFEST.json and state.json updated with new indexSha256; Part B: `newBugIssues` empty per change-report.json, no issues to research; Part C: 5 spot-checked URLs all HTTP 200, versions consistent (@modelcontextprotocol/sdk v1.29.0 / mcp v1.27.1 / spec 2025-11-25), validate-examples PASS, cross-references valid, rules globs covered; no surface-file changes needed
+
 ## 2026-05-21 (run 7)
 - Routine research pass — no upstream change; docs index SHA unchanged (2a3dc7cff742a978…, 119 pages); MANIFEST refreshed (new timestamp); 0 new bug issues (all issues ≤ #2759 already researched); Part C: 5 spot-checked URLs resolve HTTP 200/302, versions consistent (@modelcontextprotocol/sdk v1.29.0 / mcp v1.27.1 / spec 2025-11-25), validate-examples PASS, no duplicate facts, cross-references valid; updated state.json timestamps and lastScannedIssueNumber to 2759
 
