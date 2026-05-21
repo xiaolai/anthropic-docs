@@ -99,20 +99,33 @@ residency / regulatory drivers.
 **Deployment wizard.** Install `claude-for-msft-365-install` from the
 `anthropics/financial-services` marketplace, then run
 `/claude-for-msft-365-install:setup` inside Claude. Other commands:
-`/claude-for-msft-365-install:manifest` (generate manifest),
-`/claude-for-msft-365-install:consent` (admin-consent URL),
-`/claude-for-msft-365-install:update-user-attrs` (per-user config via
-Microsoft Graph),
-`/claude-for-msft-365-install:debug` (diagnose deployment issues: stale
-config after manifest updates, connection failures, add-in not appearing,
-sign-in or admin-consent loops, parsing the add-in's error paste). See
+
+| Command | Function |
+|---|---|
+| `/claude-for-msft-365-install:setup` | Interactive wizard: provisions cloud resources, handles admin consent, writes manifest |
+| `/claude-for-msft-365-install:manifest` | Generate add-in manifest XML |
+| `/claude-for-msft-365-install:consent` | Generate Azure admin-consent URL |
+| `/claude-for-msft-365-install:update-user-attrs` | Write per-user config via Microsoft Graph extension attributes |
+| `/claude-for-msft-365-install:bootstrap` | Build a bootstrap endpoint for per-user MCP servers, skills, and dynamic config |
+| `/claude-for-msft-365-install:debug` | Diagnose deployment issues: stale config, connection failures, add-in not appearing, sign-in or admin-consent loops, parsing the add-in's error paste |
+
+See
 [github.com/anthropics/financial-services/…/claude-for-msft-365-install](https://github.com/anthropics/financial-services/tree/main/claude-for-msft-365-install).
 
 **Outlook manifest.** Outlook requires a **separate** manifest file from
 Excel, PowerPoint, and Word. The wizard generates `manifest-outlook.xml`
 alongside `manifest.xml`. Upload each as its own custom app in the
-Microsoft 365 admin center. Source:
+Microsoft 365 admin center.
+
+If your organization's policy prevents consenting to a third-party
+multi-tenant application, register a single-tenant Entra app with the
+same delegated Graph permissions and supply its client ID to the wizard
+as `graph_client_id`. Source:
 [`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md).
+
+**Foundry deployment names.** When using Foundry direct, deployment
+names must use default model IDs (e.g. `claude-opus-4-6`), not custom
+names. Custom deployment names are not supported.
 
 **Manifest keys:** `gateway_api_format` selects the API dialect —
 `anthropic` (default), `bedrock`, or `vertex`. `gateway_auth_header`
@@ -143,11 +156,12 @@ available when connecting through a third-party platform.
 | **Code execution** | Foundry direct, and gateways the add-in detects as routing to a Foundry-compatible upstream |
 
 > **Bedrock + Outlook:** Amazon Bedrock is not supported for Claude for
-> Outlook. On direct platforms (Vertex AI, Foundry), Claude for Outlook
-> supports Opus 4.7, Opus 4.6, and Sonnet 4.6. When connecting through
-> a gateway, Opus 4.7 is the only officially supported model.
+> Outlook. Bedrock remains supported for Excel, PowerPoint, and Word.
+> Claude for Outlook on **all** third-party platforms currently supports
+> **Claude Opus 4.7 only**.
 >
-> Source: [`outlook.md`](https://claude.com/docs/office-agents/outlook.md)
+> Source: [`outlook.md`](https://claude.com/docs/office-agents/outlook.md),
+> [`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md)
 
 Source: [`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md).
 

@@ -162,8 +162,10 @@ That page is the source of truth for:
   `TaskList`, `TaskStop`, `Skill`, `REPL`, `JavaScript`, `AskUserQuestion`,
   `ToolSearch`, `SendUserMessage`), `allowedWorkspaceFolders` (restrict attachable
   paths), `coworkEgressAllowedHosts` (agent egress allowlist; `["*"]` disables
-  filtering), `isClaudeCodeForDesktopEnabled` (show/hide Code tab, default `true`),
-  `disableDeepLinkRegistration`
+  filtering; the configured inference endpoint is always allowed implicitly;
+  **when unset, only the inference endpoint is reachable — agents cannot run
+  `pip install`, `curl`, or Web Fetch to other hosts**), `isClaudeCodeForDesktopEnabled`
+  (show/hide Code tab, default `true`), `disableDeepLinkRegistration`
 - **Telemetry toggles** — `disableEssentialTelemetry`, `disableNonessentialTelemetry`,
   `disableNonessentialServices`, `disableAutoUpdates`; `autoUpdaterEnforcementHours`
   (force pending update after N hours, 1–72, default 72)
