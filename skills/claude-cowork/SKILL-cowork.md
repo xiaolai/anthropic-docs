@@ -132,12 +132,27 @@ evaluation, users can configure 3P mode locally without an MDM profile:
 3. Enter the provider, endpoint, and credential values from your
    administrator.
 
-Local config is written to:
-- macOS: `~/Library/Application Support/Claude-3p/configLibrary/`
-- Windows: `%LOCALAPPDATA%\Claude-3p\configLibrary\`
+**Configuration paths:**
 
-When any MDM-managed profile is present, it takes precedence and the
-in-app window becomes read-only; local values are ignored.
+| Platform | Managed (MDM) — highest precedence | Local (user) — lowest |
+|---|---|---|
+| macOS | `/Library/Managed Preferences/<user>/com.anthropic.claudefordesktop.plist` (per-user); `/Library/Managed Preferences/com.anthropic.claudefordesktop.plist` (machine) | `~/Library/Application Support/Claude-3p/configLibrary/` |
+| Windows | `HKLM\SOFTWARE\Policies\Claude` (machine); `HKCU\SOFTWARE\Policies\Claude` (user) | `%LOCALAPPDATA%\Claude-3p\configLibrary\` |
+
+When any MDM-managed source is present, it wins and locally authored values are ignored. On Windows, `HKLM` wins over `HKCU` where both keys are present.
+
+**Diagnostic:** On any configured device, go to **Help → Troubleshooting → Copy Managed Configuration Report** to get a summary of which keys were detected, where they were read from (managed vs. local), and whether credentials validated. Secret values are redacted.
+
+**Endpoint security / EDR allowlist.** Binary-authorization tools (Santa, CrowdStrike Falcon, Defender ASR) may block the Cowork agent helper. Allowlist by signing identity — not path — so rules survive version updates:
+
+| Platform | Signing identity | Helper binary path |
+|---|---|---|
+| macOS | Team ID `Q6L2SF6YDW` (Anthropic PBC), Signing ID `com.anthropic.claude-code` | `~/Library/Application Support/Claude-3p/claude-code/<version>/claude.app/Contents/MacOS/claude` |
+| Windows | Publisher `Anthropic, PBC` | `%LOCALAPPDATA%\Claude-3p\claude-code\<version>\claude.exe` |
+
+(Standard, non-3P installs use `Claude/` instead of `Claude-3p/`.)
+
+**Code tab configuration.** Some Cowork on 3P configuration keys do not yet propagate identically to Code-tab sessions. To configure the Code tab directly, deploy a Claude Code `managed-settings.json` alongside your Cowork profile; to remove the Code tab, set `isClaudeCodeForDesktopEnabled: false`. See [`3p/code.md`](https://claude.com/docs/cowork/3p/code.md).
 
 Source: [`3p/installation.md`](https://claude.com/docs/cowork/3p/installation.md),
 [`3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
@@ -264,9 +279,18 @@ With Anthropic-bound telemetry and updates disabled, the compliance
 posture of your deployment is determined entirely by your inference
 provider.
 
-**Always-required egress:** `downloads.claude.ai` — VM workspace bundle and
-Claude CLI binary are fetched at session start. Without this host, Cowork
-sessions cannot start, regardless of which telemetry options are enabled.
+**Egress hostnames by setting** (all HTTPS/443, allowlist by hostname):
+
+| Setting | Hosts required |
+|---|---|
+| Always (session cannot start without this) | `downloads.claude.ai` |
+| `disableAutoUpdates: false` | `api.anthropic.com` (update feed) |
+| `disableEssentialTelemetry: false` | `*.sentry.io`, `*.ingest.us.sentry.io`, `browser-intake-us5-datadoghq.com` |
+| `disableNonessentialTelemetry: false` | `a-cdn.anthropic.com`, `a-api.anthropic.com`, `claude.ai` |
+| `disableNonessentialServices: false` | `api.anthropic.com`, `www.claudeusercontent.com`, `cdnjs.cloudflare.com`, `cdn.jsdelivr.net`, `fonts.googleapis.com`, `www.google.com`, `*.gstatic.com` |
+| Python desktop extensions enabled | `github.com`, `objects.githubusercontent.com`, `pypi.org`, `files.pythonhosted.org` |
+
+See also each provider's auth hosts in [`3p/telemetry.md`](https://claude.com/docs/cowork/3p/telemetry.md). The in-app **Egress Requirements** panel computes the exact list for your settings.
 
 **Proxy support:** The Cowork sandbox honors the host OS proxy configuration,
 including PAC files. On macOS with TLS-intercepting proxies, add the corporate
