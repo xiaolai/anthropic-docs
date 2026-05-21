@@ -80,19 +80,31 @@ explicit breakpoints. Optional 1-hour TTL: `{ "type": "ephemeral", "ttl": "1h" }
 Placing `cache_control` on the system role's string form is also wrong — convert
 `system` to the array form first for explicit mode.
 
-## Rule 4 — Extended thinking needs `budget_tokens` and counts against `max_tokens`
+## Rule 4 — Extended thinking: model-specific rules
 
-`thinking: { type: "enabled", budget_tokens: N }`. `N` must be > 0 and
-**less than `max_tokens`** (thinking tokens are billed at input rates
-but consume the same output budget as the final response).
+**Anthropic Claude Opus 4.7:** manual `thinking: {type: "enabled", budget_tokens: N}`
+is **rejected with a 400 error**. Use `thinking: {type: "adaptive"}` instead.
 
-**WRONG (no budget):**
 ```python
-thinking={"type": "enabled"}     # 400 missing_required_field
+# WRONG on claude-opus-4-7 — returns 400
+thinking={"type": "enabled", "budget_tokens": 10000}
+
+# RIGHT on claude-opus-4-7
+thinking={"type": "adaptive"}
 ```
 
-**WRONG (budget > max_tokens):**
+**Claude Opus 4.6 / Sonnet 4.6:** `budget_tokens` is deprecated (still functional);
+prefer `thinking: {type: "adaptive"}` with the `effort` parameter.
+
+**Older models (Sonnet 4.5, Opus 4.5, etc.):** use manual `budget_tokens`.
+`N` must be > 0 and **less than `max_tokens`** (thinking tokens count against
+the output budget).
+
 ```python
+# WRONG (no budget on older model)
+thinking={"type": "enabled"}     # 400 missing_required_field
+
+# WRONG (budget > max_tokens on older model)
 max_tokens=1000
 thinking={"type": "enabled", "budget_tokens": 4000}  # rejected
 ```

@@ -92,8 +92,29 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
 | **Skills** | [`skills.md`](https://platform.claude.com/docs/en/managed-agents/skills.md) |
 | **Tools** | [`tools.md`](https://platform.claude.com/docs/en/managed-agents/tools.md) |
 | **Files** | [`files.md`](https://platform.claude.com/docs/en/managed-agents/files.md) |
-| **Memory stores** | [`memory.md`](https://platform.claude.com/docs/en/managed-agents/memory.md) | Persistent cross-session storage; create via `POST /v1/memory_stores` → `memstore_...` ID; seed with `POST /v1/memory_stores/{id}/memories`; attach to sessions; requires beta header `managed-agents-2026-04-01` |
+| **Memory stores** | [`memory.md`](https://platform.claude.com/docs/en/managed-agents/memory.md) — Persistent cross-session storage; create via `POST /v1/memory_stores` → `memstore_...` ID; seed with `POST /v1/memory_stores/{id}/memories`; attach to sessions; requires beta header `managed-agents-2026-04-01` |
 | **Vaults** | [`vaults.md`](https://platform.claude.com/docs/en/managed-agents/vaults.md) (secret storage) |
+
+### Agent toolset (`agent_toolset_20260401`)
+
+Enable the built-in agent toolset by including `{"type": "agent_toolset_20260401"}` in the
+agent's `tools` array. All tools are enabled by default; disable individual tools via the
+`configs` array. Source: [`tools.md`](https://platform.claude.com/docs/en/managed-agents/tools.md).
+
+| Tool name | Description |
+|---|---|
+| `bash` | Execute bash commands in a shell session |
+| `read` | Read a file from the local filesystem |
+| `write` | Write a file to the local filesystem |
+| `edit` | Perform string replacement in a file |
+| `glob` | Fast file pattern matching using glob patterns |
+| `grep` | Text search using regex patterns |
+| `web_fetch` | Fetch content from a URL |
+| `web_search` | Search the web for information |
+
+> **Token overflow:** When a tool output exceeds 100K tokens, it is automatically
+> written to a file in the sandbox. The model receives a truncated preview with the
+> file path and can read the full content from there.
 
 ## Environments & runtime
 

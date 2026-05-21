@@ -1,723 +1,128 @@
 {
   "indexUrl": "https://platform.claude.com/llms.txt",
-  "indexSha256": "4537a29223635c7ee8e2baa89dcfc14b089026065d16a3b43c590d788c4d5994",
-  "indexBytes": 166612,
+  "indexSha256": "c037e8136d42bb3e6f9ced4b388d09a7320c617658a6617a15f2d76fb44a4f85",
+  "indexBytes": 166613,
   "pageCount": 119,
-  "refreshedAt": "2026-05-21T03:37:09Z",
+  "refreshedAt": "2026-05-21T05:46:39Z",
   "pages": [
-    {
-      "path": "en/agents-and-tools/agent-skills/best-practices.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices.md",
-      "sha256": "d1da876439d60b3c813f6fac53745a0b518a7cc4af7973e6e9318dda64bee23a",
-      "bytes": 41372
-    },
-    {
-      "path": "en/agents-and-tools/agent-skills/enterprise.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/enterprise.md",
-      "sha256": "6168dda2cca527a98efb5609477325d9cd4b4f5f2e297eb9aad5e563d3f5d9b8",
-      "bytes": 12590
-    },
-    {
-      "path": "en/agents-and-tools/agent-skills/overview.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview.md",
-      "sha256": "0bd9758afca5cc32441bb59a9b59b1a3fe3717b77fa7cc48abd6f24b0ff0e9cb",
-      "bytes": 18981
-    },
-    {
-      "path": "en/agents-and-tools/agent-skills/quickstart.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/quickstart.md",
-      "sha256": "187eeed862d100706e36d56886e707dc7010f8ff2ccd73904102d910f41c3b18",
-      "bytes": 45032
-    },
-    {
-      "path": "en/agents-and-tools/mcp-connector.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-connector.md",
-      "sha256": "7099e6a6b645e3e89e939d354d35115d930f34be6d1506f88f01c5a88b7750f4",
-      "bytes": 25462
-    },
-    {
-      "path": "en/agents-and-tools/mcp-tunnels/console.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/console.md",
-      "sha256": "e98ac2bb9bdf3436d540cde1cdd3ee8fe91fa91769f3d4c02048ffbcfcb985bd",
-      "bytes": 11277
-    },
-    {
-      "path": "en/agents-and-tools/mcp-tunnels/deploy-compose.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/deploy-compose.md",
-      "sha256": "a15e15b2b634a77246d081de94a81e6ee84f0aa46a5136bf9a4d6df70bcf02df",
-      "bytes": 18838
-    },
-    {
-      "path": "en/agents-and-tools/mcp-tunnels/deploy-helm.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/deploy-helm.md",
-      "sha256": "a34b02eb9f9babbf4a9ffcfba35c92e04c89eacccf67671019b8cc94b1e0246f",
-      "bytes": 18859
-    },
-    {
-      "path": "en/agents-and-tools/mcp-tunnels/overview.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/overview.md",
-      "sha256": "a42abd70114cb97f1c07db5f6e7d8966f35fcd7ce06c1619651cb64e03529d3b",
-      "bytes": 11319
-    },
-    {
-      "path": "en/agents-and-tools/mcp-tunnels/quickstart.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/quickstart.md",
-      "sha256": "dd690bfb55171fde8d2ef0ba03f5a89eb3a447693c875ef7b22cad2c4c0bbe6b",
-      "bytes": 9875
-    },
-    {
-      "path": "en/agents-and-tools/mcp-tunnels/reference.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/reference.md",
-      "sha256": "65dd113335c68b39e1a333a20818a93a65956b4ee847074dcdda39783d751a5c",
-      "bytes": 6484
-    },
-    {
-      "path": "en/agents-and-tools/mcp-tunnels/security.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/security.md",
-      "sha256": "1599b49c597556737d4a4068c9fee7f1e7a1fa12e0bbdbbe65cc4fbed4cdc88e",
-      "bytes": 4762
-    },
-    {
-      "path": "en/agents-and-tools/mcp-tunnels/troubleshooting.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/troubleshooting.md",
-      "sha256": "58290b8a96099a9a81f2bc2a79909d685ab25ef0bb1584f65d809ececfacbffd",
-      "bytes": 7004
-    },
-    {
-      "path": "en/agents-and-tools/remote-mcp-servers.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/remote-mcp-servers.md",
-      "sha256": "42aeab377e3bd764a9661a58119f60b92a3da01cdcd96feefd935df1c4b47c98",
-      "bytes": 1271
-    },
-    {
-      "path": "en/agents-and-tools/tool-use/advisor-tool.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/advisor-tool.md",
-      "sha256": "fb52b87149e545d1e112cf8480dc9490f1c06b298827f574844bd7a7a093b748",
-      "bytes": 29981
-    },
-    {
-      "path": "en/agents-and-tools/tool-use/bash-tool.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/bash-tool.md",
-      "sha256": "6e76dee5cf96658385c7bd713f66d62d059501735addb955b27c6eba4a7dcf72",
-      "bytes": 17191
-    },
-    {
-      "path": "en/agents-and-tools/tool-use/build-a-tool-using-agent.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/build-a-tool-using-agent.md",
-      "sha256": "72a5cd5184db5c81b2da11e52d430d1c55131276b49e70e9d56f924ce78393b2",
-      "bytes": 62168
-    },
-    {
-      "path": "en/agents-and-tools/tool-use/code-execution-tool.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/code-execution-tool.md",
-      "sha256": "a4cb1b6da64f0e562457572673c7a5a2ee7f1bf9b7e10ec32a5994b0b8fe3db4",
-      "bytes": 55463
-    },
-    {
-      "path": "en/agents-and-tools/tool-use/computer-use-tool.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool.md",
-      "sha256": "08b37f17d5eea4d2aa9ba6cff5fb1385ed1f2233948b128969a836b97569fa8e",
-      "bytes": 80319
-    },
-    {
-      "path": "en/agents-and-tools/tool-use/define-tools.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools.md",
-      "sha256": "ebce8ee91000a1e0d60c054b223aa89b0e5731b471173a35df7df9d6a7a87444",
-      "bytes": 25290
-    },
-    {
-      "path": "en/agents-and-tools/tool-use/fine-grained-tool-streaming.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/fine-grained-tool-streaming.md",
-      "sha256": "8d2034126b64d28e25618011a9e87f4312d50bb22e565f2322123d8d9b7ddaff",
-      "bytes": 30091
-    },
-    {
-      "path": "en/agents-and-tools/tool-use/handle-tool-calls.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls.md",
-      "sha256": "369a5da11bb28d8dc0dce1a2fae76fe976ad5a3509d3987d5ef320f0dc374c59",
-      "bytes": 9331
-    },
-    {
-      "path": "en/agents-and-tools/tool-use/how-tool-use-works.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/how-tool-use-works.md",
-      "sha256": "fdcca0c84400350cad257fd4be100f18d94e68ce0f78392f73637064209923b7",
-      "bytes": 8562
-    },
-    {
-      "path": "en/agents-and-tools/tool-use/manage-tool-context.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/manage-tool-context.md",
-      "sha256": "ffb2d4526ad0516145446dec17caded0887a334ffe58ef540bbf58b0e2894917",
-      "bytes": 4606
-    },
-    {
-      "path": "en/agents-and-tools/tool-use/memory-tool.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool.md",
-      "sha256": "6d9391f81fc7da52a3041d39bf56a3f6aa782f49ecab334f7926fe5273a46551",
-      "bytes": 23609
-    },
-    {
-      "path": "en/agents-and-tools/tool-use/overview.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview.md",
-      "sha256": "9f82061815a7c05c06d2f61af2400eda79beb4daa4602478f66b27782035e250",
-      "bytes": 8333
-    },
-    {
-      "path": "en/agents-and-tools/tool-use/parallel-tool-use.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/parallel-tool-use.md",
-      "sha256": "4ea180564a4018fae2693fea835ef395e56ca03c16e28083b5cec0ec807ce003",
-      "bytes": 31844
-    },
-    {
-      "path": "en/agents-and-tools/tool-use/programmatic-tool-calling.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/programmatic-tool-calling.md",
-      "sha256": "854097666c72bfe3b4d6bd1d1124706b2d4a6d8d07d8844da7971059e81e9e29",
-      "bytes": 47912
-    },
-    {
-      "path": "en/agents-and-tools/tool-use/server-tools.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/server-tools.md",
-      "sha256": "f0f7ee29e7419659030e8f64ad538b94695e58aaa20c23146d926b58f8a71ffe",
-      "bytes": 15972
-    },
-    {
-      "path": "en/agents-and-tools/tool-use/strict-tool-use.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/strict-tool-use.md",
-      "sha256": "2a1373fd66d8e41742b4d4e7aa291b19c0b0a0ead777d5246ad340b651aa321a",
-      "bytes": 34822
-    },
-    {
-      "path": "en/agents-and-tools/tool-use/text-editor-tool.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/text-editor-tool.md",
-      "sha256": "f59c8951be047b22072ecfb8efa81d3e6c734e1623d6d64a05fafa02bb3d9166",
-      "bytes": 44247
-    },
-    {
-      "path": "en/agents-and-tools/tool-use/tool-combinations.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-combinations.md",
-      "sha256": "9ef3cff9d6bb2d577f71f5b8da2a5bc25869c089db89f896282ebbb19eebd3c0",
-      "bytes": 4874
-    },
-    {
-      "path": "en/agents-and-tools/tool-use/tool-reference.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-reference.md",
-      "sha256": "73b4586472957d6d7c543bc0c044f274ede9f90098f0c1589d6925bb395806cf",
-      "bytes": 10592
-    },
-    {
-      "path": "en/agents-and-tools/tool-use/tool-runner.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-runner.md",
-      "sha256": "50d8f9310c6fb554cd6df8e8caf4ad66158258ce3143266396b9a87dcaa5e90b",
-      "bytes": 69733
-    },
-    {
-      "path": "en/agents-and-tools/tool-use/tool-search-tool.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool.md",
-      "sha256": "4fb467702c12341b823d32067fdae3c37fe7384b75b864ecce00a090f57b23cb",
-      "bytes": 29487
-    },
-    {
-      "path": "en/agents-and-tools/tool-use/tool-use-with-prompt-caching.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-use-with-prompt-caching.md",
-      "sha256": "a19f41d804915b99e89864c6b7f142a963009a0cb71558f621d1628e47f530bc",
-      "bytes": 4759
-    },
-    {
-      "path": "en/agents-and-tools/tool-use/troubleshooting-tool-use.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/troubleshooting-tool-use.md",
-      "sha256": "e25c7591a5b27a96fab7d14b22f76ffe27e0a1bbfdb45bc2302c8d0251cb8fc2",
-      "bytes": 4247
-    },
-    {
-      "path": "en/agents-and-tools/tool-use/web-fetch-tool.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-fetch-tool.md",
-      "sha256": "2a33feecb83e0e942e12b902fd72be18cdb166b4faf0a920c46040d5cc3774e2",
-      "bytes": 23322
-    },
-    {
-      "path": "en/agents-and-tools/tool-use/web-search-tool.md",
-      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool.md",
-      "sha256": "4d71dba6069bcbe05374c79af8564cfcbdb89e1ac96bf7d532376a2231d20098",
-      "bytes": 20544
-    },
-    {
-      "path": "en/build-with-claude/adaptive-thinking.md",
-      "url": "https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking.md",
-      "sha256": "5f504adb4d81dde552aa604311c2651f75aaf4adaff4f090cb40027a9f351a80",
-      "bytes": 35385
-    },
-    {
-      "path": "en/build-with-claude/batch-processing.md",
-      "url": "https://platform.claude.com/docs/en/build-with-claude/batch-processing.md",
-      "sha256": "cfb4dcf3013a588682068ebea631477876216f279631a6e5d6aa01e67e9c94a1",
-      "bytes": 72366
-    },
-    {
-      "path": "en/build-with-claude/cache-diagnostics.md",
-      "url": "https://platform.claude.com/docs/en/build-with-claude/cache-diagnostics.md",
-      "sha256": "fada2bad087955f017d8faaf2ac29b97f9e7df4b6ed8a78b21ae777656c0c7a5",
-      "bytes": 48682
-    },
-    {
-      "path": "en/build-with-claude/citations.md",
-      "url": "https://platform.claude.com/docs/en/build-with-claude/citations.md",
-      "sha256": "a7ca911a586726d08b1ff9c33f0338aecc04c68ebdc56c0671a6aa2aaf33957f",
-      "bytes": 21692
-    },
-    {
-      "path": "en/build-with-claude/claude-in-amazon-bedrock.md",
-      "url": "https://platform.claude.com/docs/en/build-with-claude/claude-in-amazon-bedrock.md",
-      "sha256": "49f20059fdb473c21e86485e5abaec4479e1d2bd7058a88c6282b9508501eb7d",
-      "bytes": 16401
-    },
-    {
-      "path": "en/build-with-claude/claude-in-microsoft-foundry.md",
-      "url": "https://platform.claude.com/docs/en/build-with-claude/claude-in-microsoft-foundry.md",
-      "sha256": "efc436a15bc4f3f3d00541655b7e15745f13ddd94ef30755a36ad8484930b059",
-      "bytes": 22103
-    },
-    {
-      "path": "en/build-with-claude/claude-on-amazon-bedrock-legacy.md",
-      "url": "https://platform.claude.com/docs/en/build-with-claude/claude-on-amazon-bedrock-legacy.md",
-      "sha256": "18a89c14ddc8b3c4caca980d0993b0fadeeff55a3f4ec8f1abf1091254e5ab06",
-      "bytes": 31052
-    },
-    {
-      "path": "en/build-with-claude/claude-on-vertex-ai.md",
-      "url": "https://platform.claude.com/docs/en/build-with-claude/claude-on-vertex-ai.md",
-      "sha256": "4ddeb0d2645c08ae7114cc60f1abbae39baba08cf3e7cea662eb5ef1de015911",
-      "bytes": 26532
-    },
-    {
-      "path": "en/build-with-claude/claude-platform-on-aws.md",
-      "url": "https://platform.claude.com/docs/en/build-with-claude/claude-platform-on-aws.md",
-      "sha256": "6acc2a34fa7011427d954685010805e64f67ef1ec515d5051ae0c4fc1652bbd6",
-      "bytes": 54013
-    },
-    {
-      "path": "en/build-with-claude/compaction.md",
-      "url": "https://platform.claude.com/docs/en/build-with-claude/compaction.md",
-      "sha256": "a0fa9a595b4256e3dcbdacfddbea6325ee3e2452b5c1d961500b1695bec28ff6",
-      "bytes": 100726
-    },
-    {
-      "path": "en/build-with-claude/context-editing.md",
-      "url": "https://platform.claude.com/docs/en/build-with-claude/context-editing.md",
-      "sha256": "fdb60016203bf29f5db50ad5d9335aff104958993de21d9f3d42e86ce6e1854b",
-      "bytes": 79807
-    },
-    {
-      "path": "en/build-with-claude/context-windows.md",
-      "url": "https://platform.claude.com/docs/en/build-with-claude/context-windows.md",
-      "sha256": "644676f36d7c1a6f745b8e81f3a15ac93244a6175404a5cc12e16c44122a4f42",
-      "bytes": 13726
-    },
-    {
-      "path": "en/build-with-claude/effort.md",
-      "url": "https://platform.claude.com/docs/en/build-with-claude/effort.md",
-      "sha256": "bc9ae8d6ada1834b466168e74a8a645a730e2ae7182b42dc23193ae422696e85",
-      "bytes": 16167
-    },
-    {
-      "path": "en/build-with-claude/embeddings.md",
-      "url": "https://platform.claude.com/docs/en/build-with-claude/embeddings.md",
-      "sha256": "922bcf41f17c9c57ce7ad3288ecf9e1de83e637e1c8ff0bb18f2ff7ceba10c4a",
-      "bytes": 17555
-    },
-    {
-      "path": "en/build-with-claude/extended-thinking.md",
-      "url": "https://platform.claude.com/docs/en/build-with-claude/extended-thinking.md",
-      "sha256": "5205a671246b84a8ff48d77a39baa71dd683d5c994706d1053eba8b957b751bc",
-      "bytes": 135530
-    },
-    {
-      "path": "en/build-with-claude/fast-mode.md",
-      "url": "https://platform.claude.com/docs/en/build-with-claude/fast-mode.md",
-      "sha256": "8d82c7ec09d61ac40800172d9a0ff599499ad38906697471a921073fb86c5c5a",
-      "bytes": 24968
-    },
-    {
-      "path": "en/build-with-claude/files.md",
-      "url": "https://platform.claude.com/docs/en/build-with-claude/files.md",
-      "sha256": "4f8d4c0531a631891b828e68d705f0276a8fe8d0c6844a858e18257004a0b94b",
-      "bytes": 27009
-    },
-    {
-      "path": "en/build-with-claude/handling-stop-reasons.md",
-      "url": "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons.md",
-      "sha256": "9dc469fe3d217695846286686971711b6803932625b6be685d93585630d7665a",
-      "bytes": 24118
-    },
-    {
-      "path": "en/build-with-claude/multilingual-support.md",
-      "url": "https://platform.claude.com/docs/en/build-with-claude/multilingual-support.md",
-      "sha256": "2d75e26f84f65c0ac46e97465d4be08db9e0280690a51bf60bc912fd0603c818",
-      "bytes": 3814
-    },
-    {
-      "path": "en/build-with-claude/overview.md",
-      "url": "https://platform.claude.com/docs/en/build-with-claude/overview.md",
-      "sha256": "91b854183f6ffffc0db3b815ddd406e26f2120d9bdc67bab34e2b5581e64ddc8",
-      "bytes": 14115
-    },
-    {
-      "path": "en/build-with-claude/pdf-support.md",
-      "url": "https://platform.claude.com/docs/en/build-with-claude/pdf-support.md",
-      "sha256": "8cea8a3886d23fade589e66b742cd9f71068a7f40d62f0d8553cae5458abb077",
-      "bytes": 38663
-    },
-    {
-      "path": "en/build-with-claude/prompt-caching.md",
-      "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching.md",
-      "sha256": "ffd673012b4c8ebec0eef3c30c071cc442d2e4906b225e7882a6393929f0f399",
-      "bytes": 129786
-    },
-    {
-      "path": "en/build-with-claude/search-results.md",
-      "url": "https://platform.claude.com/docs/en/build-with-claude/search-results.md",
-      "sha256": "260495d14f41243153c98fb7f58d139f58d9bc43774ee7184bc118ef76b03bae",
-      "bytes": 52903
-    },
-    {
-      "path": "en/build-with-claude/skills-guide.md",
-      "url": "https://platform.claude.com/docs/en/build-with-claude/skills-guide.md",
-      "sha256": "b7920287c6f16a07b5db2d7c0e8de0a361b887078d92487c6df3239c557e6385",
-      "bytes": 148279
-    },
-    {
-      "path": "en/build-with-claude/streaming.md",
-      "url": "https://platform.claude.com/docs/en/build-with-claude/streaming.md",
-      "sha256": "98d74e610e8133764c546a4e18f2d5ff1fe8ed1cfffbfa18843c2594e0292a24",
-      "bytes": 53654
-    },
-    {
-      "path": "en/build-with-claude/structured-outputs.md",
-      "url": "https://platform.claude.com/docs/en/build-with-claude/structured-outputs.md",
-      "sha256": "05e43f0539f4052ca146325146e3192d86e575d5e781b726515e9488c7f255b2",
-      "bytes": 100880
-    },
-    {
-      "path": "en/build-with-claude/task-budgets.md",
-      "url": "https://platform.claude.com/docs/en/build-with-claude/task-budgets.md",
-      "sha256": "7152010a55ea02db67440f92dc96dab50fc615cd0aa30888461de73fc9be92c6",
-      "bytes": 19796
-    },
-    {
-      "path": "en/build-with-claude/token-counting.md",
-      "url": "https://platform.claude.com/docs/en/build-with-claude/token-counting.md",
-      "sha256": "acaef15da2b63fbc48d8d1788b63719f0038b712c73c70e2096adad7e6b18f25",
-      "bytes": 43762
-    },
-    {
-      "path": "en/build-with-claude/vision.md",
-      "url": "https://platform.claude.com/docs/en/build-with-claude/vision.md",
-      "sha256": "70af14c50520fb4835ae169007664693cdb61c9c7e7487781f6b9175076556fe",
-      "bytes": 52288
-    },
-    {
-      "path": "en/build-with-claude/working-with-messages.md",
-      "url": "https://platform.claude.com/docs/en/build-with-claude/working-with-messages.md",
-      "sha256": "f46eef403885cc0948e0128fed5d9cefafac0d2680fd7aac7998d807b6e6dbaa",
-      "bytes": 33271
-    },
-    {
-      "path": "en/get-started.md",
-      "url": "https://platform.claude.com/docs/en/get-started.md",
-      "sha256": "08e50da5f90372210b28a6a887e1bf18f412c952ee182c6348b4783838ea1e9d",
-      "bytes": 15754
-    },
-    {
-      "path": "en/intro.md",
-      "url": "https://platform.claude.com/docs/en/intro.md",
-      "sha256": "44c4b9013c4c04fda68cf23fba18e2a614737e2dcce517bf97d564c724e44ee4",
-      "bytes": 3977
-    },
-    {
-      "path": "en/manage-claude/admin-api.md",
-      "url": "https://platform.claude.com/docs/en/manage-claude/admin-api.md",
-      "sha256": "7145cf320cfc04ee03b3e52e6d764707d5b1d391aed1a67819db9a48555b4754",
-      "bytes": 8951
-    },
-    {
-      "path": "en/manage-claude/api-and-data-retention.md",
-      "url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention.md",
-      "sha256": "68679b793310f504a2a7b498313ec474ff7aba8078954ca01ead63b25a41ff4e",
-      "bytes": 24741
-    },
-    {
-      "path": "en/manage-claude/authentication.md",
-      "url": "https://platform.claude.com/docs/en/manage-claude/authentication.md",
-      "sha256": "f0df9916760011b539b25f0e26f6b976e1eec8ded2825ab775f6fe8033eccc5c",
-      "bytes": 6197
-    },
-    {
-      "path": "en/manage-claude/claude-code-analytics-api.md",
-      "url": "https://platform.claude.com/docs/en/manage-claude/claude-code-analytics-api.md",
-      "sha256": "25b742c4a1f97c5cb0b4ed8cf1b3a8a39a4bb103ebb524eca51345e551e96560",
-      "bytes": 11879
-    },
-    {
-      "path": "en/manage-claude/compliance-activity-feed.md",
-      "url": "https://platform.claude.com/docs/en/manage-claude/compliance-activity-feed.md",
-      "sha256": "4692f2d4dcb3b31bca0ea526415350f302207738507b3309c53c43d9d98e35ba",
-      "bytes": 10584
-    },
-    {
-      "path": "en/manage-claude/compliance-api-access.md",
-      "url": "https://platform.claude.com/docs/en/manage-claude/compliance-api-access.md",
-      "sha256": "ff30e0d0427ca5adb58f5120a8db375254270938f9879f3bf2de908697b48f32",
-      "bytes": 12908
-    },
-    {
-      "path": "en/manage-claude/compliance-api.md",
-      "url": "https://platform.claude.com/docs/en/manage-claude/compliance-api.md",
-      "sha256": "ea277cd9a0aac41b6939982d23a5e927a2e3c43f94aa4f731cf1b64c49f7588e",
-      "bytes": 6759
-    },
-    {
-      "path": "en/manage-claude/compliance-content-data.md",
-      "url": "https://platform.claude.com/docs/en/manage-claude/compliance-content-data.md",
-      "sha256": "82bc1b959f7b8a37a126faaa287a4f6169498fb9354449be685549cdf89ad161",
-      "bytes": 18392
-    },
-    {
-      "path": "en/manage-claude/compliance-errors.md",
-      "url": "https://platform.claude.com/docs/en/manage-claude/compliance-errors.md",
-      "sha256": "9edc1dc9a07d52cc959788f7950973db92d7fe875255e59b6e9c9a0835f541c0",
-      "bytes": 19981
-    },
-    {
-      "path": "en/manage-claude/compliance-faq.md",
-      "url": "https://platform.claude.com/docs/en/manage-claude/compliance-faq.md",
-      "sha256": "5cce5a6535a17d03e94a5bf10b49d70d1de1fadb0e8fbb86bb85ce605f3dc0cb",
-      "bytes": 8812
-    },
-    {
-      "path": "en/manage-claude/compliance-integration-patterns.md",
-      "url": "https://platform.claude.com/docs/en/manage-claude/compliance-integration-patterns.md",
-      "sha256": "b99c9f6eae2560ac40b066bb16956307274d3f69405b86919fcdbb92108e1388",
-      "bytes": 10621
-    },
-    {
-      "path": "en/manage-claude/compliance-org-data.md",
-      "url": "https://platform.claude.com/docs/en/manage-claude/compliance-org-data.md",
-      "sha256": "c7d6363804f67a0d9e5526bb9b91af086575d420bfbd8b889d22d6ec7c3ed6a7",
-      "bytes": 12376
-    },
-    {
-      "path": "en/manage-claude/data-residency.md",
-      "url": "https://platform.claude.com/docs/en/manage-claude/data-residency.md",
-      "sha256": "716105e7d38fc74e598cdff016cff490a50a7446735e327b77f53086a0abc4a3",
-      "bytes": 9665
-    },
-    {
-      "path": "en/manage-claude/rate-limits-api.md",
-      "url": "https://platform.claude.com/docs/en/manage-claude/rate-limits-api.md",
-      "sha256": "ff0a4bdb9d52d1796ecbcb54791a9e2e98378146c66402803c6fec5f2a542395",
-      "bytes": 8144
-    },
-    {
-      "path": "en/manage-claude/usage-cost-api.md",
-      "url": "https://platform.claude.com/docs/en/manage-claude/usage-cost-api.md",
-      "sha256": "dcb782c0ef1fcae21abe05c86ec9c216e103979d0afce4fdd5d550b2de68e074",
-      "bytes": 13712
-    },
-    {
-      "path": "en/manage-claude/wif-providers/aws.md",
-      "url": "https://platform.claude.com/docs/en/manage-claude/wif-providers/aws.md",
-      "sha256": "6f2809f5827b3e427e85c12fa3f6913b2c9d4cb469d52a205b4e486002ff1979",
-      "bytes": 31611
-    },
-    {
-      "path": "en/manage-claude/wif-providers/azure.md",
-      "url": "https://platform.claude.com/docs/en/manage-claude/wif-providers/azure.md",
-      "sha256": "68b9d1d9f2f3d9f0009709feffe01c8391c1a630aecf536958fa2d54f30def33",
-      "bytes": 36466
-    },
-    {
-      "path": "en/manage-claude/wif-providers/gcp.md",
-      "url": "https://platform.claude.com/docs/en/manage-claude/wif-providers/gcp.md",
-      "sha256": "e495ca4f86b79bd9efb99feb7e4348e34e77be6e2a817e5ddaf7b4eaa7dfdc0d",
-      "bytes": 19876
-    },
-    {
-      "path": "en/manage-claude/wif-providers/github-actions.md",
-      "url": "https://platform.claude.com/docs/en/manage-claude/wif-providers/github-actions.md",
-      "sha256": "87ee4163e354e714a4f9981b6fd14e6f229abd627be9bd1a4b837cc3520fd7c6",
-      "bytes": 13633
-    },
-    {
-      "path": "en/manage-claude/wif-providers/kubernetes.md",
-      "url": "https://platform.claude.com/docs/en/manage-claude/wif-providers/kubernetes.md",
-      "sha256": "19cc7cc48dfec0eaa018bfcae1d7c99771b13c98845cf9b8d40b7b7b541b1104",
-      "bytes": 13581
-    },
-    {
-      "path": "en/manage-claude/wif-providers/okta.md",
-      "url": "https://platform.claude.com/docs/en/manage-claude/wif-providers/okta.md",
-      "sha256": "7458ca190762c379ab5f7304d62fae7f60db20d73ebf96cf883baf53dc231fef",
-      "bytes": 21360
-    },
-    {
-      "path": "en/manage-claude/wif-providers/spiffe.md",
-      "url": "https://platform.claude.com/docs/en/manage-claude/wif-providers/spiffe.md",
-      "sha256": "eff17efd8146a3b9aa882520020799f00760ffb06bf715a21ec20dcff2de67ea",
-      "bytes": 27884
-    },
-    {
-      "path": "en/manage-claude/wif-reference.md",
-      "url": "https://platform.claude.com/docs/en/manage-claude/wif-reference.md",
-      "sha256": "a715d7546f0a71bb1bb286f5b778710283f3fb974668f8764aa48cfa12f6a518",
-      "bytes": 21983
-    },
-    {
-      "path": "en/manage-claude/workload-identity-federation.md",
-      "url": "https://platform.claude.com/docs/en/manage-claude/workload-identity-federation.md",
-      "sha256": "56ac6cebdcbbc0814ece9b4fa7ad46e061e92654f65647b86deed036b8e001cd",
-      "bytes": 21560
-    },
-    {
-      "path": "en/manage-claude/workspaces.md",
-      "url": "https://platform.claude.com/docs/en/manage-claude/workspaces.md",
-      "sha256": "7c160cf747616ff2428458de8116c5382a98645e109111db365caff6f868536c",
-      "bytes": 15492
-    },
-    {
-      "path": "en/managed-agents/agent-setup.md",
-      "url": "https://platform.claude.com/docs/en/managed-agents/agent-setup.md",
-      "sha256": "7f5085c5d1a828c76dfa48ba36cf2757ef90a86a8a565b82f6e58d6ceeb585fe",
-      "bytes": 13910
-    },
-    {
-      "path": "en/managed-agents/cloud-containers.md",
-      "url": "https://platform.claude.com/docs/en/managed-agents/cloud-containers.md",
-      "sha256": "5759ae312ce173f4be0ee6ac27ff99cbda2a3cd25f7290f8112d02669e3373c1",
-      "bytes": 2310
-    },
-    {
-      "path": "en/managed-agents/define-outcomes.md",
-      "url": "https://platform.claude.com/docs/en/managed-agents/define-outcomes.md",
-      "sha256": "5daa2359c4d99edad05e9fef866c0724e4c55d3613a7758a4e1ffcc91eb0bbaa",
-      "bytes": 21511
-    },
-    {
-      "path": "en/managed-agents/dreams.md",
-      "url": "https://platform.claude.com/docs/en/managed-agents/dreams.md",
-      "sha256": "107c555bb51719de386f07b81dbffecf18f9973c13d633874e7cd23dd6337a60",
-      "bytes": 20698
-    },
-    {
-      "path": "en/managed-agents/environments.md",
-      "url": "https://platform.claude.com/docs/en/managed-agents/environments.md",
-      "sha256": "13b18f54d8a3e17c9447c77a95c5a979a9b7f15ef7d44f385b6ffcac1dd7c82f",
-      "bytes": 17529
-    },
-    {
-      "path": "en/managed-agents/events-and-streaming.md",
-      "url": "https://platform.claude.com/docs/en/managed-agents/events-and-streaming.md",
-      "sha256": "6f535558de2fb765b3bf22c37781cf5b6b21cfd4249f3cde1fa41d8485cb7821",
-      "bytes": 56123
-    },
-    {
-      "path": "en/managed-agents/files.md",
-      "url": "https://platform.claude.com/docs/en/managed-agents/files.md",
-      "sha256": "63185ecc9c58db16683b331065c4d6a31787e2e26044c80fff6c78ca7df0ee4c",
-      "bytes": 18780
-    },
-    {
-      "path": "en/managed-agents/github.md",
-      "url": "https://platform.claude.com/docs/en/managed-agents/github.md",
-      "sha256": "3257c8206e4d9357e9e6305f3dc93b64fdea7b286792bae20c5668ee7f2ec57a",
-      "bytes": 23532
-    },
-    {
-      "path": "en/managed-agents/mcp-connector.md",
-      "url": "https://platform.claude.com/docs/en/managed-agents/mcp-connector.md",
-      "sha256": "d8f9e270c770f6b94b5f8bac565470c3404bcfa3f9b2cdb4634595d4114c30ee",
-      "bytes": 13113
-    },
-    {
-      "path": "en/managed-agents/memory.md",
-      "url": "https://platform.claude.com/docs/en/managed-agents/memory.md",
-      "sha256": "b1662edf7a6528582133dc37bafad63f82d77cefae829ce03e726a661df88d61",
-      "bytes": 38729
-    },
-    {
-      "path": "en/managed-agents/multi-agent.md",
-      "url": "https://platform.claude.com/docs/en/managed-agents/multi-agent.md",
-      "sha256": "209cea8b67ef0599296a587884277494c74d7143f5d018d9c17da15033db6708",
-      "bytes": 43274
-    },
-    {
-      "path": "en/managed-agents/onboarding.md",
-      "url": "https://platform.claude.com/docs/en/managed-agents/onboarding.md",
-      "sha256": "60d6f701e69715072cd59b810c1621938bc2d8f86c607b0f489ec57e17a7ffa1",
-      "bytes": 3940
-    },
-    {
-      "path": "en/managed-agents/overview.md",
-      "url": "https://platform.claude.com/docs/en/managed-agents/overview.md",
-      "sha256": "b1edf313afa85208adae8a9a147156cbfa3fd4cc01df75b92cfaf99b076df724",
-      "bytes": 6877
-    },
-    {
-      "path": "en/managed-agents/permission-policies.md",
-      "url": "https://platform.claude.com/docs/en/managed-agents/permission-policies.md",
-      "sha256": "ec6f16ac29611e42fbd0bca7e767a4e553dde4928e740c59b17f31c3fdc599a1",
-      "bytes": 25546
-    },
-    {
-      "path": "en/managed-agents/quickstart.md",
-      "url": "https://platform.claude.com/docs/en/managed-agents/quickstart.md",
-      "sha256": "fb2eb3d33850ec68ed45a4f0d149c91826a785e6848731d7459d195086de3260",
-      "bytes": 24425
-    },
-    {
-      "path": "en/managed-agents/self-hosted-sandboxes-security.md",
-      "url": "https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes-security.md",
-      "sha256": "9cb3ab332e1d73b8a3ee18551dfedddeef4a96698cda2cbe2e91d9346be50ec9",
-      "bytes": 2814
-    },
-    {
-      "path": "en/managed-agents/self-hosted-sandboxes.md",
-      "url": "https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes.md",
-      "sha256": "a05302f7a9b59d4c0b7c7bf024d839c248fbce9dcfd92d899c55f795cb62d34e",
-      "bytes": 46201
-    },
-    {
-      "path": "en/managed-agents/sessions.md",
-      "url": "https://platform.claude.com/docs/en/managed-agents/sessions.md",
-      "sha256": "c7771cfdfdbe7c73fea0c13c41a46c3c7b9b94242dd639f0bafbf30fd4f94cee",
-      "bytes": 22313
-    },
-    {
-      "path": "en/managed-agents/skills.md",
-      "url": "https://platform.claude.com/docs/en/managed-agents/skills.md",
-      "sha256": "74fc200f193fbe771603a1e86206d9d94432b2f6ccef92f9e128c51dda6d3f90",
-      "bytes": 6018
-    },
-    {
-      "path": "en/managed-agents/tools.md",
-      "url": "https://platform.claude.com/docs/en/managed-agents/tools.md",
-      "sha256": "75c678833992e04b4a34195ef55d195f5ff2fb2031a9f09911a749b788008176",
-      "bytes": 14521
-    },
-    {
-      "path": "en/managed-agents/vaults.md",
-      "url": "https://platform.claude.com/docs/en/managed-agents/vaults.md",
-      "sha256": "90c28eb809d6d8ef653e0444d034e2e7f523ccc536b67ecf818b3bdea825bb78",
-      "bytes": 25244
-    },
-    {
-      "path": "en/managed-agents/webhooks.md",
-      "url": "https://platform.claude.com/docs/en/managed-agents/webhooks.md",
-      "sha256": "4d4cc7512ba15fc141c7b6b780f70a8c780f7bd7508654399d05b7a0e48445f4",
-      "bytes": 12378
-    },
-    {
-      "path": "en/test-and-evaluate/strengthen-guardrails/handle-streaming-refusals.md",
-      "url": "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/handle-streaming-refusals.md",
-      "sha256": "17536a7edab384392a0f011711364e0aa6d46b1e3839b23efd648e5975964afb",
-      "bytes": 10177
-    }
+    {"path": "en/agents-and-tools/agent-skills/best-practices.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices.md", "sha256": "9399ea95fc40fb7b0416269170ea774bdda5883bb5fd1c9688984ea184b578a9", "bytes": 41372},
+    {"path": "en/agents-and-tools/agent-skills/enterprise.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/enterprise.md", "sha256": "83dce956f2c093dcdffc5a7170e68e1f5aa868d868b814b2c5b8410881bb3c24", "bytes": 12590},
+    {"path": "en/agents-and-tools/agent-skills/overview.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview.md", "sha256": "45832f6a857ac573386a08c839e17c7bf85e208632555f33a7b956d4ccbfe616", "bytes": 18981},
+    {"path": "en/agents-and-tools/agent-skills/quickstart.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/quickstart.md", "sha256": "cf8e6c4220df1fd3a3b6a892aa28dffadd49dacccb192133e6b982fc2b7b3414", "bytes": 45032},
+    {"path": "en/agents-and-tools/mcp-connector.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-connector.md", "sha256": "12be29cb713ee1fb874de6f37fbc1d1582742a060d00636fa07fad6bb015a328", "bytes": 25462},
+    {"path": "en/agents-and-tools/mcp-tunnels/console.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/console.md", "sha256": "5f348c7ce63b79ecc87657031488a6fc459c20ee21ea95ef1c563977c1d38134", "bytes": 11277},
+    {"path": "en/agents-and-tools/mcp-tunnels/deploy-compose.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/deploy-compose.md", "sha256": "9b8dfe7d43aabe7a55a503c7eb98cbfafe67c8a1d58c09d9e544fa3fc2f93103", "bytes": 18838},
+    {"path": "en/agents-and-tools/mcp-tunnels/deploy-helm.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/deploy-helm.md", "sha256": "3ef10df6a349bf579c6e2c1385da1056f928914bde3fe5ec6460e6bcb6cd6e57", "bytes": 18859},
+    {"path": "en/agents-and-tools/mcp-tunnels/overview.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/overview.md", "sha256": "828759e858ca8a275d9665846f33d8af6ca47d084c503ef0a8a96df3a31ed185", "bytes": 11319},
+    {"path": "en/agents-and-tools/mcp-tunnels/quickstart.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/quickstart.md", "sha256": "e54e80b694babdc99040d51b2438cab9c1637217229df2d4406c2e2a60048ead", "bytes": 9875},
+    {"path": "en/agents-and-tools/mcp-tunnels/reference.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/reference.md", "sha256": "a0d4f75eb676eade4b645c376c239df0b305573795cc359d47f63caa2718e8e8", "bytes": 6484},
+    {"path": "en/agents-and-tools/mcp-tunnels/security.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/security.md", "sha256": "a03b36f0fe0b9539bf0092826a133cc890aa0ed0eb58cca11d917a27af3c8ea3", "bytes": 4762},
+    {"path": "en/agents-and-tools/mcp-tunnels/troubleshooting.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/troubleshooting.md", "sha256": "1966fd8b97c164e5a5963b00f282f23b8b619245db5656b6c415c175a536b525", "bytes": 7004},
+    {"path": "en/agents-and-tools/remote-mcp-servers.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/remote-mcp-servers.md", "sha256": "906827fce252926b8837611eeaa5bba25bc79272b974402f63570fc0e0f0706d", "bytes": 1271},
+    {"path": "en/agents-and-tools/tool-use/advisor-tool.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/advisor-tool.md", "sha256": "2513e2a5588358ea7d1f9703f5a11e6c5c356efd6cdbeb757f6a26827d73c274", "bytes": 29981},
+    {"path": "en/agents-and-tools/tool-use/bash-tool.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/bash-tool.md", "sha256": "f6ab2d63d25d3be288dda275e1e9a9d71ad11f85f14d96f4ab33d63682d958dc", "bytes": 17191},
+    {"path": "en/agents-and-tools/tool-use/build-a-tool-using-agent.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/build-a-tool-using-agent.md", "sha256": "87f37f7ad5748cb0116923edc21f716af1c1e1f4c368c4a3fe47319cd448391f", "bytes": 62168},
+    {"path": "en/agents-and-tools/tool-use/code-execution-tool.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/code-execution-tool.md", "sha256": "f4785f9775ecb1b67581060c5d561b1ede95e952258d6c636d6f9eef21578fc0", "bytes": 55463},
+    {"path": "en/agents-and-tools/tool-use/computer-use-tool.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool.md", "sha256": "119612a4064c7f448f240f6440f80afef5bd22cf160af26f84bbaa75f892994b", "bytes": 80319},
+    {"path": "en/agents-and-tools/tool-use/define-tools.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools.md", "sha256": "f55ca445e346d43ebbaf7f72456b74f2a17d70bd8eddfb30f67ab81ce99030c1", "bytes": 25290},
+    {"path": "en/agents-and-tools/tool-use/fine-grained-tool-streaming.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/fine-grained-tool-streaming.md", "sha256": "38ac1d295fe4a1ec0b9ea2e005e3e76b3bf1b992185e5d2bbd4e4bb31148c5f0", "bytes": 30091},
+    {"path": "en/agents-and-tools/tool-use/handle-tool-calls.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls.md", "sha256": "ce99e4ac7bb748d1c5bbdfb6dec49db7b757ecb09fa78aec340c2948b65dee54", "bytes": 9331},
+    {"path": "en/agents-and-tools/tool-use/how-tool-use-works.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/how-tool-use-works.md", "sha256": "b54bd8bd2125118c0b72877d746b954abafada262def1b865c41cca9aa4954e5", "bytes": 8562},
+    {"path": "en/agents-and-tools/tool-use/manage-tool-context.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/manage-tool-context.md", "sha256": "6177ef89b2bd69010a97b15f7a4c942b257d2b8d2c9e986f44f36fd462ced5d3", "bytes": 4606},
+    {"path": "en/agents-and-tools/tool-use/memory-tool.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool.md", "sha256": "911c3dc4e895528a8265d5ea0c44e0a43624d3d779a57eafc555ae4280e053ea", "bytes": 23609},
+    {"path": "en/agents-and-tools/tool-use/overview.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview.md", "sha256": "35ef2849f81fc7869230868d5f149868204a8b2268a447fc6109e3a4e2570ee6", "bytes": 8333},
+    {"path": "en/agents-and-tools/tool-use/parallel-tool-use.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/parallel-tool-use.md", "sha256": "4556b90a69da8e35b65119f3b03ed83d4f5836644a311e9ed44f01c6e6e077c3", "bytes": 31844},
+    {"path": "en/agents-and-tools/tool-use/programmatic-tool-calling.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/programmatic-tool-calling.md", "sha256": "c32681d21114b07d23d0282b564ab7385d5d0c6881dd99df5c4a2352db92b308", "bytes": 47912},
+    {"path": "en/agents-and-tools/tool-use/server-tools.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/server-tools.md", "sha256": "f8a39b80c2e840c3c93dbb7a787b4404f56404364417714b25cdbd1dd494c2df", "bytes": 15972},
+    {"path": "en/agents-and-tools/tool-use/strict-tool-use.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/strict-tool-use.md", "sha256": "9921e4a5bd0f640cef9db7bee45cd34f790093ad1a40aaffdfee7a26fbc52c94", "bytes": 34822},
+    {"path": "en/agents-and-tools/tool-use/text-editor-tool.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/text-editor-tool.md", "sha256": "e18c08df12bf7da17aa40978df9018a5d985804327b999e73709e9e05a92f633", "bytes": 44247},
+    {"path": "en/agents-and-tools/tool-use/tool-combinations.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-combinations.md", "sha256": "1f9ab90b0449147363a2931acd56c016c91cc3f1ff782cc5e0032cf641351bd5", "bytes": 4874},
+    {"path": "en/agents-and-tools/tool-use/tool-reference.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-reference.md", "sha256": "f1d770ac30d7cbb38552b359851315718ade2ed317b34637e87dca52e3ab1e09", "bytes": 10592},
+    {"path": "en/agents-and-tools/tool-use/tool-runner.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-runner.md", "sha256": "eb924684f7b32dfa380b7cc272bc903471712e9f130db8caeff4d068fb79a94a", "bytes": 69733},
+    {"path": "en/agents-and-tools/tool-use/tool-search-tool.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool.md", "sha256": "95910db1950bc0f2b35ea1be7d529ac0c6d7875eb786fe0b79e04dab291e9ef3", "bytes": 29487},
+    {"path": "en/agents-and-tools/tool-use/tool-use-with-prompt-caching.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-use-with-prompt-caching.md", "sha256": "e913b8ff5e7a90941a2088a0607fc455a1c56fb699f7ab69916b2bc6d562636e", "bytes": 4759},
+    {"path": "en/agents-and-tools/tool-use/troubleshooting-tool-use.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/troubleshooting-tool-use.md", "sha256": "fc2bb8e26b6396fc385a630a0e3dad2f29b7877552d5518922b4e20b691c0e0b", "bytes": 4247},
+    {"path": "en/agents-and-tools/tool-use/web-fetch-tool.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-fetch-tool.md", "sha256": "7a7f4280155d4733e323d267e3ba9a63538e05e6a6eab452c4421db98823162c", "bytes": 23322},
+    {"path": "en/agents-and-tools/tool-use/web-search-tool.md", "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool.md", "sha256": "ac890403d7e19a4da5a6d0bf8c4b2a0226d05d1c085cd0dced2af2954ce6c2e4", "bytes": 20544},
+    {"path": "en/build-with-claude/adaptive-thinking.md", "url": "https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking.md", "sha256": "ec6c92691b4194f05664f37bfc6f85fc5b03809253a8b5b26739328ae57c92e6", "bytes": 35385},
+    {"path": "en/build-with-claude/batch-processing.md", "url": "https://platform.claude.com/docs/en/build-with-claude/batch-processing.md", "sha256": "3b835a9e2ca94bb46c36cbe455f33e6e1cdc1490efdf444720eb2a9741ac0fb8", "bytes": 72366},
+    {"path": "en/build-with-claude/cache-diagnostics.md", "url": "https://platform.claude.com/docs/en/build-with-claude/cache-diagnostics.md", "sha256": "a5bc8aaa7f09c70e1a2a84aad16f39b8b2a2f74f0851e2990a7a688f8466d89f", "bytes": 50519},
+    {"path": "en/build-with-claude/citations.md", "url": "https://platform.claude.com/docs/en/build-with-claude/citations.md", "sha256": "a67e41562eef68b05cdcb920098f4f723344b84573dec80947ffe515e9d23bbf", "bytes": 21692},
+    {"path": "en/build-with-claude/claude-in-amazon-bedrock.md", "url": "https://platform.claude.com/docs/en/build-with-claude/claude-in-amazon-bedrock.md", "sha256": "e37a91f509096ea073cf8ef76e98142141ffb1f38ac6c9eb0f991445b3e4f141", "bytes": 16401},
+    {"path": "en/build-with-claude/claude-in-microsoft-foundry.md", "url": "https://platform.claude.com/docs/en/build-with-claude/claude-in-microsoft-foundry.md", "sha256": "5c6e29edb28d6cd90933a8694b76f9e28f27f7f76292e679c787285b07f3fd32", "bytes": 22103},
+    {"path": "en/build-with-claude/claude-on-amazon-bedrock-legacy.md", "url": "https://platform.claude.com/docs/en/build-with-claude/claude-on-amazon-bedrock-legacy.md", "sha256": "ca2b343fefc8d8ebc4dcb63477c94c02fd2b23d4d0261301afa5b516a2b28cb2", "bytes": 31052},
+    {"path": "en/build-with-claude/claude-on-vertex-ai.md", "url": "https://platform.claude.com/docs/en/build-with-claude/claude-on-vertex-ai.md", "sha256": "61e67e5005be7cd2e0ecdcd6f3793280d21ecf43a10661767a7ff78bedb96c79", "bytes": 26532},
+    {"path": "en/build-with-claude/claude-platform-on-aws.md", "url": "https://platform.claude.com/docs/en/build-with-claude/claude-platform-on-aws.md", "sha256": "3cc93daa5b0f9d6ded125e0ed86070c665fd5eb749e7dc7467b5033e72a10988", "bytes": 54013},
+    {"path": "en/build-with-claude/compaction.md", "url": "https://platform.claude.com/docs/en/build-with-claude/compaction.md", "sha256": "dd8e03dd59450ee0f548df96b90aaf9171aa7214c41f4a5ab12e71efab7791e2", "bytes": 100726},
+    {"path": "en/build-with-claude/context-editing.md", "url": "https://platform.claude.com/docs/en/build-with-claude/context-editing.md", "sha256": "6376d05b24b0f31521f4476ddc159463aafdb21a1be4c78c2f7de87c1ef97080", "bytes": 79807},
+    {"path": "en/build-with-claude/context-windows.md", "url": "https://platform.claude.com/docs/en/build-with-claude/context-windows.md", "sha256": "348baa5485d07fe2af4c3a775979eecf2eb54622271350724da17d3646bcd72d", "bytes": 13739},
+    {"path": "en/build-with-claude/effort.md", "url": "https://platform.claude.com/docs/en/build-with-claude/effort.md", "sha256": "a524041c1b0cf03527438ef186e9c4f0c3d1a3c8a3864b1cf7c147884ae7a382", "bytes": 16167},
+    {"path": "en/build-with-claude/embeddings.md", "url": "https://platform.claude.com/docs/en/build-with-claude/embeddings.md", "sha256": "dfbf567f98102c7297559e17f0dc41281fe81f1db195ab5b3db1de3fc9252362", "bytes": 17555},
+    {"path": "en/build-with-claude/extended-thinking.md", "url": "https://platform.claude.com/docs/en/build-with-claude/extended-thinking.md", "sha256": "4422f1e7e10080c0e07fa790a7db8c70d1fa8245ec7c8a21b84695e226c36c53", "bytes": 135530},
+    {"path": "en/build-with-claude/fast-mode.md", "url": "https://platform.claude.com/docs/en/build-with-claude/fast-mode.md", "sha256": "dc91e0d7187054bc34de09d3bf1e038fd0e4b51bec5df0907a37f7c7946168cc", "bytes": 24968},
+    {"path": "en/build-with-claude/files.md", "url": "https://platform.claude.com/docs/en/build-with-claude/files.md", "sha256": "bcd7c6cc8e47909faeae5d5ce668d1c148cd15cf8fb4120cc0bd0d958a7d1a83", "bytes": 27009},
+    {"path": "en/build-with-claude/handling-stop-reasons.md", "url": "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons.md", "sha256": "fd682463ee5b6358f794cf2f694daaee17325ffce36b78f81441bae3f2ef94e5", "bytes": 24118},
+    {"path": "en/build-with-claude/multilingual-support.md", "url": "https://platform.claude.com/docs/en/build-with-claude/multilingual-support.md", "sha256": "0be42390251e8d9e1cea38382da0d8b6c1837873ee25b6df502305c71dbf81aa", "bytes": 3814},
+    {"path": "en/build-with-claude/overview.md", "url": "https://platform.claude.com/docs/en/build-with-claude/overview.md", "sha256": "3ded4d934dfa941dfdb919b4fe8e94e50547e2c11f7662bbbcc25c5a63938522", "bytes": 14115},
+    {"path": "en/build-with-claude/pdf-support.md", "url": "https://platform.claude.com/docs/en/build-with-claude/pdf-support.md", "sha256": "d20719bce2e579ae241c8cf5b656ca54304dcaeddff448b3e98dfad457188de1", "bytes": 38663},
+    {"path": "en/build-with-claude/prompt-caching.md", "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching.md", "sha256": "6e359fe590a6bd416938cfeafcffbb5eaf0ea058a98dbf3ebd95cae4b961310a", "bytes": 129786},
+    {"path": "en/build-with-claude/search-results.md", "url": "https://platform.claude.com/docs/en/build-with-claude/search-results.md", "sha256": "136917c1081ba1d177540973418ffd16f4f6a3bbcb9ae18eb314c96e76ed3cd5", "bytes": 52903},
+    {"path": "en/build-with-claude/skills-guide.md", "url": "https://platform.claude.com/docs/en/build-with-claude/skills-guide.md", "sha256": "78d6a2c2ccdb5972d25737b0025b5d1f5efecf55a31939f99c757d35dc430b77", "bytes": 148279},
+    {"path": "en/build-with-claude/streaming.md", "url": "https://platform.claude.com/docs/en/build-with-claude/streaming.md", "sha256": "f8d436c2d616181d98bd0d8923994099a01554337dfd4845bf232a068c449b5e", "bytes": 53654},
+    {"path": "en/build-with-claude/structured-outputs.md", "url": "https://platform.claude.com/docs/en/build-with-claude/structured-outputs.md", "sha256": "b4210ab853b0a6ac9e46a4921930362ea09351f0f36b0a84d1bc9822c9bc383b", "bytes": 100880},
+    {"path": "en/build-with-claude/task-budgets.md", "url": "https://platform.claude.com/docs/en/build-with-claude/task-budgets.md", "sha256": "a7f875564ae615a468430c88c6c48d8a669933367db10f5c610234a32c15a897", "bytes": 19796},
+    {"path": "en/build-with-claude/token-counting.md", "url": "https://platform.claude.com/docs/en/build-with-claude/token-counting.md", "sha256": "4aa60a1277a816f24a56f63999b2e6946c2cf93c451ef2d0f1aeb436b0bd86f0", "bytes": 43762},
+    {"path": "en/build-with-claude/vision.md", "url": "https://platform.claude.com/docs/en/build-with-claude/vision.md", "sha256": "42fd38ce90ec75053297d730924354a2aaa4d3c8c80ef90f10914058ceb738e6", "bytes": 52288},
+    {"path": "en/build-with-claude/working-with-messages.md", "url": "https://platform.claude.com/docs/en/build-with-claude/working-with-messages.md", "sha256": "8b2a754b8aa341f704eb6b12ed8b70cb7314fcdf17f0ad9117a2825ede402c8c", "bytes": 33271},
+    {"path": "en/get-started.md", "url": "https://platform.claude.com/docs/en/get-started.md", "sha256": "32a5fe80a0d08c63e06b454c43c3c490614ad7caa21cdefd9d22225228afdec0", "bytes": 15754},
+    {"path": "en/intro.md", "url": "https://platform.claude.com/docs/en/intro.md", "sha256": "19bcc7952b425207743b0d34839b0d628c894d9905861fae8cddabd5bdf21f09", "bytes": 3977},
+    {"path": "en/manage-claude/admin-api.md", "url": "https://platform.claude.com/docs/en/manage-claude/admin-api.md", "sha256": "38eb91d3ba665582e6bc1e4c18a12d96a5a72f7a064e5abef2cc681cf998aed8", "bytes": 8951},
+    {"path": "en/manage-claude/api-and-data-retention.md", "url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention.md", "sha256": "81a4f24fc9a5c9687d383e9a393f28d291957210eab5defc1e65c7f8510c28a4", "bytes": 24741},
+    {"path": "en/manage-claude/authentication.md", "url": "https://platform.claude.com/docs/en/manage-claude/authentication.md", "sha256": "af91b79198e6dda5bdd5218bc3f0ad57c135c81268adaf61dd4f0933899542f6", "bytes": 6197},
+    {"path": "en/manage-claude/claude-code-analytics-api.md", "url": "https://platform.claude.com/docs/en/manage-claude/claude-code-analytics-api.md", "sha256": "912b34cef34771b1689f3bd43fdf794adba9ef19c32030754a6aea30a2078a1b", "bytes": 11879},
+    {"path": "en/manage-claude/compliance-activity-feed.md", "url": "https://platform.claude.com/docs/en/manage-claude/compliance-activity-feed.md", "sha256": "7815760f71637b050ead2d3fbf996ba3e56bb7b0d98c6001c5bb12a34cc14d5a", "bytes": 10584},
+    {"path": "en/manage-claude/compliance-api-access.md", "url": "https://platform.claude.com/docs/en/manage-claude/compliance-api-access.md", "sha256": "73599883b2ac6e5c0da17cea7cc7cb5e83ab936156ed5c6ecaf4081a33f8a96a", "bytes": 12908},
+    {"path": "en/manage-claude/compliance-api.md", "url": "https://platform.claude.com/docs/en/manage-claude/compliance-api.md", "sha256": "07eefdb3a25de8d24897fdd3d85ca1b88492d0b82513d9226828819a76eca676", "bytes": 6759},
+    {"path": "en/manage-claude/compliance-content-data.md", "url": "https://platform.claude.com/docs/en/manage-claude/compliance-content-data.md", "sha256": "4e8f97ce98f1bb3f6fbfb82db1ead75edb6c267a7119a3bf13131796c5c4b588", "bytes": 18392},
+    {"path": "en/manage-claude/compliance-errors.md", "url": "https://platform.claude.com/docs/en/manage-claude/compliance-errors.md", "sha256": "aab429961d129b8d2c1f23592a85288ea8377d469e06bc8fafc007b13b30b7e0", "bytes": 19981},
+    {"path": "en/manage-claude/compliance-faq.md", "url": "https://platform.claude.com/docs/en/manage-claude/compliance-faq.md", "sha256": "7bd0d773f864e13bebe6bf36e395f71d60c3cd712065937ce4eaa5cc8dfb6987", "bytes": 8812},
+    {"path": "en/manage-claude/compliance-integration-patterns.md", "url": "https://platform.claude.com/docs/en/manage-claude/compliance-integration-patterns.md", "sha256": "a4c9fe22e2d091b187db788f1abd6655d6648875a1f837b876163e6d0d5b8b5b", "bytes": 10621},
+    {"path": "en/manage-claude/compliance-org-data.md", "url": "https://platform.claude.com/docs/en/manage-claude/compliance-org-data.md", "sha256": "47ac91a8b69e6bbad34c66080c03f5e12daca160f639e06a9f2dbb75de32dd19", "bytes": 12376},
+    {"path": "en/manage-claude/data-residency.md", "url": "https://platform.claude.com/docs/en/manage-claude/data-residency.md", "sha256": "c36068bc8410148ec284d822cefb6ad5ef38ff8744aa3e5bdf800d25c595f72f", "bytes": 9665},
+    {"path": "en/manage-claude/rate-limits-api.md", "url": "https://platform.claude.com/docs/en/manage-claude/rate-limits-api.md", "sha256": "68c1fa95f10b4c9208676ffcdb787a8c8cc0023c1f79c17be1c6effe0e23fb11", "bytes": 8144},
+    {"path": "en/manage-claude/usage-cost-api.md", "url": "https://platform.claude.com/docs/en/manage-claude/usage-cost-api.md", "sha256": "668620c0061a901c78fa174fd464b7e39a90abc71d5a948714f1ac60446ec155", "bytes": 13712},
+    {"path": "en/manage-claude/wif-providers/aws.md", "url": "https://platform.claude.com/docs/en/manage-claude/wif-providers/aws.md", "sha256": "69f081a3052d28cea4d4c67117814e21232cbdd157ed36f9d877ba5eaa0d94f4", "bytes": 31613},
+    {"path": "en/manage-claude/wif-providers/azure.md", "url": "https://platform.claude.com/docs/en/manage-claude/wif-providers/azure.md", "sha256": "8c2362262f2ab870d6656048a66306d80f4454001a2f8cfe4c96400c84ae3c93", "bytes": 36466},
+    {"path": "en/manage-claude/wif-providers/gcp.md", "url": "https://platform.claude.com/docs/en/manage-claude/wif-providers/gcp.md", "sha256": "7092d7c0cbf3b87da913990200845013f5f6528a457b4346c54021ed8a75bd87", "bytes": 19876},
+    {"path": "en/manage-claude/wif-providers/github-actions.md", "url": "https://platform.claude.com/docs/en/manage-claude/wif-providers/github-actions.md", "sha256": "83d59d2ba35e98a481f55300be8961853800b58c9027ae3da3a7d7f989dc5605", "bytes": 13633},
+    {"path": "en/manage-claude/wif-providers/kubernetes.md", "url": "https://platform.claude.com/docs/en/manage-claude/wif-providers/kubernetes.md", "sha256": "15a4bccf27c4e6fa613ee8c88cea8e729a88056de7cb49abee830d5d24e21ac3", "bytes": 13581},
+    {"path": "en/manage-claude/wif-providers/okta.md", "url": "https://platform.claude.com/docs/en/manage-claude/wif-providers/okta.md", "sha256": "1a115a5a040cdced846ab25471a27c98970954bbc45c6c928337a48fcede10d1", "bytes": 21360},
+    {"path": "en/manage-claude/wif-providers/spiffe.md", "url": "https://platform.claude.com/docs/en/manage-claude/wif-providers/spiffe.md", "sha256": "51c540fd7a63aa6f32da867bbc43fd9391cac3ec3b53337566a687d358614f3e", "bytes": 27884},
+    {"path": "en/manage-claude/wif-reference.md", "url": "https://platform.claude.com/docs/en/manage-claude/wif-reference.md", "sha256": "5ba971e5b5f014e1ba60d0c082ecb8ed417f08596e27051e41c545fcdef50dd3", "bytes": 21983},
+    {"path": "en/manage-claude/workload-identity-federation.md", "url": "https://platform.claude.com/docs/en/manage-claude/workload-identity-federation.md", "sha256": "806152ae20090ad3e5570608b62ec1655f1e7c59dee9503504a64eb3da8c0a73", "bytes": 21560},
+    {"path": "en/manage-claude/workspaces.md", "url": "https://platform.claude.com/docs/en/manage-claude/workspaces.md", "sha256": "4a9f68cd18da4bd4f178a5449dd3f010f7c23a02c9356804e67223e8c850828c", "bytes": 15492},
+    {"path": "en/managed-agents/agent-setup.md", "url": "https://platform.claude.com/docs/en/managed-agents/agent-setup.md", "sha256": "bd8ff29dc8cd31fe67ff190e616e254a1da516638b67e52808bf1a9538290b4d", "bytes": 13910},
+    {"path": "en/managed-agents/cloud-containers.md", "url": "https://platform.claude.com/docs/en/managed-agents/cloud-containers.md", "sha256": "d4837b80f0327f757b77a59d8fb0af808a75f2bcc09f30a401f83a45ae77c047", "bytes": 2310},
+    {"path": "en/managed-agents/define-outcomes.md", "url": "https://platform.claude.com/docs/en/managed-agents/define-outcomes.md", "sha256": "3835e1ceaf02a7643a064ac1cd25b566c0f278d2fd00717cf2070ba0dc5bef06", "bytes": 21511},
+    {"path": "en/managed-agents/dreams.md", "url": "https://platform.claude.com/docs/en/managed-agents/dreams.md", "sha256": "089d6ac20ed2da8bd496368bf36b4179b3faf52f03d62680d4efb6877bc5af42", "bytes": 20698},
+    {"path": "en/managed-agents/environments.md", "url": "https://platform.claude.com/docs/en/managed-agents/environments.md", "sha256": "ebea9aa1ceca04e74811c18431ddcdcc90c4332e3410cf0ebc08a2f2fde76bf9", "bytes": 17529},
+    {"path": "en/managed-agents/events-and-streaming.md", "url": "https://platform.claude.com/docs/en/managed-agents/events-and-streaming.md", "sha256": "d266c10aff04d0ce2a96e7d1455370383550a80d7216f1129e98c2510da8ae22", "bytes": 56123},
+    {"path": "en/managed-agents/files.md", "url": "https://platform.claude.com/docs/en/managed-agents/files.md", "sha256": "a78a5995b9e8b1512170df92fdeb5ec46a8027573ce34dc0bec74f9da7b56dfa", "bytes": 18780},
+    {"path": "en/managed-agents/github.md", "url": "https://platform.claude.com/docs/en/managed-agents/github.md", "sha256": "bd5c14ec15b44fc63bf5b35af88bb05aacea210a384c0f17a50ffd09645d6f73", "bytes": 23532},
+    {"path": "en/managed-agents/mcp-connector.md", "url": "https://platform.claude.com/docs/en/managed-agents/mcp-connector.md", "sha256": "ec320d6c4b8055fe85316e4e8118ee886c3902da1b84216c01e6652ecbb30659", "bytes": 13113},
+    {"path": "en/managed-agents/memory.md", "url": "https://platform.claude.com/docs/en/managed-agents/memory.md", "sha256": "abaee95b58b61509595d52747887fc149ccb778ad1f3de254327552a5e9b5e1b", "bytes": 38729},
+    {"path": "en/managed-agents/multi-agent.md", "url": "https://platform.claude.com/docs/en/managed-agents/multi-agent.md", "sha256": "1be01c2b81339e243ac899bd3d2744d7270948207c5860c86967ae3b60487487", "bytes": 43274},
+    {"path": "en/managed-agents/onboarding.md", "url": "https://platform.claude.com/docs/en/managed-agents/onboarding.md", "sha256": "7df75aed06f11a22d9c4c01b4dd46f5967d20da3cd1452c2583042b7c789ea97", "bytes": 3940},
+    {"path": "en/managed-agents/overview.md", "url": "https://platform.claude.com/docs/en/managed-agents/overview.md", "sha256": "c42b793bcbc20898f11efe6cfde4f86f391dfa7a7f1b00fb2bc85beeb03a381a", "bytes": 6877},
+    {"path": "en/managed-agents/permission-policies.md", "url": "https://platform.claude.com/docs/en/managed-agents/permission-policies.md", "sha256": "ae4b4cf8e5b0aaa75ba7e5ac16ac4d334182f90dbf1bf58d233ea3dc8d670dec", "bytes": 25546},
+    {"path": "en/managed-agents/quickstart.md", "url": "https://platform.claude.com/docs/en/managed-agents/quickstart.md", "sha256": "4db843897fc37c453a184a7f0eaf3b962147b04944cad0cfa882a3aead2c7ed5", "bytes": 24425},
+    {"path": "en/managed-agents/self-hosted-sandboxes-security.md", "url": "https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes-security.md", "sha256": "176f19237253c6c89ba8b448aab261d43984448acffd6f20ba483b47a0c5572a", "bytes": 2814},
+    {"path": "en/managed-agents/self-hosted-sandboxes.md", "url": "https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes.md", "sha256": "a12dff60bc34c8919800d818af7bff13ff9dbd138e9c710d52a4c0ef51cb00e5", "bytes": 46201},
+    {"path": "en/managed-agents/sessions.md", "url": "https://platform.claude.com/docs/en/managed-agents/sessions.md", "sha256": "300b717cae2e192c89fe377b0b2c64432b0b0dfff73986c104f199350276b4ae", "bytes": 22313},
+    {"path": "en/managed-agents/skills.md", "url": "https://platform.claude.com/docs/en/managed-agents/skills.md", "sha256": "9e546d83789316a6c5bdfaaab7879c4b7de3bac8c5168f8942f8199ab4b02563", "bytes": 6018},
+    {"path": "en/managed-agents/tools.md", "url": "https://platform.claude.com/docs/en/managed-agents/tools.md", "sha256": "26a5a6ea5094006be086b785c9a07ed6c6ddddd6bfd111178ce031d2c1a61b56", "bytes": 14521},
+    {"path": "en/managed-agents/vaults.md", "url": "https://platform.claude.com/docs/en/managed-agents/vaults.md", "sha256": "b53c2ff0aae574ea4372bfc297778ee108564d0974df402d813e68f83e0dd2c2", "bytes": 25244},
+    {"path": "en/managed-agents/webhooks.md", "url": "https://platform.claude.com/docs/en/managed-agents/webhooks.md", "sha256": "4e916ff63fd7993abb33c4ee034aa0cfb56d8fc32afb58fb10b283a9040e70ba", "bytes": 12378},
+    {"path": "en/test-and-evaluate/strengthen-guardrails/handle-streaming-refusals.md", "url": "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/handle-streaming-refusals.md", "sha256": "dab153fa43cc83a3f34e49d904dde68cac1a5668807ab887ae4858c276fc4886", "bytes": 10177}
   ]
 }

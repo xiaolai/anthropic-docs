@@ -23,10 +23,24 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
   `top_p` (nucleus sampling), `top_k` (vocabulary cutoff). Use
   `temperature` alone for most cases; combine only when you understand
   the interaction.
-- **Extended thinking is opt-in:** set
-  `thinking: { type: "enabled", budget_tokens: N }`. Tokens used in
-  thinking blocks are billed at input-token rates and **count against
-  `max_tokens`** for the final response.
+- **Extended thinking — model-specific rules:**
+  - **Claude Opus 4.7:** manual `thinking: {type: "enabled", budget_tokens: N}`
+    is **no longer supported** — returns a `400` error. Use
+    `thinking: {type: "adaptive"}` instead (adaptive thinking is the
+    **only** thinking mode on Opus 4.7).
+  - **Claude Opus 4.6 / Sonnet 4.6:** `budget_tokens` is **deprecated**
+    (still functional, will be removed in a future release). Switch to
+    `thinking: {type: "adaptive"}` with the `effort` parameter.
+  - **Claude Mythos Preview:** adaptive thinking is the default;
+    `thinking: {type: "disabled"}` is not supported; `display` defaults
+    to `"omitted"` — pass `display: "summarized"` to receive summaries.
+  - **Older models (Sonnet 4.5, Opus 4.5, etc.):** use manual
+    `thinking: {type: "enabled", budget_tokens: N}` — adaptive thinking
+    is not available.
+  - Thinking tokens are billed at input-token rates and **count against
+    `max_tokens`** for the final response.
+  Source: [`extended-thinking.md`](https://platform.claude.com/docs/en/build-with-claude/extended-thinking.md),
+  [`adaptive-thinking.md`](https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking.md).
 - **Prompt caching: two modes.** (1) **Automatic caching** — add
   `cache_control: {"type": "ephemeral"}` at the request body top level;
   the system automatically applies the breakpoint to the last cacheable
@@ -118,9 +132,9 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
 
 | Feature | Page | What it does |
 |---|---|---|
-| **Extended thinking** | [`extended-thinking.md`](https://platform.claude.com/docs/en/build-with-claude/extended-thinking.md) | `thinking` blocks with budget tokens — model "thinks out loud" before responding |
-| **Adaptive thinking** | [`adaptive-thinking.md`](https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking.md) | Model auto-decides when to think hard vs respond immediately |
-| **Effort** | [`effort.md`](https://platform.claude.com/docs/en/build-with-claude/effort.md) | Effort-level setting (lower = faster, higher = more thorough) |
+| **Extended thinking** | [`extended-thinking.md`](https://platform.claude.com/docs/en/build-with-claude/extended-thinking.md) | Manual `thinking: {type: "enabled", budget_tokens: N}` — supported on Opus 4.6/Sonnet 4.6 (deprecated) and older models. **NOT supported on Opus 4.7** (400 error) |
+| **Adaptive thinking** | [`adaptive-thinking.md`](https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking.md) | `thinking: {type: "adaptive"}` — model auto-decides thinking depth. **Only thinking mode on Opus 4.7.** Default on Claude Mythos Preview. Recommended for Opus 4.6/Sonnet 4.6. No beta header required |
+| **Effort** | [`effort.md`](https://platform.claude.com/docs/en/build-with-claude/effort.md) | Controls token spend depth. Levels: `low`, `medium`, `high` (default), `max`, `xhigh` (Opus 4.7 only). No beta header required. Supported on Claude Mythos Preview, Opus 4.7, Opus 4.6, Sonnet 4.6, Opus 4.5 |
 | **Fast mode** | [`fast-mode.md`](https://platform.claude.com/docs/en/build-with-claude/fast-mode.md) | **Beta (research preview, waitlist).** `speed: "fast"` + header `fast-mode-2026-02-01`; up to 2.5× OTPS on Opus 4.6/4.7 at 6× pricing |
 
 ## Throughput / cost patterns
