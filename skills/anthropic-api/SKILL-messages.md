@@ -92,7 +92,7 @@ block) or an array of typed blocks:
 | `text` | Plain text. May include `cache_control` and `citations`. |
 | `image` | `{ source: { type: "base64" \| "url", media_type, data \| url } }` |
 | `document` | PDF or other document input |
-| `search_result` | Passes a search result into context (from tool-search or external lookup). Fields: `content`, `source`, `title`, `type: "search_result"`. |
+| `search_result` | Passes a search result into context (from tool-search or external lookup). Fields: `content`, `source`, `title`, `type: "search_result"`. Citations within this block use `type: "search_result_location"` — see [citation types](#citation-types). |
 | `tool_result` | Result of a previous `tool_use`. **Must reference the matching `tool_use_id`**. |
 | `tool_search_tool_result` | Result from a tool_search server tool (`tool_search_tool_bm25` / `tool_search_tool_regex`). Content is `tool_search_tool_search_result` or `tool_search_tool_result_error`. Carries `tool_use_id`. |
 | `text_editor_code_execution_tool_result` | Result from a text-editor operation inside code execution. Content is view/create/str_replace result or error. |
@@ -113,6 +113,20 @@ block) or an array of typed blocks:
 | `bash_code_execution_tool_result` | Bash result from code execution context. Carries `tool_use_id`. |
 | `text_editor_code_execution_tool_result` | Text editor result from code execution context. Carries `tool_use_id`. |
 | `tool_search_tool_result` | Tool search result (server-executed). Carries `tool_use_id`. |
+
+#### Citation types
+
+When `citations` are attached to a `text` block or returned in assistant output, the citation is one of these discriminated union variants:
+
+| `type` | Shape | Used for |
+|---|---|---|
+| `"char_location"` | `CitationCharLocationParam` — `cited_text`, `document_index`, `document_title`, `start_char_index`, `end_char_index` | Citing a character range in a document block |
+| `"page_location"` | `CitationPageLocationParam` — `cited_text`, `document_index`, `document_title`, `start_page_number`, `end_page_number` | Citing page numbers in a PDF document block |
+| `"content_block_location"` | `CitationContentBlockLocationParam` — `cited_text`, `document_index`, `document_title`, `start_block_index`, `end_block_index` | Citing a range of content blocks in a document |
+| `"web_search_result_location"` | `CitationWebSearchResultLocationParam` — `cited_text`, `encrypted_index`, `title` | Citing a web search result (server-executed `web_search`) |
+| `"search_result_location"` | `CitationSearchResultLocationParam` — `cited_text`, `search_result_index`, `source`, `title`, `start_block_index`, `end_block_index` | Citing an inline `search_result` content block. `search_result_index` is 0-based among all `search_result` blocks in the request; counted separately from `document_index`. |
+
+Source: [`messages/create.md`](https://platform.claude.com/docs/en/api/messages/create.md) and [`messages/count_tokens.md`](https://platform.claude.com/docs/en/api/messages/count_tokens.md) (updated 2026-05-21).
 
 #### `caller` field on `tool_use` and `server_tool_use` blocks
 

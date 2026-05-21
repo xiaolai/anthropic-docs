@@ -3,7 +3,7 @@
 Auto-updated reference skill for the **Anthropic Messages API** and
 adjacent surfaces (admin, compliance, beta, models).
 
-**Last updated**: 2026-05-20
+**Last updated**: 2026-05-21
 
 Part of the [anthropic-docs](../../README.md) plugin.
 
@@ -41,6 +41,7 @@ SKILL_NAME=anthropic-api npm run update
 
 | Date | Update | Research | Mending | Report | Total | Notes |
 |------|--------|----------|---------|--------|-------|-------|
+| 2026-05-21 | success | research + report (no upstream change) |
 | 2026-05-20 | success | research + report (no upstream change) |
 | 2026-05-19 | — | — | — | — | — | success; no upstream change; research + report |
 | 2026-05-18 | — | — | — | — | — | review; first baseline audit; diff size gate failed |

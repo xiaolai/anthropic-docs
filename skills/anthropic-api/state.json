@@ -3,12 +3,20 @@
   "github": null,
   "docs": null,
   "trackedIssues": null,
-  "researchedIssues": {},
+  "researchedIssues": {
+    "995": {
+      "title": "perf(MessageStream): O(N²) complexity in text accumulation during structured output streaming",
+      "verdict": "skipped",
+      "reason": "Labeled 'code-change' (not bug); 0 reactions, 0 non-author comments; performance issue, not a user-breaking bug. Fixed by PR #1056.",
+      "researchedAt": "2026-05-21T00:00:00Z"
+    }
+  },
   "lastAuditedVersion": null,
   "lastUpdated": null,
   "scaffoldComplete": true,
+  "lastScannedIssueNumber": null,
   "lastRunWarnings": [
-    "2026-05-20T00:00:00Z: Part A: no doc changes detected (llms.txt SHA matches MANIFEST; compliance.md 1-byte cosmetic diff, no schema changes). Part B: no new bug issues (change-report.json empty; 0 open bug-labeled issues). Part C: all checks passed."
-  ],
-  "lastScannedIssueNumber": null
+    "2026-05-20T00:00:00Z: Part A: no doc changes detected (llms.txt SHA matches MANIFEST; compliance.md 1-byte cosmetic diff, no schema changes). Part B: no new bug issues (change-report.json empty; 0 open bug-labeled issues). Part C: all checks passed.",
+    "2026-05-21T00:00:00Z: Part A: llms.txt SHA unchanged (c037e813…); batches.md/count_tokens.md/compliance.md each +1 byte cosmetic. Added CitationSearchResultLocationParam (type: search_result_location) citation type to SKILL-messages.md — present in create.md snapshot but not previously documented. Part B: no bug-labeled issues; issue #995 skipped (code-change label, 0 reactions). Part C: all checks passed."
+  ]
 }

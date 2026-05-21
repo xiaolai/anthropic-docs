@@ -3,6 +3,9 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-21
+- Research-only run: no upstream version change detected; research agent audited all 6 surfaces (94 turns, 475s, $1.10); added CitationSearchResultLocationParam (type: search_result_location) citation type to SKILL-messages.md; issue #995 skipped (code-change label); all 8 quality gates passed.
+
 ## 2026-05-20
 - Research-only run: no upstream version change detected; research agent audited all 6 surfaces (69 turns, 263s, $0.83); all 8 quality gates passed.
 - Research-only run: no upstream version change detected; research agent audited all 6 surfaces (127 turns, 441s, $1.93); all 8 quality gates passed; GitHub issues API 403 (no issue scan).
