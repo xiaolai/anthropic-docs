@@ -124,6 +124,7 @@ Minimal valid `settings.json`:
 | `sshConfigs` | array | SSH connections for Desktop environment dropdown (managed + user only) |
 | `statusLine` | object | Custom status line command. See `code.claude.com/docs/en/statusline.md` |
 | `strictKnownMarketplaces` | array | (Managed only) Marketplace allowlist/lockdown |
+| `strictPluginOnlyCustomization` | boolean \| array | (Managed only) Block skills, agents, hooks, and/or MCP servers from user and project sources; only plugin-provided or managed sources load. `true` locks all four surfaces; an array names which to lock: `"skills"`, `"agents"`, `"hooks"`, `"mcp"`. Requires v2.1.82+. Combine with `strictKnownMarketplaces` to control the full customization supply chain. Source: `code.claude.com/docs/en/settings.md` |
 | `syntaxHighlightingDisabled` | boolean | Disable syntax highlighting |
 | `teammateMode` | string | Agent team display: `"auto"`, `"in-process"`, or `"tmux"` |
 | `terminalProgressBarEnabled` | boolean | Show terminal progress bar in supported terminals (default: `true`) |

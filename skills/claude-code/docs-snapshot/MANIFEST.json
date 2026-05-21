@@ -1,15 +1,15 @@
 {
   "indexUrl": "https://code.claude.com/llms.txt",
-  "indexSha256": "a0aee42ae700059b4fdd2e748859ed9d0e385710229eb75aa3131f7c7620c764",
-  "indexBytes": 29066,
+  "indexSha256": "74b86427321d85fc250695ad54819025fd61d40b0462c4a9c23e26487fe9752f",
+  "indexBytes": 29065,
   "pageCount": 108,
-  "refreshedAt": "2026-05-21T06:00:00Z",
+  "refreshedAt": "2026-05-21T09:37:56Z",
   "pages": [
     {
       "path": "en/admin-setup.md",
       "url": "https://code.claude.com/docs/en/admin-setup.md",
-      "sha256": "087f90eb88f0e3d1f41aaa26f1efe23f3328d7b0038cef09485b998456bbf199",
-      "bytes": 16246
+      "sha256": "7542238072a1151f83e33f48144df251b2ef63c3df6a049252e3a9b763fa4bf0",
+      "bytes": 17133
     },
     {
       "path": "en/agent-teams.md",
@@ -392,8 +392,8 @@
     {
       "path": "en/permissions.md",
       "url": "https://code.claude.com/docs/en/permissions.md",
-      "sha256": "e65f37c24f0b9aac5a112045c1751e178d6798f17a85d7171a2bb6b1bad19878",
-      "bytes": 32223
+      "sha256": "f9c9030ef9c461c91604e40b8c4474519a9fadcd5b826f78beba1bacdd869a0f",
+      "bytes": 33554
     },
     {
       "path": "en/platforms.md",
@@ -494,8 +494,8 @@
     {
       "path": "en/settings.md",
       "url": "https://code.claude.com/docs/en/settings.md",
-      "sha256": "c38e6208dc199b1679b72e489756b71d3322e7a2262495ce7a0043898020d0b3",
-      "bytes": 127488
+      "sha256": "5c8577179a4b4645a8196bf5b4afa1bd984f1560ab461de5535883b23c19f9e3",
+      "bytes": 130296
     },
     {
       "path": "en/setup.md",

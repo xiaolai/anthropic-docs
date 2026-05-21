@@ -155,6 +155,8 @@ Environment variables can also be set in `settings.json` under `env`. See `code.
 | `CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX` | Prefix for Remote Control auto-generated session names |
 | `CLAUDE_CODE_NO_FLICKER` | Enable fullscreen renderer |
 | `CLAUDE_CODE_USE_POWERSHELL_TOOL` | Enable PowerShell tool |
+| `CLAUDE_CODE_DEBUG_LOG_LEVEL` | Minimum log level written to the debug log file: `verbose`, `debug` (default), `info`, `warn`, `error`. Set to `verbose` for high-volume hook-matching diagnostics. Source: `code.claude.com/docs/en/env-vars.md` |
+| `CLAUDE_CODE_DEBUG_LOGS_DIR` | Override the debug log file path (accepts a file path, not a directory). Requires debug mode enabled separately via `--debug` or the `DEBUG` env var; `--debug-file` does both at once. Defaults to `~/.claude/debug/<session-id>.txt`. Source: `code.claude.com/docs/en/env-vars.md` |
 | `CLAUDE_CODE_DISABLE_THINKING` | Force extended thinking off |
 | `CLAUDE_CODE_ENABLE_AWAY_SUMMARY` | Enable session recap on return |
 | `CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY` | Suppress session quality survey |
@@ -162,6 +164,7 @@ Environment variables can also be set in `settings.json` under `env`. See `code.
 | `CLAUDE_CODE_AUTO_CONNECT_IDE` | Auto-connect to IDE on startup |
 | `ENABLE_TOOL_SEARCH` | Set to `false` to disable MCP tool search |
 | `CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE` | Set to `1` to pin `/fast` mode to Opus 4.6 instead of the default Opus 4.7 |
+| `CLAUDE_CODE_SUBAGENT_MODEL` | Override the model used by subagents in multi-agent sessions. See [Model configuration](https://code.claude.com/docs/en/model-config.md). Source: `code.claude.com/docs/en/env-vars.md` |
 
 ### Prompt caching environment variables
 
