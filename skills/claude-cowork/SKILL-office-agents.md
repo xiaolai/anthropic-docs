@@ -112,6 +112,26 @@ residency / regulatory drivers.
 See
 [github.com/anthropics/financial-services/…/claude-for-msft-365-install](https://github.com/anthropics/financial-services/tree/main/claude-for-msft-365-install).
 
+**What the wizard provisions** (by connection path):
+
+| Path | Provisioned resources |
+|---|---|
+| **LLM gateway** | None. Collects gateway URL and token, then generates the manifest. |
+| **Bedrock direct** | IAM OIDC identity provider trusting Microsoft Entra ID tokens, role with `bedrock:InvokeModel` + `bedrock:InvokeModelWithResponseStream` permissions, trust policy scoped to the Claude add-in's application ID. |
+| **Vertex AI direct** | Walks through Google OAuth client creation in GCP Console (not automatable via CLI); enables Vertex AI API; captures client ID and secret for the manifest. |
+| **Foundry direct** | None. Collects Azure resource name and API key for the manifest. |
+
+> Bedrock and Vertex AI paths require Node.js for manifest generation. The wizard checks for it and prompts installation if missing.
+
+**Per-user configuration precedence.** At add-in load, configuration keys are resolved from three sources in descending priority:
+1. Bootstrap endpoint (set via `/claude-for-msft-365-install:bootstrap`)
+2. Microsoft Entra ID extension attributes (set via `/claude-for-msft-365-install:update-user-attrs`)
+3. Manifest parameters (lowest priority)
+
+Per-user attributes override manifest defaults, so a single deployed manifest can serve teams with different settings (e.g., different gateway tokens or AWS roles per team).
+
+Source: [`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md).
+
 **Outlook manifest.** Outlook requires a **separate** manifest file from
 Excel, PowerPoint, and Word. The wizard generates `manifest-outlook.xml`
 alongside `manifest.xml`. Upload each as its own custom app in the

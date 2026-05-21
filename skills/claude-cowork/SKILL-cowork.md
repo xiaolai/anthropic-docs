@@ -121,6 +121,27 @@ profiles per geography so each user population points at an in-region
 endpoint (Vertex AI and Bedrock both offer Claude models in EU, UK,
 APJ, and other sovereign regions).
 
+**End-user / evaluation install (no MDM).** For pilots or per-user
+evaluation, users can configure 3P mode locally without an MDM profile:
+
+1. Install Claude Desktop from [claude.com/download](https://claude.com/download).
+2. Launch the app. **Do not sign in.** On macOS, go to the menu bar →
+   **Help → Troubleshooting → Enable Developer Mode**, then
+   **Developer → Configure third-party inference**. On Windows, use
+   the application menu (☰ top-left of the login screen) → same path.
+3. Enter the provider, endpoint, and credential values from your
+   administrator.
+
+Local config is written to:
+- macOS: `~/Library/Application Support/Claude-3p/configLibrary/`
+- Windows: `%LOCALAPPDATA%\Claude-3p\configLibrary\`
+
+When any MDM-managed profile is present, it takes precedence and the
+in-app window becomes read-only; local values are ignored.
+
+Source: [`3p/installation.md`](https://claude.com/docs/cowork/3p/installation.md),
+[`3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
+
 ## Configuration reference
 
 Every managed-configuration key lives in
