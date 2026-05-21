@@ -3,7 +3,7 @@
   "indexSha256": "0792053b824ad931c976937c77f5b449b5068f5858bfe935778a43f82464998c",
   "indexBytes": 29282,
   "pageCount": 109,
-  "refreshedAt": "2026-05-21T21:08:10Z",
+  "refreshedAt": "2026-05-21T22:11:35Z",
   "pages": [
     {
       "path": "en/admin-setup.md",
@@ -50,8 +50,8 @@
     {
       "path": "en/auto-mode-config.md",
       "url": "https://code.claude.com/docs/en/auto-mode-config.md",
-      "sha256": "11a161e6a626dd56484ceeaf2ce86c88139b8dcaadfc6622390479808c4f0296",
-      "bytes": 13358
+      "sha256": "c357af44627556cd809fff9e74f5107547c03e8cad77c58cc14960b8edb47141",
+      "bytes": 13316
     },
     {
       "path": "en/best-practices.md",
@@ -200,8 +200,8 @@
     {
       "path": "en/desktop.md",
       "url": "https://code.claude.com/docs/en/desktop.md",
-      "sha256": "f8f9a43c4698f73d44b18bd50bf336fc3e2e9cd51c9a9f9b9a2535a1f322dbf8",
-      "bytes": 68217
+      "sha256": "f2bcc579481f432f831bec24ba8d6d65d016025cb030ef7b58eb2e4c7eacdd9d",
+      "bytes": 68121
     },
     {
       "path": "en/devcontainer.md",
@@ -266,8 +266,8 @@
     {
       "path": "en/glossary.md",
       "url": "https://code.claude.com/docs/en/glossary.md",
-      "sha256": "b43a765ab20bf7ea3890b47320623d2e623bf8a5a0c9734f6aa938c5bdc6b3a8",
-      "bytes": 19152
+      "sha256": "df97990463a4e2c13388f80194619eb1ece763c3958ed892b4fd811fc7d155c4",
+      "bytes": 19146
     },
     {
       "path": "en/goal.md",
@@ -392,8 +392,8 @@
     {
       "path": "en/permission-modes.md",
       "url": "https://code.claude.com/docs/en/permission-modes.md",
-      "sha256": "ebd0ea15331cd216004decd0f821eef88ca462b1b4a64e6efaa13a2c553986cc",
-      "bytes": 21615
+      "sha256": "86022c41ab155b843c20b668b4686b834af1185198bc84e5eb557bbd3521c89d",
+      "bytes": 21526
     },
     {
       "path": "en/permissions.md",
