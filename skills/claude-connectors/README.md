@@ -8,7 +8,7 @@ user-facing **Skills** and **Plugins** surfaces.
 
 Part of the [anthropic-docs](../../README.md) plugin.
 
-**Last updated**: 2026-05-20
+**Last updated**: 2026-05-21
 
 ## Surfaces
 
@@ -35,6 +35,7 @@ SKILL_NAME=claude-connectors npm run update
 
 | Date | Update | Research | Mending | Report | Total | Notes |
 |------|--------|----------|---------|--------|-------|-------|
+| 2026-05-21 | review | research + report (no upstream change) |
 | 2026-05-20 | review | research + report (no upstream change) |
 | 2026-05-19 | — | $1.04 | — | — | **$1.04** | review — check-docs-drift failed; draft PR auto/2026-05-19-pending-review |
 
