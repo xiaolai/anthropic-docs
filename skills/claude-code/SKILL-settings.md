@@ -83,7 +83,7 @@ Minimal valid `settings.json`:
 | `effortLevel` | string | Persist effort level: `"low"`, `"medium"`, `"high"`, `"xhigh"` |
 | `enableAllProjectMcpServers` | boolean | Auto-approve all project `.mcp.json` servers |
 | `enabledMcpjsonServers` | array | Specific MCP servers from `.mcp.json` to approve |
-| `env` | object | Environment variables applied to every session |
+| `env` | object | Environment variables applied to every session and to subprocesses Claude Code spawns. As of v2.1.143, `NO_COLOR` and `FORCE_COLOR` set here are passed to subprocesses but do **not** change Claude Code's own interface colors — set those in your shell before launching `claude` |
 | `extraKnownMarketplaces` | object | Additional plugin marketplaces (team onboarding) |
 | `fastModePerSessionOptIn` | boolean | Require per-session fast mode opt-in |
 | `feedbackSurveyRate` | number | Probability (0–1) that session quality survey appears |

@@ -196,7 +196,7 @@ Cross-reference: [`SKILL-settings.md`](SKILL-settings.md) § *All documented set
   | `auto:N` | Custom threshold: `N`% (0–100), e.g. `ENABLE_TOOL_SEARCH=auto:5` |
   | `false` | All tools loaded upfront; no deferral |
   Use `alwaysLoad: true` on a specific server to exempt it from deferral. Requires Sonnet 4+ or Opus 4+ (not Haiku).
-- **MCP tool output size:** Warning at >10,000 tokens. Override with `MAX_MCP_OUTPUT_TOKENS` env var.
+- **MCP tool output size:** Default max is 25,000 tokens; warning fires above 10,000 tokens. Override globally with `MAX_MCP_OUTPUT_TOKENS` env var. Individual tools can declare `_meta["anthropic/maxResultSizeChars"]` in their `tools/list` entry to set a per-tool ceiling (up to 500,000 chars) — Claude Code uses that value for text content instead of the env var. This annotation has no effect on image-returning tools. Source: `code.claude.com/docs/en/mcp.md`.
 - **Startup timeout:** Set `MCP_TIMEOUT` env var (milliseconds, e.g. `MCP_TIMEOUT=10000`).
 
 ## Channels (push messages from MCP servers)
