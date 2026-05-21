@@ -3,6 +3,14 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-21 (run 4)
+*(pending review — see PR auto/2026-05-21-pending-review)* Routine research pass (108 turns, 422s) — no upstream change; checkDocsDrift gate failed; surface-file edits pending human review before merge
+
+## 2026-05-21 (run 3)
+- Docs: SEP-2575 page updated (error code for unsupported protocol version changed from `-32602` to `-32004` in draft spec); added `-32003` (MissingRequiredClientCapability) and `-32004` (UnsupportedProtocolVersion) draft-only error codes to SKILL-protocol.md error codes table
+- Docs: SEP-2577 (Final) — deprecation of Roots, Sampling, and Logging features (effective next spec revision, expected June 2026) — added deprecation notices to SKILL-protocol.md (SEP table), SKILL-tools-resources-prompts.md (Sampling section), SKILL-servers.md (Logging and server-initiated requests sections), and SKILL-clients.md (Sampling section)
+- MANIFEST.json and state.json: updated index SHA256 and SEP-2575 page SHA256
+
 ## 2026-05-21 (run 2)
 - Routine research pass (93 turns, 372s) — no upstream change; @modelcontextprotocol/sdk v1.29.0 / mcp v1.27.1 stable; all gates pass
 

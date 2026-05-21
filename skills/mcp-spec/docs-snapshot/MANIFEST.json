@@ -1,9 +1,9 @@
 {
   "indexUrl": "https://modelcontextprotocol.io/llms.txt",
-  "indexSha256": "2a3dc7cff742a97809e44f71b140d50fb43b02d90d2808192f008fec522206f6",
-  "indexBytes": 17922,
+  "indexSha256": "0c42badbaa1863fa0daffb4cf5c9f47b3ed9b73fa2b5a1393f4d95ce864affd2",
+  "indexBytes": 17923,
   "pageCount": 119,
-  "refreshedAt": "2026-05-21T01:59:25Z",
+  "refreshedAt": "2026-05-21T05:00:00Z",
   "pages": [
     {
       "path": "clients.md",
@@ -512,8 +512,8 @@
     {
       "path": "seps/2575-stateless-mcp.md",
       "url": "https://modelcontextprotocol.io/seps/2575-stateless-mcp.md",
-      "sha256": "f933fe452f935ea783a9cd8dedf10c515a81dd679829a0864902db31b5c85a80",
-      "bytes": 35621
+      "sha256": "4c0f4a212909cd8f2a59713d40f6c83776aa1b1600cf1152ed2a32ba45c95c91",
+      "bytes": 35622
     },
     {
       "path": "seps/2577-deprecate-roots-sampling-and-logging.md",

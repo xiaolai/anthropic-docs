@@ -193,7 +193,9 @@ Standard JSON-RPC error codes plus MCP-specific extensions:
 | -32602 | Invalid params |
 | -32603 | Internal error |
 | -32042 | `URLElicitationRequiredError` — server cannot proceed until user completes a URL-mode elicitation (opens the provided URL out-of-band). Client should retry the request after the user completes the flow. |
-| -32000…-32099 | Implementation-defined server errors |
+| -32003 | `MissingRequiredClientCapabilityError` — server requires a client capability (e.g. Tasks) that the client did not declare. *(draft spec only, not in `2025-11-25`)* |
+| -32004 | `UnsupportedProtocolVersionError` — the client's requested protocol version is not supported by the server. *(draft spec only; stable `2025-11-25` uses `-32602` for this case per [SEP-2575](https://modelcontextprotocol.io/seps/2575-stateless-mcp.md))* |
+| -32000…-32099 | Implementation-defined server errors (range also used for MCP-reserved codes above) |
 
 MCP-defined error semantics live in the spec under
 [`specification/2025-11-25/basic/`](https://modelcontextprotocol.io/specification/2025-11-25/basic/).
@@ -242,12 +244,14 @@ Proposals. The process is documented at
 [`community/sep-guidelines.md`](https://modelcontextprotocol.io/community/sep-guidelines.md).
 Active SEPs live under [`seps/`](https://modelcontextprotocol.io/seps/).
 
-Notable recently-tracked SEPs (as of 2026-05-19):
+Notable recently-tracked SEPs (as of 2026-05-21):
 
 | SEP | Title | Status | Affects |
 |---|---|---|---|
 | [SEP-2106](https://modelcontextprotocol.io/seps/2106-json-schema-2020-12.md) | JSON Schema 2020-12 as default dialect — now incorporated in spec `2025-11-25` | Final (incorporated) | Tools primitive — `inputSchema`, `outputSchema`, `structuredContent` |
 | [SEP-2164](https://modelcontextprotocol.io/seps/2164-resource-not-found-error.md) | Standardize resource-not-found error code to `-32602` | Draft | Error codes, Resources error handling |
+| [SEP-2575](https://modelcontextprotocol.io/seps/2575-stateless-mcp.md) | Make MCP Stateless — introduces `-32004` (UNSUPPORTED_PROTOCOL_VERSION) in draft spec | Accepted | Draft error codes; sessionless and stateless operation |
+| [SEP-2577](https://modelcontextprotocol.io/seps/2577-deprecate-roots-sampling-and-logging.md) | Deprecate Roots, Sampling, and Logging — effective in next spec revision (expected June 2026) | **Final** | Roots (`roots/list`), Sampling (`sampling/createMessage`), Logging (`logging/setLevel`, `notifications/message`) |
 | [SEP-2596](https://modelcontextprotocol.io/seps/2596-spec-feature-lifecycle-and-deprecation.md) | Specification feature lifecycle and deprecation policy | Draft | Governance process; grandfathers HTTP+SSE transport and `includeContext: "thisServer"/"allServers"` as formally Deprecated |
 
 SEP-2596 also introduces the concept of a **deprecated registry** (`deprecated.mdx`) listing

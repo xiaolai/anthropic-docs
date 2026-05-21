@@ -119,6 +119,8 @@ server when roots change:
 
 ## Sampling (server asks client to LLM-sample)
 
+> **Deprecation notice:** [SEP-2577](https://modelcontextprotocol.io/seps/2577-deprecate-roots-sampling-and-logging.md) (Final) marks `sampling/createMessage` for deprecation in the next spec revision (expected June 2026). See [`SKILL-tools-resources-prompts.md`](SKILL-tools-resources-prompts.md#sampling) for details.
+
 If the client declared `sampling`, the server can ask the host to
 sample from its LLM:
 

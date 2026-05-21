@@ -203,6 +203,8 @@ conversation, typically as if the user had typed them.
 
 ## Sampling
 
+> **Deprecation notice:** [SEP-2577](https://modelcontextprotocol.io/seps/2577-deprecate-roots-sampling-and-logging.md) (Final) marks the entire `sampling` feature for deprecation in the next spec revision (expected June 2026). Wire-level behavior is unchanged until removal; implementations **SHOULD** avoid building new reliance on `sampling/createMessage`.
+
 `sampling/createMessage` — server asks the client to sample from
 the host's LLM. Lets MCP servers leverage the host's model without
 their own API key.

@@ -91,6 +91,8 @@ startup → initialize → operate → shutdown
 
 ## Logging from the server
 
+> **Deprecation notice:** [SEP-2577](https://modelcontextprotocol.io/seps/2577-deprecate-roots-sampling-and-logging.md) (Final) marks `logging/setLevel` and `notifications/message` for deprecation in the next spec revision (expected June 2026). Wire-level behavior is unchanged until removal.
+
 If the client declared `logging`, the server can send structured
 log messages:
 
@@ -116,8 +118,8 @@ can initiate:
 
 | Request | Purpose |
 |---|---|
-| `sampling/createMessage` | Ask client to LLM-sample (uses host's API key) |
-| `roots/list` | Ask client for filesystem roots |
+| `sampling/createMessage` | Ask client to LLM-sample (uses host's API key) *(deprecated — see SEP-2577)* |
+| `roots/list` | Ask client for filesystem roots *(deprecated — see SEP-2577)* |
 | `elicitation/create` | Ask user for structured input via the host |
 
 ## Build with Agent Skills
