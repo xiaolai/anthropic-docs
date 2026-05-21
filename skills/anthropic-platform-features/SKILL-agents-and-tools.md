@@ -235,6 +235,31 @@ Source: [`tool-use/define-tools.md`](https://platform.claude.com/docs/en/agents-
 
 **Server** tools execute on Anthropic's infrastructure; **Client** tools define the schema but your app handles execution. Source: [`tool-use/tool-reference.md`](https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-reference.md).
 
+### Web search / web fetch — optional parameters
+
+Both tools accept optional parameters in the tool definition alongside `type` and `name`:
+
+**Web search** (`web_search_20250305` / `web_search_20260209`):
+
+| Parameter | Type | Purpose |
+|---|---|---|
+| `max_uses` | integer | Max searches per request; excess attempts return `max_uses_exceeded` error |
+| `allowed_domains` | string[] | Restrict results to these domains |
+| `blocked_domains` | string[] | Exclude results from these domains |
+| `user_location` | object | Localize results — `{type: "approximate", city, region, country, timezone}` |
+
+**Web fetch** (`web_fetch_20250910` / `web_fetch_20260209`):
+
+| Parameter | Type | Purpose |
+|---|---|---|
+| `max_uses` | integer | Max fetches per request; excess attempts return `max_uses_exceeded` error |
+| `allowed_domains` | string[] | Restrict fetching to these domains |
+| `blocked_domains` | string[] | Never fetch from these domains |
+| `citations` | object | `{"enabled": true}` — enable citations for fetched content |
+| `max_content_tokens` | integer | Truncate fetched content to this many tokens (approximate) |
+
+Source: [`web-search-tool.md`](https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool.md), [`web-fetch-tool.md`](https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-fetch-tool.md).
+
 > **Tool versioning:** `_YYYYMMDD` suffix identifies a tool version. Older versions remain available; pick the newer one for new capabilities (e.g. `code_execution_20260120` adds programmatic tool calling vs `code_execution_20250825`). `text_editor_20250728` is for Claude 4 models; `text_editor_20250124` for earlier models. Tool search types are variants, not versions — neither supersedes the other. Tool search also accepts undated aliases `tool_search_tool_regex` and `tool_search_tool_bm25` which resolve to the latest dated version.
 
 ### Server tool response mechanics
