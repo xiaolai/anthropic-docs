@@ -136,6 +136,37 @@ agent's `tools` array. All tools are enabled by default; disable individual tool
 | [`sessions.md`](https://platform.claude.com/docs/en/managed-agents/sessions.md) | Session lifecycle |
 | [`permission-policies.md`](https://platform.claude.com/docs/en/managed-agents/permission-policies.md) | What each agent may do |
 
+## Events quick-reference
+
+Events follow `{domain}.{action}` naming; every event has a `processed_at`
+timestamp (null = queued). Source:
+[`events-and-streaming.md`](https://platform.claude.com/docs/en/managed-agents/events-and-streaming.md).
+
+| Direction | Type | Notes |
+|---|---|---|
+| **→ send** | `user.message` | Text turn |
+| **→ send** | `user.interrupt` | Stop mid-execution |
+| **→ send** | `user.custom_tool_result` | Reply to `agent.custom_tool_use` |
+| **→ send** | `user.tool_confirmation` | Approve/deny when permission policy requires |
+| **→ send** | `user.define_outcome` | Set a goal for the agent |
+| **→ send** | `user.tool_result` | Self-hosted only: provide `agent_toolset` results |
+| **← recv** | `agent.message` | Agent text response |
+| **← recv** | `agent.thinking` | Agent reasoning (emitted separately) |
+| **← recv** | `agent.tool_use / agent.tool_result` | Built-in tool invocation + result |
+| **← recv** | `agent.mcp_tool_use / agent.mcp_tool_result` | MCP tool invocation + result |
+| **← recv** | `agent.custom_tool_use` | Custom tool call; you reply with `user.custom_tool_result` |
+| **← recv** | `agent.thread_context_compacted` | Conversation history was compacted |
+| **← recv** | `agent.thread_message_received/sent` | Multi-agent sub-agent coordination |
+| **← recv** | `session.status_running` | Agent actively processing |
+| **← recv** | `session.status_idle` | Task done; includes `stop_reason` |
+| **← recv** | `session.status_rescheduled` | Transient error; retrying |
+| **← recv** | `session.status_terminated` | Unrecoverable error |
+| **← recv** | `session.updated` | Field(s) changed; applies next turn |
+| **← recv** | `session.error` | Error; includes `error.retry_status` |
+| **← recv** | `session.thread_*` | Multi-agent thread lifecycle events |
+| **← recv** | `span.model_request_start/end` | Inference timing; `_end` includes `model_usage` |
+| **← recv** | `span.outcome_evaluation_*` | Outcome evaluation lifecycle |
+
 ## Integrations
 
 | Page | Topic |

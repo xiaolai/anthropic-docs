@@ -52,6 +52,38 @@ Create your own:
 - **In claude.ai** — add via Settings.
 - **On AWS / Foundry** — upload through the Skills API.
 
+### Using Skills in the Messages API (container parameter)
+
+Skills execute in the code-execution environment. Specify them via the
+`container` parameter in the Messages API. Up to **8 Skills per request**.
+**Not ZDR eligible.**
+
+**Required beta headers:**
+- `code-execution-2025-08-25` — enables code execution (required)
+- `skills-2025-10-02` — enables Skills API
+- `files-api-2025-04-14` — for uploading/downloading files to/from container
+
+| Aspect | Anthropic Skills | Custom Skills |
+|---|---|---|
+| `type` value | `anthropic` | `custom` |
+| Skill IDs | Short names: `pptx`, `xlsx`, `docx`, `pdf` | Generated: `skill_01AbCdEfGhIjKlMnOpQrStUv` |
+| Version format | Date-based: `20251013` or `latest` | Epoch timestamp or `latest` |
+| Availability | All users | Private to your workspace |
+
+<!-- skip-validate -->
+```json
+{
+  "container": {
+    "skills": [
+      { "type": "anthropic", "skill_id": "pptx", "version": "latest" }
+    ]
+  },
+  "tools": [{ "type": "code_execution_20250825", "name": "code_execution" }]
+}
+```
+
+Source: [`build-with-claude/skills-guide.md`](https://platform.claude.com/docs/en/build-with-claude/skills-guide.md).
+
 ### Best practices
 
 Long-form guidance at
