@@ -217,6 +217,9 @@ Claude Code writes a JSON object to stdin (or POST body for HTTP hooks). Common 
 | `tool_input` | PreToolUse / PostToolUse tool events | Arguments passed to the tool |
 | `tool_response` | PostToolUse | What the tool returned |
 | `tool_error` | PostToolUseFailure | Error message from the failed tool call |
+| `is_interrupt` | PostToolUseFailure | Optional boolean; `true` if the failure was caused by user interruption |
+| `duration_ms` | PostToolUseFailure | Optional. Tool execution time in milliseconds (excludes time in permission prompts and PreToolUse hooks) |
+| `reason` | PermissionDenied | The auto-mode classifier's explanation for why the tool call was denied |
 | `prompt` | UserPromptSubmit | The user's just-submitted prompt text |
 | `source` | SessionStart | `"startup"`, `"resume"`, `"clear"` (after `/clear`), or `"compact"` (after compaction) |
 | `model` | SessionStart only | Active model identifier (e.g. `"claude-sonnet-4-6"`). Only present in `SessionStart` — there is no `$CLAUDE_MODEL` env var. Does not update when `/model` changes mid-session |
@@ -519,9 +522,39 @@ SessionStart is non-blocking (cannot prevent session start), but supports inject
 | `initialUserMessage` | (`-p` mode only) String used as the first user message. If a prompt is also provided via `-p`, it follows as the next turn. Unlike `additionalContext`, this creates a turn rather than attaching to one |
 | `watchPaths` | Array of absolute paths to watch for `FileChanged` events during this session. These are *dynamic* watch paths (added by the hook); static paths from the `matcher` field are always watched regardless |
 
+### PostToolUseFailure output
+
+`PostToolUseFailure` is non-blocking (the tool already failed). Return `hookSpecificOutput.additionalContext` to give Claude context alongside the error:
+
+<!-- skip-validate -->
+```json
+{
+  "hookSpecificOutput": {
+    "hookEventName": "PostToolUseFailure",
+    "additionalContext": "The test runner exited with code 1 because the database is not running."
+  }
+}
+```
+
+Source: `code.claude.com/docs/en/hooks.md`
+
 ### PermissionDenied output
 
-For `PermissionDenied`, return `{ "retry": true }` to tell the model it may retry the denied tool call.
+`PermissionDenied` only fires when the auto-mode classifier denies a call — not when you manually deny a permission dialog or when a `PreToolUse` hook blocks a call.
+
+Return `{ "retry": true }` (in `hookSpecificOutput`) to tell the model it may retry the denied tool call. The denial itself is not reversed; Claude receives a message that retry is allowed:
+
+<!-- skip-validate -->
+```json
+{
+  "hookSpecificOutput": {
+    "hookEventName": "PermissionDenied",
+    "retry": true
+  }
+}
+```
+
+Source: `code.claude.com/docs/en/hooks.md`
 
 ### Elicitation output
 
