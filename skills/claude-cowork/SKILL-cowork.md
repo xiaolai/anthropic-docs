@@ -187,9 +187,12 @@ That page is the source of truth for:
   `{"name":"<id>","labelOverride":"<label>","supports1m":true}`)
 - **Credential helper** — `inferenceCredentialHelper` (path to executable whose
   stdout becomes the API credential; may print a bare token or
-  `{"token":"...","headers":{...}}`), `inferenceCredentialHelperTtlSec` (cache
-  TTL, default 3600 s), `inferenceCredentialHelperTimeoutSec` (max seconds to wait
-  for helper, default 60 s; applies to Bedrock/Foundry/gateway/anthropic, not Vertex AI)
+  `{"token":"...","headers":{...}}`); when the helper returns a `headers` object,
+  those headers are merged with `inferenceCustomHeaders` on every inference request —
+  on a name collision, the helper's value wins; `inferenceCredentialHelperTtlSec`
+  (cache TTL, default 3600 s), `inferenceCredentialHelperTimeoutSec` (max seconds
+  to wait for helper, default 60 s; applies to Bedrock/Foundry/gateway/anthropic,
+  not Vertex AI)
 - **Sandbox & workspace** — `builtinToolPolicy` (JSON object mapping tool name →
   `"allow"` | `"ask"`, controls per-tool approval prompts without removing the tool);
   `disabledBuiltinTools` (JSON string[] of tool names to remove entirely; valid:

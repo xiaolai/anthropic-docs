@@ -98,7 +98,23 @@ residency / regulatory drivers.
 
 **Deployment wizard.** Install `claude-for-msft-365-install` from the
 `anthropics/financial-services` marketplace, then run
-`/claude-for-msft-365-install:setup` inside Claude. Other commands:
+`/claude-for-msft-365-install:setup` inside Claude.
+
+Install commands (run in shell before opening Claude):
+
+```bash
+claude plugin marketplace add anthropics/financial-services
+claude plugin install claude-for-msft-365-install@claude-for-financial-services
+```
+
+To update before re-deploying (compare `claude plugin list` output against the
+[latest version in the repo](https://github.com/anthropics/financial-services/blob/main/claude-for-msft-365-install/.claude-plugin/plugin.json)):
+
+```bash
+claude plugin update claude-for-msft-365-install@claude-for-financial-services
+```
+
+Other commands:
 
 | Command | Function |
 |---|---|
@@ -203,7 +219,8 @@ available when connecting through a third-party platform.
 > **Bedrock + Outlook:** Amazon Bedrock is not supported for Claude for
 > Outlook. Bedrock remains supported for Excel, PowerPoint, and Word.
 > Claude for Outlook on **all** third-party platforms currently supports
-> **Claude Opus 4.7 only**.
+> **Claude Opus 4.7 only**. When signing in with a **Claude account**
+> (1P), available models are Claude Opus 4.7, Opus 4.6, and Sonnet 4.6.
 >
 > Source: [`outlook.md`](https://claude.com/docs/office-agents/outlook.md),
 > [`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md)
