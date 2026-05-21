@@ -39,6 +39,6 @@ SKILL_NAME=mcp-spec npm run update
 | Date | Update | Research | Mending | Report | Total | Notes |
 |------|--------|----------|---------|--------|-------|-------|
 | 2026-05-21 | success | research + report (no upstream change) |
-| 2026-05-20 | success | research + report (no upstream change) |
+| 2026-05-20 | — | — | — | — | — | success — no upstream change |
 | 2026-05-19 | — | $1.61 | — | — | **$1.61** | success — no upstream change |
 
