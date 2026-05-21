@@ -15,7 +15,7 @@ names, flags, env vars) flow in.
 
 <!-- The two stamps below are auto-filled by the pipeline. -->
 **Claude Code version**: v2.1.145
-**Last updated**: 2026-05-20
+**Last updated**: 2026-05-21
 **Pipeline status**: see [`reports/`](reports/) for per-run records.
 
 ## What it does
@@ -164,13 +164,13 @@ and `git pull`.
 
 | Date | Update | Research | Mending | Report | Total | Notes |
 |------|--------|----------|---------|--------|-------|-------|
+| 2026-05-21 | success | research + report (no upstream change) |
 | 2026-05-20 | partial | research + report (no upstream change) |
 | 2026-05-20 (run 12) | — | — | — | — | **—** | partial — research crash (exit 1, SDK init failure); all 8 gates pass |
 | 2026-05-20 (run 11) | — | $1.75 | — | — | **$1.75** | success — no upstream change, routine audit v2.1.145, 136 turns, all 11 gates pass |
 | 2026-05-20 (run 10) | — | $1.43 | — | — | **$1.43** | review — checkDocsDrift failed; draft PR auto/2026-05-20-pending-review; 8/9 gates pass |
 | 2026-05-20 (run 9) | — | $1.66 | — | — | **$1.66** | success — no upstream change, SKILL-cli.md auto-mode model requirements + SKILL-slash-commands.md /resume version corrected; 8 gates pass |
 | 2026-05-20 (run 8) | — | $1.62 | — | — | **$1.62** | success — no upstream change, SKILL-hooks.md PreToolUse tool_input + Agent PostToolUse response; all 11 gates pass |
-| 2026-05-20 (run 7) | $0.44 | $1.01 | — | — | **$1.45** | success — docs index +3 pages (plugin-hints, prompt-library, sessions; 105→108), all 11 gates pass |
 
 ## For maintainers
 

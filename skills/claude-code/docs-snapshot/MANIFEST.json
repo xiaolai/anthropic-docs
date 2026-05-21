@@ -3,7 +3,7 @@
   "indexSha256": "74b86427321d85fc250695ad54819025fd61d40b0462c4a9c23e26487fe9752f",
   "indexBytes": 29065,
   "pageCount": 108,
-  "refreshedAt": "2026-05-20T23:05:12Z",
+  "refreshedAt": "2026-05-21T01:37:07Z",
   "pages": [
     {
       "path": "en/admin-setup.md",
@@ -128,8 +128,8 @@
     {
       "path": "en/commands.md",
       "url": "https://code.claude.com/docs/en/commands.md",
-      "sha256": "8ea4d8d18bf8937b84515f85d34665604ee8c48a2d1299b19b4bd8a3c612e684",
-      "bytes": 75018
+      "sha256": "1848afb228e0df56793b6f0df3ca91601ba04feb7f007b6db77df3f23e18daf7",
+      "bytes": 75060
     },
     {
       "path": "en/common-workflows.md",
@@ -188,8 +188,8 @@
     {
       "path": "en/desktop-quickstart.md",
       "url": "https://code.claude.com/docs/en/desktop-quickstart.md",
-      "sha256": "45ebc1c9e906c98115759d697a7ff3a6ef13f586bcc6627ec4c31c3537ed4b3e",
-      "bytes": 10322
+      "sha256": "ba051ebd77f9d7859fa9e3968dba4941cf2a9436b519dacef9f048b94f642cf2",
+      "bytes": 10306
     },
     {
       "path": "en/desktop-scheduled-tasks.md",
@@ -200,8 +200,8 @@
     {
       "path": "en/desktop.md",
       "url": "https://code.claude.com/docs/en/desktop.md",
-      "sha256": "1e88fa4de9a634cbf3fcaf3781f1ba6fe933bbd0f3d192535f083732ea8fb228",
-      "bytes": 67980
+      "sha256": "f8f9a43c4698f73d44b18bd50bf336fc3e2e9cd51c9a9f9b9a2535a1f322dbf8",
+      "bytes": 68217
     },
     {
       "path": "en/devcontainer.md",
@@ -296,14 +296,14 @@
     {
       "path": "en/hooks.md",
       "url": "https://code.claude.com/docs/en/hooks.md",
-      "sha256": "044dab9c32f3bf7e55ba9bcdd487b84e873ded7c6cb59c148b67ea5872665fa9",
-      "bytes": 191446
+      "sha256": "7954fdc108ac3c79eae091bac5bc84339450930b3f5a50b81bfed32171624615",
+      "bytes": 191465
     },
     {
       "path": "en/how-claude-code-works.md",
       "url": "https://code.claude.com/docs/en/how-claude-code-works.md",
-      "sha256": "bec6ea9df428022c109b2536bc4a6bcada9396f7f33b797edf45ddfa89e9f99b",
-      "bytes": 18858
+      "sha256": "27e3156dbb9ea070beb808533f914c4902414873713f90aaf4e36388bd88a6ad",
+      "bytes": 19014
     },
     {
       "path": "en/interactive-mode.md",
@@ -470,8 +470,8 @@
     {
       "path": "en/scheduled-tasks.md",
       "url": "https://code.claude.com/docs/en/scheduled-tasks.md",
-      "sha256": "d2c43111c7d1963abd84737a5ae3869434c54622d5a89d1eea9df8f700858df5",
-      "bytes": 15306
+      "sha256": "51f8ef7cbbf984147891dec33701282ad193f09be39f19284b043ae8b4d53363",
+      "bytes": 15630
     },
     {
       "path": "en/security.md",
@@ -542,8 +542,8 @@
     {
       "path": "en/tools-reference.md",
       "url": "https://code.claude.com/docs/en/tools-reference.md",
-      "sha256": "0b6f37a6662c9808ddde894982585a1521f1252ecaee78fef38fd8b8d8e9f834",
-      "bytes": 40910
+      "sha256": "6156b84498b5363c81e0ff2087b83b3153dcc745168da70a91b19332b9eb2f8e",
+      "bytes": 47217
     },
     {
       "path": "en/troubleshoot-install.md",

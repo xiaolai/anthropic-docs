@@ -10,6 +10,9 @@ The newest entry is at the top.
 
 ---
 
+## 2026-05-21
+- Routine audit at CC v2.1.145 — research ran 86 turns; no upstream change, 108 pages confirmed current, no new bug issues; all 11 gates pass
+
 ## 2026-05-20 (run 12)
 - Partial run at CC v2.1.145 — research agent crashed (exit 1, SDK init failure); no reference surface changes; all 8 gates pass
 

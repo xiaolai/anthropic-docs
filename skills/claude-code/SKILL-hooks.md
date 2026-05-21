@@ -316,7 +316,7 @@ Claude Code writes a JSON object to stdin (or POST body for HTTP hooks). Common 
 | `tool` | MCP tool name (present only for `monitor` and `MCP task` tasks) |
 | `name` | Workflow name (present only for `workflow` tasks) |
 
-**`session_crons` sub-fields** (each entry in the array, sourced from `CronCreate` and `/loop`):
+**`session_crons` sub-fields** (each entry in the array, sourced from `CronCreate`, `ScheduleWakeup`, and `/loop`):
 
 | Field | Notes |
 |---|---|
