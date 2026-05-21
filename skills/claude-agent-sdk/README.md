@@ -12,7 +12,7 @@
 
 Auto-updated reference skill for the **Claude Agent SDK** — Anthropic's libraries for building autonomous AI agents that wrap the Claude Code CLI runtime. Covers both [TypeScript](https://github.com/anthropics/claude-agent-sdk-typescript) (`@anthropic-ai/claude-agent-sdk` on npm) and [Python](https://github.com/anthropics/claude-agent-sdk-python) (`claude-agent-sdk` on PyPI).
 
-**TypeScript SDK**: v0.3.145 | **Python SDK**: v0.2.82
+**TypeScript SDK**: v0.3.146 | **Python SDK**: v0.2.83
 
 Part of the [anthropic-docs](../../README.md) plugin.
 
@@ -71,6 +71,6 @@ SKILL_NAME=claude-agent-sdk npm run verify:all                       # gate
 
 | Date | Update | Research | Mending | Report | Total | Notes |
 |------|--------|----------|---------|--------|-------|-------|
-| 2026-05-21 | review | research + report (no upstream change) |
-| 2026-05-20 | — | — | — | — | — | review; research + report (no upstream change) |
-| 2026-05-19 | — | — | — | — | — | review; research + report (no upstream change) |
+| 2026-05-21 | success | CC v0.3.145 → v0.3.146 |
+| 2026-05-20 | — | — | — | — | — | mixed (success + multiple review runs); session-storage.md added (29→30 pages) |
+| 2026-05-19 | — | — | — | — | — | mixed (success + review runs); Task→Agent rename, updatedToolOutput, auto permissionMode, xhigh effort |

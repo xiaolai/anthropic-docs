@@ -1,6 +1,6 @@
-# Claude Agent SDK — Python Reference (v0.2.82)
+# Claude Agent SDK — Python Reference (v0.2.83)
 
-**Package**: `claude-agent-sdk==0.2.82` (PyPI)
+**Package**: `claude-agent-sdk==0.2.83` (PyPI)
 **Docs**: https://code.claude.com/docs/en/agent-sdk/python
 **Repo**: https://github.com/anthropics/claude-agent-sdk-python
 **Requires**: Python 3.10+

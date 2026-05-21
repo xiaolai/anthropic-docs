@@ -1,6 +1,13 @@
 # Changelog
 
-## 2026-05-21
+## 2026-05-21 (v0.3.146 / v0.2.83 — success run)
+- Sync to CC v2.1.146 — TS v0.3.145→v0.3.146, PY v0.2.82→v0.2.83; all 11 gates pass, 27/27 verify checks pass; 1 mending run; $1.41 total
+
+## 2026-05-21 (v0.3.146 / v0.2.83)
+
+- SDK TS v0.3.145 → v0.3.146 (parity with Claude Code v2.1.146); Python v0.2.82 → v0.2.83 (bundled CLI updated to v2.1.146); no new API surface changes
+- Version propagated to SKILL.md, SKILL-typescript.md, SKILL-python.md, README.md, state.json
+
 - *(pending review — see PR on `auto/2026-05-21-pending-review`)* Research-only run (TS v0.3.145, PY v0.2.82 unchanged); check-docs-drift failed; no upstream changes detected; 32 research turns, $0.33
 
 ## 2026-05-20
