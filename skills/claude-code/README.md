@@ -14,7 +14,7 @@ changes that affect the reference surface (schema fields, event
 names, flags, env vars) flow in.
 
 <!-- The two stamps below are auto-filled by the pipeline. -->
-**Claude Code version**: v2.1.146
+**Claude Code version**: v2.1.147
 **Last updated**: 2026-05-21
 **Pipeline status**: see [`reports/`](reports/) for per-run records.
 
@@ -169,7 +169,7 @@ and `git pull`.
 | 2026-05-21 (run 1) | — | $1.12 | — | — | **$1.12** | success — no upstream change, routine audit v2.1.145, 108 pages current, no new bug issues; all 8 gates pass |
 | 2026-05-20 | partial | research + report (no upstream change) |
 | 2026-05-20 (run 12) | — | — | — | — | **—** | partial — research crash (exit 1, SDK init failure); all 8 gates pass |
-| 2026-05-20 (run 11) | — | $1.75 | — | — | **$1.75** | success — no upstream change, routine audit v2.1.146, 136 turns, all 11 gates pass |
+| 2026-05-20 (run 11) | — | $1.75 | — | — | **$1.75** | success — no upstream change, routine audit v2.1.147, 136 turns, all 11 gates pass |
 | 2026-05-20 (run 10) | — | $1.43 | — | — | **$1.43** | review — checkDocsDrift failed; draft PR auto/2026-05-20-pending-review; 8/9 gates pass |
 
 ## For maintainers

@@ -93,7 +93,7 @@ Commands marked **[Skill]** are bundled skills — prompts handed to Claude that
 | `/security-review` | Analyze pending branch changes for security vulnerabilities |
 | `/setup-bedrock` | Configure Amazon Bedrock authentication, region, and model pins interactively. Only visible when `CLAUDE_CODE_USE_BEDROCK=1` is set |
 | `/setup-vertex` | Configure Google Vertex AI authentication, project, region, and model pins interactively. Only visible when `CLAUDE_CODE_USE_VERTEX=1` is set |
-| `/code-review [effort]` | **[Skill]** Review recently changed files for quality/efficiency issues and fix them. Optional effort level: `low`, `medium` (default), `high`. Renamed from `/simplify` as of v2.1.146. |
+| `/code-review [effort]` | **[Skill]** Review recently changed code and report correctness bugs at the chosen effort level: `low`, `medium` (default), `high` (e.g. `/code-review high`). Pass `--comment` to post findings as inline GitHub PR comments. The old cleanup-and-fix behavior has been removed. Renamed from `/simplify` as of v2.1.147; `--comment` support added in v2.1.147. |
 | `/skills` | List available skills |
 | `/status` | Open Settings interface (Status tab) |
 | `/statusline` | Configure the status line |

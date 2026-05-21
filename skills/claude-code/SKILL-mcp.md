@@ -171,7 +171,7 @@ Cross-reference: [`SKILL-plugins.md`](SKILL-plugins.md).
 
 ## Managed MCP configuration
 
-Administrators can deploy MCP servers via `managed-settings.json` alongside `managed-mcp.json`. Control settings:
+Administrators can deploy MCP servers via `managed-settings.json` alongside `managed-mcp.json`. Full reference: [`managed-mcp.md`](https://code.claude.com/docs/en/managed-mcp.md). Control settings:
 
 | Setting | Effect |
 |---|---|

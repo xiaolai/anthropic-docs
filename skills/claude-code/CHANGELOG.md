@@ -10,6 +10,32 @@ The newest entry is at the top.
 
 ---
 
+## v2.1.147 — 2026-05-21
+
+Version bump: `@anthropic-ai/claude-code` updated from v2.1.146 to v2.1.147.
+
+- Added the `Workflow` tool for deterministic multi-agent orchestration (off by default; enable with `CLAUDE_CODE_WORKFLOWS=1`)
+- Pinned background sessions (`Ctrl+T` in `claude agents`) now stay alive when idle and are restarted in place on Claude Code updates
+- `/code-review` now reports correctness bugs at a chosen effort level (e.g. `/code-review high`); pass `--comment` to post findings as inline GitHub PR comments. The old cleanup-and-fix behavior has been removed
+- Hardened REPL and Workflow tool sandboxes against prototype-pollution and thenable-based escapes
+- Improved auto-updater: retries transient network failures, reports specific error categories and OS error codes, shows current version on failure
+- Prompt history no longer records consecutive duplicate entries
+- Fixed enterprise login restrictions (`forceLoginOrgUUID`, `forceLoginMethod`) not enforced against third-party-provider and API-key sessions
+- Fixed `&` in `!` command output displaying as `&amp;` on headless machines
+- Fixed unknown slash commands silently doing nothing in headless/SDK mode
+- Fixed `/help` rendering broken tab header on small terminals
+- Fixed shell snapshot dropping user functions whose names start with a single underscore
+- Fixed plugin agents that declare multiple `Agent(...)` types in `tools:` frontmatter dropping all but the last entry
+- Fixed hook `if` conditions like `PowerShell(git push*)` never matching
+- Fixed PowerShell tool dropping output for commands that rely on the default formatter
+- Fixed paginating MCP servers dropping resources, templates, and prompts past page 1 (additional fix)
+- Fixed `/effort` opening with slider on wrong level
+- Fixed pasted text being delivered to agents as `[Pasted text #N]` placeholder instead of actual content
+- Fixed `CLAUDE_CODE_SUBAGENT_MODEL` not applying to teammate processes spawned by agent teams
+- Fixed slash commands followed by a tab or newline being treated as unknown
+- Fixed stripped images prompting the model to re-read media that was no longer present
+- New upstream doc page: `managed-mcp.md` ([Managed MCP](https://code.claude.com/docs/en/managed-mcp.md))
+
 ## v2.1.146 — 2026-05-21
 
 Version bump: `@anthropic-ai/claude-code` updated from v2.1.145 to v2.1.146.
