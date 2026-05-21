@@ -64,6 +64,15 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
   under `/v1/...` with the `anthropic-beta` header
   (`managed-agents-2026-04-01`). Pin the beta string to a specific
   version; the shape may evolve.
+- **ZDR / HIPAA ineligibility.** Because sessions are stateful
+  (persistent filesystem, conversation history stored server-side),
+  Managed Agents is **not eligible for Zero Data Retention (ZDR) and
+  not covered by a HIPAA Business Associate Agreement (BAA)**.
+  Workaround: delete sessions via the sessions API and delete uploaded
+  files via the Files API to exercise your data-control rights.
+  Full feature-eligibility table:
+  [`api-and-data-retention.md`](https://platform.claude.com/docs/en/manage-claude/api-and-data-retention.md).
+  Source: [`managed-agents/overview.md`](https://platform.claude.com/docs/en/managed-agents/overview.md).
 - **Memory stores persist cross-session.** A memory store
   (`memstore_...` ID) is a workspace-scoped collection of text
   documents mounted as a directory in the agent's container. Create
