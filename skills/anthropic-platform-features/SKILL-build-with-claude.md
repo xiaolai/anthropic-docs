@@ -133,8 +133,8 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
 | Feature | Page | What it does |
 |---|---|---|
 | **Extended thinking** | [`extended-thinking.md`](https://platform.claude.com/docs/en/build-with-claude/extended-thinking.md) | Manual `thinking: {type: "enabled", budget_tokens: N}` — supported on Opus 4.6/Sonnet 4.6 (deprecated) and older models. **NOT supported on Opus 4.7** (400 error) |
-| **Adaptive thinking** | [`adaptive-thinking.md`](https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking.md) | `thinking: {type: "adaptive"}` — model auto-decides thinking depth. **Only thinking mode on Opus 4.7.** Default on Claude Mythos Preview. Recommended for Opus 4.6/Sonnet 4.6. No beta header required |
-| **Effort** | [`effort.md`](https://platform.claude.com/docs/en/build-with-claude/effort.md) | Controls token spend depth. Levels: `low`, `medium`, `high` (default), `max`, `xhigh` (Opus 4.7 only). No beta header required. Supported on Claude Mythos Preview, Opus 4.7, Opus 4.6, Sonnet 4.6, Opus 4.5 |
+| **Adaptive thinking** | [`adaptive-thinking.md`](https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking.md) | `thinking: {type: "adaptive"}` — model auto-decides thinking depth. **Only thinking mode on Opus 4.7** (thinking is off by default on Opus 4.7 — must be explicitly enabled via `thinking: {type: "adaptive"}`). Default on Claude Mythos Preview (auto-applies when `thinking` is unset). Recommended for Opus 4.6/Sonnet 4.6. No beta header required |
+| **Effort** | [`effort.md`](https://platform.claude.com/docs/en/build-with-claude/effort.md) | Controls token spend depth. Levels: `low`, `medium`, `high` (default), `max`, `xhigh` (Opus 4.7 only). No beta header required. Supported on Claude Mythos Preview, Opus 4.7, Opus 4.6, Sonnet 4.6, Opus 4.5. **Schema:** `effort` is nested under `output_config` in the request body: `{"output_config": {"effort": "medium"}}`. `max` is available on Claude Mythos Preview, Opus 4.7, Opus 4.6, and Sonnet 4.6 only (not Opus 4.5) |
 | **Fast mode** | [`fast-mode.md`](https://platform.claude.com/docs/en/build-with-claude/fast-mode.md) | **Beta (research preview, waitlist).** `speed: "fast"` + header `fast-mode-2026-02-01`; up to 2.5× OTPS on Opus 4.6/4.7 at 6× pricing |
 
 ## Throughput / cost patterns
@@ -166,7 +166,7 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
 |---|---|
 | [`working-with-messages.md`](https://platform.claude.com/docs/en/build-with-claude/working-with-messages.md) | Messages API format — constructing requests, content blocks |
 | [`token-counting.md`](https://platform.claude.com/docs/en/build-with-claude/token-counting.md) | Count tokens in a request without running inference |
-| [`task-budgets.md`](https://platform.claude.com/docs/en/build-with-claude/task-budgets.md) | Task budgets (beta) — cap token spend per task |
+| [`task-budgets.md`](https://platform.claude.com/docs/en/build-with-claude/task-budgets.md) | Task budgets (beta, `task-budgets-2026-03-13`) — advisory token cap for full agentic loop. **Schema:** nested under `output_config`: `{"output_config": {"effort": "high", "task_budget": {"type": "tokens", "total": 64000}}}`. Supported on Opus 4.7 only |
 
 ## Platform integrations
 
