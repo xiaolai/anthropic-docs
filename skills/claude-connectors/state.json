@@ -15,113 +15,113 @@
     "pageCount": 34,
     "knownPages": {
       "https://claude.com/docs/connectors/building/after-publishing.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/connectors/building/authentication.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/connectors/building/directory-vs-custom.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/connectors/building/index.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/connectors/building/lazy-authentication.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/connectors/building/mcp-apps/cross-compatibility.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/connectors/building/mcp-apps/design-guidelines.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/connectors/building/mcp-apps/external-links.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/connectors/building/mcp-apps/getting-started.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/connectors/building/mcp-apps/instance-supersession.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/connectors/building/mcp-apps/transparent-theming.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/connectors/building/mcp-apps/troubleshooting.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/connectors/building/mcp.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/connectors/building/mcpb.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/connectors/building/review-criteria.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/connectors/building/submission.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/connectors/building/testing.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/connectors/building/troubleshooting.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/connectors/building/what-to-build.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/connectors/custom/desktop-extensions.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/connectors/custom/remote-mcp.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/connectors/directory.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/connectors/getting-started.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/connectors/github/index.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/connectors/google/calendar.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/connectors/google/drive.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/connectors/google/gmail.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/connectors/microsoft/365.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/connectors/overview.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/connectors/slack/index.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/plugins/overview.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/plugins/submit.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/skills/how-to.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       },
       "https://claude.com/docs/skills/overview.md": {
-        "lastSeen": "2026-05-21T06:10:35Z"
+        "lastSeen": "2026-05-21T07:52:05Z"
       }
     }
   },
   "trackedIssues": {},
   "researchedIssues": {},
   "lastAuditedVersion": "none",
-  "lastUpdated": "2026-05-21T06:10:35Z",
+  "lastUpdated": "2026-05-21T07:52:05Z",
   "scaffoldComplete": true,
   "lastRunWarnings": [
     "2026-05-20T21:36:34Z: docs_index_changed hash 33c21db→84b7d4e investigated — llms.txt grew from 34 to 66 pages (new cowork/3p/*, cowork/guide/*, office-agents/* sections outside this skill's scope); all 34 tracked pages verified against snapshots, content unchanged, no surface file edits required",
@@ -130,7 +130,8 @@
     "2026-05-21T00:00:00Z: docs_index_sha updated 84b7d4e→e902363 in state.json; llms.txt grew from 34 to 74 lines (new cowork/3p/*, cowork/guide/*, office-agents/* sections all outside this skill's connectors|skills|plugins/ path filter); all 34 in-scope pages verified unchanged against MANIFEST hashes (spot-checked 5 pages live); no surface file edits required; MANIFEST.json refreshedAt updated to today",
     "2026-05-21T12:00:00Z: routine audit — all 34 in-scope pages verified unchanged via Python/raw-bytes curl (MANIFEST hashes match); apparent -1 byte changes from previous bash checks were shell command-substitution artifacts (bash $() strips trailing newlines); MANIFEST.json page hashes re-confirmed correct; state.json indexSha256 updated from 84b7d4e→e902363 (was missing the prior run's update); no surface file edits required; Part C all-clear: 5 URLs 200 OK, cross-refs OK, rules globs OK, no duplicate facts",
     "2026-05-21T23:00:00Z: routine audit — 34 in-scope pages unchanged (all 34 SHA256 hashes match MANIFEST.json); llms.txt index still 74 lines, same 34 in-scope pages; state.json indexSha256 corrected from 84b7d4e→e902363 (prior write had not persisted); validate-examples.sh PASS (0 schema-bound blocks); Part C all-clear: 5 URLs 200 OK, cross-refs OK, rules globs OK, no duplicate facts; no surface file edits required",
-    "2026-05-21T12:00:00Z: routine audit (run 2) — 34 in-scope pages unchanged (all 34 SHA256 hashes verified against MANIFEST.json via Python urllib); llms.txt index at e902363, 74 lines, same 34 in-scope pages; state.json indexSha256 updated from 84b7d4e→e902363 (persistent this run); validate-examples.sh PASS (0/0 schema-bound blocks); Part C all-clear: 5/5 URLs HTTP 200, 5/5 cross-refs valid, rules globs covered, 0 duplicate facts; no surface file edits required; Part B skipped (no bug tracker configured)"
+    "2026-05-21T12:00:00Z: routine audit (run 2) — 34 in-scope pages unchanged (all 34 SHA256 hashes verified against MANIFEST.json via Python urllib); llms.txt index at e902363, 74 lines, same 34 in-scope pages; state.json indexSha256 updated from 84b7d4e→e902363 (persistent this run); validate-examples.sh PASS (0/0 schema-bound blocks); Part C all-clear: 5/5 URLs HTTP 200, 5/5 cross-refs valid, rules globs covered, 0 duplicate facts; no surface file edits required; Part B skipped (no bug tracker configured)",
+    "2026-05-21T00:00:00Z: routine audit — 34 in-scope pages all unchanged (all 34 SHA256 hashes match MANIFEST.json via Python urllib); llms.txt 74 lines, same 34 in-scope pages; indexSha256 corrected from 84b7d4e→e902363 in state.json; validate-examples.sh PASS (0/0 schema-bound blocks); Part C all-clear: 5/5 URLs HTTP 200, all cross-refs OK, rules globs covered, 0 duplicate facts; Part B skipped (no bug tracker); no surface file edits required"
   ],
   "lastScannedIssueNumber": null
 }

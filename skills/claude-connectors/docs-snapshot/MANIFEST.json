@@ -3,7 +3,7 @@
   "indexSha256": "e902363536c9acc513d54af3426bbbed42d810e267688e03faa4bb78006a7ab4",
   "indexBytes": 12253,
   "pageCount": 34,
-  "refreshedAt": "2026-05-21T12:00:00Z",
+  "refreshedAt": "2026-05-21T00:00:00Z",
   "pages": [
     {
       "path": "connectors/building/after-publishing.md",
