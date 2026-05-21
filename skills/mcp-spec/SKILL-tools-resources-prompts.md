@@ -219,8 +219,17 @@ Sampling with tool use support (declare `sampling.tools` to receive tool-enabled
 { "capabilities": { "sampling": { "tools": {} } } }
 ```
 
+Sampling with `includeContext` support (**soft-deprecated**; see below):
+```json
+{ "capabilities": { "sampling": { "context": {} } } }
+```
+
 Clients **MUST** declare `sampling.tools` to receive tool-enabled sampling requests.
 Servers **MUST NOT** send `tools`/`toolChoice` to a client that has not declared `sampling.tools`.
+
+> **`includeContext` deprecation (as of `2025-11-25`)**: The values `"thisServer"` and `"allServers"` for `includeContext` are soft-deprecated. Servers **SHOULD** omit `includeContext` (it defaults to `"none"`) and **SHOULD NOT** use `"thisServer"` or `"allServers"` unless the client declares `sampling.context` capability. These values may be removed in a future spec release.
+
+Source: [`specification/2025-11-25/client/sampling.md`](https://modelcontextprotocol.io/specification/2025-11-25/client/sampling.md)
 
 ### Basic request
 
@@ -247,16 +256,17 @@ Servers that need the LLM to call tools during sampling include `tools` (and opt
 ← sampling/createMessage {
     messages: [...],
     tools: [ { name, description, inputSchema } ],
-    toolChoice?: { mode: "auto" | "any" | "none" | "specific", name?: "..." },
+    toolChoice?: { mode: "auto" | "required" | "none" },
     ...
   }
 ```
 
-`toolChoice.mode` values:
-- `"auto"` — model decides (default when omitted)
-- `"any"` — model must use at least one tool
-- `"none"` — model must not use any tools (useful to force a final text response)
-- `"specific"` — model must use the named tool (`name` required)
+`toolChoice.mode` values (schema: `"none" | "required" | "auto"`):
+- `"auto"` — model decides whether to use tools (default when omitted)
+- `"required"` — model MUST use at least one tool before completing (was `"any"` in earlier drafts)
+- `"none"` — model MUST NOT use any tools (useful to force a final text response)
+
+Source: [`specification/2025-11-25/client/sampling.md`](https://modelcontextprotocol.io/specification/2025-11-25/client/sampling.md)
 
 The client typically asks the user for permission before fulfilling
 sampling requests — servers can effectively spend the user's tokens
