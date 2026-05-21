@@ -5,6 +5,7 @@ machine-generated entry on every successful daily run.
 
 ## 2026-05-21
 - *(pending review — see PR auto/2026-05-21-pending-review)* Research agent audit (53 turns, $0.83) — check-docs-drift gate failed; changes on draft branch pending human review
+- Daily maintenance run (2nd run) — check-docs-drift resolved; research agent audited 119 pages across 4 surfaces in 86 turns ($1.37), all gates pass
 
 ## 2026-05-20
 - Sync to platform.claude.com docs — added 10 pages (8 MCP-tunnels pages under agents-and-tools, 2 self-hosted-sandboxes pages under managed-agents); page count 109 → 119; all 11 gates pass
