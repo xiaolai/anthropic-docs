@@ -58,7 +58,19 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
   `tools_changed`, `messages_changed`, `previous_message_not_found`, or
   `unavailable`). Claude API only — not available on Bedrock or Vertex AI.
   **ZDR eligible (qualified)** — only fingerprints (hashes + token counts) are
-  retained, not raw prompt content. See
+  retained, not raw prompt content.
+  - **`cache_missed_input_tokens`** — the four `*_changed` reason types each
+    carry this integer field: an estimate (byte-based, pre-tokenization) of how
+    many input tokens fell after the divergence point. Treat as a magnitude
+    indicator, not an exact billing number.
+  - **`unavailable` triggers:** `model`, `system`, and `tools` match but one of
+    `tool_choice`, `thinking`, `context_management`, `output_config`,
+    `output_format`, or the set of active `anthropic-beta` headers differs; also
+    triggered when the divergence is beyond the comparison horizon on very long
+    conversations.
+  - **Streaming:** In streaming responses, the `diagnostics` object appears on
+    the `message_start` SSE event (not in the final delta).
+  See
   [`cache-diagnostics.md`](https://platform.claude.com/docs/en/build-with-claude/cache-diagnostics.md).
 - **Batches return within 24h** at 50% discount. Submit via
   `POST /v1/messages/batches`; poll for results. Not for interactive use.
