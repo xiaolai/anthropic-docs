@@ -341,6 +341,32 @@ Claude Code writes a JSON object to stdin (or POST body for HTTP hooks). Common 
 | `source` | Which configuration changed: `"user_settings"`, `"project_settings"`, `"local_settings"`, `"policy_settings"`, or `"skills"` |
 | `file_path` | (optional) Absolute path to the specific configuration file that was modified |
 
+**Notification** additionally receives `message`, optional `title`, and `notification_type`:
+
+| Field | Notes |
+|---|---|
+| `message` | The notification text |
+| `title` | (optional) Short title for the notification |
+| `notification_type` | Which notification type fired: `"permission_prompt"`, `"idle_prompt"`, `"auth_success"`, `"elicitation_dialog"`, `"elicitation_complete"`, `"elicitation_response"` |
+
+Notification hooks cannot block or modify notifications; they are intended for side effects (forwarding, logging, desktop alerts).
+
+**Setup** additionally receives a `trigger` field:
+
+| Field | Notes |
+|---|---|
+| `trigger` | CLI flag that triggered setup: `"init"` (from `--init-only` or `-p --init`) or `"maintenance"` (from `-p --maintenance`) |
+
+Setup hooks also have access to `CLAUDE_ENV_FILE` — variables written to that file persist into subsequent Bash commands for the session, the same as in SessionStart hooks.
+
+**SessionEnd** additionally receives a `reason` field:
+
+| Field | Notes |
+|---|---|
+| `reason` | Why the session ended: `"clear"` (`/clear`), `"resume"` (interactive `/resume`), `"logout"` (user logout), `"prompt_input_exit"` (exit while prompt visible), `"bypass_permissions_disabled"`, or `"other"` |
+
+SessionEnd hooks cannot block session termination. Default timeout is 1.5 seconds; override with `CLAUDE_CODE_SESSIONEND_HOOKS_TIMEOUT_MS` or a per-hook `timeout` (max 60 s). Plugin-provided hooks do not raise the budget.
+
 Example payload for `PreToolUse` on a Bash call:
 
 ```json

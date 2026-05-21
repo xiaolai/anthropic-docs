@@ -14,7 +14,7 @@ changes that affect the reference surface (schema fields, event
 names, flags, env vars) flow in.
 
 <!-- The two stamps below are auto-filled by the pipeline. -->
-**Claude Code version**: v2.1.145
+**Claude Code version**: v2.1.146
 **Last updated**: 2026-05-21
 **Pipeline status**: see [`reports/`](reports/) for per-run records.
 
@@ -164,13 +164,13 @@ and `git pull`.
 
 | Date | Update | Research | Mending | Report | Total | Notes |
 |------|--------|----------|---------|--------|-------|-------|
-| 2026-05-21 | success | research + report (no upstream change) |
+| 2026-05-21 | success | CC v2.1.145 → v2.1.146 |
+| 2026-05-21 (run 1) | — | $1.12 | — | — | **$1.12** | success — no upstream change, routine audit v2.1.145, 108 pages current, no new bug issues; all 8 gates pass |
 | 2026-05-20 | partial | research + report (no upstream change) |
 | 2026-05-20 (run 12) | — | — | — | — | **—** | partial — research crash (exit 1, SDK init failure); all 8 gates pass |
-| 2026-05-20 (run 11) | — | $1.75 | — | — | **$1.75** | success — no upstream change, routine audit v2.1.145, 136 turns, all 11 gates pass |
+| 2026-05-20 (run 11) | — | $1.75 | — | — | **$1.75** | success — no upstream change, routine audit v2.1.146, 136 turns, all 11 gates pass |
 | 2026-05-20 (run 10) | — | $1.43 | — | — | **$1.43** | review — checkDocsDrift failed; draft PR auto/2026-05-20-pending-review; 8/9 gates pass |
 | 2026-05-20 (run 9) | — | $1.66 | — | — | **$1.66** | success — no upstream change, SKILL-cli.md auto-mode model requirements + SKILL-slash-commands.md /resume version corrected; 8 gates pass |
-| 2026-05-20 (run 8) | — | $1.62 | — | — | **$1.62** | success — no upstream change, SKILL-hooks.md PreToolUse tool_input + Agent PostToolUse response; all 11 gates pass |
 
 ## For maintainers
 

@@ -3,7 +3,7 @@
   "indexSha256": "74b86427321d85fc250695ad54819025fd61d40b0462c4a9c23e26487fe9752f",
   "indexBytes": 29065,
   "pageCount": 108,
-  "refreshedAt": "2026-05-21T01:37:07Z",
+  "refreshedAt": "2026-05-21T04:06:35Z",
   "pages": [
     {
       "path": "en/admin-setup.md",
@@ -68,8 +68,8 @@
     {
       "path": "en/changelog.md",
       "url": "https://code.claude.com/docs/en/changelog.md",
-      "sha256": "61dd989a581557b1a74962ce33cedbc7e4f31c9491884f25b844f46778b18034",
-      "bytes": 341977
+      "sha256": "8e9c7f45e17ee40a827edb9b5f9d7715c3d2965ca2b3557a96941daa41402a2b",
+      "bytes": 343761
     },
     {
       "path": "en/channels-reference.md",
@@ -290,14 +290,14 @@
     {
       "path": "en/hooks-guide.md",
       "url": "https://code.claude.com/docs/en/hooks-guide.md",
-      "sha256": "c3cf217a21a3efb8e873271ad8e49b0bf4c9968161a191e64538bcda3a79a705",
-      "bytes": 55456
+      "sha256": "28e00dc06659f8cb49a6d278858197b218b2834989d72bfa46299a620259183e",
+      "bytes": 55650
     },
     {
       "path": "en/hooks.md",
       "url": "https://code.claude.com/docs/en/hooks.md",
-      "sha256": "7954fdc108ac3c79eae091bac5bc84339450930b3f5a50b81bfed32171624615",
-      "bytes": 191465
+      "sha256": "53a7e63619319a924dc632beb3c75405964903de4f0f3b0548b4c977791244d0",
+      "bytes": 194079
     },
     {
       "path": "en/how-claude-code-works.md",

@@ -10,6 +10,25 @@ The newest entry is at the top.
 
 ---
 
+## v2.1.146 — 2026-05-21
+
+Version bump: `@anthropic-ai/claude-code` updated from v2.1.145 to v2.1.146.
+
+- `/simplify` renamed to `/code-review` with an optional effort level (e.g. `/code-review high`)
+- Auto mode no longer suppresses `AskUserQuestion` when the user or a skill explicitly relies on it
+- Fixed Windows PowerShell tool failing with "command line is invalid" when `pwsh` is installed via winget or the Microsoft Store (regression in v2.1.124)
+- Fixed MCP `resources/list`, `resources/templates/list`, and `prompts/list` dropping items past page 1 on paginating servers
+- Fixed full-screen strobing in attached background sessions on Windows Terminal while Claude is streaming
+- Fixed `CLAUDE_CODE_SUBAGENT_MODEL` not being forwarded to child processes in multi-agent sessions
+- Fixed `forceLoginOrgUUID` and `forceLoginMethod` managed-settings policies not being enforced against third-party-provider and API-key sessions
+- Fixed `/background` refusing sessions whose only typed input was a skill or custom slash command
+- Fixed backgrounded sessions re-prompting for tool permissions already granted with "don't ask again"
+- Improved auto-updater reliability: native version checks and downloads now retry transient network failures
+- Improved diff rendering performance for large file edits
+
+## 2026-05-21 (run 2)
+- Sync to CC v2.1.146 — `/simplify` renamed to `/code-review` (with optional effort level), auto-mode `AskUserQuestion` suppression fixed, 14 bug fixes; verify passed after 1 mend run; all 11 gates pass
+
 ## 2026-05-21
 - Routine audit at CC v2.1.145 — research ran 86 turns; no upstream change, 108 pages confirmed current, no new bug issues; all 11 gates pass
 
