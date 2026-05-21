@@ -99,10 +99,32 @@ Resolves the effective Claude Code settings for a directory using the same merge
 
 ```typescript
 import { resolveSettings } from "@anthropic-ai/claude-agent-sdk";
-const { effective, provenance } = await resolveSettings({ dir: process.cwd() });
+
+function resolveSettings(options?: ResolveSettingsOptions): Promise<ResolvedSettings>;
+
+const { effective, provenance } = await resolveSettings({ cwd: process.cwd() });
 ```
 
 ⚠️ Alpha — API may change. Does not execute `policyHelper` subprocess or apply trust filters.
+
+**Parameters** (all optional):
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `options.cwd` | `string` | `process.cwd()` | Directory to resolve project and local settings relative to |
+| `options.settingSources` | `SettingSource[]` | All sources | Which filesystem sources to load. Pass `[]` to skip user, project, and local settings |
+| `options.managedSettings` | `Settings` | `undefined` | Restrictive policy-tier settings from the embedding host. Merged under admin tier when `parentSettingsBehavior` is `'merge'` |
+| `options.serverManagedSettings` | `Settings` | `undefined` | Server-managed settings payload from `/api/claude_code/settings`. Non-restrictive keys pass through unfiltered |
+
+**Return type**: `ResolvedSettings`
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `effective` | `Settings` | Merged settings after applying all enabled sources in precedence order |
+| `provenance` | `Partial<Record<keyof Settings, ProvenanceEntry>>` | For each top-level key in `effective`, which source supplied the value |
+| `sources` | `Array<{ source, settings, path?, policyOrigin? }>` | Per-source raw settings, ordered from lowest to highest precedence |
+
+Source: https://code.claude.com/docs/en/agent-sdk/typescript.md
 
 ### `tool()`
 

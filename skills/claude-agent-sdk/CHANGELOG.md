@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-05-21 (v0.2.84 — Python version bump)
+
+- Python SDK v0.2.83 → v0.2.84 (bundled Claude CLI updated to v2.1.147); no new API surface changes
+- Version propagated to SKILL.md, SKILL-python.md, README.md, state.json
+
 ## 2026-05-21 (v0.3.147 — version bump)
 
 - SDK TS v0.3.146 → v0.3.147 (parity with Claude Code v2.1.147); Python v0.2.83 unchanged
