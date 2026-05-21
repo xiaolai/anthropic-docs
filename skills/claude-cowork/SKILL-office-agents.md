@@ -166,6 +166,28 @@ content-type, anthropic-version`). The `*` wildcard does not cover the
 `gateway_auth_header: authorization`. Source:
 [`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md).
 
+**Gateway required endpoints.** The endpoints your gateway must expose depend
+on `gateway_api_format`:
+
+| Format (`gateway_api_format`) | Required endpoints |
+|---|---|
+| `anthropic` (default) | `POST /v1/messages`, `GET /v1/models` |
+| `bedrock` | `POST /model/{model-id}/invoke`, `POST /model/{model-id}/invoke-with-response-stream`; set `gateway_url` to the pass-through prefix (e.g. `https://litellm.example.com/bedrock`) |
+| `vertex` | `POST /projects/{project}/locations/{region}/publishers/anthropic/models/{model-id}:rawPredict`, `…:streamRawPredict`; `gateway_url` must include the API-version segment (e.g. `.../vertex_ai/v1`); also requires `gcp_project_id` and `gcp_region` |
+
+**Required header forwarding.** For `gateway_api_format: anthropic`, the
+gateway must forward the `anthropic-version` request header to the upstream.
+For `bedrock` and `vertex`, `anthropic_version` is placed in the request body
+instead — the gateway must preserve it. Dropping this header/field may reduce
+functionality or break the add-in.
+
+> **LiteLLM security warning.** LiteLLM PyPI versions **1.82.7 and 1.82.8**
+> contained credential-stealing malware. Do not install those versions. If
+> already installed, remove the package, rotate all credentials, and follow
+> [BerriAI/litellm#24518](https://github.com/BerriAI/litellm/issues/24518).
+
+Source: [`third-party-platforms.md`](https://claude.com/docs/office-agents/third-party-platforms.md).
+
 **Features not available on 3P:** Connectors (coming soon), Skills
 (coming soon), File uploads, Dictation, and Work-across-apps are not
 available when connecting through a third-party platform.
