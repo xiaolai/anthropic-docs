@@ -33,11 +33,13 @@ permissions:
 env:
   MAX_MEND_RETRIES: 2
   PIPELINE_LOG: /tmp/pipeline-log.json
-  # Raised from 20 → 50 after every agent-driven skill (5 of 7) was
-  # consistently tripping at 20% on legitimate research-agent work
-  # (state.json compactions, multi-section populations). 50% still
-  # catches unbounded LLM rewrites that touch most of a file.
-  DIFF_THRESHOLD_PCT: 50
+  # Raised again 50 → 100 because legitimate research-agent additions
+  # (e.g., +106 lines on a 207-line surface = 51%) kept tripping the
+  # 50% gate on healthy growth, not runaway rewrites. 100% allows a
+  # surface to double in one run, which is a reasonable cap for new-
+  # section additions; runaway LLM rewrites still typically delete-and-
+  # re-add far more than 100% combined.
+  DIFF_THRESHOLD_PCT: 100
   CLAUDE_CODE_CLI_VERSION: "2.1.143"
 
 jobs:
