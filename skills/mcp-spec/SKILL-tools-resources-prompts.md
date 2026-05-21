@@ -124,6 +124,7 @@ optionally subscribes, and reads.
 - `mimeType` — optional MIME type.
 - `size` — optional size in bytes.
 - `icons` — optional array of `{ src, mimeType, sizes[] }` objects for client UI.
+- `annotations` — optional audience/priority hints (see [Annotations](#resource-annotations) below).
 
 ### Schema (resource template)
 
@@ -166,6 +167,40 @@ An empty `contents` array MUST NOT be used to signal non-existence.
 If server declared `resources.subscribe`, clients can subscribe to a
 resource and receive `notifications/resources/updated { uri }` when
 its contents change.
+
+### Resource Annotations
+
+Resources, resource templates, content blocks (text, image, audio,
+resource links, embedded resources) all support an optional
+`annotations` object with these fields:
+
+| Field | Type | Description |
+|---|---|---|
+| `audience` | `("user" \| "assistant")[]` | Intended recipients. E.g. `["user", "assistant"]` for both. |
+| `priority` | number 0.0–1.0 | Importance. `1.0` = required, `0.0` = entirely optional. |
+| `lastModified` | string (ISO 8601) | When the resource was last modified. E.g. `"2025-01-12T15:00:58Z"`. |
+
+Example:
+
+```json
+{
+  "uri": "file:///project/README.md",
+  "name": "README.md",
+  "mimeType": "text/markdown",
+  "annotations": {
+    "audience": ["user"],
+    "priority": 0.8,
+    "lastModified": "2025-01-12T15:00:58Z"
+  }
+}
+```
+
+Clients use annotations to filter resources by audience, prioritize
+context inclusion, and sort by recency. Tool result content blocks
+(including `resource_link` and embedded `resource` blocks) use the
+same annotation format.
+
+Source: [`specification/2025-11-25/server/resources.md`](https://modelcontextprotocol.io/specification/2025-11-25/server/resources.md)
 
 ## Prompts
 
