@@ -275,7 +275,7 @@ When `stream: true`, the response is an SSE stream of typed events:
 |---|---|
 | `message_start` | Initial message metadata (id, role, usage so far) |
 | `content_block_start` | New content block beginning |
-| `content_block_delta` | Incremental content (`text_delta`, `input_json_delta`, `thinking_delta`) |
+| `content_block_delta` | Incremental content (`text_delta`, `input_json_delta`, `thinking_delta`) — `thinking_delta` frames include `estimated_tokens: number \| null` when the `thinking-token-count-2026-05-13` beta is set (see [`SKILL-beta.md`](SKILL-beta.md)); non-billable running estimate |
 | `content_block_stop` | Content block complete |
 | `message_delta` | Updates to top-level message (`stop_reason`, usage updates) |
 | `message_stop` | Stream complete |

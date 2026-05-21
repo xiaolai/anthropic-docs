@@ -1011,8 +1011,9 @@
     {
       "path": "en/api/completions.md",
       "url": "https://platform.claude.com/docs/en/api/completions.md",
-      "sha256": "fc18c4d169189685299e3d130fa9afe50623cf2cb146d0e8e12f07b118607877",
-      "bytes": 12189
+      "sha256": "bd2061397f9a397e5fc1fc01f03176b950e45d949589bc85a6bc2ca4fd7fb85d",
+      "bytes": 12190,
+      "fetchedAt": "2026-05-21T22:39:28Z"
     },
     {
       "path": "en/api/completions/create.md",
@@ -1281,8 +1282,9 @@
     {
       "path": "en/api/messages.md",
       "url": "https://platform.claude.com/docs/en/api/messages.md",
-      "sha256": "e2bb1a23711495835a39af2d476d8fe931f1f6576e85d56c8446fc9812790aaa",
-      "bytes": 1018419
+      "sha256": "edaf50f9ea2defa05ac0d929593e62467931ee635d72803df7575d1eaa8e9f38",
+      "bytes": 1018420,
+      "fetchedAt": "2026-05-21T22:39:28Z"
     },
     {
       "path": "en/api/messages/batches.md",

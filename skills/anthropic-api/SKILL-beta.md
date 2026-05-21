@@ -58,6 +58,7 @@ As of 2026-05-19 (from [`models/list.md`](https://platform.claude.com/docs/en/ap
 | `advisor-tool-2026-03-01` | Advisor server tool |
 | `managed-agents-2026-04-01` | Managed agents (agents / sessions / environments) |
 | `cache-diagnosis-2026-04-07` | Cache diagnostics — per-request cache hit/miss metadata |
+| `thinking-token-count-2026-05-13` | Estimated token counts on `thinking_delta` streaming frames — adds `estimated_tokens: number \| null` to `BetaThinkingDelta` |
 | `mcp-tunnels-2026-05-19` | MCP Tunnels admin API (`/v1/organizations/tunnels/`) |
 
 ## Beta resource catalog
