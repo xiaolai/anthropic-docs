@@ -538,6 +538,19 @@ jobs:
               "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
             exit 0
           fi
+          # Daily-once: hourly cron × 8 skills = 192 report runs/day was
+          # noisy + costly. Skip if today's report file already exists.
+          # First cron tick of the UTC day wins; subsequent ticks no-op.
+          # Force a rerun by deleting skills/$SKILL_NAME/reports/$TODAY.md.
+          TODAY=$(date -u +%Y-%m-%d)
+          REPORT_FILE="../../skills/$SKILL_NAME/reports/$TODAY.md"
+          if [ -f "$REPORT_FILE" ]; then
+            echo "Daily report $REPORT_FILE already exists — skipping report agent."
+            jq --arg s "report" --arg r "skipped-daily-already-done" \
+              '.steps += [{"step":$s,"result":$r}]' \
+              "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
+            exit 0
+          fi
           START=$(date +%s)
           npx tsx report-agent.ts 2>&1 | tee /tmp/report-agent.log
           EXIT_CODE=${PIPESTATUS[0]}
