@@ -4,7 +4,7 @@
       {
         "manager": "npm",
         "name": "@anthropic-ai/claude-agent-sdk",
-        "version": "0.3.147",
+        "version": "0.3.148",
         "engines": {
           "node": ">=18.0.0"
         }
@@ -12,7 +12,7 @@
       {
         "manager": "pypi",
         "name": "claude-agent-sdk",
-        "version": "0.2.84",
+        "version": "0.2.85",
         "engines": {
           "python": ">=3.10"
         }
@@ -24,19 +24,19 @@
       {
         "repo": "anthropics/claude-agent-sdk-typescript",
         "latestRelease": {
-          "tag": "v0.3.147",
-          "name": "v0.3.147",
-          "body": "## What's changed\n\n- Updated to parity with Claude Code v2.1.147\n\n## Update\n\n```sh\nnpm install @anthropic-ai/claude-agent-sdk@0.3.147\n# or\nyarn add @anthropic-ai/claude-agent-sdk@0.3.147\n# or\npnpm add @anthropic-ai/claude-agent-sdk@0.3.147\n# or\nbun add @anthropic-ai/claude-agent-sdk@0.3.147\n```",
-          "publishedAt": "2026-05-21T20:39:20Z"
+          "tag": "v0.3.148",
+          "name": "v0.3.148",
+          "body": "## What's changed\n\n- Updated to parity with Claude Code v2.1.148\n\n## Update\n\n```sh\nnpm install @anthropic-ai/claude-agent-sdk@0.3.148\n# or\nyarn add @anthropic-ai/claude-agent-sdk@0.3.148\n# or\npnpm add @anthropic-ai/claude-agent-sdk@0.3.148\n# or\nbun add @anthropic-ai/claude-agent-sdk@0.3.148\n```",
+          "publishedAt": "2026-05-22T01:16:53Z"
         }
       },
       {
         "repo": "anthropics/claude-agent-sdk-python",
         "latestRelease": {
-          "tag": "v0.2.84",
-          "name": "v0.2.84",
-          "body": "\n### Internal/Other Changes\n\n- Updated bundled Claude CLI to version 2.1.147\n\n\n---\n\n**PyPI:** https://pypi.org/project/claude-agent-sdk/0.2.84/\n\n```bash\npip install claude-agent-sdk==0.2.84\n```",
-          "publishedAt": "2026-05-21T20:56:13Z"
+          "tag": "v0.2.85",
+          "name": "v0.2.85",
+          "body": "\n### Internal/Other Changes\n\n- Updated bundled Claude CLI to version 2.1.148\n\n\n---\n\n**PyPI:** https://pypi.org/project/claude-agent-sdk/0.2.85/\n\n```bash\npip install claude-agent-sdk==0.2.85\n```",
+          "publishedAt": "2026-05-22T01:33:24Z"
         }
       }
     ],
@@ -51,101 +51,101 @@
     "pageCount": 30,
     "knownPages": {
       "https://code.claude.com/docs/en/agent-sdk/agent-loop.md": {
-        "lastSeen": "2026-05-21T23:39:44Z"
+        "lastSeen": "2026-05-22T03:22:09Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/claude-code-features.md": {
-        "lastSeen": "2026-05-21T23:39:44Z"
+        "lastSeen": "2026-05-22T03:22:09Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/cost-tracking.md": {
-        "lastSeen": "2026-05-21T23:39:44Z"
+        "lastSeen": "2026-05-22T03:22:09Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/custom-tools.md": {
-        "lastSeen": "2026-05-21T23:39:44Z"
+        "lastSeen": "2026-05-22T03:22:09Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/file-checkpointing.md": {
-        "lastSeen": "2026-05-21T23:39:44Z"
+        "lastSeen": "2026-05-22T03:22:09Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/hooks.md": {
-        "lastSeen": "2026-05-21T23:39:44Z"
+        "lastSeen": "2026-05-22T03:22:09Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/hosting.md": {
-        "lastSeen": "2026-05-21T23:39:44Z"
+        "lastSeen": "2026-05-22T03:22:09Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/mcp.md": {
-        "lastSeen": "2026-05-21T23:39:44Z"
+        "lastSeen": "2026-05-22T03:22:09Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/migration-guide.md": {
-        "lastSeen": "2026-05-21T23:39:44Z"
+        "lastSeen": "2026-05-22T03:22:09Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/modifying-system-prompts.md": {
-        "lastSeen": "2026-05-21T23:39:44Z"
+        "lastSeen": "2026-05-22T03:22:09Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/observability.md": {
-        "lastSeen": "2026-05-21T23:39:44Z"
+        "lastSeen": "2026-05-22T03:22:09Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/overview.md": {
-        "lastSeen": "2026-05-21T23:39:44Z"
+        "lastSeen": "2026-05-22T03:22:09Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/permissions.md": {
-        "lastSeen": "2026-05-21T23:39:44Z"
+        "lastSeen": "2026-05-22T03:22:09Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/plugins.md": {
-        "lastSeen": "2026-05-21T23:39:44Z"
+        "lastSeen": "2026-05-22T03:22:09Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/python.md": {
-        "lastSeen": "2026-05-21T23:39:44Z"
+        "lastSeen": "2026-05-22T03:22:09Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/quickstart.md": {
-        "lastSeen": "2026-05-21T23:39:44Z"
+        "lastSeen": "2026-05-22T03:22:09Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/secure-deployment.md": {
-        "lastSeen": "2026-05-21T23:39:44Z"
+        "lastSeen": "2026-05-22T03:22:09Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/session-storage.md": {
-        "lastSeen": "2026-05-21T23:39:44Z"
+        "lastSeen": "2026-05-22T03:22:09Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/sessions.md": {
-        "lastSeen": "2026-05-21T23:39:44Z"
+        "lastSeen": "2026-05-22T03:22:09Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/skills.md": {
-        "lastSeen": "2026-05-21T23:39:44Z"
+        "lastSeen": "2026-05-22T03:22:09Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/slash-commands.md": {
-        "lastSeen": "2026-05-21T23:39:44Z"
+        "lastSeen": "2026-05-22T03:22:09Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/streaming-output.md": {
-        "lastSeen": "2026-05-21T23:39:44Z"
+        "lastSeen": "2026-05-22T03:22:09Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/streaming-vs-single-mode.md": {
-        "lastSeen": "2026-05-21T23:39:44Z"
+        "lastSeen": "2026-05-22T03:22:09Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/structured-outputs.md": {
-        "lastSeen": "2026-05-21T23:39:44Z"
+        "lastSeen": "2026-05-22T03:22:09Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/subagents.md": {
-        "lastSeen": "2026-05-21T23:39:44Z"
+        "lastSeen": "2026-05-22T03:22:09Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/todo-tracking.md": {
-        "lastSeen": "2026-05-21T23:39:44Z"
+        "lastSeen": "2026-05-22T03:22:09Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/tool-search.md": {
-        "lastSeen": "2026-05-21T23:39:44Z"
+        "lastSeen": "2026-05-22T03:22:09Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/typescript-v2-preview.md": {
-        "lastSeen": "2026-05-21T23:39:44Z"
+        "lastSeen": "2026-05-22T03:22:09Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/typescript.md": {
-        "lastSeen": "2026-05-21T23:39:44Z"
+        "lastSeen": "2026-05-22T03:22:09Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/user-input.md": {
-        "lastSeen": "2026-05-21T23:39:44Z"
+        "lastSeen": "2026-05-22T03:22:09Z"
       }
     }
   },
   "trackedIssues": {},
   "researchedIssues": {},
-  "lastAuditedVersion": "0.3.147",
-  "lastUpdated": "2026-05-21T23:39:44Z",
+  "lastAuditedVersion": "0.3.148",
+  "lastUpdated": "2026-05-22T03:22:09Z",
   "scaffoldComplete": true,
   "lastRunWarnings": [
     "2026-05-19T17:24:39Z: docs_index_changed (hash 065bd6a→ee68ff8e) but no page-level additions, removals, or content diffs were provided in the change report — no surface-file edits made",
