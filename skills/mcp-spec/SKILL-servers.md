@@ -165,43 +165,65 @@ gallery.
 documents experimental protocol extensions — features under
 discussion that haven't made it into the core spec yet.
 
-### MCP Tasks extension (`io.modelcontextprotocol/tasks`)
+### MCP Tasks (experimental, `2025-11-25`)
 
-MCP Tasks is an experimental extension that lets servers return a **durable
-task handle** instead of blocking on long-running operations (CI pipelines,
-batch jobs, human-approval gates). Full spec:
-[`experimental-ext-tasks`](https://github.com/modelcontextprotocol/experimental-ext-tasks).
+MCP Tasks is an **experimental** core protocol feature (as of `2025-11-25`) that lets
+servers return a **durable task handle** instead of blocking on long-running operations
+(CI pipelines, batch jobs, human-approval gates).
+
+**Capability declaration (initialization time):**
+
+```json
+{
+  "capabilities": {
+    "tasks": {
+      "list": {},
+      "cancel": {},
+      "requests": { "tools": { "call": {} } }
+    }
+  }
+}
+```
 
 **How it works:**
 
-1. Client declares support per-request via `_meta.io.modelcontextprotocol/clientCapabilities.extensions`
-   (see [`SKILL-protocol.md`](SKILL-protocol.md#per-request-capabilities)).
-2. Server returns `CreateTaskResult` (`resultType: "task"`) containing:
-   `taskId`, initial `status`, `ttlMs`, `pollIntervalMs`.
-3. Client polls via `tasks/get { taskId }` until terminal status.
-4. If status is `input_required`, `tasks/get` response includes an
-   `inputRequests` map; client submits responses via `tasks/update`.
-5. Client may cancel via `tasks/cancel` (cooperative — server may ignore).
+1. Client and server exchange `tasks` capabilities at initialization (see
+   [`SKILL-protocol.md`](SKILL-protocol.md#capability-negotiation)).
+2. Client includes `task: { ttl: <ms> }` in the request params to opt in to
+   task execution (e.g., inside `tools/call` params).
+3. Server returns `CreateTaskResult` containing a `task` object:
+   `{ taskId, status, statusMessage?, createdAt, lastUpdatedAt, ttl, pollInterval? }`.
+4. Client polls via `tasks/get { taskId }` for status updates.
+5. Client calls `tasks/result { taskId }` to retrieve the final result (blocks
+   until a terminal status is reached).
+6. If status is `input_required`, server sends a request to the client with
+   `io.modelcontextprotocol/related-task` in `_meta`; client calls
+   `tasks/result` preemptively to receive the associated request.
+7. Client may cancel via `tasks/cancel { taskId }` (cooperative — server may ignore).
 
 **Task lifecycle states:**
 
 | Status | Meaning |
 |---|---|
 | `working` | Operation in progress |
-| `input_required` | Server paused; needs client input via `tasks/update` |
-| `completed` | Done; `result` field contains the final output |
-| `failed` | Error; `error` field contains JSON-RPC error object |
+| `input_required` | Server paused; waiting for client to fulfill an associated request |
+| `completed` | Done; retrieve result via `tasks/result` |
+| `failed` | Error; `tasks/result` returns a JSON-RPC error response |
 | `cancelled` | Cancelled (not guaranteed) |
 
 `completed`, `failed`, and `cancelled` are terminal — task state does not
 change after reaching them.
 
-**Push notifications (optional):** Servers may push status updates via
-`notifications/tasks/status`. Clients receive them through the
-`subscriptions/listen` mechanism. Polling is the default; notifications
-are an optimization.
+**Task association:** All requests, responses, and notifications related to a
+task MUST include `io.modelcontextprotocol/related-task: { taskId }` in their
+`_meta` field (except `tasks/get`, `tasks/result`, `tasks/cancel` which use the
+`taskId` param directly).
 
-Source: [`extensions/tasks/overview.md`](https://modelcontextprotocol.io/extensions/tasks/overview.md).
+**Push notifications (optional):** Servers MAY push status updates via
+`notifications/tasks/status { taskId, status, statusMessage? }`. Polling via
+`tasks/get` is the default; notifications are an optimization.
+
+Source: [`specification/2025-11-25/basic/utilities/tasks.md`](https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/tasks.md).
 
 ## SDK tiering
 
