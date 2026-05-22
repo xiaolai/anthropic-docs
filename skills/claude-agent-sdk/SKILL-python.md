@@ -1,6 +1,6 @@
-# Claude Agent SDK — Python Reference (v0.2.84)
+# Claude Agent SDK — Python Reference (v0.2.85)
 
-**Package**: `claude-agent-sdk==0.2.84` (PyPI)
+**Package**: `claude-agent-sdk==0.2.85` (PyPI)
 **Docs**: https://code.claude.com/docs/en/agent-sdk/python
 **Repo**: https://github.com/anthropics/claude-agent-sdk-python
 **Requires**: Python 3.10+
@@ -269,7 +269,7 @@ options = ClaudeAgentOptions(
 | `tools` | `list[str] \| ToolsPreset \| None` | `None` | Tool configuration |
 | `allowed_tools` | `list[str]` | `[]` | Allowed tool names |
 | `disallowed_tools` | `list[str]` | `[]` | Blocked tool names |
-| `permission_mode` | `PermissionMode \| None` | `None` | See [Permissions](#permissions) for all 4 modes |
+| `permission_mode` | `PermissionMode \| None` | `None` | See [Permissions](#permissions) for all 5 modes |
 | `can_use_tool` | `CanUseTool \| None` | `None` | Custom permission callback |
 | `permission_prompt_tool_name` | `str \| None` | `None` | Route permission prompts through a named MCP tool |
 
