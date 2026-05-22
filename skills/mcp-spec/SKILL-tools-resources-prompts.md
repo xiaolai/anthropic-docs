@@ -211,14 +211,26 @@ A prompt is a server-provided message template the user can invoke.
 ```json
 {
   "name": "review_pr",
+  "title": "Review Pull Request",
   "description": "Review a pull request",
   "arguments": [
     { "name": "owner", "description": "Repo owner", "required": true },
     { "name": "repo", "description": "Repo name", "required": true },
     { "name": "number", "description": "PR number", "required": true }
+  ],
+  "icons": [
+    { "src": "https://example.com/review-icon.svg", "mimeType": "image/svg+xml", "sizes": ["any"] }
   ]
 }
 ```
+
+- `name` — unique identifier for the prompt.
+- `title` — optional human-readable display name for UI (distinct from `name`).
+- `description` — optional human-readable description.
+- `icons` — optional array of `{ src, mimeType, sizes[] }` objects for client UI display.
+- `arguments` — optional list of argument objects (`{ name, description, required? }`).
+
+Source: [`specification/2025-11-25/server/prompts.md`](https://modelcontextprotocol.io/specification/2025-11-25/server/prompts.md)
 
 ### Getting
 
