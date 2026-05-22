@@ -54,7 +54,14 @@ Each entry uses this structure:
 
 ## Recently resolved
 
-*None tracked yet. The research agent will surface user-impacting bugs that were fixed in a recent CLI release, so users on older versions know what's worth upgrading for.*
+### KI 1 — Bash tool returns exit code 127 on every command
+
+- **Affects:** Versions prior to v2.1.148
+- **Symptom:** Every Bash tool invocation returns exit code 127 (command not found), even for commands that exist.
+- **Reproduction:** Run any Bash command (e.g. `ls`) via Claude Code — the tool reports exit code 127 regardless of whether the command is valid.
+- **Workaround:** Upgrade to v2.1.148 (`npm update -g @anthropic-ai/claude-code`). Alternatively, downgrade to v2.1.146.
+- **Status:** Fixed in v2.1.148
+- **Source:** [anthropics/claude-code releases](https://github.com/anthropics/claude-code/releases/tag/v2.1.148)
 
 ---
 

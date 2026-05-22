@@ -165,7 +165,7 @@ Environment variables can also be set in `settings.json` under `env`. See `code.
 | `ENABLE_TOOL_SEARCH` | Set to `false` to disable MCP tool search |
 | `CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE` | Set to `1` to pin `/fast` mode to Opus 4.6 instead of the default Opus 4.7 |
 | `CLAUDE_CODE_SUBAGENT_MODEL` | Override the model used by subagents in multi-agent sessions. See [Model configuration](https://code.claude.com/docs/en/model-config.md). Source: `code.claude.com/docs/en/env-vars.md` |
-| `CLAUDE_CODE_WORKFLOWS` | Set to `1` to enable the `Workflow` tool for deterministic multi-agent orchestration (off by default; v2.1.147+) |
+| `CLAUDE_CODE_WORKFLOWS` | Set to `1` to enable the `Workflow` tool for deterministic multi-agent orchestration (off by default) |
 | `CLAUDE_CODE_DISABLE_ALTERNATE_SCREEN` | Set to `1` to disable fullscreen rendering and use the classic main-screen renderer. The conversation stays in the terminal's native scrollback so `Cmd+f` and tmux copy mode work normally. Takes precedence over `CLAUDE_CODE_NO_FLICKER` and the `tui` setting. You can also switch with `/tui default`. Source: `code.claude.com/docs/en/env-vars.md` |
 | `CLAUDE_CODE_PACKAGE_MANAGER_AUTO_UPDATE` | Set to `1` to let Claude Code run your package manager's upgrade command in the background when a new version is available. Applies to Homebrew and WinGet installations. Other package managers continue to show the upgrade command without running it. Source: `code.claude.com/docs/en/env-vars.md` |
 | `CLAUDE_CODE_SESSION_ID` | Set automatically in Bash and PowerShell tool subprocesses and in hook command subprocesses to the current session ID. Matches the `session_id` field in the hook JSON input. Updated on `/clear`. Use to correlate scripts and external tools with the Claude Code session that launched them. Source: `code.claude.com/docs/en/env-vars.md` |
@@ -198,7 +198,7 @@ Precedence (highest wins): CLI flags > `settings.local.json` > `settings.json` (
 | `dontAsk` | Only pre-approved tools from `permissions.allow` | Never in cycle; `--permission-mode dontAsk` only |
 | `bypassPermissions` | Everything (no safety checks). **Isolated containers/VMs only** | Optional (requires enabling flag) |
 
-**Auto mode requirements:** Claude Code v2.1.83+, Max/Team/Enterprise/API plan (not Pro), Anthropic API only (not Bedrock/Vertex/Foundry), and an eligible model. Model availability depends on plan: Team/Enterprise/API allow Sonnet 4.6, Opus 4.6, or Opus 4.7; Max allows Opus 4.7 only (Haiku and claude-3 models are not supported on any plan). Team/Enterprise require an admin to enable it in Claude Code admin settings.
+**Auto mode requirements:** Claude Code v2.1.83+, **all plans** (including Pro), Anthropic API only (not Bedrock/Vertex/Foundry), and an eligible model (Sonnet 4.6, Opus 4.6, or Opus 4.7; Haiku and claude-3 models are not supported). On Team and Enterprise, an admin must enable it in Claude Code admin settings before users can turn it on.
 
 Source: `code.claude.com/docs/en/permission-modes.md`.
 
