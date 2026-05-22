@@ -1,7 +1,7 @@
 {
   "name": "anthropic-pulse",
   "displayName": "Anthropic Pulse — news + research digests",
-  "description": "Fresh digest (hourly) of recent Anthropic news posts and research publications. Unlike the other 7 skills which mirror reference documentation, this one surfaces TIME-SENSITIVE narrative content — model launches, product announcements, partnership news, research papers — so Claude can answer 'did X just launch?' or 'what's Anthropic's recent thinking on Y?' without WebFetching the index page.",
+  "description": "Fresh digest (daily) of recent Anthropic news posts and research publications. Unlike the other 7 skills which mirror reference documentation, this one surfaces TIME-SENSITIVE narrative content — model launches, product announcements, partnership news, research papers — so Claude can answer 'did X just launch?' or 'what's Anthropic's recent thinking on Y?' without WebFetching the index page.",
   "upstream": {
     "newsIndexUrl": "https://www.anthropic.com/news",
     "researchIndexUrl": "https://www.anthropic.com/research",

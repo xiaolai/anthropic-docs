@@ -3,7 +3,7 @@ name: anthropic-pulse-news
 description: |
   Digest of the most recent ~15-20 Anthropic news posts — product launches, 
   partnerships, region openings, model releases, policy updates, business 
-  announcements. Auto-refreshed hourly from anthropic.com/news. Use when the 
+  announcements. Auto-refreshed daily from anthropic.com/news. Use when the 
   user asks: "did X just launch?", "what did Anthropic announce?", "is model Y 
   out yet?", "any partnership news?". Skip: deep technical content (digest only 
   has title + URL + summary; for body, WebFetch the linked URL).
@@ -12,7 +12,7 @@ source: https://www.anthropic.com/news
 
 # Anthropic — Recent News
 
-> *Auto-refreshed hourly.* This is a rolling digest of the
+> *Auto-refreshed daily.* This is a rolling digest of the
 > most recent items from [https://www.anthropic.com/news](https://www.anthropic.com/news). For the full
 > body of any item, WebFetch its URL — that's the design.
 
@@ -44,5 +44,5 @@ source: https://www.anthropic.com/news
 
 ---
 
-*Auto-updated hourly from https://www.anthropic.com/news. If a digest entry
+*Auto-updated daily from https://www.anthropic.com/news. If a digest entry
 doesn't answer the question, WebFetch the linked URL.*

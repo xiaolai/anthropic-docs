@@ -1,4 +1,4 @@
-name: Multi-skill update (hourly)
+name: Multi-skill update (daily)
 
 # Multi-skill fan-out over every skill in skills/*. Each matrix entry runs
 # the full pipeline for one skill: monitor → optional snapshot-refresh +
@@ -15,7 +15,9 @@ name: Multi-skill update (hourly)
 
 on:
   schedule:
-    - cron: "0 * * * *"  # Hourly at :00. GH free-tier coalesces under load.
+    - cron: "0 12 * * *"  # Daily at 12:00 UTC. Hourly exhausted the
+                          # CLAUDE_CODE_OAUTH_TOKEN account quota within
+                          # ~2 days; reference docs change ~daily at most.
   workflow_dispatch:
     inputs:
       skill_filter:
@@ -538,10 +540,11 @@ jobs:
               "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
             exit 0
           fi
-          # Daily-once: hourly cron × 8 skills = 192 report runs/day was
-          # noisy + costly. Skip if today's report file already exists.
-          # First cron tick of the UTC day wins; subsequent ticks no-op.
-          # Force a rerun by deleting skills/$SKILL_NAME/reports/$TODAY.md.
+          # Daily-once guard: skip if today's report file already exists.
+          # Redundant now that the cron itself is daily, but kept as a
+          # cheap safety net against manual re-triggers within the same
+          # UTC day. Force a rerun by deleting
+          # skills/$SKILL_NAME/reports/$TODAY.md.
           TODAY=$(date -u +%Y-%m-%d)
           REPORT_FILE="../../skills/$SKILL_NAME/reports/$TODAY.md"
           if [ -f "$REPORT_FILE" ]; then

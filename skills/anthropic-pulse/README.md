@@ -1,6 +1,6 @@
 # anthropic-pulse
 
-Auto-updated digest of recent **Anthropic news** + **Anthropic research** — fresh hourly, surfaced at intent-match time.
+Auto-updated digest of recent **Anthropic news** + **Anthropic research** — fresh daily, surfaced at intent-match time.
 
 Part of the [anthropic-docs](../../README.md) plugin.
 
@@ -25,7 +25,7 @@ The two surfaces are **digests only** — title + date + 1-2 sentence summary + 
 
 ## Update model
 
-This skill is **deterministically rendered** from upstream HTML — no LLM agents involved. The pipeline runs hourly (via the shared matrix workflow at `.github/workflows/pipeline.yml`):
+This skill is **deterministically rendered** from upstream HTML — no LLM agents involved. The pipeline runs daily (via the shared matrix workflow at `.github/workflows/pipeline.yml`):
 
 1. `pipeline/scripts/fetch-anthropic-pulse.sh` fetches both index pages, extracts the ~15-20 most recent items per feed via HTML parsing, writes JSON to local cache.
 2. The same script renders `SKILL-news.md` + `SKILL-research.md` from the JSON using a Markdown template.
@@ -44,7 +44,7 @@ SKILL_NAME=anthropic-pulse bash pipeline/scripts/fetch-anthropic-pulse.sh
 Why not just have Claude WebFetch the news / research index every time someone asks "what's new?":
 
 - **Cached digest = fast.** Per-query WebFetch costs a network round-trip + HTML parse + token spend. The cached digest is ~5 KB of pre-extracted markdown — instant.
-- **Freshness budget = the hourly cron, not per-query.** All users of the plugin share one refresh, paid in CI minutes, not in their conversations.
+- **Freshness budget = the daily cron, not per-query.** All users of the plugin share one refresh, paid in CI minutes, not in their conversations.
 - **Activation isolation.** The other 7 skills are reference-shaped; this one is news-shaped. Mixing them would dilute intent matching.
 
 ## What this skill DOESN'T include

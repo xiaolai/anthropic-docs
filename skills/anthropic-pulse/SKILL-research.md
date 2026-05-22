@@ -3,7 +3,7 @@ name: anthropic-pulse-research
 description: |
   Digest of the most recent ~15-20 Anthropic research papers/posts — 
   alignment research, evaluations, benchmarks, interpretability, the Anthropic 
-  Institute, the Anthropic Economic Index. Auto-refreshed hourly from 
+  Institute, the Anthropic Economic Index. Auto-refreshed daily from 
   anthropic.com/research. Use when the user asks: "any recent Anthropic 
   research on X?", "is there a paper on Y?". Skip: production model docs (use 
   anthropic-api etc.); deep paper content (digest only — Claude WebFetches 
@@ -13,7 +13,7 @@ source: https://www.anthropic.com/research
 
 # Anthropic — Recent Research
 
-> *Auto-refreshed hourly.* This is a rolling digest of the
+> *Auto-refreshed daily.* This is a rolling digest of the
 > most recent items from [https://www.anthropic.com/research](https://www.anthropic.com/research). For the full
 > body of any item, WebFetch its URL — that's the design.
 
@@ -42,5 +42,5 @@ source: https://www.anthropic.com/research
 
 ---
 
-*Auto-updated hourly from https://www.anthropic.com/research. If a digest entry
+*Auto-updated daily from https://www.anthropic.com/research. If a digest entry
 doesn't answer the question, WebFetch the linked URL.*

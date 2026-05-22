@@ -26,7 +26,7 @@ user-invocable: true
 |---|---|
 | **Source docs** | [claude.com/docs/en/cowork](https://claude.com/docs/en/cowork) |
 
-> **This skill is auto-updated hourly.** A pipeline reads the upstream
+> **This skill is auto-updated daily.** A pipeline reads the upstream
 > docs and rewrites the per-surface files below. Section structure is
 > stable; content drifts to track upstream.
 
@@ -39,5 +39,5 @@ user-invocable: true
 
 ---
 
-*This skill is auto-updated hourly by a maintainer-run pipeline. File
+*This skill is auto-updated daily by a maintainer-run pipeline. File
 issues at [xiaolai/anthropic-docs](https://github.com/xiaolai/anthropic-docs).*

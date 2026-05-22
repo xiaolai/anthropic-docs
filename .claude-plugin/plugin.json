@@ -1,6 +1,6 @@
 {
   "name": "anthropic-docs",
-  "description": "Auto-updated multi-skill reference for the whole Anthropic doc ecosystem. 8 skills covering claude-code, claude-agent-sdk, anthropic-api, anthropic-platform-features, claude-connectors, claude-cowork, mcp-spec, and anthropic-pulse (news + research digests). Pipeline refreshes hourly.",
+  "description": "Auto-updated multi-skill reference for the whole Anthropic doc ecosystem. 8 skills covering claude-code, claude-agent-sdk, anthropic-api, anthropic-platform-features, claude-connectors, claude-cowork, mcp-spec, and anthropic-pulse (news + research digests). Pipeline refreshes daily.",
   "version": "1.0.0",
   "author": { "name": "xiaolai" },
   "license": "MIT",
