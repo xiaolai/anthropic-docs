@@ -28,7 +28,7 @@ For non-stdio transports, set `"type": "http"` or `"type": "sse"` and supply a `
 
 ### Use `mcpServers` as the top-level key, not `servers`
 
-Claude Code's `.mcp.json` requires the top-level key `"mcpServers"` (camelCase). Some tools — including VS Code's MCP config and some server docs — use `"servers"` instead. A file with the wrong top-level key silently provides no servers. As of v2.1.147, `claude mcp list` shows a configuration error instead of silently ignoring the file.
+Claude Code's `.mcp.json` requires the top-level key `"mcpServers"` (camelCase). Some tools — including VS Code's MCP config and some server docs — use `"servers"` instead. A file with the wrong top-level key silently provides no servers. As of v2.1.148, `claude mcp list` shows a configuration error instead of silently ignoring the file.
 
 ### `env` values must be strings
 

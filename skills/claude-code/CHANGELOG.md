@@ -10,6 +10,15 @@ The newest entry is at the top.
 
 ---
 
+## 2026-05-22
+- Sync to CC v2.1.148 — Bash tool exit code 127 regression fix (regression from v2.1.147); verify passed after 1 mend run; all 11 gates pass
+
+## v2.1.148 — 2026-05-22
+
+Version bump: `@anthropic-ai/claude-code` updated from v2.1.147 to v2.1.148.
+
+- Fixed the Bash tool returning exit code 127 on every command for some users (a regression introduced in v2.1.147)
+
 ## v2.1.147 — 2026-05-21
 
 Version bump: `@anthropic-ai/claude-code` updated from v2.1.146 to v2.1.147.

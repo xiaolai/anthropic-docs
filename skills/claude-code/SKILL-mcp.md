@@ -199,6 +199,31 @@ Cross-reference: [`SKILL-settings.md`](SKILL-settings.md) § *All documented set
 - **MCP tool output size:** Default max is 25,000 tokens; warning fires above 10,000 tokens. Override globally with `MAX_MCP_OUTPUT_TOKENS` env var. Individual tools can declare `_meta["anthropic/maxResultSizeChars"]` in their `tools/list` entry to set a per-tool ceiling (up to 500,000 chars) — Claude Code uses that value for text content instead of the env var. This annotation has no effect on image-returning tools. Source: `code.claude.com/docs/en/mcp.md`.
 - **Startup timeout:** Set `MCP_TIMEOUT` env var (milliseconds, e.g. `MCP_TIMEOUT=10000`).
 
+## MCP resources (@ mention)
+
+MCP servers can expose resources that you reference with `@` mentions, the same way you reference files. Type `@` in a prompt to see available resources from all connected servers alongside files.
+
+Reference format: `@<server>:<protocol>://<resource-path>`
+
+```text
+Can you analyze @github:issue://123 and suggest a fix?
+Please review @docs:file://api/authentication
+Compare @postgres:schema://users with @docs:file://database/user-model
+```
+
+Resources are fetched and included as attachments when referenced. Claude Code automatically provides tools to list and read MCP resources when servers support them.
+
+Source: `code.claude.com/docs/en/mcp.md`.
+
+## MCP elicitation
+
+MCP servers can request structured user input mid-task. Claude Code shows a dialog:
+
+- **Form mode** — server defines fields (e.g., username/password); fill and submit.
+- **URL mode** — server requests browser-based auth; complete the flow, then confirm in the CLI.
+
+No configuration required: dialogs appear automatically. To auto-respond without a dialog, use the [`Elicitation` hook](SKILL-hooks.md).
+
 ## Channels (push messages from MCP servers)
 
 An MCP server can push messages into your session by declaring the `claude/channel` capability. Opt in with `--channels plugin:<name>@<marketplace>` at startup.
