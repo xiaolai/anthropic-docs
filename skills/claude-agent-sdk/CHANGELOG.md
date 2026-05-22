@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-05-22 (success run)
+- Sync to CC v2.1.148 — TS v0.3.147→v0.3.148, PY v0.2.84→v0.2.85; all 11 gates pass, 27/27 verify checks pass; 1 mending run; $2.04 total
+
+## 2026-05-22 (v0.3.148 / v0.2.85 — version bump)
+
+- TypeScript SDK v0.3.147 → v0.3.148 (parity with Claude Code v2.1.148); no new API surface changes
+- Python SDK v0.2.84 → v0.2.85 (bundled Claude CLI updated to v2.1.148); no new API surface changes
+- Version propagated to SKILL.md, SKILL-typescript.md, SKILL-python.md, README.md, state.json
+
 ## 2026-05-21 (v0.2.84 — Python version bump)
 
 - Python SDK v0.2.83 → v0.2.84 (bundled Claude CLI updated to v2.1.147); no new API surface changes
