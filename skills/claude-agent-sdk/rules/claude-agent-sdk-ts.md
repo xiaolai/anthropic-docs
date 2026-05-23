@@ -215,7 +215,7 @@ options: { debug: true, debugFile: '/tmp/agent.log' }
 
 When bundling with `bun build --compile`, the CLI binary lives in the virtual filesystem
 (`$bunfs`). Setting `pathToClaudeCodeExecutable` to a literal path fails. Use the dedicated
-extract export instead (available since v0.3.148):
+extract export instead (available since v0.3.150):
 
 ```typescript
 // WRONG — path points to virtual bunfs, not a real file

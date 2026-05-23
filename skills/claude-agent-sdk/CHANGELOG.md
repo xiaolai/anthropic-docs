@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-05-23 (success run)
+- Sync to CC v2.1.150 — TS v0.3.148→v0.3.150, PY v0.2.85→v0.2.87; all 11 gates pass, 27/27 verify checks pass; 1 mending run; $1.79 total
+
+## 2026-05-23 (v0.3.150 / v0.2.87 — version bump)
+
+- TypeScript SDK v0.3.148 → v0.3.150 (parity with Claude Code v2.1.150); no new API surface changes
+- Python SDK v0.2.85 → v0.2.87 (bundled Claude CLI updated to v2.1.150; CI migrated to Workload Identity Federation — internal only); no new API surface changes
+- Version propagated to SKILL.md, SKILL-typescript.md, SKILL-python.md, README.md, state.json
+
 ## 2026-05-22 (success run)
 - Sync to CC v2.1.148 — TS v0.3.147→v0.3.148, PY v0.2.84→v0.2.85; all 11 gates pass, 27/27 verify checks pass; 1 mending run; $2.04 total
 

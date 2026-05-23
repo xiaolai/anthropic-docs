@@ -4,7 +4,7 @@
       {
         "manager": "npm",
         "name": "@anthropic-ai/claude-agent-sdk",
-        "version": "0.3.148",
+        "version": "0.3.150",
         "engines": {
           "node": ">=18.0.0"
         }
@@ -12,7 +12,7 @@
       {
         "manager": "pypi",
         "name": "claude-agent-sdk",
-        "version": "0.2.85",
+        "version": "0.2.87",
         "engines": {
           "python": ">=3.10"
         }
@@ -24,19 +24,19 @@
       {
         "repo": "anthropics/claude-agent-sdk-typescript",
         "latestRelease": {
-          "tag": "v0.3.148",
-          "name": "v0.3.148",
-          "body": "## What's changed\n\n- Updated to parity with Claude Code v2.1.148\n\n## Update\n\n```sh\nnpm install @anthropic-ai/claude-agent-sdk@0.3.148\n# or\nyarn add @anthropic-ai/claude-agent-sdk@0.3.148\n# or\npnpm add @anthropic-ai/claude-agent-sdk@0.3.148\n# or\nbun add @anthropic-ai/claude-agent-sdk@0.3.148\n```",
-          "publishedAt": "2026-05-22T01:16:53Z"
+          "tag": "v0.3.150",
+          "name": "v0.3.150",
+          "body": "## What's changed\n\n- Updated to parity with Claude Code v2.1.150\n\n## Update\n\n```sh\nnpm install @anthropic-ai/claude-agent-sdk@0.3.150\n# or\nyarn add @anthropic-ai/claude-agent-sdk@0.3.150\n# or\npnpm add @anthropic-ai/claude-agent-sdk@0.3.150\n# or\nbun add @anthropic-ai/claude-agent-sdk@0.3.150\n```",
+          "publishedAt": "2026-05-23T04:03:49Z"
         }
       },
       {
         "repo": "anthropics/claude-agent-sdk-python",
         "latestRelease": {
-          "tag": "v0.2.85",
-          "name": "v0.2.85",
-          "body": "\n### Internal/Other Changes\n\n- Updated bundled Claude CLI to version 2.1.148\n\n\n---\n\n**PyPI:** https://pypi.org/project/claude-agent-sdk/0.2.85/\n\n```bash\npip install claude-agent-sdk==0.2.85\n```",
-          "publishedAt": "2026-05-22T01:33:24Z"
+          "tag": "v0.2.87",
+          "name": "v0.2.87",
+          "body": "\n### Internal/Other Changes\n\n- Updated bundled Claude CLI to version 2.1.150\n- Switched CI workflows from static API key to Workload Identity Federation for Claude authentication, using short-lived tokens instead of long-lived secrets (#984)\n\n\n---\n\n**PyPI:** https://pypi.org/project/claude-agent-sdk/0.2.87/\n\n```bash\npip install claude-agent-sdk==0.2.87\n```",
+          "publishedAt": "2026-05-23T04:20:30Z"
         }
       }
     ],
@@ -51,101 +51,108 @@
     "pageCount": 30,
     "knownPages": {
       "https://code.claude.com/docs/en/agent-sdk/agent-loop.md": {
-        "lastSeen": "2026-05-22T12:54:41Z"
+        "lastSeen": "2026-05-23T12:28:41Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/claude-code-features.md": {
-        "lastSeen": "2026-05-22T12:54:41Z"
+        "lastSeen": "2026-05-23T12:28:41Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/cost-tracking.md": {
-        "lastSeen": "2026-05-22T12:54:41Z"
+        "lastSeen": "2026-05-23T12:28:41Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/custom-tools.md": {
-        "lastSeen": "2026-05-22T12:54:41Z"
+        "lastSeen": "2026-05-23T12:28:41Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/file-checkpointing.md": {
-        "lastSeen": "2026-05-22T12:54:41Z"
+        "lastSeen": "2026-05-23T12:28:41Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/hooks.md": {
-        "lastSeen": "2026-05-22T12:54:41Z"
+        "lastSeen": "2026-05-23T12:28:41Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/hosting.md": {
-        "lastSeen": "2026-05-22T12:54:41Z"
+        "lastSeen": "2026-05-23T12:28:41Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/mcp.md": {
-        "lastSeen": "2026-05-22T12:54:41Z"
+        "lastSeen": "2026-05-23T12:28:41Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/migration-guide.md": {
-        "lastSeen": "2026-05-22T12:54:41Z"
+        "lastSeen": "2026-05-23T12:28:41Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/modifying-system-prompts.md": {
-        "lastSeen": "2026-05-22T12:54:41Z"
+        "lastSeen": "2026-05-23T12:28:41Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/observability.md": {
-        "lastSeen": "2026-05-22T12:54:41Z"
+        "lastSeen": "2026-05-23T12:28:41Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/overview.md": {
-        "lastSeen": "2026-05-22T12:54:41Z"
+        "lastSeen": "2026-05-23T12:28:41Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/permissions.md": {
-        "lastSeen": "2026-05-22T12:54:41Z"
+        "lastSeen": "2026-05-23T12:28:41Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/plugins.md": {
-        "lastSeen": "2026-05-22T12:54:41Z"
+        "lastSeen": "2026-05-23T12:28:41Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/python.md": {
-        "lastSeen": "2026-05-22T12:54:41Z"
+        "lastSeen": "2026-05-23T12:28:41Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/quickstart.md": {
-        "lastSeen": "2026-05-22T12:54:41Z"
+        "lastSeen": "2026-05-23T12:28:41Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/secure-deployment.md": {
-        "lastSeen": "2026-05-22T12:54:41Z"
+        "lastSeen": "2026-05-23T12:28:41Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/session-storage.md": {
-        "lastSeen": "2026-05-22T12:54:41Z"
+        "lastSeen": "2026-05-23T12:28:41Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/sessions.md": {
-        "lastSeen": "2026-05-22T12:54:41Z"
+        "lastSeen": "2026-05-23T12:28:41Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/skills.md": {
-        "lastSeen": "2026-05-22T12:54:41Z"
+        "lastSeen": "2026-05-23T12:28:41Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/slash-commands.md": {
-        "lastSeen": "2026-05-22T12:54:41Z"
+        "lastSeen": "2026-05-23T12:28:41Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/streaming-output.md": {
-        "lastSeen": "2026-05-22T12:54:41Z"
+        "lastSeen": "2026-05-23T12:28:41Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/streaming-vs-single-mode.md": {
-        "lastSeen": "2026-05-22T12:54:41Z"
+        "lastSeen": "2026-05-23T12:28:41Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/structured-outputs.md": {
-        "lastSeen": "2026-05-22T12:54:41Z"
+        "lastSeen": "2026-05-23T12:28:41Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/subagents.md": {
-        "lastSeen": "2026-05-22T12:54:41Z"
+        "lastSeen": "2026-05-23T12:28:41Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/todo-tracking.md": {
-        "lastSeen": "2026-05-22T12:54:41Z"
+        "lastSeen": "2026-05-23T12:28:41Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/tool-search.md": {
-        "lastSeen": "2026-05-22T12:54:41Z"
+        "lastSeen": "2026-05-23T12:28:41Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/typescript-v2-preview.md": {
-        "lastSeen": "2026-05-22T12:54:41Z"
+        "lastSeen": "2026-05-23T12:28:41Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/typescript.md": {
-        "lastSeen": "2026-05-22T12:54:41Z"
+        "lastSeen": "2026-05-23T12:28:41Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/user-input.md": {
-        "lastSeen": "2026-05-22T12:54:41Z"
+        "lastSeen": "2026-05-23T12:28:41Z"
       }
     }
   },
   "trackedIssues": {},
-  "researchedIssues": {},
-  "lastAuditedVersion": "0.3.148",
-  "lastUpdated": "2026-05-22T12:54:41Z",
+  "researchedIssues": {
+    "335": {
+      "title": "Use workload identity federation for Claude auth in issue triage",
+      "verdict": "skipped",
+      "reason": "Internal CI maintenance — switches issue triage workflow from static API key to Workload Identity Federation; no user-facing bug or workaround.",
+      "researchedAt": "2026-05-23T13:30:00Z"
+    }
+  },
+  "lastAuditedVersion": "0.3.150",
+  "lastUpdated": "2026-05-23T12:28:41Z",
   "scaffoldComplete": true,
   "lastRunWarnings": [
     "2026-05-19T17:24:39Z: docs_index_changed (hash 065bd6a→ee68ff8e) but no page-level additions, removals, or content diffs were provided in the change report — no surface-file edits made",
@@ -186,7 +193,9 @@
     "2026-05-21T23:15:00Z: Part A: llms.txt index SHA 23c9c263 matches live (29283 bytes); all 30 agent-sdk pages re-verified — every page +1 byte (cosmetic trailing-newline injection by docs infra); no substantive schema/field/flag changes. Substantive SKILL fix: resolveSettings() example in SKILL-typescript.md corrected dir→cwd (parameter was renamed); added full parameter table (cwd, settingSources, managedSettings, serverManagedSettings) and return type table (effective, provenance, sources). MANIFEST.json refreshed with fresh SHA256s and byte counts. indexSha256 updated 0792053b→23c9c263; bugTracker.lastScannedIssueNumber corrected 0→327; lastScannedIssueNumber corrected null→327. Part B: gh api returned [] for bug-labeled issues in anthropics/claude-agent-sdk-typescript; highest known issue #327 (unlabeled). Part C: 5/5 spot-checked URLs returned HTTP 200; version consistency OK (TS v0.3.147 in SKILL.md/SKILL-typescript.md; PY v0.2.84 in SKILL-python.md); no duplicate facts; cross-references valid; rules globs cover documented patterns.",
     "2026-05-21T23:39:44Z: Part A: llms.txt index SHA changed 0792053b→986d8748; 30 agent-sdk pages unchanged (MANIFEST.json already refreshed by pipeline at 23:39:47Z). Fetched typescript.md, python.md, hooks.md — no new Options fields or message types vs SKILL files. Substantive addition: notification_type enum values ('permission_prompt'|'idle_prompt'|'auth_success'|'elicitation_dialog'|'elicitation_response'|'elicitation_complete') added to SKILL-typescript.md hook input fields table and SKILL-python.md NotificationHookInput comment. indexSha256 corrected 0792053b→986d8748; knownPages timestamps updated to 2026-05-21T23:39:44Z. Part B: change-report.json newBugIssues=[]; no bug-labeled issues. Part C: versions consistent (TS v0.3.147, PY v0.2.84); cross-references valid.",
     "2026-05-22T12:54:41Z: Version bump — TS v0.3.147→v0.3.148 (parity with Claude Code v2.1.148); PY v0.2.84→v0.2.85 (bundled CLI v2.1.148); no new API surface changes. Updated SKILL.md, SKILL-typescript.md, SKILL-python.md, README.md, CHANGELOG.md, state.json.",
-    "2026-05-22T13:01:41Z: Part A: all 30 agent-sdk pages re-checked — all changed by exactly +1 byte (trailing newline normalization across entire docs site, cosmetic); no substantive schema/API changes; SKILL files unchanged. Part B: no bug-labeled issues in anthropics/claude-agent-sdk-typescript (0 total); newBugIssues=[]. Part C: all 5 spot-checked URLs returned 200; validate-examples.sh PASS; no duplicate schema facts; cross-references verified. MANIFEST refreshed via refresh-docs-snapshot.sh."
+    "2026-05-22T13:01:41Z: Part A: all 30 agent-sdk pages re-checked — all changed by exactly +1 byte (trailing newline normalization across entire docs site, cosmetic); no substantive schema/API changes; SKILL files unchanged. Part B: no bug-labeled issues in anthropics/claude-agent-sdk-typescript (0 total); newBugIssues=[]. Part C: all 5 spot-checked URLs returned 200; validate-examples.sh PASS; no duplicate schema facts; cross-references verified. MANIFEST refreshed via refresh-docs-snapshot.sh.",
+    "2026-05-23T12:28:41Z: Version bump — TS v0.3.148→v0.3.150 (parity with Claude Code v2.1.150); PY v0.2.85→v0.2.87 (bundled CLI v2.1.150, CI migrated to Workload Identity Federation — internal only); no new API surface changes. Updated SKILL.md, SKILL-typescript.md, SKILL-python.md, README.md, CHANGELOG.md, state.json.",
+    "2026-05-23T13:30:00Z: Part A: llms.txt index SHA 986d8748 matches MANIFEST (trailing-newline stripped by script; raw curl SHA 57a47c4f differs by exactly +1 byte on all 30 pages); all 30 agent-sdk pages re-fetched — all SHAs match MANIFEST exactly after normalization; no page additions or removals; no substantive schema/API changes. MANIFEST.json refreshed via refresh-docs-snapshot.sh. Part B: 1 new issue above lastScannedIssueNumber=327: #335 (closed, internal CI — Use workload identity federation for Claude auth in issue triage) — verdict: skipped (internal maintenance, no user-facing bug). bugTracker.lastScannedIssueNumber updated 0→335; lastScannedIssueNumber updated null→335. Part C: 5/5 spot-checked URLs returned HTTP 200; validate-examples.sh PASS (0/0 schema-bound blocks); version consistency OK (TS v0.3.150 in SKILL.md/SKILL-typescript.md; PY v0.2.87 in SKILL-python.md/README.md); no duplicate facts (PermissionMode in both surface files appropriate for separate-language API surfaces); cross-references valid (all 3 SKILL-*.md and 2 rules/*.md files exist); rules globs (**/*.ts, **/*.tsx, **/*.mts for TS; **/*.py for Python) cover documented patterns."
   ],
   "lastScannedIssueNumber": null
 }
