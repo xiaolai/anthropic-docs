@@ -217,4 +217,33 @@ Source: [`cowork/3p/configuration.md`](https://claude.com/docs/cowork/3p/configu
 
 ---
 
-*Source: claude.com/docs/cowork/3p/configuration.md + feature-matrix.md.*
+## Rule 12 — Gateway SSO: use `inferenceCredentialKind: "interactive"` + `inferenceGatewayOidc`
+
+The preferred way to configure per-user gateway sign-in is:
+- `inferenceCredentialKind: "interactive"` — selects browser-based sign-in
+- `inferenceGatewayOidc` — JSON string with the OIDC provider details
+
+The legacy `inferenceGatewayAuthScheme: "sso"` still works as an alias, but
+new deployments should use `inferenceCredentialKind`.
+
+**`inferenceGatewayOidc` fields:**
+- `clientId` (required), `issuer` (required — base URL without `/.well-known/openid-configuration`)
+- `redirectPort` (optional; set for Okta which requires a fixed port, leave unset for Entra)
+- `bearerTokenType` (`id_token` (default) | `access_token`); use `access_token`
+  when your gateway validates as an OAuth resource server. When set to `access_token`,
+  `scopes` is required.
+- `scopes` (optional unless `bearerTokenType: "access_token"`)
+
+> **Common mistake:** pasting the IdP's metadata URI (ending in
+> `/.well-known/openid-configuration`) as the `issuer` value. The app appends
+> that path itself — set `issuer` to the base URL only.
+
+> **Common mistake:** setting `inferenceCredentialKind: "interactive"` without
+> `inferenceGatewayOidc`. That selects a different mode (gateway as authorization
+> server). Both keys are required together for OIDC SSO.
+
+Source: [`cowork/3p/gateway-sso.md`](https://claude.com/docs/cowork/3p/gateway-sso.md).
+
+---
+
+*Source: claude.com/docs/cowork/3p/configuration.md + feature-matrix.md + gateway-sso.md.*

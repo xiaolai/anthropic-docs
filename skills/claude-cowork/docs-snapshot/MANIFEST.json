@@ -3,7 +3,7 @@
   "indexSha256": "e902363536c9acc513d54af3426bbbed42d810e267688e03faa4bb78006a7ab4",
   "indexBytes": 12253,
   "pageCount": 35,
-  "refreshedAt": "2026-05-21T22:00:00Z",
+  "refreshedAt": "2026-05-23T00:00:00Z",
   "pages": [
     {
       "path": "cowork/3p/bedrock-aws-sign-in.md",
@@ -26,8 +26,8 @@
     {
       "path": "cowork/3p/configuration.md",
       "url": "https://claude.com/docs/cowork/3p/configuration.md",
-      "sha256": "8bfb88f4b40fb78c573e4acf3b7155010ef5479ebc748c1f67d19f85ae7b144f",
-      "bytes": 37863
+      "sha256": "6ef2f9e4015d2d049530d901785f0e569ff343256d3a041773fb442b5d340785",
+      "bytes": 39802
     },
     {
       "path": "cowork/3p/connectors-m365.md",
@@ -62,8 +62,8 @@
     {
       "path": "cowork/3p/gateway-sso.md",
       "url": "https://claude.com/docs/cowork/3p/gateway-sso.md",
-      "sha256": "fe602995c3b4ef78fc476523fc96762c6ad6997c07c11f542ce770c15c6ed1a1",
-      "bytes": 11490
+      "sha256": "b68891cbda937d6128a9f2b5bf1d05cf5de127d42bc505f23e476186a2b22b00",
+      "bytes": 13918
     },
     {
       "path": "cowork/3p/gateway.md",
@@ -116,8 +116,8 @@
     {
       "path": "cowork/3p/web-tools.md",
       "url": "https://claude.com/docs/cowork/3p/web-tools.md",
-      "sha256": "23212096c1a19785426ca662416a193554959a457a4f3435fbe7fa6860d20a8d",
-      "bytes": 4433
+      "sha256": "5777964e3d0b80f385cf3b87bbb61c0f557a708c7836f0795a3cab1193db1436",
+      "bytes": 5279
     },
     {
       "path": "cowork/guide/dispatch.md",

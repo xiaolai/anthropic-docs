@@ -169,6 +169,11 @@ That page is the source of truth for:
 - **Inference provider** — `inferenceProvider` (`anthropic` | `vertex` | `bedrock` |
   `foundry` | `gateway`); `anthropic` routes directly to the Anthropic API (no
   3P data-residency guarantees)
+- **Credential kind** — `inferenceCredentialKind` (`static` | `helper-script` |
+  `interactive` | `vendor-profile`); selects the credential source for the chosen
+  provider. Optional — when unset the app derives the kind from which credential
+  keys are present. When set, only that source is used (no fallback). Not all kinds
+  are available for every provider. Source: [`3p/configuration.md`](https://claude.com/docs/cowork/3p/configuration.md).
 - **Anthropic API key** — `inferenceAnthropicApiKey` (for `inferenceProvider: anthropic`)
 - **Custom inference headers** — `inferenceCustomHeaders` (JSON object or `"Name: Value"`
   array sent on every inference request; legacy alias `inferenceGatewayHeaders` still
@@ -180,7 +185,7 @@ That page is the source of truth for:
   - *Bedrock* — `inferenceBedrockBearerToken` (shared Bedrock API key); `inferenceBedrockProfile` (named AWS CLI profile); `inferenceBedrockSsoStartUrl` + `inferenceBedrockSsoRegion` + `inferenceBedrockSsoAccountId` + `inferenceBedrockSsoRoleName` (in-app IAM Identity Center sign-in, no AWS CLI required; app ≥ 1.6.0; **all four required** — partial config silently ignored); `inferenceBedrockAwsDir` (non-default `~/.aws` path); `inferenceBedrockServiceTier` (`flex` | `priority`; omit for on-demand). Source: [`3p/bedrock.md`](https://claude.com/docs/cowork/3p/bedrock.md), [`3p/bedrock-aws-sign-in.md`](https://claude.com/docs/cowork/3p/bedrock-aws-sign-in.md).
   - *Vertex AI* — `inferenceVertexProjectId` (GCP project ID); `inferenceVertexCredentialsFile` (path to service-account key, `authorized_user`, or Workforce Identity Federation `external_account` JSON); `inferenceVertexOAuthClientId` + `inferenceVertexOAuthClientSecret` (in-app Google sign-in); `inferenceVertexOAuthScopes` (space-separated; default `openid email https://www.googleapis.com/auth/cloud-platform`). **`inferenceCredentialHelper` is not invoked for Vertex** — use file-based credentials or OAuth keys. Source: [`3p/vertex.md`](https://claude.com/docs/cowork/3p/vertex.md).
   - *Foundry* — `inferenceFoundryResource` (Azure AI Foundry resource name, 2–64 lowercase alphanumeric chars); `inferenceFoundryApiKey` (API key, or use `inferenceCredentialHelper`). Source: [`3p/foundry.md`](https://claude.com/docs/cowork/3p/foundry.md).
-  - *Gateway* — `inferenceGatewayBaseUrl` (gateway base URL, must be HTTPS); `inferenceGatewayApiKey` (API key; use a placeholder if gateway uses network identity and requires no key); `inferenceGatewayAuthScheme` (`bearer` (default) | `x-api-key` | `sso`); `inferenceGatewayOidc` (JSON object, required when `authScheme` is `sso`; fields: `clientId` (required), `issuer` (required — base URL only, without `/.well-known/openid-configuration`), `scopes` (optional, defaults to `openid profile email offline_access`), `redirectPort` (optional integer — set for Okta, leave unset for Entra); encoded as a **single JSON string**, not dotted keys; requires app ≥ 1.5.0; full walkthrough at [`3p/gateway-sso.md`](https://claude.com/docs/cowork/3p/gateway-sso.md)). Source: [`3p/gateway.md`](https://claude.com/docs/cowork/3p/gateway.md).
+  - *Gateway* — `inferenceGatewayBaseUrl` (gateway base URL, must be HTTPS); `inferenceGatewayApiKey` (API key; use a placeholder if gateway uses network identity and requires no key); `inferenceGatewayAuthScheme` (`bearer` (default) | `x-api-key` | `sso` (legacy alias for `inferenceCredentialKind: "interactive"`)); `inferenceGatewayOidc` (JSON object, required for SSO; **use `inferenceCredentialKind: "interactive"` + `inferenceGatewayOidc` for new deployments** — `inferenceGatewayAuthScheme: "sso"` still works as a legacy alias; fields: `clientId` (required), `issuer` (required — base URL only, without `/.well-known/openid-configuration`), `scopes` (optional, defaults to `openid profile email offline_access`; **required** when `bearerTokenType` is `access_token`), `redirectPort` (optional integer — set for Okta, leave unset for Entra), `bearerTokenType` (`id_token` (default) | `access_token`; use `access_token` for gateways that validate as an OAuth resource server rather than verifying the ID token directly); encoded as a **single JSON string**, not dotted keys; requires app ≥ 1.5.0; full walkthrough at [`3p/gateway-sso.md`](https://claude.com/docs/cowork/3p/gateway-sso.md)). Source: [`3p/gateway.md`](https://claude.com/docs/cowork/3p/gateway.md).
 - **Model discovery** — `modelDiscoveryEnabled` (boolean, default `true`; set `false`
   to use a fixed list without querying the provider's model-list endpoint); `inferenceModels`
   (JSON array; each entry may be a plain string ID or
@@ -192,7 +197,9 @@ That page is the source of truth for:
   on a name collision, the helper's value wins; `inferenceCredentialHelperTtlSec`
   (cache TTL, default 3600 s), `inferenceCredentialHelperTimeoutSec` (max seconds
   to wait for helper, default 60 s; applies to Bedrock/Foundry/gateway/anthropic,
-  not Vertex AI)
+  not Vertex AI). As of Desktop 1.8555.0, the app also re-runs the helper (or
+  refreshes the sign-in token for `interactive` credentials) mid-session when the
+  provider returns HTTP 401.
 - **Sandbox & workspace** — `builtinToolPolicy` (JSON object mapping tool name →
   `"allow"` | `"ask"`, controls per-tool approval prompts without removing the tool);
   `disabledBuiltinTools` (JSON string[] of tool names to remove entirely; valid:
@@ -460,6 +467,20 @@ restrict Web Search (server-side at your provider — add `"WebSearch"` to
 `disabledBuiltinTools` to block it) and does **not** restrict the Code tab,
 which runs on the host with normal network access. To remove the Code tab,
 set `isClaudeCodeForDesktopEnabled` to `false`.
+
+**Bedrock web search workarounds.** Bedrock does not implement the `web_search`
+server tool. Two patterns restore search capability on Bedrock:
+
+1. **Route through a LiteLLM gateway.** Configure `inferenceProvider: "gateway"`
+   pointing at a LiteLLM instance that fronts Bedrock and enables LiteLLM's
+   web-search handling. See
+   [LiteLLM proxy config for Claude web search](https://docs.litellm.ai/docs/tutorials/claude_code_websearch#proxy-configuration).
+2. **Add a search MCP server.** Deploy a search server via `managedMcpServers`
+   (e.g. [Brave Search MCP](https://github.com/brave/brave-search-mcp-server) or
+   [Exa](https://exa.ai/mcp)) and add `"WebSearch"` to `disabledBuiltinTools` so
+   the model uses the MCP tool instead.
+
+Source: [`cowork/3p/web-tools.md`](https://claude.com/docs/cowork/3p/web-tools.md).
 
 URLs returned in search results are **automatically allowed** for a
 follow-up Web Fetch even if they are not in your `coworkEgressAllowedHosts`
