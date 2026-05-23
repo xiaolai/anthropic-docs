@@ -16,7 +16,7 @@ source: https://www.anthropic.com/news
 > most recent items from [https://www.anthropic.com/news](https://www.anthropic.com/news). For the full
 > body of any item, WebFetch its URL — that's the design.
 
-**Last refreshed**: 2026-05-22
+**Last refreshed**: 2026-05-23
 
 | # | Date | Category | Title | Link |
 |---|---|---|---|---|
@@ -34,7 +34,6 @@ source: https://www.anthropic.com/news
 | 12 | 2026-05-06 | Announcements | **Higher usage limits for Claude and a compute deal with SpaceX** | [open](https://www.anthropic.com/news/higher-limits-spacex) |
 | 13 | 2026-05-05 | Announcements | **Agents for financial services** | [open](https://www.anthropic.com/news/finance-agents) |
 | 14 | 2026-05-04 | Announcements | **Building a new enterprise AI services company with Blackstone, Hellman & Friedman, and Goldman Sachs** | [open](https://www.anthropic.com/news/enterprise-ai-services-company) |
-| 15 | 2026-04-28 | Announcements | **Claude for Creative Work** | [open](https://www.anthropic.com/news/claude-for-creative-work) |
 
 ## How to use this digest
 

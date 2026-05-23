@@ -17,7 +17,7 @@ source: https://www.anthropic.com/research
 > most recent items from [https://www.anthropic.com/research](https://www.anthropic.com/research). For the full
 > body of any item, WebFetch its URL — that's the design.
 
-**Last refreshed**: 2026-05-22
+**Last refreshed**: 2026-05-23
 
 | # | Date | Category | Title | Link |
 |---|---|---|---|---|
@@ -26,14 +26,14 @@ source: https://www.anthropic.com/research
 | 3 | 2026-04-24 | Research | **Project Deal** | [open](https://www.anthropic.com/features/project-deal) |
 | 4 | 2026-03-18 | Societal Impacts | **What 81,000 people want from AI** | [open](https://www.anthropic.com/81k-interviews) |
 | 5 | 2025-12-18 | Policy | **Project Vend: Phase two** | [open](https://www.anthropic.com/research/project-vend-2) |
-| 6 | 2026-05-14 | Policy | **2028: Two scenarios for global AI leadership** | [open](https://www.anthropic.com/research/2028-ai-leadership) |
-| 7 | 2026-05-07 | Alignment | **Donating our open-source alignment tool** | [open](https://www.anthropic.com/research/donating-open-source-petri) |
-| 8 | 2026-05-07 | Policy | **Focus areas for The Anthropic Institute** | [open](https://www.anthropic.com/research/anthropic-institute-agenda) |
-| 9 | 2026-04-30 | Societal Impacts | **How people ask Claude for personal guidance** | [open](https://www.anthropic.com/research/claude-personal-guidance) |
-| 10 | 2026-04-29 | Science | **Evaluating Claude’s bioinformatics research capabilities with BioMysteryBench** | [open](https://www.anthropic.com/research/Evaluating-Claude-For-Bioinformatics-With-BioMysteryBench) |
-| 11 | 2026-04-22 | Economic Research | **Announcing the Anthropic Economic Index Survey** | [open](https://www.anthropic.com/research/economic-index-survey-announcement) |
-| 12 | 2026-04-22 | Economic Research | **What 81,000 people told us about the economics of AI** | [open](https://www.anthropic.com/research/81k-economics) |
-| 13 | 2026-04-14 | Alignment | **Automated Alignment Researchers: Using large language models to scale scalable oversight** | [open](https://www.anthropic.com/research/automated-alignment-researchers) |
+| 6 | 2026-05-22 | Announcements | **Project Glasswing: An initial update** | [open](https://www.anthropic.com/research/glasswing-initial-update) |
+| 7 | 2026-05-14 | Policy | **2028: Two scenarios for global AI leadership** | [open](https://www.anthropic.com/research/2028-ai-leadership) |
+| 8 | 2026-05-07 | Alignment | **Donating our open-source alignment tool** | [open](https://www.anthropic.com/research/donating-open-source-petri) |
+| 9 | 2026-05-07 | Policy | **Focus areas for The Anthropic Institute** | [open](https://www.anthropic.com/research/anthropic-institute-agenda) |
+| 10 | 2026-04-30 | Societal Impacts | **How people ask Claude for personal guidance** | [open](https://www.anthropic.com/research/claude-personal-guidance) |
+| 11 | 2026-04-29 | Science | **Evaluating Claude’s bioinformatics research capabilities with BioMysteryBench** | [open](https://www.anthropic.com/research/Evaluating-Claude-For-Bioinformatics-With-BioMysteryBench) |
+| 12 | 2026-04-22 | Economic Research | **Announcing the Anthropic Economic Index Survey** | [open](https://www.anthropic.com/research/economic-index-survey-announcement) |
+| 13 | 2026-04-22 | Economic Research | **What 81,000 people told us about the economics of AI** | [open](https://www.anthropic.com/research/81k-economics) |
 
 ## How to use this digest
 
