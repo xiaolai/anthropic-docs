@@ -126,7 +126,9 @@ When `citations` are attached to a `text` block or returned in assistant output,
 | `"web_search_result_location"` | `CitationWebSearchResultLocationParam` — `cited_text`, `encrypted_index`, `title` | Citing a web search result (server-executed `web_search`) |
 | `"search_result_location"` | `CitationSearchResultLocationParam` — `cited_text`, `search_result_index`, `source`, `title`, `start_block_index`, `end_block_index` | Citing an inline `search_result` content block. `search_result_index` is 0-based among all `search_result` blocks in the request; counted separately from `document_index`. |
 
-Source: [`messages/create.md`](https://platform.claude.com/docs/en/api/messages/create.md) and [`messages/count_tokens.md`](https://platform.claude.com/docs/en/api/messages/count_tokens.md) (updated 2026-05-21).
+> **Response-side `file_id` field (added 2026-05-23):** The response variants of `char_location`, `page_location`, and `content_block_location` citations (`CitationCharLocation`, `CitationPageLocation`, `CitationContentBlockLocation`) include an additional `file_id: string` field identifying the uploaded file used as the document source. The input-side `*Param` variants do not include this field.
+
+Source: [`messages/create.md`](https://platform.claude.com/docs/en/api/messages/create.md) (updated 2026-05-23).
 
 #### `caller` field on `tool_use` and `server_tool_use` blocks
 
