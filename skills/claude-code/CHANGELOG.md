@@ -10,6 +10,15 @@ The newest entry is at the top.
 
 ---
 
+## v2.1.150 — 2026-05-23
+
+Version bump: `@anthropic-ai/claude-code` updated from v2.1.148 to v2.1.150.
+
+- Internal infrastructure improvements (no user-facing changes)
+
+## 2026-05-23
+- Sync to CC v2.1.150 — internal infrastructure improvements only (no user-facing schema/surface changes); verify passed after 1 mend run; all 11 gates pass
+
 ## 2026-05-22
 - Sync to CC v2.1.148 — Bash tool exit code 127 regression fix (regression from v2.1.147); verify passed after 1 mend run; all 11 gates pass
 

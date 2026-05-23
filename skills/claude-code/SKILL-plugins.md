@@ -96,7 +96,7 @@ claude plugin install my-plugin@my-marketplace
 
 After enabling/disabling a plugin mid-session, run `/reload-plugins` to connect/disconnect its components.
 
-> **Plugin preview before install:** The `/plugin` Discover and Browse screens show a plugin's commands, agents, skills, hooks, and MCP/LSP servers before you install it (as of v2.1.148).
+> **Plugin preview before install:** The `/plugin` Discover and Browse screens show a plugin's commands, agents, skills, hooks, and MCP/LSP servers before you install it (as of v2.1.150).
 
 ## Marketplace manifest: `marketplace.json`
 

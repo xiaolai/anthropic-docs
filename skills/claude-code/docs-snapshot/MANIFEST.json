@@ -1,9 +1,9 @@
 {
   "indexUrl": "https://code.claude.com/llms.txt",
-  "indexSha256": "57a47c4f926ee6d6527d7045e2663f5ce5689a3cfa875033b7f08bb9c3b085b3",
+  "indexSha256": "986d8748e4a1fb27bfcce8b980c8b9398d6d100c8da07a5099211baeefb81ae6",
   "indexBytes": 29567,
   "pageCount": 110,
-  "refreshedAt": "2026-05-22T14:00:00Z",
+  "refreshedAt": "2026-05-23T12:51:50Z",
   "pages": [
     {
       "path": "en/admin-setup.md",
@@ -68,8 +68,8 @@
     {
       "path": "en/changelog.md",
       "url": "https://code.claude.com/docs/en/changelog.md",
-      "sha256": "54d2bdf26c3fa24fab40ca5560a3320d3d0a169803fdb22c765fd5ced4c2e56c",
-      "bytes": 346285
+      "sha256": "9a3823e363e8022ab486c0cdfe96a28f27f86773e93c24ac57b6c518eb3e7ed5",
+      "bytes": 349807
     },
     {
       "path": "en/channels-reference.md",
@@ -116,8 +116,8 @@
     {
       "path": "en/cli-reference.md",
       "url": "https://code.claude.com/docs/en/cli-reference.md",
-      "sha256": "cb47fedb070f224ee3adcd3bc4bf022cd1eadedf437664763099459371b56db8",
-      "bytes": 58763
+      "sha256": "23261b04e964dc167f91b9253a59f00010672d144acc0605c6cfb5ba4801217d",
+      "bytes": 58762
     },
     {
       "path": "en/code-review.md",
@@ -290,14 +290,14 @@
     {
       "path": "en/hooks-guide.md",
       "url": "https://code.claude.com/docs/en/hooks-guide.md",
-      "sha256": "a8ceb5abdb5aa2fb41bc5b51bf92ec451e0334ccc21de31ee45ba9d1a0552085",
-      "bytes": 55651
+      "sha256": "28e00dc06659f8cb49a6d278858197b218b2834989d72bfa46299a620259183e",
+      "bytes": 55650
     },
     {
       "path": "en/hooks.md",
       "url": "https://code.claude.com/docs/en/hooks.md",
-      "sha256": "93098c40e522c37d2f7bf8a023203a546a6f04accb0cdf339fdc317f845ff49f",
-      "bytes": 194080
+      "sha256": "53a7e63619319a924dc632beb3c75405964903de4f0f3b0548b4c977791244d0",
+      "bytes": 194079
     },
     {
       "path": "en/how-claude-code-works.md",
@@ -344,8 +344,8 @@
     {
       "path": "en/mcp.md",
       "url": "https://code.claude.com/docs/en/mcp.md",
-      "sha256": "73533e913092d017e9da1644c6dd26d1c1c9d53fa90bd239c856b5c67b03c418",
-      "bytes": 47402
+      "sha256": "00fb23a354fa4c0ed58e5347cf6d7e2f2617e2660af683c5fa1bb9cb4728074d",
+      "bytes": 47401
     },
     {
       "path": "en/memory.md",
@@ -392,14 +392,14 @@
     {
       "path": "en/permission-modes.md",
       "url": "https://code.claude.com/docs/en/permission-modes.md",
-      "sha256": "aac066b67feaef0fcb5cab8ecb85abb0883f733758d388323d9b4a9d13758ed7",
-      "bytes": 21605
+      "sha256": "44d3c654888f014ecaa74809e8644d25170a03c380b961a14f401e16a296e588",
+      "bytes": 21604
     },
     {
       "path": "en/permissions.md",
       "url": "https://code.claude.com/docs/en/permissions.md",
-      "sha256": "1020b084ca7efcce279f91167a0aeae8fe3d8a195dce957dbcbfac7735e74003",
-      "bytes": 33555
+      "sha256": "387e4c3abf601d2928f474dc86961018d311712d416d50755ffbcb53d26a042c",
+      "bytes": 33554
     },
     {
       "path": "en/platforms.md",
@@ -434,8 +434,8 @@
     {
       "path": "en/plugins.md",
       "url": "https://code.claude.com/docs/en/plugins.md",
-      "sha256": "f162c7b46b69ea7d7769560a443dc1ae9732eb7e02b670daec06fd3fe91ccdd3",
-      "bytes": 23345
+      "sha256": "f4c31fe096b28b36f446565f4ec138ac212811fde386ea2f32852bb620657af4",
+      "bytes": 23344
     },
     {
       "path": "en/prompt-caching.md",
@@ -506,8 +506,8 @@
     {
       "path": "en/settings.md",
       "url": "https://code.claude.com/docs/en/settings.md",
-      "sha256": "33ff2919b26e7b823a81658a0862d074c4b368dca0323176eb46ab21fde8be26",
-      "bytes": 131011
+      "sha256": "b9806efa0599e69f2796f91f5fef595aaa8020aa0942d3fa2fe50e7fd1fbfe26",
+      "bytes": 131010
     },
     {
       "path": "en/setup.md",
@@ -536,7 +536,7 @@
     {
       "path": "en/sub-agents.md",
       "url": "https://code.claude.com/docs/en/sub-agents.md",
-      "sha256": "2f9648be6dfbebc7ae68c2f1b5881ba2d0ba36bd80d482373e45f033106144fc",
+      "sha256": "f5dfb3ac37e0244195ce69c381dd1cd67a1b4379f07f1078d9ef07f3850a28d4",
       "bytes": 63839
     },
     {
@@ -656,8 +656,8 @@
     {
       "path": "en/worktrees.md",
       "url": "https://code.claude.com/docs/en/worktrees.md",
-      "sha256": "f8292d5c106e0217712bb1b68d9764155fd364091a1a3a9a125fb5723db1842c",
-      "bytes": 9030
+      "sha256": "040528b4b76fa0ba4d2a6732434b33a20c27d172c07c6f910aac140ef42704ff",
+      "bytes": 9218
     },
     {
       "path": "en/zero-data-retention.md",
