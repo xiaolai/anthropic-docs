@@ -419,10 +419,20 @@ Argument completion for prompts and resource URI templates:
 ```
 → completion/complete {
     ref: { type: "ref/prompt" | "ref/resource", name | uri },
-    argument: { name, value: "<partial>" }
+    argument: { name, value: "<partial>" },
+    context?: { arguments: { "<argName>": "<resolvedValue>", ... } }
   }
 ← { completion: { values: [...], total?, hasMore? } }
 ```
+
+- `argument` — the argument being completed (`name` + current partial `value`).
+- `context.arguments` — optional map of already-resolved argument values for
+  multi-argument prompts / resource templates. Servers use this to provide
+  contextually-appropriate suggestions for later arguments based on earlier ones
+  (e.g., after `language: "python"` is resolved, completing `framework` returns
+  only Python frameworks).
+
+Source: [`specification/2025-11-25/server/utilities/completion.md`](https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/completion.md)
 
 The client uses this to populate auto-complete UI when the user is
 filling in prompt arguments or resource URI parameters.

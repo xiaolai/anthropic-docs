@@ -3,6 +3,12 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-23 (run 2)
+*(pending review — see PR auto/2026-05-23-pending-review)* Routine research pass (86 turns, 364s) — no upstream change; checkDocsDrift gate failed; surface-file edits pending human review before merge
+
+## 2026-05-23
+- Research pass — docs index SHA256 updated (119 URLs identical; 4 spec pages changed by merged PR #2769 aligning schema with docs); added `context.arguments` optional field to completion/complete request in SKILL-tools-resources-prompts.md; MANIFEST.json page SHA256s updated for completion.md, tools.md, resources.md, prompts.md; Part B: 8 new issues (#2769–2778) evaluated, 7 skipped (low-signal SEP proposals/docs PRs), 1 `updated_existing` (content documented); Part C: 5 spot-checked URLs HTTP 200, versions consistent (@modelcontextprotocol/sdk v1.29.0 / mcp v1.27.1 / spec 2025-11-25), validate-examples PASS, no duplicate facts, diff-size 2% on SKILL-tools-resources-prompts.md — PASS
+
 ## 2026-05-22
 - Routine research pass (107 turns, 411s) — no upstream change; @modelcontextprotocol/sdk v1.29.0 / mcp v1.27.1 stable; 0 new issues; all gates pass
 
