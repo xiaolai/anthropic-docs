@@ -10,6 +10,10 @@ The newest entry is at the top.
 
 ---
 
+## 2026-05-24
+*(pending review — see draft PR on branch `auto/2026-05-24-pending-review`)*
+- Routine audit at CC v2.1.150 — no version change; research ran 96 turns across 110 pages; checkDocsDrift gate failed (upstream llms.txt hash diverged from docs-snapshot); changes queued for review pending snapshot refresh
+
 ## v2.1.150 — 2026-05-23
 
 Version bump: `@anthropic-ai/claude-code` updated from v2.1.148 to v2.1.150.

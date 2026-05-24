@@ -128,6 +128,30 @@ Server-Sent Events. **Deprecated** — use HTTP instead where available.
 | `url` | http/sse | Transport endpoint URL |
 | `headers` | http/sse | Key-value HTTP headers; env var interpolation with `${VAR}` |
 | `alwaysLoad` | all | If `true`, all tools from this server load into context at session start (bypassing tool search deferral). Blocks startup until server connects (capped at 5s). Requires v2.1.121+. Individual tools can also opt in via `"anthropic/alwaysLoad": true` in the tool's `_meta` object |
+| `headersHelper` | http/sse | Shell command that generates dynamic request headers at connection time. Use for non-OAuth auth schemes (Kerberos, short-lived tokens, internal SSO). Must write a JSON object of string key-value pairs to stdout. Runs in a shell with a 10-second timeout; re-runs on every reconnect. Dynamic headers override static `headers` with the same name. Only runs after workspace trust dialog when defined at project or local scope. |
+
+## Dynamic headers for custom authentication (`headersHelper`)
+
+For MCP servers using non-OAuth auth (Kerberos, short-lived tokens, internal SSO), use `headersHelper` to generate request headers at connection time. Source: `code.claude.com/docs/en/mcp.md`.
+
+```json
+{
+  "mcpServers": {
+    "internal-api": {
+      "type": "http",
+      "url": "https://mcp.internal.example.com",
+      "headersHelper": "/opt/bin/get-mcp-auth-headers.sh"
+    }
+  }
+}
+```
+
+Claude Code sets these env vars when running the helper, allowing a single script to serve multiple servers:
+
+| Variable | Value |
+|---|---|
+| `CLAUDE_CODE_MCP_SERVER_NAME` | The name of the MCP server (key in `mcpServers`) |
+| `CLAUDE_CODE_MCP_SERVER_URL` | The URL of the MCP server |
 
 ## Tool naming convention
 
