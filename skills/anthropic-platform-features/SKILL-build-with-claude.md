@@ -51,14 +51,20 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
   slots if combined with explicit breakpoints. Default TTL is `5m`; `1h`
   is available at 2× base input price.
   Source: [`prompt-caching.md`](https://platform.claude.com/docs/en/build-with-claude/prompt-caching.md).
-- **Cache diagnostics (beta):** When cache hits drop unexpectedly, pass
+- **Cache diagnostics (beta):** Diagnose cache misses by passing
   `diagnostics: { previous_message_id: <prev_id> }` with beta header
-  `cache-diagnosis-2026-04-07`. The response's `diagnostics.cache_miss_reason`
-  reports the first divergence point (`model_changed`, `system_changed`,
-  `tools_changed`, `messages_changed`, `previous_message_not_found`, or
-  `unavailable`). Claude API only — not available on Bedrock or Vertex AI.
-  **ZDR eligible (qualified)** — only fingerprints (hashes + token counts) are
-  retained, not raw prompt content.
+  `cache-diagnosis-2026-04-07`. On the **first turn** (no prior response to
+  compare), pass `previous_message_id: null` to opt in. The response's
+  `diagnostics.cache_miss_reason` reports the first divergence point
+  (`model_changed`, `system_changed`, `tools_changed`, `messages_changed`,
+  `previous_message_not_found`, or `unavailable`). Claude API only — not
+  available on Bedrock or Vertex AI. **ZDR eligible (qualified)** — only
+  fingerprints (hashes + token counts) are retained, not raw prompt content.
+  - **Response format:** `diagnostics: null` means either first turn
+    (`previous_message_id` was `null`) or a comparison ran and found no
+    divergence. `diagnostics: {"cache_miss_reason": null}` means the
+    comparison was still running when the response was serialized (treat as
+    inconclusive, check the next turn).
   - **`cache_missed_input_tokens`** — the four `*_changed` reason types each
     carry this integer field: an estimate (byte-based, pre-tokenization) of how
     many input tokens fell after the divergence point. Treat as a magnitude
@@ -69,7 +75,8 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
     triggered when the divergence is beyond the comparison horizon on very long
     conversations.
   - **Streaming:** In streaming responses, the `diagnostics` object appears on
-    the `message_start` SSE event (not in the final delta).
+    the `message_start` SSE event; it is also available on the final accumulated
+    message returned by SDK streaming helpers.
   - **Reading diagnostics + usage together:** `diagnostics` answers "did my
     request change?" while `usage.cache_read_input_tokens` answers "did the
     cache hit?". The matrix below applies when a real `previous_message_id`
