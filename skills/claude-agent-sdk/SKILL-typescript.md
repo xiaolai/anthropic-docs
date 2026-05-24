@@ -519,7 +519,7 @@ type SDKMessage =
   | SDKResultMessage              // type: 'result' — final result (new: origin?, deferred_tool_use?, permission_denials)
   | SDKSystemMessage              // type: 'system', subtype: 'init' — session init
   | SDKPartialAssistantMessage    // type: 'stream_event' (includePartialMessages)
-  | SDKCompactBoundaryMessage     // type: 'system', subtype: 'compact_boundary'
+  | SDKCompactBoundaryMessage     // type: 'system', subtype: 'compact_boundary' — compact_metadata: { pre_tokens: number, trigger: 'manual'|'auto' }
   // Status & progress
   | SDKStatusMessage              // type: 'system', subtype: 'status' — status updates (e.g., 'compacting')
   | SDKToolProgressMessage        // type: 'tool_progress' — tool execution progress with elapsed time
@@ -737,6 +737,7 @@ for await (const message of query({ prompt: "...", options })) {
       if (message.subtype === 'init') sessionId = message.session_id;
       if (message.subtype === 'status') console.log('Status:', message.status, message.permissionMode);
       if (message.subtype === 'hook_progress') console.log('Hook:', message.output);  // also: .stdout, .stderr, .hook_name, .hook_event
+      if (message.subtype === 'compact_boundary') console.log('Compacted:', message.compact_metadata.pre_tokens, 'tokens, trigger:', message.compact_metadata.trigger);
       if (message.subtype === 'local_command_output') console.log('Slash cmd output:', message.content);
       if (message.subtype === 'plugin_install') console.log('Plugin:', message.status, message.name);
       if (message.subtype === 'permission_denied') console.log('Denied:', message.tool_name, message.decision_reason);

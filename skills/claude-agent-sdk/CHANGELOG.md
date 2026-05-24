@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-05-24
+- Partial run — research agent crashed (sdk.mjs exit 1, 478s); no upstream changes (TS v0.3.150 / PY v0.2.87 unchanged); all 8 safety gates pass; no surface-file edits
+
 ## 2026-05-23 (success run)
 - Sync to CC v2.1.150 — TS v0.3.148→v0.3.150, PY v0.2.85→v0.2.87; all 11 gates pass, 27/27 verify checks pass; 1 mending run; $1.79 total
 
