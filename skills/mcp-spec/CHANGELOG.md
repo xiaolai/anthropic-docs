@@ -3,6 +3,9 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-24
+*(pending review — see PR auto/2026-05-24-pending-review)* Routine research pass (55 turns, 4m) — no upstream change; checkDocsDrift gate failed; surface-file edits pending human review before merge
+
 ## 2026-05-23 (run 2)
 *(pending review — see PR auto/2026-05-23-pending-review)* Routine research pass (86 turns, 364s) — no upstream change; checkDocsDrift gate failed; surface-file edits pending human review before merge
 
