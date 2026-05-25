@@ -3,7 +3,7 @@
   "indexSha256": "c037e8136d42bb3e6f9ced4b388d09a7320c617658a6617a15f2d76fb44a4f85",
   "indexBytes": 166612,
   "pageCount": 225,
-  "refreshedAt": "2026-05-23T12:20:00Z",
+  "refreshedAt": "2026-05-25T13:05:23Z",
   "pages": [
     {
       "path": "en/api/admin.md",
@@ -1029,8 +1029,8 @@
     {
       "path": "en/api/compliance/activities.md",
       "url": "https://platform.claude.com/docs/en/api/compliance/activities.md",
-      "sha256": "be75651328baf6090d9ec8f3609f34baac9fc65bc5459db8f868948e0828c4bf",
-      "bytes": 795825
+      "sha256": "e999a157abde49e6800e25b1ca56c9640c1aaa3ffbb0fea07db446a6a12c24a4",
+      "bytes": 793880
     },
     {
       "path": "en/api/compliance/activities/list.md",
@@ -1351,8 +1351,8 @@
     {
       "path": "en/api/models/list.md",
       "url": "https://platform.claude.com/docs/en/api/models/list.md",
-      "sha256": "33e7bf1be70ab008123d3e4df5652a4dbf329d09239fc956962ca6b1443b89e1",
-      "bytes": 6762
+      "sha256": "0e3b78b2ba1adedacd7c4bc0bd29f09a1ee02a5b9eeceb915cd372ad3d9693ff",
+      "bytes": 7003
     },
     {
       "path": "en/api/models/retrieve.md",
