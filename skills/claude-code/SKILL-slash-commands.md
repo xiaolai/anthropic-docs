@@ -146,7 +146,9 @@ A slash command is a Markdown file with YAML frontmatter. Common keys:
 | `allowed-tools` | string | Comma-separated tool list (e.g. `Read, Bash(git:*)`). Restricts what the command can call. |
 | `model` | string | Optional model override for this command's invocation. |
 | `when_to_use` | string | When Claude should automatically invoke this skill (without explicit `/name`). |
-| `disable-model-invocation` | boolean | If `true`, the skill runs its shell blocks but does not invoke the model. |
+| `disable-model-invocation` | boolean | If `true`, prevents Claude from automatically loading this skill. Use for workflows you want to trigger manually with `/name`. Also prevents preloading into subagents. Default: `false`. |
+| `user-invocable` | boolean | If `false`, hides the skill from the `/` menu; only Claude can invoke it automatically. Default: `true`. |
+| `arguments` | array | List of named argument labels (e.g. `[issue, branch]`) that map `$issue` to position 0, `$branch` to position 1, etc. |
 
 Minimal command (`~/.claude/commands/wc.md`):
 
@@ -160,17 +162,23 @@ allowed-tools: Read
 Count the words in $ARGUMENTS. Read the file and report `<path>: <N> words`.
 ```
 
-Source: `code.claude.com/docs/en/commands.md`, `skills.md`.
+Source: `code.claude.com/docs/en/commands.md`, `code.claude.com/docs/en/skills.md`.
 
-### Argument substitution: `$ARGUMENTS`
+### Argument substitution
 
-`$ARGUMENTS` in the command body is replaced with everything the user types after the command name:
+Placeholders in the skill body are replaced at invocation time. All forms use shell-style quoting: wrap multi-word values in quotes so they are treated as one argument (e.g. `/my-skill "hello world" second`).
 
-```
-/my-command foo bar baz
-```
+| Placeholder | Expands to |
+|---|---|
+| `$ARGUMENTS` | Full argument string as typed (e.g. `"foo bar baz"`) |
+| `$ARGUMENTS[N]` | 0-based indexed argument (e.g. `$ARGUMENTS[0]` = first arg) |
+| `$N` | Shorthand for `$ARGUMENTS[N]` (e.g. `$0` = first, `$1` = second) |
+| `$name` | Named argument declared in `arguments` frontmatter (maps by position) |
+| `${CLAUDE_SESSION_ID}` | Current session ID — useful for logging or session-specific files |
+| `${CLAUDE_EFFORT}` | Active effort level: `low`, `medium`, `high`, `xhigh`, or `max` |
+| `${CLAUDE_SKILL_DIR}` | Directory containing this skill's `SKILL.md` — useful for referencing bundled scripts |
 
-→ `$ARGUMENTS` = `"foo bar baz"`
+Source: `code.claude.com/docs/en/skills.md`.
 
 **Avoid putting `$ARGUMENTS` into a `!`-prefixed shell line.** The `!` prefix invokes a shell, and `$ARGUMENTS` is unsanitized caller input — `foo.txt; rm -rf ~` parses as three commands. Prefer `Read` (or other non-shell tools) when the input touches `$ARGUMENTS`.
 

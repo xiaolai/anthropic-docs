@@ -37,20 +37,23 @@ Each entry uses this structure:
 
 ## Active issues
 
-<!-- seed: replace on first real research pass -->
+### KI 61735 — ScheduleWakeup wakeups lost on session process death
 
-*No active known issues recorded yet. The research agent populates this section daily from `anthropics/claude-code` issues labeled `bug`. Entries are auto-pruned when the agent observes an issue close plus a confirmed fix-version release.*
+- **Affects:** All versions (in-memory design)
+- **Symptom:** `/loop` sessions and any code using `ScheduleWakeup` silently stop scheduling further turns when the Claude Code session process dies (crash, OOM, cluster recycle, terminal hang). The session does not resume or notify; it goes permanently silent.
+- **Reproduction:** Start a long `/loop` session. While wakeups are pending, kill the Claude Code process (e.g. SIGKILL, OOM event, `pkill claude`). Observe that the loop never resumes.
+- **Workaround:** For tasks that must survive process death, use `/schedule` (Routines) which runs on Anthropic-managed cloud infrastructure and persists independently of the local session process. Alternatively, implement an external watchdog: a systemd user timer or cron job that checks the session's transcript mtime and alerts or restarts if it goes stale. Reference implementation: [honzastim/claude-code-stuck-session-workaround](https://github.com/honzastim/claude-code-stuck-session-workaround).
+- **Status:** Open — no persistent wakeup queue yet; cloud Routines are the supported alternative.
+- **Source:** [#61735](https://github.com/anthropics/claude-code/issues/61735)
 
-### Example entry (template — the agent overwrites this with real issues)
+### KI 61734 — Sonnet 4.6 context window meter shows 200K instead of 1M
 
-**KI 0 — Example bug title**
-
-- **Affects:** v0.0.0 – v0.0.0
-- **Symptom:** Brief description of what the user observes.
-- **Reproduction:** Minimal steps to trigger.
-- **Workaround:** What to do until the bug is fixed.
-- **Status:** open
-- **Source:** [#0](https://github.com/anthropics/claude-code/issues/0)
+- **Affects:** v2.1.150 (possibly earlier); behaviour may vary by plan
+- **Symptom:** The status bar context-window meter displays 200K tokens for `claude-sonnet-4-6`. Multiple users report this was 1M in previous versions. Sessions may be actively limited to 200K, not just mis-displayed.
+- **Reproduction:** Start Claude Code with `claude-sonnet-4-6` on a Pro or Max plan and observe the context meter.
+- **Workaround:** Switch to `claude-opus-4-7` which shows and uses the 1M context window on eligible plans. For API/Team plans, using `--model claude-sonnet-4-6` via CLI may restore 1M. Plan-specific context limits: Max plan caps Sonnet at 200K but gives Opus 4.7 the 1M window; API/Team plans allow 1M on Sonnet 4.6. Check `claude.ai/settings` → Plan for your tier's limits.
+- **Status:** Open; maintainers aware (v2.1.150 regression suspected, not confirmed).
+- **Source:** [#61734](https://github.com/anthropics/claude-code/issues/61734)
 
 ## Recently resolved
 
