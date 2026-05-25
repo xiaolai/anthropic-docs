@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-05-25
+- Research-only success run — TS v0.3.150 / PY v0.2.87 unchanged; 30-page MANIFEST refresh (cosmetic +1-byte trailing-newline normalization); no API surface changes; all 8 gates pass; $0.60
+
 ## 2026-05-24
 - Partial run — research agent crashed (sdk.mjs exit 1, 478s); no upstream changes (TS v0.3.150 / PY v0.2.87 unchanged); all 8 safety gates pass; no surface-file edits
 
