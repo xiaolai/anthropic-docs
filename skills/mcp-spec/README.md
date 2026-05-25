@@ -8,7 +8,7 @@ resources, prompts, sampling, roots, completion).
 
 Part of the [anthropic-docs](../../README.md) plugin.
 
-**Last updated**: 2026-05-24
+**Last updated**: 2026-05-25
 
 ## Surfaces
 
@@ -38,11 +38,11 @@ SKILL_NAME=mcp-spec npm run update
 
 | Date | Update | Research | Mending | Report | Total | Notes |
 |------|--------|----------|---------|--------|-------|-------|
+| 2026-05-25 | success | research + report (no upstream change) |
 | 2026-05-24 | review | research + report (no upstream change) |
 | 2026-05-23 | review | research + report (no upstream change) |
 | 2026-05-22 | success | research + report (no upstream change) |
 | 2026-05-21 | — | — | — | — | — | routine pass — no upstream change; MANIFEST refreshed (same SHA, updated timestamp); 0 new bug issues; all Part C gates pass |
 | 2026-05-21 | review | research + report (no upstream change) |
 | 2026-05-20 | — | — | — | — | — | success — no upstream change |
-| 2026-05-19 | — | $1.61 | — | — | **$1.61** | success — no upstream change |
 

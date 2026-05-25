@@ -133,14 +133,21 @@ connection with an appropriate error if the extension is mandatory.
 
 Some extension implementations use **per-request** capability declarations via
 an `io.modelcontextprotocol/clientCapabilities` key inside the request's `_meta`
-object. This pattern was used by earlier drafts of MCP Tasks, but is not used
-by the `2025-11-25` core-protocol Tasks implementation, which uses initialization-time
-capability negotiation instead.
+object. This pattern is used by the **Tasks Extension** (`io.modelcontextprotocol/tasks`,
+SEP-2663); it is NOT used by the `2025-11-25` core-protocol Tasks utility, which
+uses initialization-time capability negotiation instead.
 
-> **Note on MCP Tasks:** As of `2025-11-25`, Tasks are a core protocol feature
-> (not an extension). Clients opt in per-request by including `task: { ttl }` in
-> request params, not via `_meta` extension capabilities. See
-> [`SKILL-servers.md`](SKILL-servers.md#mcp-tasks-experimental-2025-11-25).
+> **MCP Tasks — two separate mechanisms:**
+> - **Core protocol Tasks** (spec `2025-11-25`): Capability negotiated at init time
+>   via `tasks.*` fields. Clients opt in per-request by including `task: { ttl }` in
+>   request params. Uses `tasks/result` to retrieve the final result (blocking call).
+>   See [`SKILL-servers.md`](SKILL-servers.md#mcp-tasks-experimental-2025-11-25).
+> - **Tasks Extension** (`io.modelcontextprotocol/tasks`, SEP-2663 Final): Uses
+>   per-request `_meta.io.modelcontextprotocol/clientCapabilities.extensions` opt-in.
+>   Server returns `CreateTaskResult` (`resultType: "task"`). Client polls via
+>   `tasks/get` (which returns the result when `completed`); mid-flight input via
+>   `tasks/update { taskId, inputResponses }`. No separate `tasks/result` method.
+>   See extension table below.
 
 Official extensions and their identifiers:
 
@@ -149,7 +156,16 @@ Official extensions and their identifiers:
 | `io.modelcontextprotocol/ui` | [MCP Apps](https://modelcontextprotocol.io/extensions/apps/overview.md) | Interactive HTML UI in clients |
 | `io.modelcontextprotocol/oauth-client-credentials` | [OAuth Client Credentials](https://modelcontextprotocol.io/extensions/auth/oauth-client-credentials.md) | Machine-to-machine auth |
 | `io.modelcontextprotocol/enterprise-managed-authorization` | [Enterprise Auth](https://modelcontextprotocol.io/extensions/auth/enterprise-managed-authorization.md) | Centralized IdP access control |
-| `io.modelcontextprotocol/tasks` | [MCP Tasks](https://modelcontextprotocol.io/extensions/tasks/overview.md) | Async long-running task handles — **now a core protocol feature in `2025-11-25`** (not just an extension); see [`SKILL-servers.md`](SKILL-servers.md#mcp-tasks-experimental-2025-11-25) |
+| `io.modelcontextprotocol/tasks` | [MCP Tasks Extension](https://modelcontextprotocol.io/extensions/tasks/overview.md) | Async long-running operations via polling. **Distinct from the core protocol Tasks utility** (init-time capabilities, `tasks/result`). Uses per-request `_meta` extension opt-in; server returns `CreateTaskResult` (`resultType: "task"`, `taskId`, `ttlMs`, `pollIntervalMs`); client polls via `tasks/get`; mid-flight input via `tasks/update`; push notifications via `notifications/tasks/status`. Specified in [`experimental-ext-tasks`](https://github.com/modelcontextprotocol/experimental-ext-tasks); SEP-2663 Final. |
+
+#### Experimental extensions
+
+Extensions can be **experimental** — incubated by a Working Group or Interest Group before
+going through formal SEP submission. Experimental extension repositories live in the MCP
+GitHub organization with an `experimental-ext-` prefix (e.g., `experimental-ext-tasks`,
+`experimental-ext-interceptors`). Packages from experimental repos must clearly indicate
+their experimental status. Core Maintainers retain oversight and may archive or remove them.
+Graduation to official status requires the standard SEP Extensions-Track process.
 
 Source: [`extensions/overview.md`](https://modelcontextprotocol.io/extensions/overview.md),
 [`extensions/client-matrix.md`](https://modelcontextprotocol.io/extensions/client-matrix.md).

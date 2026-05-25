@@ -1,9 +1,9 @@
 {
   "indexUrl": "https://modelcontextprotocol.io/llms.txt",
-  "indexSha256": "0c42badbaa1863fa0daffb4cf5c9f47b3ed9b73fa2b5a1393f4d95ce864affd2",
-  "indexBytes": 17923,
+  "indexSha256": "2a3dc7cff742a97809e44f71b140d50fb43b02d90d2808192f008fec522206f6",
+  "indexBytes": 17922,
   "pageCount": 119,
-  "refreshedAt": "2026-05-24T00:00:00Z",
+  "refreshedAt": "2026-05-25T13:54:20Z",
   "pages": [
     {
       "path": "clients.md",
@@ -686,25 +686,25 @@
     {
       "path": "specification/2025-11-25/server/prompts.md",
       "url": "https://modelcontextprotocol.io/specification/2025-11-25/server/prompts.md",
-      "sha256": "a17e89016c56051719df5a395a6b95f2308f1ea24b117ba74ad4e602799dfa42",
+      "sha256": "9934ffe7298fd6120abdbbcd7dcf4aa345992f21d867363d4f34d6805f3cb37f",
       "bytes": 7314
     },
     {
       "path": "specification/2025-11-25/server/resources.md",
       "url": "https://modelcontextprotocol.io/specification/2025-11-25/server/resources.md",
-      "sha256": "37de412ba819a7cc9816c2ac619c881620d5cb46ffbc805b41cf9f487b953dfc",
+      "sha256": "7ae03d76560af0232d3b07b3b3bb73d49c7b5c44f2a38c5223f0833f670a06d2",
       "bytes": 10379
     },
     {
       "path": "specification/2025-11-25/server/tools.md",
       "url": "https://modelcontextprotocol.io/specification/2025-11-25/server/tools.md",
-      "sha256": "8ed43301d44f1b15317963b8553eb025c3bd72f433ee873565338e727b106b55",
+      "sha256": "34a5787989abbdda1546c37d2adb698cd0ec1fe9cd9d86a9bfad260b833c0f14",
       "bytes": 13905
     },
     {
       "path": "specification/2025-11-25/server/utilities/completion.md",
       "url": "https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/completion.md",
-      "sha256": "88cd5f33cd8f5f04fb0d1263f6bf668b3095c2b847a55d117b4493641efb66e1",
+      "sha256": "08bf899096d459c9ee2f5ff069d50c2c6ca43dc1e5b5839daac4dcbd1e5ba13e",
       "bytes": 5043
     },
     {

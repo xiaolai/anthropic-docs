@@ -225,6 +225,22 @@ task MUST include `io.modelcontextprotocol/related-task: { taskId }` in their
 
 Source: [`specification/2025-11-25/basic/utilities/tasks.md`](https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/tasks.md).
 
+### Tasks Extension (`io.modelcontextprotocol/tasks`) — distinct from above
+
+The **Tasks Extension** (SEP-2663, Final) is **separate** from the core protocol
+Tasks utility above. It uses the extensions framework with a different opt-in mechanism
+and different polling API:
+
+| Aspect | Core protocol Tasks (above) | Tasks Extension |
+|---|---|---|
+| Opt-in | `task: { ttl }` in request params | Per-request `_meta.io.modelcontextprotocol/clientCapabilities.extensions` |
+| Get result | `tasks/result` (blocking) | `tasks/get` (returns result when `completed`) |
+| Mid-flight input | Server sends request with `io.modelcontextprotocol/related-task` | `tasks/update { taskId, inputResponses }` |
+| Result shape | Native request result shape | `CreateTaskResult` with `resultType: "task"` discriminator |
+
+The extension is specified in [`experimental-ext-tasks`](https://github.com/modelcontextprotocol/experimental-ext-tasks).
+Source: [`extensions/tasks/overview.md`](https://modelcontextprotocol.io/extensions/tasks/overview.md).
+
 ## SDK tiering
 
 [`community/sdk-tiers.md`](https://modelcontextprotocol.io/community/sdk-tiers.md)

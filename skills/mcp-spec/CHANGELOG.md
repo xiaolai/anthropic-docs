@@ -3,6 +3,12 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-25 (run 2)
+- Routine research pass (88 turns, 627s) — no upstream change; @modelcontextprotocol/sdk v1.29.0 / mcp v1.27.1 stable; 0 new issues; all gates pass
+
+## 2026-05-25
+- Research pass — docs index SHA256 unchanged after sanitization (119 URLs identical); 3 spec pages updated (transports.md, extensions/overview.md, extensions/tasks/overview.md); Part A: corrected `io.modelcontextprotocol/tasks` extension table entry in SKILL-protocol.md (removed misleading "now a core protocol feature" claim; it is a separate extension from core spec Tasks); updated per-request `_meta` capabilities note to clarify Tasks Extension uses this pattern (not "earlier drafts only"); added Tasks Extension vs Core spec comparison table in SKILL-servers.md; added Experimental Extensions note in SKILL-protocol.md (repos with `experimental-ext-` prefix). Part B: no new bug issues (`newBugIssues: []`). Part C: 5 pre-existing URLs HTTP 200, 2 new URLs HTTP 200, validate-examples PASS, cross-references valid, diff-size ~5% on SKILL-protocol.md and ~5% on SKILL-servers.md — PASS.
+
 ## 2026-05-24
 *(pending review — see PR auto/2026-05-24-pending-review)* Routine research pass (55 turns, 4m) — no upstream change; checkDocsDrift gate failed; surface-file edits pending human review before merge
 
