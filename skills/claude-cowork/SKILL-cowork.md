@@ -461,12 +461,20 @@ differ in 3P mode.
 | **Web Search** | Server-side at your inference provider | Vertex AI ✓, Foundry ✓, Bedrock ✗, Gateway (if provider implements `web_search`) |
 | **Web Fetch** | Client-side on user's device | Gated by `coworkEgressAllowedHosts` |
 
-**Critical:** `coworkEgressAllowedHosts` governs only the **Cowork tab's
-sandbox** (web fetch, shell commands, package installs). It does **not**
-restrict Web Search (server-side at your provider — add `"WebSearch"` to
-`disabledBuiltinTools` to block it) and does **not** restrict the Code tab,
-which runs on the host with normal network access. To remove the Code tab,
-set `isClaudeCodeForDesktopEnabled` to `false`.
+**`coworkEgressAllowedHosts` applies to both the Cowork and Code tabs.**
+In the Cowork tab it governs the sandbox's web fetch, shell commands, and
+package installs. In the Code tab it is translated into Claude Code's network
+sandbox allowlist (plus `allowManagedDomainsOnly`). If a separately deployed
+Claude Code `managed-settings.json` or OS policy exists on the device, that
+policy takes precedence by default; set `parentSettingsBehavior: "merge"` in
+that file to layer Cowork's restrictions on top (requires Claude Code
+v2.1.133+, which ships with Cowork on 3P). Source:
+[`3p/code.md`](https://claude.com/docs/cowork/3p/code.md).
+
+**`coworkEgressAllowedHosts` does not restrict Web Search** — Web Search runs
+server-side at your inference provider. To block it, add `"WebSearch"` to
+`disabledBuiltinTools`. To remove the Code tab entirely, set
+`isClaudeCodeForDesktopEnabled` to `false`.
 
 **Bedrock web search workarounds.** Bedrock does not implement the `web_search`
 server tool. Two patterns restore search capability on Bedrock:

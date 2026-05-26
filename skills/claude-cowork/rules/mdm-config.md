@@ -242,6 +242,12 @@ new deployments should use `inferenceCredentialKind`.
 > `inferenceGatewayOidc`. That selects a different mode (gateway as authorization
 > server). Both keys are required together for OIDC SSO.
 
+> **Google Workspace as IdP:** Google does not issue a fresh ID token on
+> background token refresh, so users are prompted to sign in again roughly
+> once per hour. Use Microsoft Entra ID or Okta for a seamless, transparent
+> refresh experience. If Google is the only option, inform users to expect
+> hourly re-authentication.
+
 Source: [`cowork/3p/gateway-sso.md`](https://claude.com/docs/cowork/3p/gateway-sso.md).
 
 ---

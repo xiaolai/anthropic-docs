@@ -7,7 +7,7 @@ enterprise SSO, telemetry, M365 connector, policy controls) and
 
 Part of the [anthropic-docs](../../README.md) plugin.
 
-**Last updated**: 2026-05-25
+**Last updated**: 2026-05-26
 
 ## Surfaces
 
@@ -31,11 +31,11 @@ SKILL_NAME=claude-cowork npm run update
 
 | Date | Update | Research | Mending | Report | Total | Notes |
 |------|--------|----------|---------|--------|-------|-------|
-| 2026-05-25 | review | research + report (no upstream change) |
-| 2026-05-24 | review | research + report (no upstream change) |
+| 2026-05-26 | review | research + report (no upstream change) |
+| 2026-05-25 | — | — | — | — | — | review — research + report (no upstream change) |
+| 2026-05-24 | — | — | — | — | — | review — research + report (no upstream change) |
 | 2026-05-23 | — | $1.19 | — | — | **$1.19** | review — check-docs-drift fail; 35 pages audited, 62 turns, 390s; no upstream change |
 | 2026-05-22 | — | $0.69 | — | — | **$0.69** | review — check-docs-drift fail; 35 pages audited, 52 turns, 214s; no upstream change |
 | 2026-05-21 | — | $0.73 | — | — | **$0.73** | review — check-docs-drift fail; 35 pages audited, 51 turns, 380s; no upstream change |
 | 2026-05-21 (run 3) | — | $1.05 | — | — | **$1.05** | review — check-docs-drift fail; 35 pages audited, 74 turns, 387s; no upstream change |
-| 2026-05-21 (run 2) | — | $0.86 | — | — | **$0.86** | review — check-docs-drift fail; 35 pages audited, 59 turns, 299s; no upstream change |
 
