@@ -224,16 +224,39 @@ Source: [`specification/2025-11-25/client/elicitation.md`](https://modelcontextp
 
 [`develop/clients/client-best-practices.md`](https://modelcontextprotocol.io/docs/develop/clients/client-best-practices.md)
 covers patterns for scaling MCP host applications across many
-servers and tools:
+servers and tools. Two key patterns for large-scale deployments:
 
-- Connection pooling and reuse.
-- Per-conversation tool allowlists (don't expose every connected
-  tool to every conversation).
-- Aggregating capabilities from N servers into a unified tool list
-  for the LLM.
-- Handling per-tool latency variance (slow MCP servers should not
-  block fast ones).
-- Graceful degradation when a server disconnects mid-conversation.
+### Progressive Tool Discovery
+
+When tool definitions fill a significant fraction of the context window (recommended
+threshold: **1–5% of total context**), load definitions on demand instead of all at once:
+
+1. **Catalog** — expose a lightweight `search_tools` meta-tool; pass only tool names and
+   one-line descriptions.
+2. **Inspect** — expose a `get_tool_details` meta-tool; fetch the full schema for a single
+   tool when the model selects it.
+3. **Execute** — call the actual tool via the standard `tools/call` flow.
+
+Implementation tips:
+
+- Cache tool definitions host-side after `tools/list` so `get_tool_details` doesn't
+  need a round-trip every time.
+- Re-index the search catalog on `notifications/tools/list_changed`.
+- Preserve prompt-cache hits by appending new definitions after the cache breakpoint
+  (or route every call through a stable `call_tool({name, args})` meta-tool so the
+  `tools` array never changes).
+- Discovery strategies: keyword (BM25), embedding (vector similarity), subagent
+  (secondary model routes to right tools), or hybrid.
+
+### Dynamic Server Management
+
+Rather than connecting to every configured server at startup, hosts can:
+
+1. Maintain a registry of available servers with high-level descriptions.
+2. Connect a server only when the model determines it needs that server's capabilities.
+3. Disconnect idle servers to free context.
+
+Source: [`develop/clients/client-best-practices.md`](https://modelcontextprotocol.io/docs/develop/clients/client-best-practices.md)
 
 ## Client capability features
 

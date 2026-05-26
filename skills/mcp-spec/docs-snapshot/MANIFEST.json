@@ -122,26 +122,30 @@
     {
       "path": "develop/build-client.md",
       "url": "https://modelcontextprotocol.io/docs/develop/build-client.md",
-      "sha256": "042db1a5e63f3b92260805b4d600128cce5028534d5d0616d8be953d18104ab5",
-      "bytes": 64321
+      "sha256": "434f517fcad26fa490da3edc70ac061ae21367ccbdec8340dc66f33eaadd9207",
+      "bytes": 64321,
+      "fetchedAt": "2026-05-26T13:46:20Z"
     },
     {
       "path": "develop/build-server.md",
       "url": "https://modelcontextprotocol.io/docs/develop/build-server.md",
-      "sha256": "7d7904c2c07b697eb8857418cdbccac9a587a420182f04c6f3bfca1fda1b5197",
-      "bytes": 97223
+      "sha256": "cc0e231a1f1d81bcfb21d2ac6f381f22dd48481e2b495265d043674bfbf98090",
+      "bytes": 97223,
+      "fetchedAt": "2026-05-26T13:46:20Z"
     },
     {
       "path": "develop/build-with-agent-skills.md",
       "url": "https://modelcontextprotocol.io/docs/develop/build-with-agent-skills.md",
-      "sha256": "0381908dcd80f9ee89dbd255246ef273ec5c2cf01256c7dafd9ab325d4651057",
-      "bytes": 5086
+      "sha256": "52d4f54f7afd53805da9990a86ccf5ad6e6e0cbcbb1507b8f2ffaaaf353f18d1",
+      "bytes": 5086,
+      "fetchedAt": "2026-05-26T13:46:20Z"
     },
     {
       "path": "develop/clients/client-best-practices.md",
       "url": "https://modelcontextprotocol.io/docs/develop/clients/client-best-practices.md",
-      "sha256": "a457aa62d808c104d10a1cd4ec45ae87a2b0101a237dab54c66df2849ecd387b",
-      "bytes": 20217
+      "sha256": "1881a84b19de1f4f10a1f087d5f593272628a5a9721643d942b2c7e88a0da84c",
+      "bytes": 20217,
+      "fetchedAt": "2026-05-26T13:46:20Z"
     },
     {
       "path": "develop/connect-local-servers.md",
@@ -224,50 +228,58 @@
     {
       "path": "extensions/apps/build.md",
       "url": "https://modelcontextprotocol.io/extensions/apps/build.md",
-      "sha256": "5ab7821ba8625773078bcf8275437020b21be0ac874f289091be06a712d00ed6",
-      "bytes": 20565
+      "sha256": "33a0bbdc1c7e175c69a3171cef37888a961794c907684f9032adbed646a7be38",
+      "bytes": 20565,
+      "fetchedAt": "2026-05-26T13:46:20Z"
     },
     {
       "path": "extensions/apps/overview.md",
       "url": "https://modelcontextprotocol.io/extensions/apps/overview.md",
-      "sha256": "1aeabc29d6608c66c094f8526ad2d41bf19e646381f7f69997df1326d3edfd6c",
-      "bytes": 12449
+      "sha256": "e7683f19ffc5f2d43f8afe538b10be6a5f203463ad7448bce70d4236f9c2c63b",
+      "bytes": 12449,
+      "fetchedAt": "2026-05-26T13:46:20Z"
     },
     {
       "path": "extensions/auth/enterprise-managed-authorization.md",
       "url": "https://modelcontextprotocol.io/extensions/auth/enterprise-managed-authorization.md",
-      "sha256": "15a2444db3279674a8760c8fde36e843be44224b51ff9d2a95624bbb4162b76f",
-      "bytes": 8406
+      "sha256": "a00451781bcc0ec1f7c74c10b5c21ac1c5b8b68fffd8b50b670bad1d1c89d9e9",
+      "bytes": 8406,
+      "fetchedAt": "2026-05-26T13:46:20Z"
     },
     {
       "path": "extensions/auth/oauth-client-credentials.md",
       "url": "https://modelcontextprotocol.io/extensions/auth/oauth-client-credentials.md",
-      "sha256": "cbe602f4534ee088503d0f2ba50c45d1ba77bd52960dac99fdea317ebb6df745",
-      "bytes": 11922
+      "sha256": "fc817679af33ce94f567fc278f36c25c6b016163a5e04be100d2113f273979a5",
+      "bytes": 11922,
+      "fetchedAt": "2026-05-26T13:46:20Z"
     },
     {
       "path": "extensions/auth/overview.md",
       "url": "https://modelcontextprotocol.io/extensions/auth/overview.md",
-      "sha256": "25bf18229ac83c3eafd8fb6e85821643843f4df79b8d21eff9d265dbf3f94dce",
-      "bytes": 4003
+      "sha256": "8876a56f3079115f63de54e9e83c6ec7bcdaa084b98e2cf8880249ff63c84378",
+      "bytes": 4003,
+      "fetchedAt": "2026-05-26T13:46:20Z"
     },
     {
       "path": "extensions/client-matrix.md",
       "url": "https://modelcontextprotocol.io/extensions/client-matrix.md",
-      "sha256": "1ca4e37f7664b6175da2a1b7bf8a7fb4c5a5e3e5b5e5c37d22da7b4974a7d070",
-      "bytes": 5479
+      "sha256": "bf6393ae12d809459d22c0c7ea732deb2a9dfcae895a2eebb0aa7bf76cf98a9d",
+      "bytes": 5479,
+      "fetchedAt": "2026-05-26T13:46:20Z"
     },
     {
       "path": "extensions/overview.md",
       "url": "https://modelcontextprotocol.io/extensions/overview.md",
-      "sha256": "16089f17c4a92ef5096bde19ab938a3b5b56c543e19e750e40a891fc7aa11418",
-      "bytes": 8709
+      "sha256": "822962fb721b9baacb504f8d857f01dcf076f6129d97b1d8a8cdef7030ebe658",
+      "bytes": 8709,
+      "fetchedAt": "2026-05-26T13:46:20Z"
     },
     {
       "path": "extensions/tasks/overview.md",
       "url": "https://modelcontextprotocol.io/extensions/tasks/overview.md",
-      "sha256": "3b84ca8eab9962478822bd303641ae7adcd63e68f5b3472057afff5e6ea5ee24",
-      "bytes": 9931
+      "sha256": "1922e05fb96773aad922f5551bd3d8f1e20f9c5fbc913d7e48be12eee0c5136e",
+      "bytes": 9931,
+      "fetchedAt": "2026-05-26T13:46:20Z"
     },
     {
       "path": "registry/about.md",
@@ -500,8 +512,9 @@
     {
       "path": "seps/2549-TTL-for-list-results.md",
       "url": "https://modelcontextprotocol.io/seps/2549-TTL-for-list-results.md",
-      "sha256": "27ae8a04372ddf886c37431ff224cbf8276be629f6ef1aba072951295efcaeac",
-      "bytes": 15128
+      "sha256": "d707aa3c2df0c58854ba5a5c7604de512921a16a2f9ed57a4739b43dad64e13f",
+      "bytes": 15128,
+      "fetchedAt": "2026-05-26T13:46:20Z"
     },
     {
       "path": "seps/2567-sessionless-mcp.md",
@@ -518,8 +531,9 @@
     {
       "path": "seps/2577-deprecate-roots-sampling-and-logging.md",
       "url": "https://modelcontextprotocol.io/seps/2577-deprecate-roots-sampling-and-logging.md",
-      "sha256": "8958feea16f064c95fff5d3a793ff9e93ab52d203dde86f167df8881b53c956c",
-      "bytes": 14759
+      "sha256": "e0a4777120136c8604c78e0c42faac45644f517a06d418ee9b4bca83e2e3987a",
+      "bytes": 14759,
+      "fetchedAt": "2026-05-26T13:46:20Z"
     },
     {
       "path": "seps/2596-spec-feature-lifecycle-and-deprecation.md",
@@ -530,8 +544,9 @@
     {
       "path": "seps/2663-tasks-extension.md",
       "url": "https://modelcontextprotocol.io/seps/2663-tasks-extension.md",
-      "sha256": "553c886a2ac30c60607c3702a711235e0fb45bac5330a3a8cd048001da47d2c5",
-      "bytes": 50734
+      "sha256": "4c86047ff1ac346553dbe037b4160616e82c9ccebe9b759e7d68b93d8a8722e4",
+      "bytes": 50734,
+      "fetchedAt": "2026-05-26T13:46:20Z"
     },
     {
       "path": "seps/414-request-meta.md",
@@ -608,14 +623,16 @@
     {
       "path": "specification/2025-11-25/basic/lifecycle.md",
       "url": "https://modelcontextprotocol.io/specification/2025-11-25/basic/lifecycle.md",
-      "sha256": "b86de627fee3576fe9c001c29ab8dccf8008414a880a262f82c029460e4340c4",
-      "bytes": 9685
+      "sha256": "884720004be3ab0e2c65562c33ce8903b30e7c763c4764baed04a2ef8dfd7fa6",
+      "bytes": 9685,
+      "fetchedAt": "2026-05-26T13:46:20Z"
     },
     {
       "path": "specification/2025-11-25/basic/transports.md",
       "url": "https://modelcontextprotocol.io/specification/2025-11-25/basic/transports.md",
-      "sha256": "522122c5b85ec17f5089b1d91caebd015f0b57be1c48bb1208364d5a538b5495",
-      "bytes": 16190
+      "sha256": "5a86d66ae0ab08f29460229f3b7f56d504388d1f106e21097575621717fc0e7a",
+      "bytes": 16190,
+      "fetchedAt": "2026-05-26T13:46:20Z"
     },
     {
       "path": "specification/2025-11-25/basic/utilities/cancellation.md",
@@ -698,8 +715,9 @@
     {
       "path": "specification/2025-11-25/server/tools.md",
       "url": "https://modelcontextprotocol.io/specification/2025-11-25/server/tools.md",
-      "sha256": "34a5787989abbdda1546c37d2adb698cd0ec1fe9cd9d86a9bfad260b833c0f14",
-      "bytes": 13905
+      "sha256": "8ed43301d44f1b15317963b8553eb025c3bd72f433ee873565338e727b106b55",
+      "bytes": 13905,
+      "fetchedAt": "2026-05-26T13:46:20Z"
     },
     {
       "path": "specification/2025-11-25/server/utilities/completion.md",
@@ -719,5 +737,6 @@
       "sha256": "562037fed0516a03feacdc4ee9fbdc465d5c68f7930becb34181c548f485ed0e",
       "bytes": 2597
     }
-  ]
+  ],
+  "generatedAt": "2026-05-26T13:46:20Z"
 }

@@ -125,10 +125,22 @@ can initiate:
 ## Build with Agent Skills
 
 [`develop/build-with-agent-skills.md`](https://modelcontextprotocol.io/docs/develop/build-with-agent-skills.md)
-covers using Anthropic-style Agent Skills to guide AI coding
-assistants through MCP server design and implementation — a
-self-referential pattern (skills helping you build MCP servers
-that themselves teach skills).
+covers using agent skills to guide AI coding assistants through
+MCP server design and implementation. The
+[`mcp-server-dev` plugin](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/mcp-server-dev)
+provides three composing skills:
+
+| Skill | Purpose |
+|---|---|
+| `build-mcp-server` | Entry point — picks deployment model, routes to specialized skills |
+| `build-mcp-app` | Adds interactive UI widgets via MCP Apps extension |
+| `build-mcpb` | Packages a local stdio server as a redistributable `.mcpb` bundle |
+
+**Four deployment paths** the skill recommends:
+- **Remote Streamable HTTP** — default for cloud API wrappers (zero install, OAuth-friendly).
+- **MCP Apps** — adds interactive UI (forms, dashboards, pickers) rendered in chat.
+- **[MCP Bundles (MCPB)](https://github.com/modelcontextprotocol/mcpb)** — packages a local server with its Node/Python runtime into a single `.mcpb` archive; users install without setting up a runtime environment.
+- **Local stdio** — prototyping and dev; upgrade path to MCPB for distribution.
 
 ## Tutorials
 
@@ -220,8 +232,10 @@ task MUST include `io.modelcontextprotocol/related-task: { taskId }` in their
 `taskId` param directly).
 
 **Push notifications (optional):** Servers MAY push status updates via
-`notifications/tasks/status { taskId, status, statusMessage? }`. Polling via
-`tasks/get` is the default; notifications are an optimization.
+`notifications/tasks/status { taskId, status, statusMessage? }`. Clients opt into
+these via the `subscriptions/listen` mechanism. Polling via `tasks/get` is the
+default; notifications are an optimization that eliminates the need for an extra
+`tasks/get` round-trip.
 
 Source: [`specification/2025-11-25/basic/utilities/tasks.md`](https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/tasks.md).
 
