@@ -374,6 +374,7 @@ await tagSession(sessionId, null);
 | `forkSession` | `boolean` | `false` | Fork when resuming |
 | `continue` | `boolean` | `false` | Continue most recent conversation |
 | `sessionId` | `string` | auto | Custom UUID for session (v0.2.33) |
+| `title` | `string` | — | Display title for the session. When resuming via `resume` or `continue`, the existing session's persisted title takes precedence; use `renameSession()` to retitle an existing session |
 | `resumeSessionAt` | `string` | — | Resume at specific message UUID |
 | `persistSession` | `boolean` | `true` | When false, disables session persistence to disk |
 | `maxTurns` | `number` | — | Max conversation turns (critical safety net — sessions never timeout) |

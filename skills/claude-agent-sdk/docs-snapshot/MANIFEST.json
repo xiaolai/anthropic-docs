@@ -3,7 +3,7 @@
   "indexSha256": "986d8748e4a1fb27bfcce8b980c8b9398d6d100c8da07a5099211baeefb81ae6",
   "indexBytes": 29567,
   "pageCount": 30,
-  "refreshedAt": "2026-05-25T13:17:41Z",
+  "refreshedAt": "2026-05-26T13:13:58Z",
   "pages": [
     {
       "path": "en/agent-sdk/agent-loop.md",
@@ -176,8 +176,8 @@
     {
       "path": "en/agent-sdk/typescript.md",
       "url": "https://code.claude.com/docs/en/agent-sdk/typescript.md",
-      "sha256": "7f8ec59c0634486f715fb8a5c33c3874577f1af5d95e82ec977ab29e8bbbd0b8",
-      "bytes": 159368
+      "sha256": "9b6225ad21c66abf7cff11fcfc253c435ea832be204f0313177b224f1fc20b7a",
+      "bytes": 160008
     },
     {
       "path": "en/agent-sdk/user-input.md",
