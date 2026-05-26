@@ -46,6 +46,7 @@ Minimal valid `settings.json`:
 | Key | Type | Notes |
 |---|---|---|
 | `agent` | string | Run the main thread as a named subagent |
+| `allowAllClaudeAiMcps` | boolean | (Managed only) Load claude.ai connectors alongside a deployed `managed-mcp.json`, which otherwise takes exclusive control and suppresses them. See `code.claude.com/docs/en/managed-mcp.md` |
 | `allowedChannelPlugins` | array | (Managed only) Allowlist of channel plugins |
 | `allowedHttpHookUrls` | array | URL patterns HTTP hooks may target; `*` wildcard supported |
 | `allowedMcpServers` | array | (Managed only) Allowlist of MCP servers users can configure |

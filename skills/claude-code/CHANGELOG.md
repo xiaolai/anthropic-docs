@@ -10,6 +10,10 @@ The newest entry is at the top.
 
 ---
 
+## 2026-05-26
+*(pending review — see draft PR on branch `auto/2026-05-26-pending-review`)*
+- Routine audit at CC v2.1.150 — no version change; research ran 85 turns across 110 pages; checkDocsDrift gate failed (upstream llms.txt hash diverged from docs-snapshot); changes queued for review pending snapshot refresh
+
 ## 2026-05-25
 - Routine audit at CC v2.1.150 — SKILL-slash-commands.md: added argument substitution placeholders ($ARGUMENTS[N], $N, $name, ${CLAUDE_SESSION_ID}, ${CLAUDE_EFFORT}, ${CLAUDE_SKILL_DIR}) and user-invocable/arguments frontmatter keys; SKILL-known-issues.md: added KI 61735 (ScheduleWakeup wakeups lost on session death, workaround via /schedule Routines) and KI 61734 (Sonnet 4.6 context meter shows 200K, possible v2.1.150 regression); all 8 gates pass
 
