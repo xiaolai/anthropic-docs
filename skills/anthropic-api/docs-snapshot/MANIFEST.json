@@ -3,7 +3,7 @@
   "indexSha256": "c037e8136d42bb3e6f9ced4b388d09a7320c617658a6617a15f2d76fb44a4f85",
   "indexBytes": 166612,
   "pageCount": 225,
-  "refreshedAt": "2026-05-25T13:05:23Z",
+  "refreshedAt": "2026-05-26T00:00:00Z",
   "pages": [
     {
       "path": "en/api/admin.md",
@@ -303,8 +303,9 @@
     {
       "path": "en/api/beta.md",
       "url": "https://platform.claude.com/docs/en/api/beta.md",
-      "sha256": "60ddc79fb3a92ee5f28e35976420934c5fe05c603cd01d57e5b67fe63e9dc3c0",
-      "bytes": 2885977
+      "sha256": "7daabae7c1e985702b3b8a52bcfa00298bda84dbeedb3f6362a27cb1ca97aa86",
+      "bytes": 2194645,
+      "fetchedAt": "2026-05-26T00:00:00Z"
     },
     {
       "path": "en/api/beta/agents.md",
@@ -1011,8 +1012,9 @@
     {
       "path": "en/api/completions.md",
       "url": "https://platform.claude.com/docs/en/api/completions.md",
-      "sha256": "fc18c4d169189685299e3d130fa9afe50623cf2cb146d0e8e12f07b118607877",
-      "bytes": 12189
+      "sha256": "13564fea719a2ebdca472e14895390e4ed29b9bd0e18323e1128520f018e7677",
+      "bytes": 12286,
+      "fetchedAt": "2026-05-26T00:00:00Z"
     },
     {
       "path": "en/api/completions/create.md",
