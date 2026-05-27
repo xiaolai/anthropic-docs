@@ -254,26 +254,67 @@ Notable recently-tracked SEPs (as of 2026-05-21):
 | [SEP-2164](https://modelcontextprotocol.io/seps/2164-resource-not-found-error.md) | Standardize resource-not-found error code to `-32602` | Draft | Error codes, Resources error handling |
 | [SEP-2575](https://modelcontextprotocol.io/seps/2575-stateless-mcp.md) | Make MCP Stateless — introduces `-32004` (UNSUPPORTED_PROTOCOL_VERSION) in draft spec | Accepted | Draft error codes; sessionless and stateless operation |
 | [SEP-2577](https://modelcontextprotocol.io/seps/2577-deprecate-roots-sampling-and-logging.md) | Deprecate Roots, Sampling, and Logging — effective in next spec revision (expected July 2026) | **Final** | Roots (`roots/list`), Sampling (`sampling/createMessage`), Logging (`logging/setLevel`, `notifications/message`) |
-| [SEP-2596](https://modelcontextprotocol.io/seps/2596-spec-feature-lifecycle-and-deprecation.md) | Specification feature lifecycle and deprecation policy | Draft | Governance process; grandfathers HTTP+SSE transport and `includeContext: "thisServer"/"allServers"` as formally Deprecated |
+| [SEP-2596](https://modelcontextprotocol.io/seps/2596-spec-feature-lifecycle-and-deprecation.md) | Specification feature lifecycle and deprecation policy | **Final** | Governance process; grandfathers HTTP+SSE transport and `includeContext: "thisServer"/"allServers"` as formally Deprecated. Adopted policy published at [`community/feature-lifecycle.md`](https://modelcontextprotocol.io/community/feature-lifecycle.md). |
 | [SEP-2322](https://modelcontextprotocol.io/seps/2322-MRTR.md) | Multi Round-Trip Requests — replaces SSE for server-initiated requests (elicitation, sampling) during a client call; breaking change | Accepted | Transport; elicitation and sampling in tool-call context |
 | [SEP-2549](https://modelcontextprotocol.io/seps/2549-TTL-for-list-results.md) | TTL for List Results — adds `ttlMs` and `cacheScope` fields to `tools/list`, `resources/list`, `prompts/list`, and `resources/read` responses | Accepted | List response schema; caching |
 | [SEP-2567](https://modelcontextprotocol.io/seps/2567-sessionless-mcp.md) | Sessionless MCP via Explicit State Handles — removes `Mcp-Session-Id` and session-scoped state; complements SEP-2575 | **Final** | Session handling; transport headers |
 | [SEP-2663](https://modelcontextprotocol.io/seps/2663-tasks-extension.md) | Tasks Extension — formally defines the async-task extension (`tasks/get`, `tasks/update`, `tasks/cancel`; `resultType: "task"` discriminator) as an Extensions Track SEP | **Final** | MCP Tasks extension (already tracked in [`SKILL-tools-resources-prompts.md`](SKILL-tools-resources-prompts.md#tools)) |
 
-SEP-2596 also introduces the concept of a **deprecated registry** (`deprecated.mdx`) listing
-every feature in the Deprecated state, their migration targets, and earliest removal dates.
-When it reaches Final, the minimum deprecation window is 12 months measured from the revision
-release in which the feature is first marked Deprecated.
+SEP-2596 is now Final. The adopted policy is published at
+[`community/feature-lifecycle.md`](https://modelcontextprotocol.io/community/feature-lifecycle.md)
+and governs individual features (protocol messages, capabilities, transports, schema types).
+The **deprecated registry** (`deprecated.mdx`) lists every feature in a Deprecated or Removed
+state, its migration path, and its earliest removal date. The minimum deprecation window is
+**12 months** from the revision release in which the feature first becomes Deprecated. Tier 1
+SDKs must mark deprecated API surfaces with the language-native deprecation mechanism and
+should emit runtime warnings when deprecated features are exercised.
 
 **SEP-2549 schema additions (Accepted, not yet in `2025-11-25`):** The following fields will be added to list and read responses when SEP-2549 is incorporated:
 - `ttlMs` (integer, optional) — how many milliseconds the response may be cached before re-fetching.
 - `cacheScope` (`"session"` | `"user"` | `"global"`, optional) — controls who may cache the response.
 
+### Community Working Groups and Interest Groups
+
+Protocol evolution beyond individual SEPs is organized through Working Groups
+(WGs, binding spec changes) and Interest Groups (IGs, use-case gathering and
+recommendations). Group charters are published under
+[`community/`](https://modelcontextprotocol.io/community/).
+
+| Group | Type | Focus | Charter |
+|---|---|---|---|
+| Tool Annotations | Interest Group | Coherent annotation model for safe agentic systems; evaluates existing hints (`readOnlyHint`, `destructiveHint`, `idempotentHint`, `openWorldHint`) and proposed new annotations (trust/sensitivity, model preferences, runtime annotations) | [`community/tool-annotations/charter.md`](https://modelcontextprotocol.io/community/tool-annotations/charter.md) |
+
+Full list: [`community/working-interest-groups.md`](https://modelcontextprotocol.io/community/working-interest-groups.md).
+
+## Feature lifecycle policy
+
+Source: [`community/feature-lifecycle.md`](https://modelcontextprotocol.io/community/feature-lifecycle.md) (adopted via SEP-2596).
+
+This policy defines the lifecycle of individual MCP specification features —
+protocol messages, capabilities, transports, schema types, and normative
+behavioral requirements. A feature is always in exactly one of three states:
+
+| State | Meaning | Implementer expectation |
+|---|---|---|
+| **Active** | Part of the Current specification revision | Implement per the feature's normative requirements |
+| **Deprecated** | Remains in the spec but is scheduled for removal; a migration path is documented | New implementations should not adopt the feature; existing ones should migrate before the earliest removal date |
+| **Removed** | Deleted from `draft`; will be absent from the next Current revision; remains documented in the Final revision it last appeared in | Implementations targeting the next Current revision must not depend on the feature |
+
+Key rules:
+
+- Deprecation requires a SEP and must document a migration path (or explicitly state none is needed).
+- The **minimum deprecation window** is **12 months** from the revision release in which the feature is first marked Deprecated. The feature becomes eligible for removal after that window elapses.
+- A Deprecated feature may be restored to Active by a subsequent SEP; if later deprecated again, the 12-month window is measured afresh.
+- The **deprecated registry** at `specification/draft/deprecated.mdx` is the canonical list of all Deprecated and Removed features, their migration paths, and earliest removal dates.
+- **Tier 1 SDK obligations:** Once the deprecating revision is released as Current, Tier 1 SDKs must mark the corresponding API surface deprecated using the language's native mechanism (e.g., `@deprecated` JSDoc in TypeScript, `DeprecationWarning` in Python) and should emit a runtime warning when the feature is exercised.
+- **Expedited removal:** The 12-month floor may be shortened to a minimum of 90 days if the feature presents an active security risk with a published advisory. Requires Core Maintainer approval.
+
 ---
 
 *Source pages: `learn/architecture.md`, `learn/versioning.md`,
 `specification/2025-11-25/*` (multi-page subtree),
-`community/sep-guidelines.md`, `seps/*`
+`community/sep-guidelines.md`, `community/feature-lifecycle.md`,
+`community/tool-annotations/charter.md`, `seps/*`
 (including `seps/2106-json-schema-2020-12.md`,
 `seps/2164-resource-not-found-error.md`,
 `seps/2322-MRTR.md`,

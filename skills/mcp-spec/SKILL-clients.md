@@ -313,7 +313,7 @@ the registry of applications that support MCP. Notable entries:
 
 - Claude Desktop, Claude Code, Claude.ai (Anthropic).
 - GitHub Copilot CLI (supports Tools, Discovery, Instructions, Sampling, Elicitation, DCR, OAuth Client Credentials, Tasks).
-- Codex (OpenAI) — lightweight AI coding agent for the terminal; supports Resources, Tools, Elicitation.
+- Codex (OpenAI) — lightweight AI coding agent for the terminal; supports Resources, Tools, Elicitation, Instructions.
 - Gemini CLI (Google) — terminal agent; supports Prompts, Tools, Instructions, DCR.
 - VS Code (via GitHub Copilot extension).
 - Cline, Zed (with Discovery support), Cursor, Windsurf, other editor integrations.
