@@ -1,9 +1,9 @@
 {
   "indexUrl": "https://platform.claude.com/llms.txt",
-  "indexSha256": "4537a29223635c7ee8e2baa89dcfc14b089026065d16a3b43c590d788c4d5994",
-  "indexBytes": 166612,
+  "indexSha256": "c037e8136d42bb3e6f9ced4b388d09a7320c617658a6617a15f2d76fb44a4f85",
+  "indexBytes": 166613,
   "pageCount": 119,
-  "refreshedAt": "2026-05-26T13:04:14Z",
+  "refreshedAt": "2026-05-27T00:00:00Z",
   "pages": [
     {
       "path": "en/agents-and-tools/agent-skills/best-practices.md",
@@ -254,8 +254,8 @@
     {
       "path": "en/build-with-claude/cache-diagnostics.md",
       "url": "https://platform.claude.com/docs/en/build-with-claude/cache-diagnostics.md",
-      "sha256": "fada2bad087955f017d8faaf2ac29b97f9e7df4b6ed8a78b21ae777656c0c7a5",
-      "bytes": 48682
+      "sha256": "3dfb4c259299e24cbaecb6aadf57d4b06f1ef29d1c09e1c5a31412b73d3cc8a5",
+      "bytes": 50519
     },
     {
       "path": "en/build-with-claude/citations.md",
@@ -308,8 +308,8 @@
     {
       "path": "en/build-with-claude/context-windows.md",
       "url": "https://platform.claude.com/docs/en/build-with-claude/context-windows.md",
-      "sha256": "644676f36d7c1a6f745b8e81f3a15ac93244a6175404a5cc12e16c44122a4f42",
-      "bytes": 13726
+      "sha256": "20352832eb2c9acf3c28eed452f25bfa114d3db719c50fdf9bdcbbda7e0b6860",
+      "bytes": 13739
     },
     {
       "path": "en/build-with-claude/effort.md",
@@ -524,8 +524,8 @@
     {
       "path": "en/manage-claude/wif-providers/aws.md",
       "url": "https://platform.claude.com/docs/en/manage-claude/wif-providers/aws.md",
-      "sha256": "6f2809f5827b3e427e85c12fa3f6913b2c9d4cb469d52a205b4e486002ff1979",
-      "bytes": 31611
+      "sha256": "bde969f7d8333685b7b066282d6d9fcc25a941719b56b860f4f3aefefd9d1752",
+      "bytes": 31613
     },
     {
       "path": "en/manage-claude/wif-providers/azure.md",
