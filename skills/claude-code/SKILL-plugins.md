@@ -96,7 +96,7 @@ claude plugin install my-plugin@my-marketplace
 
 After enabling/disabling a plugin mid-session, run `/reload-plugins` to connect/disconnect its components.
 
-> **Plugin preview before install:** The `/plugin` Discover and Browse screens show a plugin's commands, agents, skills, hooks, and MCP/LSP servers before you install it (as of v2.1.150).
+> **Plugin preview before install:** The `/plugin` Discover and Browse screens show a plugin's commands, agents, skills, hooks, and MCP/LSP servers before you install it (as of v2.1.152).
 
 ## Marketplace manifest: `marketplace.json`
 
@@ -288,6 +288,61 @@ The user can permanently disable all hint prompts by selecting "No, and don't sh
 ### Getting into the official marketplace
 
 The hint protocol only works for plugins in the official Anthropic marketplace (`claude-plugins-official`). The in-app `/plugin` submission forms add plugins to the community marketplace, not the official one. Contact an Anthropic partner contact to coordinate an official-marketplace listing.
+
+## Official Anthropic plugins
+
+### security-guidance
+
+Automatically reviews Claude's own code changes for security vulnerabilities and fixes them in the same session. Requires Claude Code v2.1.144+ and Python 3.8+ on `PATH`.
+
+Source: `code.claude.com/docs/en/security-guidance.md`
+
+**Install:**
+```text
+/plugin install security-guidance@claude-plugins-official
+/reload-plugins
+```
+
+To enable in cloud sessions or for everyone in a repository, add to `.claude/settings.json`:
+<!-- skip-validate -->
+```json
+{
+  "enabledPlugins": {
+    "security-guidance@claude-plugins-official": true
+  }
+}
+```
+
+**Review layers:**
+
+| Layer | Trigger | Depth |
+|---|---|---|
+| Per-edit pattern match | Every file write | Deterministic string match; no model call; no cost |
+| End-of-turn diff review | After each turn | Background model review of all changed files (up to 30) |
+| Commit/push review | Claude runs `git commit`/`git push` via Bash | Deeper agentic review reading surrounding code; capped at 20/hour |
+
+**Custom rules:**
+- `.claude/claude-security-guidance.md` — plain-language guidance for model-backed reviews (8 KB cap; loads from user, project, and `*.local.md` scopes)
+- `.claude/security-patterns.yaml` (or `.json`) — additional regex/substring rules for the per-edit layer (up to 50 rules)
+
+**Environment variables:**
+
+| Variable | Effect |
+|---|---|
+| `ENABLE_PATTERN_RULES=0` | Disable per-edit pattern check |
+| `ENABLE_STOP_REVIEW=0` | Disable end-of-turn diff review |
+| `ENABLE_COMMIT_REVIEW=0` | Disable commit/push review |
+| `ENABLE_CODE_SECURITY_REVIEW=0` | Disable all model-backed reviews |
+| `SECURITY_GUIDANCE_DISABLE=1` | Disable plugin entirely |
+| `SECURITY_REVIEW_MODEL` | Override model for end-of-turn review (default: Claude Opus 4.7) |
+| `SG_AGENTIC_MODEL` | Override model for commit review |
+
+**Disable / uninstall:**
+```text
+/plugin disable security-guidance@claude-plugins-official
+/plugin uninstall security-guidance@claude-plugins-official
+```
+If the plugin was enabled via project settings, disabling writes an override to `.claude/settings.local.json` (personal opt-out without affecting teammates).
 
 ## Common mistakes (auto-corrected by `rules/plugins.md`)
 

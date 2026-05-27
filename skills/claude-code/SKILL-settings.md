@@ -107,6 +107,7 @@ Minimal valid `settings.json`:
 | `parentSettingsBehavior` | string | (Managed only) `"first-wins"` (default) or `"merge"` for embedding host policy (v2.1.133+) |
 | `permissions` | object | Permission rules. See § *`permissions` block* below |
 | `plansDirectory` | string | Where plan files are stored (default: `~/.claude/plans`) |
+| `pluginSuggestionMarketplaces` | array | (Managed only) Allowlist of org marketplace names whose plugins may be suggested to users via context-aware tips (v2.1.152+) |
 | `pluginTrustMessage` | string | (Managed only) Custom message appended to plugin trust warning |
 | `policyHelper` | object | (Managed only) Admin executable for dynamic managed settings (v2.1.136+). Keys: `path` (string, absolute path to helper), `timeoutMs` (number, wait limit before treating run as failed), `refreshIntervalMs` (number, re-run interval; `0` = disable, minimum `60000`) |
 | `preferredNotifChannel` | string | Notification method: `"auto"`, `"terminal_bell"`, `"iterm2"`, `"iterm2_with_bell"`, `"kitty"`, `"ghostty"`, `"notifications_disabled"` |

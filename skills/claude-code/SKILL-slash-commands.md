@@ -79,6 +79,7 @@ Commands marked **[Skill]** are bundled skills — prompts handed to Claude that
 | `/recap` | Generate a one-line session summary on demand |
 | `/release-notes` | View changelog in interactive version picker |
 | `/reload-plugins` | Reload all active plugins without restarting |
+| `/reload-skills` | Re-scan skill directories without restarting the session. Run after installing or editing a skill mid-session |
 | `/remote-control` | Make this session available for remote control from claude.ai. Alias: `/rc` |
 | `/remote-env` | Configure the default remote environment for web sessions started with `--remote` |
 | `/rename [name]` | Rename the current session |
@@ -93,7 +94,8 @@ Commands marked **[Skill]** are bundled skills — prompts handed to Claude that
 | `/security-review` | Analyze pending branch changes for security vulnerabilities |
 | `/setup-bedrock` | Configure Amazon Bedrock authentication, region, and model pins interactively. Only visible when `CLAUDE_CODE_USE_BEDROCK=1` is set |
 | `/setup-vertex` | Configure Google Vertex AI authentication, project, region, and model pins interactively. Only visible when `CLAUDE_CODE_USE_VERTEX=1` is set |
-| `/code-review [effort]` | **[Skill]** Review recently changed code and report correctness bugs at the chosen effort level: `low`, `medium` (default), `high` (e.g. `/code-review high`). Pass `--comment` to post findings as inline GitHub PR comments. The old cleanup-and-fix behavior has been removed. Renamed from `/simplify` as of v2.1.150; `--comment` support added in v2.1.150. |
+| `/code-review [effort] [--fix] [--comment]` | **[Skill]** Review recently changed code. Effort levels: `low`, `medium` (default), `high`. Pass `--fix` to automatically apply review findings (reuse, simplification, efficiency) to the working tree after the review (v2.1.152+). Pass `--comment` to post findings as inline GitHub PR comments. Renamed from `/simplify` as of v2.1.146; `--fix` added in v2.1.152 |
+| `/simplify` | **[Skill]** Alias for `/code-review --fix`: reviews recently changed code and applies improvement suggestions to the working tree. Added back in v2.1.152 |
 | `/skills` | List available skills |
 | `/status` | Open Settings interface (Status tab) |
 | `/statusline` | Configure the status line |
@@ -144,6 +146,7 @@ A slash command is a Markdown file with YAML frontmatter. Common keys:
 | `description` | string | One-line summary shown in command lists. Keep ≤120 chars. |
 | `argument-hint` | string | Placeholder text shown after the command name, e.g. `"<file path>"`. |
 | `allowed-tools` | string | Comma-separated tool list (e.g. `Read, Bash(git:*)`). Restricts what the command can call. |
+| `disallowed-tools` | string | Comma-separated tool list to remove from the model context while this skill or command is active. Useful to prevent Claude from using specific tools during the skill's session. |
 | `model` | string | Optional model override for this command's invocation. |
 | `when_to_use` | string | When Claude should automatically invoke this skill (without explicit `/name`). |
 | `disable-model-invocation` | boolean | If `true`, prevents Claude from automatically loading this skill. Use for workflows you want to trigger manually with `/name`. Also prevents preloading into subagents. Default: `false`. |

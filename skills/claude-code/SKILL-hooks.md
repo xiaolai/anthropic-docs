@@ -23,7 +23,7 @@ source: https://code.claude.com/docs/en/hooks.md
 Hooks fire at specific points in the Claude Code lifecycle. There are three cadence groups:
 
 - **Per-session:** `SessionStart`, `SessionEnd`, `Setup`
-- **Per-turn:** `UserPromptSubmit`, `UserPromptExpansion`, `Stop`, `StopFailure`, `TeammateIdle`
+- **Per-turn:** `UserPromptSubmit`, `UserPromptExpansion`, `Stop`, `StopFailure`, `TeammateIdle`, `MessageDisplay`
 - **Per-tool-call:** `PreToolUse`, `PostToolUse`, `PostToolUseFailure`, `PostToolBatch`, `PermissionRequest`, `PermissionDenied`
 - **Subagent/Task:** `SubagentStart`, `SubagentStop`, `TaskCreated`, `TaskCompleted`
 - **Context/State:** `PreCompact`, `PostCompact`, `InstructionsLoaded`, `ConfigChange`, `CwdChanged`, `FileChanged`
@@ -61,6 +61,7 @@ Hooks fire at specific points in the Claude Code lifecycle. There are three cade
 | `PostCompact` | After context compaction completes |
 | `Elicitation` | When an MCP server requests user input during a tool call |
 | `ElicitationResult` | After user responds to an MCP elicitation |
+| `MessageDisplay` | When assistant message text is about to be displayed. Hooks can transform or hide the text |
 | `SessionEnd` | When a session terminates |
 
 **`SessionEnd` timeout:** These hooks have a default timeout of 1.5 seconds. Override with `CLAUDE_CODE_SESSIONEND_HOOKS_TIMEOUT_MS` (e.g. `CLAUDE_CODE_SESSIONEND_HOOKS_TIMEOUT_MS=5000 claude`). Applies to session exit, `/clear`, and switching sessions via `/resume`.
@@ -541,6 +542,8 @@ SessionStart is non-blocking (cannot prevent session start), but supports inject
 | `additionalContext` | String added to Claude's context before the first prompt. Since plain stdout also reaches Claude for this event, a hook that only loads context can print directly without building JSON |
 | `initialUserMessage` | (`-p` mode only) String used as the first user message. If a prompt is also provided via `-p`, it follows as the next turn. Unlike `additionalContext`, this creates a turn rather than attaching to one |
 | `watchPaths` | Array of absolute paths to watch for `FileChanged` events during this session. These are *dynamic* watch paths (added by the hook); static paths from the `matcher` field are always watched regardless |
+| `reloadSkills` | If `true`, re-scans all skill directories before the session starts. Skills installed by the hook itself become available in the same session |
+| `sessionTitle` | String to use as the display name for the session on startup and resume. Replaces any name set via `--name` or `/rename` |
 
 ### PostToolUseFailure output
 
@@ -575,6 +578,28 @@ Return `{ "retry": true }` (in `hookSpecificOutput`) to tell the model it may re
 ```
 
 Source: `code.claude.com/docs/en/hooks.md`
+
+### MessageDisplay output
+
+Transform or hide assistant message text before it is rendered. Return `hookSpecificOutput` with the modified text or a hide instruction:
+
+<!-- skip-validate -->
+```json
+{
+  "hookSpecificOutput": {
+    "hookEventName": "MessageDisplay",
+    "text": "Transformed message text",
+    "hidden": false
+  }
+}
+```
+
+| Field | Notes |
+|---|---|
+| `text` | Replacement text to display instead of the original. Omit to display the original unchanged |
+| `hidden` | If `true`, suppresses display of this message entirely |
+
+Input includes a `text` field with the original assistant message string. Exit code 2 hides the message.
 
 ### Elicitation output
 
@@ -704,7 +729,7 @@ If the hook fails or produces no path, worktree creation fails. Unlike most even
 
 Events where exit code 2 (or JSON block decision) prevents the action from proceeding:
 
-**Blocking events:** `PreToolUse`, `PermissionRequest`, `UserPromptSubmit`, `UserPromptExpansion`, `Stop`, `SubagentStop`, `TeammateIdle`, `TaskCreated`, `TaskCompleted`, `ConfigChange` (except `policy_settings`), `PostToolBatch`, `PreCompact`, `Elicitation`, `ElicitationResult`, `WorktreeCreate`.
+**Blocking events:** `PreToolUse`, `PermissionRequest`, `UserPromptSubmit`, `UserPromptExpansion`, `Stop`, `SubagentStop`, `TeammateIdle`, `TaskCreated`, `TaskCompleted`, `ConfigChange` (except `policy_settings`), `PostToolBatch`, `PreCompact`, `Elicitation`, `ElicitationResult`, `WorktreeCreate`, `MessageDisplay`.
 
 **Non-blocking events:** `PostToolUse`, `PostToolUseFailure`, `PermissionDenied`, `Notification`, `SubagentStart`, `SessionStart`, `Setup`, `SessionEnd`, `CwdChanged`, `FileChanged`, `PostCompact`, `WorktreeRemove`, `InstructionsLoaded`. For non-blocking events, non-zero exit code shows stderr to user/Claude but does not block.
 

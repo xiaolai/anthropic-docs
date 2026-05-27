@@ -10,6 +10,25 @@ The newest entry is at the top.
 
 ---
 
+## 2026-05-27 (re-run)
+- Partial run at CC v2.1.152 — update agent crashed (exit 1, SDK init error); research ran 75 turns; docs index restructured (added `large-codebases.md` and `security-guidance.md`; removed 31 `agent-sdk/*` pages + `desktop-changelog.md`); verify passed after 2 mend runs (34 checks, 0 failures); all 8 gates pass
+
+## v2.1.152 — 2026-05-27
+
+Version bump: `@anthropic-ai/claude-code` updated from v2.1.150 to v2.1.152.
+
+- `/code-review --fix` now applies review findings (reuse, simplification, efficiency) to the working tree after the review; `/simplify` now invokes `/code-review --fix`
+- Skills and slash commands can set `disallowed-tools` in frontmatter to remove tools from the model while the component is active
+- Added `/reload-skills` command to re-scan skill directories without restarting the session
+- `SessionStart` hooks can return `reloadSkills: true` to re-scan skill directories in the same session; can also set `hookSpecificOutput.sessionTitle` to title the session on startup and resume
+- New `MessageDisplay` hook event: transform or hide assistant message text as it is displayed
+- Added `pluginSuggestionMarketplaces` managed setting: admins allowlist org marketplaces whose plugins may be context-suggested
+- `claude plugin marketplace remove` now accepts `--scope user|project|local`
+- `--fallback-model` now switches the entire session to the fallback model when the primary model is not found, rather than failing every request
+- Auto mode no longer requires opt-in consent
+- Added `OTEL_METRICS_INCLUDE_ENTRYPOINT` env var: opt-in `app.entrypoint` metric attribute in OpenTelemetry
+- Docs index: added `large-codebases.md` and `security-guidance.md`; removed `agent-sdk/*` section and `desktop-changelog.md`
+
 ## 2026-05-26
 *(pending review — see draft PR on branch `auto/2026-05-26-pending-review`)*
 - Routine audit at CC v2.1.150 — no version change; research ran 85 turns across 110 pages; checkDocsDrift gate failed (upstream llms.txt hash diverged from docs-snapshot); changes queued for review pending snapshot refresh
