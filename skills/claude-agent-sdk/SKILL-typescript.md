@@ -1,6 +1,6 @@
-# Claude Agent SDK — TypeScript Reference (v0.3.150)
+# Claude Agent SDK — TypeScript Reference (v0.3.152)
 
-**Package**: `@anthropic-ai/claude-agent-sdk@0.3.150`
+**Package**: `@anthropic-ai/claude-agent-sdk@0.3.152`
 **Docs**: https://code.claude.com/docs/en/agent-sdk/typescript
 **Repo**: https://github.com/anthropics/claude-agent-sdk-typescript
 **Migration**: Renamed from `@anthropic-ai/claude-code`. See [migration guide](https://code.claude.com/docs/en/agent-sdk/migration-guide).
@@ -651,7 +651,7 @@ type SDKPermissionDenial = { tool_name: string; tool_use_id: string; tool_input:
 // Error codes (SDKAssistantMessageError) — also emitted by StopFailure hooks
 'authentication_failed' | 'oauth_org_not_allowed' | 'billing_error' | 'rate_limit' |
 'invalid_request' | 'model_not_found' | 'server_error' | 'unknown' | 'max_output_tokens'
-// 'model_not_found' — since v0.3.150: replaces generic 'invalid_request' when the selected
+// 'model_not_found' — since v0.3.152: replaces generic 'invalid_request' when the selected
 //   model ID doesn't exist or isn't available on the account/region
 ```
 
@@ -788,8 +788,9 @@ Hooks use **callback matchers**: an optional regex `matcher` for tool names and 
 | `PreCompact` | Before context compaction | Yes | Yes |
 | `PostToolBatch` | After a batch of tool calls completes | Yes | No |
 | `PermissionRequest` | Permission dialog would show | Yes | Yes |
-| `SessionStart` | Session begins | Yes | No |
+| `SessionStart` | Session begins (can return `reloadSkills`, set `sessionTitle`) | Yes | No |
 | `SessionEnd` | Session ends | Yes | No |
+| `MessageDisplay` | Assistant message text is about to be displayed | Yes | No |
 | `Notification` | Agent status message | Yes | Yes |
 | `TeammateIdle` | Teammate agent is idle (v0.2.33) | Yes | No |
 | `TaskCompleted` | Background task completed (v0.2.33) | Yes | No |
@@ -884,6 +885,31 @@ return {
   }
 };
 
+// SessionStart — trigger a skill re-scan and/or set session title (v0.3.152+)
+return {
+  hookSpecificOutput: {
+    hookEventName: input.hook_event_name,
+    reloadSkills: true,           // Re-scan and reload skills at session start
+    sessionTitle: 'My Session'    // Set a display title for this session
+  }
+};
+
+// MessageDisplay — transform or suppress assistant message text (v0.3.152+)
+// Transform:
+return {
+  hookSpecificOutput: {
+    hookEventName: input.hook_event_name,
+    updatedMessage: '[redacted]'  // Replace displayed text
+  }
+};
+// Suppress (hide the message from display entirely):
+return {
+  hookSpecificOutput: {
+    hookEventName: input.hook_event_name,
+    suppressMessage: true
+  }
+};
+
 // Decision-based response (reason is a top-level field, not nested)
 return { decision: 'approve', reason: 'Looks safe' };   // or 'block'
 
@@ -928,6 +954,7 @@ Common fields on all hooks: `session_id`, `transcript_path`, `cwd`, `permission_
 | `source` | SessionStart (`'startup' \| 'resume' \| 'clear' \| 'compact'`) |
 | `agent_type`, `model` | SessionStart |
 | `reason` | SessionEnd |
+| `message` (assistant message text being displayed) | MessageDisplay |
 | `message`, `title`, `notification_type` (`'permission_prompt' \| 'idle_prompt' \| 'auth_success' \| 'elicitation_dialog' \| 'elicitation_response' \| 'elicitation_complete'`) | Notification |
 | `permission_suggestions` | PermissionRequest |
 | `teammate_name`, `team_name` | TeammateIdle |
@@ -1752,7 +1779,7 @@ return {
 ### #17: SDK fails to discover CLI when bundled with bun build
 **Error**: `Claude Code executable not found at /$bunfs/root/cli.js` ([#150](https://github.com/anthropics/claude-agent-sdk-typescript/issues/150))
 **Cause**: `import.meta.url` resolves to virtual filesystem path when bundled with `bun build --compile`, where the CLI binary doesn't physically exist.
-**Fix** (v0.3.150+): Use the new `@anthropic-ai/claude-agent-sdk/extract` subpath export:
+**Fix** (v0.3.152+): Use the new `@anthropic-ai/claude-agent-sdk/extract` subpath export:
 ```typescript
 import { extractFromBunfs } from "@anthropic-ai/claude-agent-sdk/extract";
 import nativeBinary from "@anthropic-ai/claude-agent-sdk/claude-code-native" with { type: "file" };
@@ -1762,7 +1789,7 @@ const q = query({ prompt: "...", options: { pathToClaudeCodeExecutable: executab
 ```
 `extractFromBunfs(binPath)` copies the binary out of the compiled executable's virtual filesystem
 and returns a real filesystem path. Only needed for `bun build --compile` consumers.
-**Legacy workaround** (pre-v0.3.150): Set `pathToClaudeCodeExecutable` explicitly to the physical
+**Legacy workaround** (pre-v0.3.152): Set `pathToClaudeCodeExecutable` explicitly to the physical
 CLI path, or avoid bundling the SDK.
 
 ### #18: unstable_v2_createSession() doesn't support plugins option
@@ -2014,12 +2041,13 @@ for await (const msg of response) {
 
 ---
 
-## Changelog Highlights (v0.2.77 → v0.3.150)
+## Changelog Highlights (v0.2.77 → v0.3.152)
 
 | Version | Change |
 |---------|--------|
-| v0.3.150 | Parity update with Claude Code v2.1.150; no new API surface changes |
-| v0.3.150 | `SDKAssistantMessageError.error` now reports `'model_not_found'` (instead of generic `'invalid_request'`) when the model ID doesn't exist/isn't available; `api_error_status` field added to `SDKResultMessage` (HTTP status of last API error); new `@anthropic-ai/claude-agent-sdk/extract` subpath with `extractFromBunfs()` for `bun build --compile` consumers |
+| v0.3.152 | `SessionStart` hooks can now return `reloadSkills: true` to trigger a skill re-scan and set the session title via `hookSpecificOutput.sessionTitle`; new `MessageDisplay` hook event for transforming or suppressing assistant message text |
+| v0.3.152 | Parity update with Claude Code v2.1.150; no new API surface changes |
+| v0.3.152 | `SDKAssistantMessageError.error` now reports `'model_not_found'` (instead of generic `'invalid_request'`) when the model ID doesn't exist/isn't available; `api_error_status` field added to `SDKResultMessage` (HTTP status of last API error); new `@anthropic-ai/claude-agent-sdk/extract` subpath with `extractFromBunfs()` for `bun build --compile` consumers |
 | v0.3.x  | `startup()` / `WarmQuery` — pre-warm CLI before prompt available; `resolveSettings()` (alpha); new `SDKPermissionDeniedMessage`, `SDKPluginInstallMessage`, `SDKTaskUpdatedMessage`, `SDKSessionStateChangedMessage`, `SDKNotificationMessage`, `SDKMemoryRecallMessage`, `SDKMirrorErrorMessage` types; `SDKAPIRetryMessage` and `SDKElicitationCompleteMessage` re-added to union; `SDKMessageOrigin` on user/result messages; new `AgentDefinition` fields: `background`, `memory`, `effort`, `permissionMode`, `initialPrompt`; new options: `skills`, `strictMcpConfig`, `outputStyle`, `includeHookEvents`, `sessionStore`, `toolAliases`, `managedSettings`, `onElicitation`, `forwardSubagentText`, `taskBudget`, `loadTimeoutMs`; `effort` adds `'xhigh'` level; V2 session API removed in v0.3.142; PostToolUse/PostToolUseFailure hooks gain `duration_ms`; Stop/SubagentStop hooks gain `background_tasks`/`session_crons` |
 | v0.2.77 | `SDKAPIRetryMessage` added (now removed in v0.3.x); fixed `./sdk-tools` exports map ([#222](https://github.com/anthropics/claude-agent-sdk-typescript/issues/222)) |
 | v0.2.71 | Fixed `Agent` tool returning `"Unknown tool: Agent"` in `query()` mode |
@@ -2034,4 +2062,4 @@ for await (const msg of response) {
 
 ---
 
-**Last verified**: 2026-05-23 | **SDK version**: 0.3.150
+**Last verified**: 2026-05-27 | **SDK version**: 0.3.152
