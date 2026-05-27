@@ -3,6 +3,9 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-27
+- Research-only run: @anthropic-ai/sdk 0.98.0→0.99.0 — fix(streaming): stop_details now carried through message_delta accumulation for refusal responses; updated SKILL-messages.md streaming table; llms.txt SHA unchanged; 0 new bug issues; all 8 quality gates passed (79 turns, 392s, $0.89).
+
 ## 2026-05-26
 - Research-only run: no upstream version change detected; research agent audited all 6 surfaces (125 turns, 479s, $1.35); llms.txt SHA unchanged, no schema changes; 0 new bug issues; all 8 quality gates passed.
 
