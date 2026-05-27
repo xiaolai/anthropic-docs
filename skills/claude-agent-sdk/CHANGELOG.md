@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-05-27 (run 13:13Z — review)
+*(pending review — see PR on `auto/2026-05-27-pending-review`)* TS v0.3.150→v0.3.152; `SessionStart` hook gains `reloadSkills`/`sessionTitle`, new `MessageDisplay` hook event documented; verify gate failed after 3 attempts (mending couldn't fix stale version in README); $1.26
+
+## 2026-05-27 (v0.3.152 — version bump)
+
+- TypeScript SDK v0.3.150 → v0.3.152; Python SDK v0.2.87 unchanged
+- `SessionStart` hooks can now return `reloadSkills: true` to trigger a skill re-scan and set the session title via `hookSpecificOutput.sessionTitle`
+- New `MessageDisplay` hook event lets hooks transform or suppress assistant message text as it is displayed
+- Version propagated to SKILL.md, SKILL-typescript.md, README.md, state.json; CHANGELOG.md updated; SKILL-typescript.md hooks table and return-values section updated
+
 ## 2026-05-26
 - Partial run — research agent crashed (sdk.mjs exit 1, 368s); no upstream changes (TS v0.3.150 / PY v0.2.87 unchanged); all 8 safety gates pass; no surface-file edits
 
