@@ -31,7 +31,7 @@ Word, and Outlook without leaving the app.
 | **Excel**      | Read/write cells, formulas, formatting, pivot tables, charts                     | [`excel.md`](https://claude.com/docs/office-agents/excel.md) |
 | **PowerPoint** | Read, edit, generate slides using existing templates                             | [`powerpoint.md`](https://claude.com/docs/office-agents/powerpoint.md) |
 | **Word**       | Draft, redline, review documents with tracked changes and comment-driven editing | [`word.md`](https://claude.com/docs/office-agents/word.md) |
-| **Outlook**    | Inbox triage, voice-matched reply drafts, thread summaries, meeting-time finding | [`outlook.md`](https://claude.com/docs/office-agents/outlook.md) |
+| **Outlook**    | Inbox triage, voice-matched reply drafts, thread summaries, meeting-time finding, **mailbox search by topic** (returns cited messages), read `.docx`/`.xlsx` attachments inline, meeting-prep briefs | [`outlook.md`](https://claude.com/docs/office-agents/outlook.md) |
 
 ## Work-across-apps shared state
 
@@ -59,7 +59,18 @@ deployment. The consent flow grants the M365 add-in the Graph scopes
 it needs to triage inbox, summarize threads, and access calendar for
 meeting-time finding.
 
-See [`outlook.md` § Grant Microsoft Graph consent](https://claude.com/docs/office-agents/outlook.md).
+**Anthropic's Graph app client ID:** `c2995f31-11e7-4882-b7a7-ef9def0a0266`
+
+Admin-consent URL (a Global Administrator must open this in a browser signed into the tenant):
+```
+https://login.microsoftonline.com/organizations/v2.0/adminconsent?client_id=c2995f31-11e7-4882-b7a7-ef9def0a0266&scope=https://graph.microsoft.com/Mail.ReadWrite%20https://graph.microsoft.com/Calendars.Read%20https://graph.microsoft.com/User.Read%20offline_access&redirect_uri=https://pivot.claude.ai/auth/callback
+```
+Scopes: `Mail.ReadWrite`, `Calendars.Read`, `User.Read`, `offline_access`. After the admin clicks Accept, users are not prompted individually.
+
+**Using your own Entra app** (for orgs that cannot consent to a third-party multi-tenant app):
+register a single-tenant app in Entra admin center → **App registrations** with "Accounts in this organizational directory only". Under **Authentication**, add a **Single-page application** platform with redirect URI `brk-multihub://pivot.claude.ai`; enable "Allow public client flows". Add the same Graph delegated permissions and grant admin consent. Then append `?graph_client_id=YOUR_CLIENT_ID` to the manifest download URL before uploading.
+
+Source: [`outlook.md`](https://claude.com/docs/office-agents/outlook.md).
 
 ## Connectors and Skills integration
 
@@ -285,6 +296,17 @@ Outlook always needs `graph.microsoft.com` regardless of 1P/3P.
 > **Prompts/responses never travel through `pivot.claude.ai`.** That
 > domain serves only the add-in's task-pane UI, feature config, and
 > telemetry — inference goes directly to your chosen provider.
+
+> **OAuth redirects through `pivot.claude.ai` do not carry tokens.** During
+> Google sign-in (Vertex AI), Anthropic sign-in, or Microsoft Graph admin
+> consent, the identity provider redirects to `pivot.claude.ai/auth/callback`
+> carrying only an authorization code (not an access token) plus a `state`
+> nonce. The callback page is static — it displays the code for the user to
+> paste back into the add-in iframe; it has no server-side logic that
+> exchanges or stores the code. Access tokens are exchanged directly between
+> the add-in and the identity provider (`oauth2.googleapis.com`,
+> `login.microsoftonline.com`) and never transit an Anthropic domain.
+> Source: [`third-party-platforms.md` § Why sign-in redirects through pivot.claude.ai](https://claude.com/docs/office-agents/third-party-platforms.md).
 
 ## Gateway model discovery (3P)
 

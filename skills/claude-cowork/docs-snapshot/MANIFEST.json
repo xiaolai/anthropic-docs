@@ -3,7 +3,7 @@
   "indexSha256": "e902363536c9acc513d54af3426bbbed42d810e267688e03faa4bb78006a7ab4",
   "indexBytes": 12253,
   "pageCount": 35,
-  "refreshedAt": "2026-05-25T00:00:00Z",
+  "refreshedAt": "2026-05-27T00:00:00Z",
   "pages": [
     {
       "path": "cowork/3p/bedrock-aws-sign-in.md",
@@ -26,8 +26,8 @@
     {
       "path": "cowork/3p/configuration.md",
       "url": "https://claude.com/docs/cowork/3p/configuration.md",
-      "sha256": "6ef2f9e4015d2d049530d901785f0e569ff343256d3a041773fb442b5d340785",
-      "bytes": 39802
+      "sha256": "90ab3b794a191d970fa84289ca053f4011f41181a9dff07d11c1b0cba60280e2",
+      "bytes": 40027
     },
     {
       "path": "cowork/3p/connectors-m365.md",
@@ -182,8 +182,8 @@
     {
       "path": "office-agents/outlook.md",
       "url": "https://claude.com/docs/office-agents/outlook.md",
-      "sha256": "89ae418161883fd8897ad3da121f5b49509560ce6d33c6c7e52e2ae5e174c76d",
-      "bytes": 16130
+      "sha256": "4584808eabdb48a028da6bb5c38522751673eb8090889fab2fa96f95dd050a1c",
+      "bytes": 17213
     },
     {
       "path": "office-agents/overview.md",
@@ -200,8 +200,8 @@
     {
       "path": "office-agents/third-party-platforms.md",
       "url": "https://claude.com/docs/office-agents/third-party-platforms.md",
-      "sha256": "be665975bdd3c9a62e7aa116c6e3c9945762b1721af1a3f8f65379fcaeda5c08",
-      "bytes": 38633
+      "sha256": "1719369b38caf102c18a7e293af4bca6055725ac890af345c9e97dc7b09f3eee",
+      "bytes": 43740
     },
     {
       "path": "office-agents/word.md",
