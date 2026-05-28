@@ -96,7 +96,7 @@ claude plugin install my-plugin@my-marketplace
 
 After enabling/disabling a plugin mid-session, run `/reload-plugins` to connect/disconnect its components.
 
-> **Plugin preview before install:** The `/plugin` Discover and Browse screens show a plugin's commands, agents, skills, hooks, and MCP/LSP servers before you install it (as of v2.1.152).
+> **Plugin preview before install:** The `/plugin` Discover and Browse screens show a plugin's commands, agents, skills, hooks, and MCP/LSP servers before you install it (as of v2.1.153).
 
 ## Marketplace manifest: `marketplace.json`
 
@@ -125,8 +125,8 @@ Used in `marketplace.json` `plugins[].source` and in `extraKnownMarketplaces` in
 
 | Source type | Required fields | Notes |
 |---|---|---|
-| `github` | `repo` | GitHub repository. Optional: `ref` (branch/tag/SHA), `path` (subdirectory) |
-| `git` | `url` | Any git URL. Optional: `ref`, `path` |
+| `github` | `repo` | GitHub repository. Optional: `ref` (branch/tag/SHA), `path` (subdirectory), `skipLfs` (boolean — skip Git LFS downloads during clone/update) |
+| `git` | `url` | Any git URL. Optional: `ref`, `path`, `skipLfs` (boolean — skip Git LFS downloads during clone/update) |
 | `url` | `url` | Direct URL to `marketplace.json`. Optional: `headers` for auth. Plugins must use external sources (not relative paths) |
 | `npm` | `package` | npm package (supports scoped packages `@scope/name`) |
 | `file` | `path` | Absolute path to `marketplace.json` file |

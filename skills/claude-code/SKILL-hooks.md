@@ -729,9 +729,9 @@ If the hook fails or produces no path, worktree creation fails. Unlike most even
 
 Events where exit code 2 (or JSON block decision) prevents the action from proceeding:
 
-**Blocking events:** `PreToolUse`, `PermissionRequest`, `UserPromptSubmit`, `UserPromptExpansion`, `Stop`, `SubagentStop`, `TeammateIdle`, `TaskCreated`, `TaskCompleted`, `ConfigChange` (except `policy_settings`), `PostToolBatch`, `PreCompact`, `Elicitation`, `ElicitationResult`, `WorktreeCreate`, `MessageDisplay`.
+**Blocking events:** `PreToolUse`, `PermissionRequest`, `UserPromptSubmit`, `UserPromptExpansion`, `Stop`, `SubagentStop`, `TeammateIdle`, `TaskCreated`, `TaskCompleted`, `ConfigChange` (except `policy_settings`), `PostToolBatch`, `PreCompact`, `Elicitation`, `ElicitationResult`, `WorktreeCreate`.
 
-**Non-blocking events:** `PostToolUse`, `PostToolUseFailure`, `PermissionDenied`, `Notification`, `SubagentStart`, `SessionStart`, `Setup`, `SessionEnd`, `CwdChanged`, `FileChanged`, `PostCompact`, `WorktreeRemove`, `InstructionsLoaded`. For non-blocking events, non-zero exit code shows stderr to user/Claude but does not block.
+**Non-blocking events:** `PostToolUse`, `PostToolUseFailure`, `PermissionDenied`, `Notification`, `SubagentStart`, `SessionStart`, `Setup`, `SessionEnd`, `CwdChanged`, `FileChanged`, `PostCompact`, `WorktreeRemove`, `InstructionsLoaded`, `MessageDisplay`. For non-blocking events, non-zero exit code shows stderr to user/Claude but does not block. `MessageDisplay` is display-only: hooks can return `displayContent` to replace rendered text on screen, but cannot block the message or change the transcript.
 
 **`StopFailure`:** output and exit code are always ignored.
 

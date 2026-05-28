@@ -68,7 +68,7 @@ Commands marked **[Skill]** are bundled skills — prompts handed to Claude that
 | `/mcp` | Manage MCP server connections and OAuth authentication |
 | `/memory` | Edit CLAUDE.md files and manage auto-memory |
 | `/mobile` | Show QR code to download the Claude mobile app. Aliases: `/ios`, `/android` |
-| `/model [model]` | Set the AI model for the current session. With no argument, opens a picker; press `d` on a row to also save that model as the default for new sessions |
+| `/model [model]` | Set the AI model. With no argument, opens a picker; selecting a model saves it as the default for new sessions. Press `s` in the picker to switch models for the current session only (without changing the default). If you customized the `modelPicker:setAsDefault` keybinding, rename it to `modelPicker:thisSessionOnly` in `keybindings.json` (v2.1.153+) |
 | `/passes` | Share a free week of Claude Code with friends. Only visible if your account is eligible |
 | `/permissions` | Manage allow/ask/deny rules for tool permissions. Alias: `/allowed-tools` |
 | `/plan [description]` | Enter plan mode |
@@ -94,8 +94,8 @@ Commands marked **[Skill]** are bundled skills — prompts handed to Claude that
 | `/security-review` | Analyze pending branch changes for security vulnerabilities |
 | `/setup-bedrock` | Configure Amazon Bedrock authentication, region, and model pins interactively. Only visible when `CLAUDE_CODE_USE_BEDROCK=1` is set |
 | `/setup-vertex` | Configure Google Vertex AI authentication, project, region, and model pins interactively. Only visible when `CLAUDE_CODE_USE_VERTEX=1` is set |
-| `/code-review [effort] [--fix] [--comment]` | **[Skill]** Review recently changed code. Effort levels: `low`, `medium` (default), `high`. Pass `--fix` to automatically apply review findings (reuse, simplification, efficiency) to the working tree after the review (v2.1.152+). Pass `--comment` to post findings as inline GitHub PR comments. Renamed from `/simplify` as of v2.1.146; `--fix` added in v2.1.152 |
-| `/simplify` | **[Skill]** Alias for `/code-review --fix`: reviews recently changed code and applies improvement suggestions to the working tree. Added back in v2.1.152 |
+| `/code-review [effort] [--fix] [--comment]` | **[Skill]** Review recently changed code. Effort levels: `low`, `medium` (default), `high`. Pass `--fix` to automatically apply review findings (reuse, simplification, efficiency) to the working tree after the review (v2.1.153+). Pass `--comment` to post findings as inline GitHub PR comments. Renamed from `/simplify` as of v2.1.146; `--fix` added in v2.1.153 |
+| `/simplify` | **[Skill]** Alias for `/code-review --fix`: reviews recently changed code and applies improvement suggestions to the working tree. Added back in v2.1.153 |
 | `/skills` | List available skills |
 | `/status` | Open Settings interface (Status tab) |
 | `/statusline` | Configure the status line |

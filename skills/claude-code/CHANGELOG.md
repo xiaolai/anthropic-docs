@@ -10,6 +10,36 @@ The newest entry is at the top.
 
 ---
 
+## 2026-05-28
+- Partial sync to CC v2.1.153 — update agent crashed (exit 1, SDK error); research ran 111 turns across 111 pages; docs index hash updated (30 agent-sdk/* pages removed from index); verify passed after 2 mend runs (34 checks, 0 failures); all 8 gates pass
+
+## v2.1.153 — 2026-05-28
+
+Version bump: `@anthropic-ai/claude-code` updated from v2.1.152 to v2.1.153.
+
+- Added `skipLfs` option to `github`/`git` plugin marketplace sources to skip Git LFS downloads during clone and update
+- Claude Code shows a one-time notice when npm global install can't auto-update; `/doctor` lists fixes
+- Status line command scripts now receive `COLUMNS` and `LINES` environment variables for terminal-width-aware output
+- `claude agents` autocomplete now suggests native slash commands and bundled skills (not just project skills)
+- `claude agents` PR column shows `PR #N` for a single PR or `N PRs` for multiple
+- `claude doctor` now shows the result of your last update attempt
+- macOS: background agents now appear as "Claude Code" in Privacy & Security and keep permission grants across upgrades
+- `/model` now saves the selected model as the default for new sessions (matching IDE behavior); press `s` in the picker to switch for the current session only (keybinding rename: `modelPicker:setAsDefault` → `modelPicker:thisSessionOnly`)
+- Fixed stateful MCP servers without the optional GET SSE stream reconnect-looping on `tools/list` (regression in v2.1.147)
+- Fixed a regression where a custom API gateway could receive the user's Anthropic OAuth credential instead of the gateway's own token
+- Fixed subagent MCP server frontmatter ignoring `--strict-mcp-config`, `--bare`, remote mode, and managed MCP allow/deny policies
+- Fixed `--strict-mcp-config` stripping inline `mcpServers` from explicitly-passed agent definitions; blocked subagent MCP servers now surface a visible warning
+- Fixed Windows PowerShell installer reporting success when installation failed
+- Fixed `claude update` installing latest instead of the configured release channel version for npm installs
+- Fixed excessive memory usage when resuming a session by transcript path on machines with many stored sessions
+- Fixed hang where CLI could fail to exit when stdin was closed without EOF in stream-json mode
+- Fixed malformed `file://` links not being clickable in the terminal
+- Fixed `claude --help` rendering unwrapped output on terminals narrower than 92 columns
+- Fixed `Agent` tool with `subagent_type: 'claude'` running in a temporary worktree that could silently discard outputs
+- Fixed `/bg` while Claude is responding — now continues response in background session
+- Fixed `/copy` and copy-on-select silently failing to update system clipboard when attached to a background session in tmux
+- Docs index: removed `agent-sdk/*` section (30 pages)
+
 ## 2026-05-27 (re-run)
 - Partial run at CC v2.1.152 — update agent crashed (exit 1, SDK init error); research ran 75 turns; docs index restructured (added `large-codebases.md` and `security-guidance.md`; removed 31 `agent-sdk/*` pages + `desktop-changelog.md`); verify passed after 2 mend runs (34 checks, 0 failures); all 8 gates pass
 
