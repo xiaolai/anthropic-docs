@@ -8,7 +8,7 @@ description: |
   handling server-initiated sampling/createMessage and
   roots/list requests, and the catalog of existing MCP clients
   in the wild.
-source: https://modelcontextprotocol.io/clients.md
+source: https://modelcontextprotocol.io/docs/develop/build-client.md
 ---
 
 # MCP — Clients
@@ -260,9 +260,8 @@ Source: [`develop/clients/client-best-practices.md`](https://modelcontextprotoco
 
 ## Client capability features
 
-The [`clients.md`](https://modelcontextprotocol.io/clients.md) matrix
-uses feature badges to indicate what each client supports. Key feature
-identifiers relevant to implementers:
+The client compatibility matrix uses feature badges to indicate what each
+client supports. Key feature identifiers relevant to implementers:
 
 | Feature | What it means |
 |---|---|
@@ -280,8 +279,6 @@ identifiers relevant to implementers:
 | `CIMD` | OAuth Client ID Metadata Documents — client's `client_id` is a URL pointing to a metadata document; avoids per-server registration |
 | `OAuth Client Credentials` | Machine-to-machine OAuth Client Credentials flow extension |
 | `Enterprise-Managed Authorization` | Centralized IdP access control extension |
-
-Source: [`clients.md`](https://modelcontextprotocol.io/clients.md)
 
 ## Extension Support Matrix
 
@@ -308,8 +305,7 @@ Source: [`extensions/client-matrix.md`](https://modelcontextprotocol.io/extensio
 
 ## Existing clients
 
-[`clients.md`](https://modelcontextprotocol.io/clients.md) is
-the registry of applications that support MCP. Notable entries:
+The MCP client registry lists applications that support MCP. Notable entries:
 
 - Claude Desktop, Claude Code, Claude.ai (Anthropic).
 - GitHub Copilot CLI (supports Tools, Discovery, Instructions, Sampling, Elicitation, DCR, OAuth Client Credentials, Tasks).
@@ -319,8 +315,8 @@ the registry of applications that support MCP. Notable entries:
 - Cline, Zed (with Discovery support), Cursor, Windsurf, other editor integrations.
 - Third-party IDE / agent platforms including Archestra (enterprise AI platform, supports CIMD, Enterprise-Managed Authorization).
 
-The list grows constantly — consult the source page for the
-current state.
+The list grows constantly — consult [modelcontextprotocol.io](https://modelcontextprotocol.io)
+for the current state.
 
 ## Local vs remote connection guides
 
@@ -331,6 +327,6 @@ current state.
 
 ---
 
-*Source pages: `clients.md`, `docs/develop/build-client.md`,
+*Source pages: `docs/develop/build-client.md`,
 `docs/develop/clients/client-best-practices.md`,
 `docs/develop/connect-{local,remote}-servers.md`.*

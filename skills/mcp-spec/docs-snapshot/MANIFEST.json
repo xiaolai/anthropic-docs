@@ -1,16 +1,10 @@
 {
   "indexUrl": "https://modelcontextprotocol.io/llms.txt",
-  "indexSha256": "d821f167aff49886100ace310cc80193053b8cb61700c3784df3576e8445e26f",
-  "indexBytes": 18329,
-  "pageCount": 121,
-  "refreshedAt": "2026-05-27T14:09:44Z",
+  "indexSha256": "b07650c29390a970579fb0f583ff4563a04583d5e2bf1a615fbca00f45f16b8d",
+  "indexBytes": 18211,
+  "pageCount": 120,
+  "refreshedAt": "2026-05-28T14:08:20Z",
   "pages": [
-    {
-      "path": "clients.md",
-      "url": "https://modelcontextprotocol.io/clients.md",
-      "sha256": "cfe75d9241a0ec5236675a7df8bc84f7cc00a8a5a8a7034c9ce2cc2ae610afcd",
-      "bytes": 97818
-    },
     {
       "path": "community/antitrust.md",
       "url": "https://modelcontextprotocol.io/community/antitrust.md",
@@ -134,14 +128,14 @@
     {
       "path": "develop/build-client.md",
       "url": "https://modelcontextprotocol.io/docs/develop/build-client.md",
-      "sha256": "042db1a5e63f3b92260805b4d600128cce5028534d5d0616d8be953d18104ab5",
-      "bytes": 64321
+      "sha256": "1e4decb06d07df82f3e8a8544c0e65a223a4c2f68520bac5a5b424f224392df2",
+      "bytes": 64189
     },
     {
       "path": "develop/build-server.md",
       "url": "https://modelcontextprotocol.io/docs/develop/build-server.md",
-      "sha256": "7d7904c2c07b697eb8857418cdbccac9a587a420182f04c6f3bfca1fda1b5197",
-      "bytes": 97223
+      "sha256": "d49ccb6cd2ce3890fece6211d6093cab4b48ccc385e22c0ce6247f273106fade",
+      "bytes": 97172
     },
     {
       "path": "develop/build-with-agent-skills.md",
@@ -158,20 +152,20 @@
     {
       "path": "develop/connect-local-servers.md",
       "url": "https://modelcontextprotocol.io/docs/develop/connect-local-servers.md",
-      "sha256": "7fe0d57ecfb965a6f3749ca49c98d632633cd53378b23929e80fcec30d149021",
-      "bytes": 13763
+      "sha256": "d7d901f2206e35a38d7d3bb1f3e15c9d9d9e8abcbf9c6d0bf6e6e46bf7a8d5fe",
+      "bytes": 13751
     },
     {
       "path": "develop/connect-remote-servers.md",
       "url": "https://modelcontextprotocol.io/docs/develop/connect-remote-servers.md",
-      "sha256": "18d030d9094a7b2a25cb8c12e5b4f3b886ef20876ac45bc6da02c3f705e23d10",
-      "bytes": 9567
+      "sha256": "7a97891b28c4542a3a295a3d8c65c7cad9f72f95b2cd60d3090c3d4be757ab7b",
+      "bytes": 9555
     },
     {
       "path": "getting-started/intro.md",
       "url": "https://modelcontextprotocol.io/docs/getting-started/intro.md",
-      "sha256": "0f66ed36c002f50963a8b5c533f59ebecbd380f075f52cc7b7a327b48e6b0e6d",
-      "bytes": 3228
+      "sha256": "c405f46b74ea68cb4930c58b85d2b827479c49a0a3c70eb5a62d01f36c1f23c6",
+      "bytes": 3216
     },
     {
       "path": "learn/architecture.md",
@@ -206,8 +200,8 @@
     {
       "path": "tools/debugging.md",
       "url": "https://modelcontextprotocol.io/docs/tools/debugging.md",
-      "sha256": "2c24d6df996f8019de68842e7f64a1ca8ca1b4a467e8df84be7bd9e9935b3d3d",
-      "bytes": 10039
+      "sha256": "f6f357aed9c6df696d39f31e276f2df89f349fcc6135241e007fc87daea2b90e",
+      "bytes": 10027
     },
     {
       "path": "tools/inspector.md",
@@ -266,8 +260,8 @@
     {
       "path": "extensions/client-matrix.md",
       "url": "https://modelcontextprotocol.io/extensions/client-matrix.md",
-      "sha256": "1ca4e37f7664b6175da2a1b7bf8a7fb4c5a5e3e5b5e5c37d22da7b4974a7d070",
-      "bytes": 5479
+      "sha256": "e70b8812ed0bda758af862b3d00eceb7486c73b5d7c2a4eda219ea592360bb03",
+      "bytes": 5441
     },
     {
       "path": "extensions/overview.md",

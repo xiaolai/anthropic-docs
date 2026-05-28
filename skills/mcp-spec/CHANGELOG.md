@@ -3,6 +3,9 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-28
+- Docs index 121→120 pages — upstream removed `clients.md` (Example Clients overview page); 15 issues evaluated (SEP proposals, dep-bot PRs, announcements), 0 added; @modelcontextprotocol/sdk v1.29.0 / mcp v1.27.1 unchanged
+
 ## 2026-05-27
 - Research pass — `clients.md` updated: Codex now supports `Instructions` in addition to Resources/Tools/Elicitation (PR #2790); updated SKILL-clients.md "Existing clients" entry for Codex accordingly. MANIFEST.json regenerated via `refresh-docs-snapshot.sh` (121 pages, refreshedAt 14:09 UTC). Part B: 0 new bug issues (highest bug issue #2725 already researched); `lastScannedIssueNumber` updated to 2801. Part C: 5 spot-checked URLs HTTP 200, versions consistent (@modelcontextprotocol/sdk v1.29.0 / mcp v1.27.1 / spec 2025-11-25), validate-examples PASS, all cross-references valid, rules globs covered.
 - [pipeline report] Docs index 119→121 pages (2 new: community/feature-lifecycle.md, community/tool-annotations/charter.md); SKILL-clients.md updated; all 11 gates pass; cost $2.35
