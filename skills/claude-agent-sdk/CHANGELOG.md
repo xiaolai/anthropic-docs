@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-05-28 (success run)
+- Sync to TS v0.3.153 — version bump only (0.3.150→0.3.153); docs index hash updated (986d8748→6cef2ea2); 30 pages audited; no new API surface changes; all 11 gates pass, 27/27 verify checks pass; 1 mending run; $1.93 total
+
+## 2026-05-28 (v0.3.153 — version bump)
+
+- TypeScript SDK v0.3.150 → v0.3.153 (parity with Claude Code v2.1.153); no new API surface changes
+- Docs index hash updated (986d8748 → 6cef2ea2); page count unchanged at 30; no new API surface changes
+- Version propagated to SKILL.md, SKILL-typescript.md, README.md, state.json
+
 ## 2026-05-26
 - Partial run — research agent crashed (sdk.mjs exit 1, 368s); no upstream changes (TS v0.3.150 / PY v0.2.87 unchanged); all 8 safety gates pass; no surface-file edits
 
