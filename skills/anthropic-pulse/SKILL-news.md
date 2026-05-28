@@ -16,7 +16,7 @@ source: https://www.anthropic.com/news
 > most recent items from [https://www.anthropic.com/news](https://www.anthropic.com/news). For the full
 > body of any item, WebFetch its URL — that's the design.
 
-**Last refreshed**: 2026-05-27
+**Last refreshed**: 2026-05-28
 
 | # | Date | Category | Title | Link |
 |---|---|---|---|---|
@@ -25,15 +25,15 @@ source: https://www.anthropic.com/news
 | 3 | 2026-04-07 | Announcements | **Project Glasswing** | [open](https://www.anthropic.com/glasswing) |
 | 4 | 2026-03-18 |  | **What 81,000 people want from AI** | [open](https://www.anthropic.com/81k-interviews) |
 | 5 | 2026-02-04 | Announcements | **Claude is a space to think** | [open](https://www.anthropic.com/news/claude-is-a-space-to-think) |
-| 6 | 2026-05-26 | Announcements | **Anthropic appoints KiYoung Choi as Representative Director of Korea ahead of Seoul office opening** | [open](https://www.anthropic.com/news/kiyoung-choi-representative-director-anthropic-korea) |
-| 7 | 2026-05-25 | Announcements | **Anthropic co-founder Chris Olah’s remarks on Pope Leo XIV’s encyclical "Magnifica humanitas"** | [open](https://www.anthropic.com/news/chris-olah-pope-leo-encyclical) |
-| 8 | 2026-05-19 | Announcements | **Widening the conversation on frontier AI** | [open](https://www.anthropic.com/news/widening-conversation-ai) |
-| 9 | 2026-05-19 | Announcements | **KPMG integrates Claude across its core business and workforce of more than 276,000 in strategic alliance** | [open](https://www.anthropic.com/news/anthropic-kpmg) |
-| 10 | 2026-05-18 | Announcements | **Anthropic acquires Stainless** | [open](https://www.anthropic.com/news/anthropic-acquires-stainless) |
-| 11 | 2026-05-14 | Announcements | **PwC is deploying Claude to build technology, execute deals, and reinvent enterprise functions for clients** | [open](https://www.anthropic.com/news/pwc-expanded-partnership) |
-| 12 | 2026-05-14 | Announcements | **Anthropic forms $200 million partnership with the Gates Foundation** | [open](https://www.anthropic.com/news/gates-foundation-partnership) |
-| 13 | 2026-05-13 | Announcements | **Introducing Claude for Small Business** | [open](https://www.anthropic.com/news/claude-for-small-business) |
-| 14 | 2026-05-06 | Announcements | **Higher usage limits for Claude and a compute deal with SpaceX** | [open](https://www.anthropic.com/news/higher-limits-spacex) |
+| 6 | 2026-05-27 | Announcements | **Anthropic opens Milan office to support Italian enterprise, research, and developers** | [open](https://www.anthropic.com/news/milan-office-opening) |
+| 7 | 2026-05-26 | Announcements | **Anthropic appoints KiYoung Choi as Representative Director of Korea ahead of Seoul office opening** | [open](https://www.anthropic.com/news/kiyoung-choi-representative-director-anthropic-korea) |
+| 8 | 2026-05-25 | Announcements | **Anthropic co-founder Chris Olah’s remarks on Pope Leo XIV’s encyclical "Magnifica humanitas"** | [open](https://www.anthropic.com/news/chris-olah-pope-leo-encyclical) |
+| 9 | 2026-05-19 | Announcements | **Widening the conversation on frontier AI** | [open](https://www.anthropic.com/news/widening-conversation-ai) |
+| 10 | 2026-05-19 | Announcements | **KPMG integrates Claude across its core business and workforce of more than 276,000 in strategic alliance** | [open](https://www.anthropic.com/news/anthropic-kpmg) |
+| 11 | 2026-05-18 | Announcements | **Anthropic acquires Stainless** | [open](https://www.anthropic.com/news/anthropic-acquires-stainless) |
+| 12 | 2026-05-14 | Announcements | **PwC is deploying Claude to build technology, execute deals, and reinvent enterprise functions for clients** | [open](https://www.anthropic.com/news/pwc-expanded-partnership) |
+| 13 | 2026-05-14 | Announcements | **Anthropic forms $200 million partnership with the Gates Foundation** | [open](https://www.anthropic.com/news/gates-foundation-partnership) |
+| 14 | 2026-05-13 | Announcements | **Introducing Claude for Small Business** | [open](https://www.anthropic.com/news/claude-for-small-business) |
 
 ## How to use this digest
 
