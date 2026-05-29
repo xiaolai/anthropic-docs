@@ -27,11 +27,12 @@ hardcoding model IDs.
 
 ## Current model family (Claude 4.X)
 
-Per the upstream API (`messages/create.md`, updated 2026-05-19):
+Per the upstream API (`messages/create.md`, updated 2026-05-28):
 
 | ID | Description |
 |---|---|
-| `claude-opus-4-7` | Frontier intelligence for long-running agents and coding (latest Opus) |
+| `claude-opus-4-8` | Frontier intelligence for long-running agents and coding (latest Opus, added SDK v0.100.0) |
+| `claude-opus-4-7` | Frontier intelligence for long-running agents and coding |
 | `claude-mythos-preview` | New class of intelligence, strongest in coding and cybersecurity (preview) |
 | `claude-opus-4-6` | Frontier intelligence for long-running agents and coding |
 | `claude-sonnet-4-6` | Best combination of speed and intelligence (latest Sonnet) |

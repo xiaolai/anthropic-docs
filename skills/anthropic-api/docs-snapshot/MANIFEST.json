@@ -1,9 +1,9 @@
 {
   "indexUrl": "https://platform.claude.com/llms.txt",
-  "indexSha256": "4537a29223635c7ee8e2baa89dcfc14b089026065d16a3b43c590d788c4d5994",
+  "indexSha256": "c5e78c04c7945e605b7560934ab1d87dafcd5b1f4e90ddbac461d20f671047e9",
   "indexBytes": 166612,
   "pageCount": 225,
-  "refreshedAt": "2026-05-28T13:06:05Z",
+  "refreshedAt": "2026-05-29T00:00:00Z",
   "pages": [
     {
       "path": "en/api/admin.md",
@@ -1286,8 +1286,8 @@
     {
       "path": "en/api/messages/batches.md",
       "url": "https://platform.claude.com/docs/en/api/messages/batches.md",
-      "sha256": "e40cb5db5c01e7a8e159f419dca00c7f51d90f06b4e4752c4548d4b2d1dd9949",
-      "bytes": 195575
+      "sha256": "ee4d9a283f0a496f11d02663a1540e508db3438dc8a1ac6623311f3acc533f9c",
+      "bytes": 201509
     },
     {
       "path": "en/api/messages/batches/cancel.md",
@@ -1328,26 +1328,26 @@
     {
       "path": "en/api/messages/count_tokens.md",
       "url": "https://platform.claude.com/docs/en/api/messages/count_tokens.md",
-      "sha256": "4f3937556445723c6213bf9bddada0651ba1c48d230eb1e0ce8d7bb048881350",
-      "bytes": 55431
+      "sha256": "47ef761bb622d78e3d354c743941dd9312fb36d41eb5d7bebcb1eecbd414d495",
+      "bytes": 56451
     },
     {
       "path": "en/api/messages/create.md",
       "url": "https://platform.claude.com/docs/en/api/messages/create.md",
-      "sha256": "927b504ec77aa03ecf4ebbcfdcdca0e957208e20a76257ad6b4eea92747791c4",
-      "bytes": 82846
+      "sha256": "e0d5b05e07a9bcdaa4e575fc764b36db9cc19f0f7c8b8b0f92b053c02e1b5991",
+      "bytes": 85064
     },
     {
       "path": "en/api/models.md",
       "url": "https://platform.claude.com/docs/en/api/models.md",
-      "sha256": "69bb08dff1c16767fde5ff7ec019e08c1b58d201e722ce3c2e5b7bb73761ae69",
-      "bytes": 20997
+      "sha256": "3300db6541589805524eca44a7629a0427bcc88c59732f5e931a5a95ecd6869f",
+      "bytes": 21176
     },
     {
       "path": "en/api/models/list.md",
       "url": "https://platform.claude.com/docs/en/api/models/list.md",
-      "sha256": "d51c42ccaaba956ac4c0b28171e62973d7d144f0a05c324326fdf2c3e56d35f1",
-      "bytes": 7002
+      "sha256": "bdad613e7d9f810cf066c93aea6fc5484c5963f3af0d6db5c7b6e48bda312261",
+      "bytes": 7092
     },
     {
       "path": "en/api/models/retrieve.md",

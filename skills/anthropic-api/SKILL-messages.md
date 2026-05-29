@@ -96,6 +96,31 @@ block) or an array of typed blocks:
 | `tool_result` | Result of a previous `tool_use`. **Must reference the matching `tool_use_id`**. |
 | `tool_search_tool_result` | Result from a tool_search server tool (`tool_search_tool_bm25` / `tool_search_tool_regex`). Content is `tool_search_tool_search_result` or `tool_search_tool_result_error`. Carries `tool_use_id`. |
 | `text_editor_code_execution_tool_result` | Result from a text-editor operation inside code execution. Content is view/create/str_replace result or error. |
+| `container_upload` | `ContainerUploadBlockParam` — upload a file to the code-execution container. Fields: `file_id: string`, `type: "container_upload"`, `cache_control: optional`. The file is made available in the container's input directory. |
+
+**Mid-conversation system instructions (`role: "system"` messages):**
+
+A message in the `messages` array may have `role: "system"` if its `content`
+consists of `MidConversationSystemBlockParam` blocks (`type: "mid_conv_system"`).
+This lets you provide or update system-level instructions at a specific point in
+the conversation, rather than only via the top-level `system` parameter.
+
+Schema of a mid-conversation system message:
+```json
+{
+  "role": "system",
+  "content": [
+    {
+      "type": "mid_conv_system",
+      "content": [
+        { "type": "text", "text": "<updated instruction here>" }
+      ]
+    }
+  ]
+}
+```
+
+Source: [`messages/create.md`](https://platform.claude.com/docs/en/api/messages/create.md) (updated 2026-05-28, SDK v0.100.0).
 
 **Assistant-turn output blocks:**
 
@@ -247,7 +272,8 @@ in the platform-features skill for caching strategy.
 | `input_tokens` | number | Input tokens billed |
 | `cache_creation_input_tokens` | number | Tokens written to cache (total across TTLs) |
 | `cache_read_input_tokens` | number | Tokens read from cache |
-| `output_tokens` | number | Output tokens generated |
+| `output_tokens` | number | Output tokens generated (authoritative billing total) |
+| `output_tokens_details` | object | Breakdown of output tokens by category (read-only, observability). `{ thinking_tokens: number }` — number of output tokens spent on internal reasoning (including delimiter tokens), reflecting raw reasoning produced (not possibly-shorter summarized text returned). Added SDK v0.100.0. |
 | `cache_creation` | object | Breakdown by TTL: `ephemeral_5m_input_tokens`, `ephemeral_1h_input_tokens` |
 | `inference_geo` | string | Geographic region where inference was performed |
 | `server_tool_use` | object | Server tool request counts: `web_search_requests`, `web_fetch_requests` |
