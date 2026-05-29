@@ -128,6 +128,16 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
   `claude-opus-4-6` and `claude-opus-4-7` only. Provides up to 2.5×
   higher output tokens per second at premium pricing. ZDR eligible.
   Join waitlist at [claude.com/fast-mode](https://claude.com/fast-mode).
+- **Mid-conversation system messages** (`{"role": "system"}` in the
+  `messages` array): inject system instructions mid-session without
+  editing the top-level `system` field, preserving the cached prefix.
+  Placement rules: must immediately follow a `user` turn (or an
+  `assistant` turn ending in server tool use); must precede an
+  `assistant` turn or end the array. Consecutive system messages are
+  not allowed. Available on **Claude API and Claude Platform on AWS
+  only** — not on Bedrock, Vertex AI, or Foundry. Available on
+  `claude-opus-4-8` only. No beta header required. ZDR eligible.
+  Source: [`mid-conversation-system-messages.md`](https://platform.claude.com/docs/en/build-with-claude/mid-conversation-system-messages.md).
 - **Context windows** differ per model. Current sizes: **1M tokens** for
   Claude Mythos Preview (`claude-mythos-preview`), Opus 4.7, Opus 4.6, and
   Sonnet 4.6; **200K tokens** for Sonnet 4.5 and older models. Use
@@ -205,6 +215,13 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
 | [`token-counting.md`](https://platform.claude.com/docs/en/build-with-claude/token-counting.md) | Count tokens in a request without running inference |
 | [`task-budgets.md`](https://platform.claude.com/docs/en/build-with-claude/task-budgets.md) | Task budgets (beta, `task-budgets-2026-03-13`) — advisory token cap for full agentic loop. **Schema:** nested under `output_config`: `{"output_config": {"effort": "high", "task_budget": {"type": "tokens", "total": 64000}}}`. Supported on Opus 4.7 only |
 
+## Conversation management
+
+| Feature | Page | What it does |
+|---|---|---|
+| **Mid-conversation system messages** | [`mid-conversation-system-messages.md`](https://platform.claude.com/docs/en/build-with-claude/mid-conversation-system-messages.md) | Append `{"role":"system"}` to `messages` mid-session; preserves cached prefix. Claude API + Claude Platform on AWS only (`claude-opus-4-8`). No beta header. ZDR eligible |
+| **Orchestration mode example** | [`mid-conversation-effort-example.md`](https://platform.claude.com/docs/en/build-with-claude/mid-conversation-effort-example.md) | Worked example: toggle a session-level mode that auto-fans tasks to parallel subagents using mid-conversation system messages + `effort: "xhigh"` + multi-agent Workflow tool |
+
 ## Platform integrations
 
 Claude runs on multiple cloud platforms. Each has its own model
@@ -224,4 +241,4 @@ naming, region availability, and auth model:
 
 ---
 
-*Source pages: 30 under `platform.claude.com/docs/en/build-with-claude/`.*
+*Source pages: 32 under `platform.claude.com/docs/en/build-with-claude/`.*

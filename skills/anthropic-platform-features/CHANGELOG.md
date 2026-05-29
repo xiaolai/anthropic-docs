@@ -3,6 +3,9 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-29
+- Sync to platform.claude.com docs — added 3 pages (mid-conversation-effort-example, mid-conversation-system-messages under build-with-claude; cloud-sandboxes-reference under managed-agents), removed 1 (cloud-containers); page count 119 → 121; all 11 gates pass
+
 ## 2026-05-28
 - *(pending review — see PR auto/2026-05-28-pending-review)* Research agent audit (55 turns, $0.86) — check-docs-drift gate failed; proposed changes on draft branch pending human review
 

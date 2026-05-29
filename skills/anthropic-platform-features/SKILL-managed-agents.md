@@ -6,7 +6,7 @@ description: |
   files, memory, vaults, tools, MCP connectors, multi-agent
   coordination, webhooks, GitHub integration, permission policies,
   and event streaming. Covers onboarding through to production
-  deployment with cloud containers.
+  deployment with cloud sandboxes.
 source: https://platform.claude.com/docs/en/managed-agents/overview.md
 ---
 
@@ -46,9 +46,13 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
 - **Permission policies** gate what each agent may do (which tools,
   which file paths, which network endpoints). Set on the agent
   definition; enforced server-side. Default-deny.
-- **Cloud containers** are the default execution sandbox for code-running
-  agents. Limited CPU / memory / network egress. Configure per agent
-  via the environments resource.
+- **Cloud sandboxes** are the default Anthropic-managed execution environment
+  for code-running agents (Ubuntu 22.04 LTS, x86_64, up to 8 GB RAM, up to
+  10 GB disk). Pre-installed with Python 3.12+, Node.js 20+, Go 1.22+,
+  Rust 1.77+, and common dev tooling. Network is disabled by default; enable
+  in environment config. See
+  [`cloud-sandboxes-reference.md`](https://platform.claude.com/docs/en/managed-agents/cloud-sandboxes-reference.md)
+  for the full pre-installed package list.
 - **Self-hosted sandboxes** keep orchestration on Anthropic's side but
   move tool execution (code, filesystem, network egress) into your own
   infrastructure. An *environment worker* process — run via the `ant`
@@ -130,7 +134,7 @@ agent's `tools` array. All tools are enabled by default; disable individual tool
 | Page | Topic |
 |---|---|
 | [`environments.md`](https://platform.claude.com/docs/en/managed-agents/environments.md) | Environment concept (dev / staging / prod) |
-| [`cloud-containers.md`](https://platform.claude.com/docs/en/managed-agents/cloud-containers.md) | Container-backed agent runtime (Anthropic-managed) |
+| [`cloud-sandboxes-reference.md`](https://platform.claude.com/docs/en/managed-agents/cloud-sandboxes-reference.md) | Pre-installed languages, databases, utilities, and sandbox specs (Ubuntu 22.04, up to 8 GB RAM / 10 GB disk, network off by default) |
 | [`self-hosted-sandboxes.md`](https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes.md) | Run sessions in your own infrastructure (environment worker pattern) |
 | [`self-hosted-sandboxes-security.md`](https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes-security.md) | Shared responsibility model for self-hosted sandbox environments |
 | [`sessions.md`](https://platform.claude.com/docs/en/managed-agents/sessions.md) | Session lifecycle |
