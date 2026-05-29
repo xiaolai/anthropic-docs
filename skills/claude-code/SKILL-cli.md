@@ -76,6 +76,7 @@ Source: `code.claude.com/docs/en/cli-reference.md`.
 | `--disallowedTools` | Tools removed from model context entirely | `"Bash(git log *)" "Edit"` |
 | `--effort` | Set effort level: `low`, `medium`, `high`, `xhigh`, `max` | `claude --effort high` |
 | `--exclude-dynamic-system-prompt-sections` | Move per-machine sections to first user message (improves prompt-cache reuse in `-p` scripts) | |
+| `--exec` | Run a shell command as a PTY-backed background job instead of starting a Claude session. Use with `--bg` to launch from the shell | `claude --exec "npm test"` |
 | `--fallback-model` | Auto-fallback model when default is overloaded (print mode + background sessions) | `claude -p --fallback-model sonnet "query"` |
 | `--fork-session` | Create new session ID instead of reusing original (use with `--resume`/`--continue`) | |
 | `--from-pr` | Resume sessions linked to a PR. Accepts PR number, GitHub/GitLab/Bitbucket URL | `claude --from-pr 123` |
@@ -100,6 +101,7 @@ Source: `code.claude.com/docs/en/cli-reference.md`.
 | `--plugin-dir` | Load plugin from directory or `.zip` archive for this session only. Repeat for multiple | `claude --plugin-dir ./my-plugin` |
 | `--plugin-url` | Fetch plugin `.zip` from URL for this session only. Repeat or space-separated | `claude --plugin-url https://example.com/plugin.zip` |
 | `--print`, `-p` | Print response without interactive mode | `claude -p "query"` |
+| `--prompt-suggestions` | Emit a `prompt_suggestion` message after each turn with a predicted next user prompt. Requires `--print`, `--output-format stream-json`, and `--verbose` | |
 | `--remote` | Create a new web session on claude.ai with provided task | `claude --remote "Fix the login bug"` |
 | `--remote-control`, `--rc` | Start interactive session with Remote Control enabled | `claude --remote-control "My Project"` |
 | `--remote-control-session-name-prefix <prefix>` | Prefix for auto-generated Remote Control session names when no explicit name is set (defaults to machine hostname). Same effect as `CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX` | `claude remote-control --remote-control-session-name-prefix dev-box` |
@@ -165,7 +167,7 @@ Environment variables can also be set in `settings.json` under `env`. See `code.
 | `ENABLE_TOOL_SEARCH` | Set to `false` to disable MCP tool search |
 | `CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE` | Set to `1` to pin `/fast` mode to Opus 4.6 instead of the default Opus 4.7 |
 | `CLAUDE_CODE_SUBAGENT_MODEL` | Override the model used by subagents in multi-agent sessions. See [Model configuration](https://code.claude.com/docs/en/model-config.md). Source: `code.claude.com/docs/en/env-vars.md` |
-| `CLAUDE_CODE_WORKFLOWS` | Set to `1` to enable the `Workflow` tool for deterministic multi-agent orchestration (off by default; v2.1.153+) |
+| `CLAUDE_CODE_WORKFLOWS` | Set to `1` to enable the `Workflow` tool for deterministic multi-agent orchestration (off by default; v2.1.156+) |
 | `CLAUDE_CODE_DISABLE_ALTERNATE_SCREEN` | Set to `1` to disable fullscreen rendering and use the classic main-screen renderer. The conversation stays in the terminal's native scrollback so `Cmd+f` and tmux copy mode work normally. Takes precedence over `CLAUDE_CODE_NO_FLICKER` and the `tui` setting. You can also switch with `/tui default`. Source: `code.claude.com/docs/en/env-vars.md` |
 | `CLAUDE_CODE_PACKAGE_MANAGER_AUTO_UPDATE` | Set to `1` to let Claude Code run your package manager's upgrade command in the background when a new version is available. Applies to Homebrew and WinGet installations. Other package managers continue to show the upgrade command without running it. Source: `code.claude.com/docs/en/env-vars.md` |
 | `CLAUDE_CODE_SESSION_ID` | Set automatically in Bash and PowerShell tool subprocesses and in hook command subprocesses to the current session ID. Matches the `session_id` field in the hook JSON input. Updated on `/clear`. Use to correlate scripts and external tools with the Claude Code session that launched them. Source: `code.claude.com/docs/en/env-vars.md` |

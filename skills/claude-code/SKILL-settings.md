@@ -80,6 +80,7 @@ Minimal valid `settings.json`:
 | `disabledMcpjsonServers` | array | Specific MCP servers from `.mcp.json` to reject |
 | `disableRemoteControl` | boolean | Disable Remote Control (v2.1.128+) |
 | `disableSkillShellExecution` | boolean | Disable `!` shell execution in skills/commands |
+| `disableWorkflows` | boolean | Disable dynamic workflows and bundled workflow commands. Default: `false`. Equivalent to `CLAUDE_CODE_DISABLE_WORKFLOWS=1`. See `code.claude.com/docs/en/workflows.md` |
 | `editorMode` | string | `"normal"` or `"vim"` for the input prompt |
 | `effortLevel` | string | Persist effort level: `"low"`, `"medium"`, `"high"`, `"xhigh"` |
 | `enableAllProjectMcpServers` | boolean | Auto-approve all project `.mcp.json` servers |
@@ -107,7 +108,7 @@ Minimal valid `settings.json`:
 | `parentSettingsBehavior` | string | (Managed only) `"first-wins"` (default) or `"merge"` for embedding host policy (v2.1.133+) |
 | `permissions` | object | Permission rules. See § *`permissions` block* below |
 | `plansDirectory` | string | Where plan files are stored (default: `~/.claude/plans`) |
-| `pluginSuggestionMarketplaces` | array | (Managed only) Allowlist of org marketplace names whose plugins may be suggested to users via context-aware tips (v2.1.153+) |
+| `pluginSuggestionMarketplaces` | array | (Managed only) Allowlist of org marketplace names whose plugins may be suggested to users via context-aware tips (v2.1.156+) |
 | `pluginTrustMessage` | string | (Managed only) Custom message appended to plugin trust warning |
 | `policyHelper` | object | (Managed only) Admin executable for dynamic managed settings (v2.1.136+). Keys: `path` (string, absolute path to helper), `timeoutMs` (number, wait limit before treating run as failed), `refreshIntervalMs` (number, re-run interval; `0` = disable, minimum `60000`) |
 | `preferredNotifChannel` | string | Notification method: `"auto"`, `"terminal_bell"`, `"iterm2"`, `"iterm2_with_bell"`, `"kitty"`, `"ghostty"`, `"notifications_disabled"` |
@@ -124,7 +125,7 @@ Minimal valid `settings.json`:
 | `spinnerTipsOverride` | object | Override spinner tips: `{ tips: [...], excludeDefault: bool }` |
 | `spinnerVerbs` | object | Customize spinner verbs: `{ mode: "replace"|"append", verbs: [...] }` |
 | `sshConfigs` | array | SSH connections for Desktop environment dropdown (managed + user only) |
-| `statusLine` | object | Custom status line command. Scripts receive `COLUMNS` and `LINES` env vars so output can be sized to the terminal width (v2.1.153+). See `code.claude.com/docs/en/statusline.md` |
+| `statusLine` | object | Custom status line command. Scripts receive `COLUMNS` and `LINES` env vars so output can be sized to the terminal width (v2.1.156+). See `code.claude.com/docs/en/statusline.md` |
 | `strictKnownMarketplaces` | array | (Managed only) Marketplace allowlist/lockdown |
 | `strictPluginOnlyCustomization` | boolean \| array | (Managed only) Block skills, agents, hooks, and/or MCP servers from user and project sources; only plugin-provided or managed sources load. `true` locks all four surfaces; an array names which to lock: `"skills"`, `"agents"`, `"hooks"`, `"mcp"`. Requires v2.1.82+. Combine with `strictKnownMarketplaces` to control the full customization supply chain. Source: `code.claude.com/docs/en/settings.md` |
 | `syntaxHighlightingDisabled` | boolean | Disable syntax highlighting |

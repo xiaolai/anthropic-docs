@@ -14,8 +14,8 @@ changes that affect the reference surface (schema fields, event
 names, flags, env vars) flow in.
 
 <!-- The two stamps below are auto-filled by the pipeline. -->
-**Claude Code version**: v2.1.153
-**Last updated**: 2026-05-28
+**Claude Code version**: v2.1.156
+**Last updated**: 2026-05-29
 **Pipeline status**: see [`reports/`](reports/) for per-run records.
 
 ## What it does
@@ -164,13 +164,11 @@ and `git pull`.
 
 | Date | Update | Research | Mending | Report | Total | Notes |
 |------|--------|----------|---------|--------|-------|-------|
-| 2026-05-28 | partial | CC v2.1.152 → v2.1.153; docs +0/-30 |
-| 2026-05-27 | partial | CC v2.1.150 → v2.1.153; docs +2/-31 |
-| 2026-05-27 (re-run) | — | $1.25 | $0.33 | — | **$1.59** | partial — update crashed (exit 1, SDK error); CC v2.1.150→v2.1.153; docs 110→111 pages (agent-sdk/* removed); all 8 gates pass |
+| 2026-05-29 | success | CC v2.1.153 → v2.1.156; docs +1/-30 |
+| 2026-05-28 | partial | CC v2.1.152 → v2.1.156; docs +0/-30 |
+| 2026-05-27 | partial | CC v2.1.150 → v2.1.156; docs +2/-31 |
+| 2026-05-27 (re-run) | — | $1.25 | $0.33 | — | **$1.59** | partial — update crashed (exit 1, SDK error); CC v2.1.150→v2.1.156; docs 110→111 pages (agent-sdk/* removed); all 8 gates pass |
 | 2026-05-26 | review | research + report (no upstream change) |
-| 2026-05-25 | success | research + report (no upstream change) |
-| 2026-05-24 | review | research + report (no upstream change) |
-| 2026-05-23 | success | CC v2.1.148 → v2.1.153 |
 
 ## For maintainers
 

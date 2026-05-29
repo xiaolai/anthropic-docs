@@ -48,12 +48,21 @@ Each entry uses this structure:
 
 ### KI 61734 — Sonnet 4.6 context window meter shows 200K instead of 1M
 
-- **Affects:** v2.1.153 (possibly earlier); behaviour may vary by plan
+- **Affects:** v2.1.156 (possibly earlier); behaviour may vary by plan
 - **Symptom:** The status bar context-window meter displays 200K tokens for `claude-sonnet-4-6`. Multiple users report this was 1M in previous versions. Sessions may be actively limited to 200K, not just mis-displayed.
 - **Reproduction:** Start Claude Code with `claude-sonnet-4-6` on a Pro or Max plan and observe the context meter.
 - **Workaround:** Switch to `claude-opus-4-7` which shows and uses the 1M context window on eligible plans. For API/Team plans, using `--model claude-sonnet-4-6` via CLI may restore 1M. Plan-specific context limits: Max plan caps Sonnet at 200K but gives Opus 4.7 the 1M window; API/Team plans allow 1M on Sonnet 4.6. Check `claude.ai/settings` → Plan for your tier's limits.
-- **Status:** Open; maintainers aware (v2.1.153 regression suspected, not confirmed).
+- **Status:** Open; maintainers aware (v2.1.156 regression suspected, not confirmed).
 - **Source:** [#61734](https://github.com/anthropics/claude-code/issues/61734)
+
+### KI 61963 — SSH remote session fails silently when a local plugin/skill archive is corrupted
+
+- **Affects:** All versions with SSH remote support
+- **Symptom:** `claude --remote <host>` repeatedly fails to connect; the error message looks like an SSH handshake failure but SSH credentials are correct. The real cause is a corrupted plugin or skill archive in the local plugins directory being uploaded during session initialization.
+- **Reproduction:** Corrupt or truncate a `.tar.gz`/`.zip` plugin archive in your local plugins directory (e.g. `~/.claude/plugins/` on macOS/Linux, `%APPDATA%\Claude\plugins\` on Windows), then attempt `claude --remote <host>`.
+- **Workaround:** (1) Disable all plugins temporarily (`--bare` flag), then re-enable one at a time to isolate the bad archive. (2) Inspect your plugins directory for truncated or unextractable archives. Delete or reinstall any corrupted plugin.
+- **Status:** Open — fix pending (should wrap archive transfer in per-archive try/catch and skip bad archives instead of failing the whole connection).
+- **Source:** [#61963](https://github.com/anthropics/claude-code/issues/61963)
 
 ## Recently resolved
 

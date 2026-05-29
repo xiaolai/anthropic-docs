@@ -10,6 +10,16 @@ The newest entry is at the top.
 
 ---
 
+## v2.1.156 — 2026-05-29
+
+Version bump: `@anthropic-ai/claude-code` updated from v2.1.153 to v2.1.156.
+
+- Fixed an issue when using Opus 4.8 where thinking blocks were modified, leading to API errors.
+- Docs index: added `workflows.md`; confirmed removal of `agent-sdk/*` section (30 pages) from upstream index
+
+## 2026-05-29
+- Research pass at CC v2.1.156 — updated SKILL-cli.md (+--exec, +--prompt-suggestions), SKILL-settings.md (+disableWorkflows), SKILL-known-issues.md (+KI 61963 SSH remote fails with corrupted plugin archive); all 11 gates pass
+
 ## 2026-05-28
 - Partial sync to CC v2.1.153 — update agent crashed (exit 1, SDK error); research ran 111 turns across 111 pages; docs index hash updated (30 agent-sdk/* pages removed from index); verify passed after 2 mend runs (34 checks, 0 failures); all 8 gates pass
 
