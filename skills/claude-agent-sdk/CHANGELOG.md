@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-05-29 (review — check-diff-size)
+- *(pending review — see PR on `auto/2026-05-29-pending-review`)* TS v0.3.153→v0.3.156 (parity with CC v2.1.156); 2 new known issues added (issue #337: empty thinking blocks on AWS Bedrock v0.3.152+ regression; issue #338: stop_reason indistinguishable on interrupted vs completed messages); check-diff-size gate failed; 30 pages audited; 27/27 verify checks pass; 1 mending run; $1.85
+
+## 2026-05-29 (v0.3.156 — version bump)
+
+- TypeScript SDK v0.3.153 → v0.3.156 (parity with Claude Code v2.1.156); no new API surface changes
+- Docs index hash updated (6cef2ea2 → a241ee1e); page count unchanged at 30; no new API surface changes
+- Version propagated to SKILL.md, SKILL-typescript.md, README.md, state.json
+
 ## 2026-05-28 (success run)
 - Sync to TS v0.3.153 — version bump only (0.3.150→0.3.153); docs index hash updated (986d8748→6cef2ea2); 30 pages audited; no new API surface changes; all 11 gates pass, 27/27 verify checks pass; 1 mending run; $1.93 total
 

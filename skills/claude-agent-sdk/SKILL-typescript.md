@@ -1,6 +1,6 @@
-# Claude Agent SDK — TypeScript Reference (v0.3.153)
+# Claude Agent SDK — TypeScript Reference (v0.3.156)
 
-**Package**: `@anthropic-ai/claude-agent-sdk@0.3.153`
+**Package**: `@anthropic-ai/claude-agent-sdk@0.3.156`
 **Docs**: https://code.claude.com/docs/en/agent-sdk/typescript
 **Repo**: https://github.com/anthropics/claude-agent-sdk-typescript
 **Migration**: Renamed from `@anthropic-ai/claude-code`. See [migration guide](https://code.claude.com/docs/en/agent-sdk/migration-guide).
@@ -651,7 +651,7 @@ type SDKPermissionDenial = { tool_name: string; tool_use_id: string; tool_input:
 // Error codes (SDKAssistantMessageError) — also emitted by StopFailure hooks
 'authentication_failed' | 'oauth_org_not_allowed' | 'billing_error' | 'rate_limit' |
 'invalid_request' | 'model_not_found' | 'server_error' | 'unknown' | 'max_output_tokens'
-// 'model_not_found' — since v0.3.153: replaces generic 'invalid_request' when the selected
+// 'model_not_found' — since v0.3.156: replaces generic 'invalid_request' when the selected
 //   model ID doesn't exist or isn't available on the account/region
 ```
 
@@ -1752,7 +1752,7 @@ return {
 ### #17: SDK fails to discover CLI when bundled with bun build
 **Error**: `Claude Code executable not found at /$bunfs/root/cli.js` ([#150](https://github.com/anthropics/claude-agent-sdk-typescript/issues/150))
 **Cause**: `import.meta.url` resolves to virtual filesystem path when bundled with `bun build --compile`, where the CLI binary doesn't physically exist.
-**Fix** (v0.3.153+): Use the new `@anthropic-ai/claude-agent-sdk/extract` subpath export:
+**Fix** (v0.3.156+): Use the new `@anthropic-ai/claude-agent-sdk/extract` subpath export:
 ```typescript
 import { extractFromBunfs } from "@anthropic-ai/claude-agent-sdk/extract";
 import nativeBinary from "@anthropic-ai/claude-agent-sdk/claude-code-native" with { type: "file" };
@@ -1762,7 +1762,7 @@ const q = query({ prompt: "...", options: { pathToClaudeCodeExecutable: executab
 ```
 `extractFromBunfs(binPath)` copies the binary out of the compiled executable's virtual filesystem
 and returns a real filesystem path. Only needed for `bun build --compile` consumers.
-**Legacy workaround** (pre-v0.3.153): Set `pathToClaudeCodeExecutable` explicitly to the physical
+**Legacy workaround** (pre-v0.3.156): Set `pathToClaudeCodeExecutable` explicitly to the physical
 CLI path, or avoid bundling the SDK.
 
 ### #18: unstable_v2_createSession() doesn't support plugins option
@@ -2014,12 +2014,12 @@ for await (const msg of response) {
 
 ---
 
-## Changelog Highlights (v0.2.77 → v0.3.153)
+## Changelog Highlights (v0.2.77 → v0.3.156)
 
 | Version | Change |
 |---------|--------|
-| v0.3.153 | Parity update with Claude Code v2.1.153; no new API surface changes |
-| v0.3.153 | `SDKAssistantMessageError.error` now reports `'model_not_found'` (instead of generic `'invalid_request'`) when the model ID doesn't exist/isn't available; `api_error_status` field added to `SDKResultMessage` (HTTP status of last API error); new `@anthropic-ai/claude-agent-sdk/extract` subpath with `extractFromBunfs()` for `bun build --compile` consumers |
+| v0.3.156 | Parity update with Claude Code v2.1.156; no new API surface changes |
+| v0.3.156 | `SDKAssistantMessageError.error` now reports `'model_not_found'` (instead of generic `'invalid_request'`) when the model ID doesn't exist/isn't available; `api_error_status` field added to `SDKResultMessage` (HTTP status of last API error); new `@anthropic-ai/claude-agent-sdk/extract` subpath with `extractFromBunfs()` for `bun build --compile` consumers |
 | v0.3.x  | `startup()` / `WarmQuery` — pre-warm CLI before prompt available; `resolveSettings()` (alpha); new `SDKPermissionDeniedMessage`, `SDKPluginInstallMessage`, `SDKTaskUpdatedMessage`, `SDKSessionStateChangedMessage`, `SDKNotificationMessage`, `SDKMemoryRecallMessage`, `SDKMirrorErrorMessage` types; `SDKAPIRetryMessage` and `SDKElicitationCompleteMessage` re-added to union; `SDKMessageOrigin` on user/result messages; new `AgentDefinition` fields: `background`, `memory`, `effort`, `permissionMode`, `initialPrompt`; new options: `skills`, `strictMcpConfig`, `outputStyle`, `includeHookEvents`, `sessionStore`, `toolAliases`, `managedSettings`, `onElicitation`, `forwardSubagentText`, `taskBudget`, `loadTimeoutMs`; `effort` adds `'xhigh'` level; V2 session API removed in v0.3.142; PostToolUse/PostToolUseFailure hooks gain `duration_ms`; Stop/SubagentStop hooks gain `background_tasks`/`session_crons` |
 | v0.2.77 | `SDKAPIRetryMessage` added (now removed in v0.3.x); fixed `./sdk-tools` exports map ([#222](https://github.com/anthropics/claude-agent-sdk-typescript/issues/222)) |
 | v0.2.71 | Fixed `Agent` tool returning `"Unknown tool: Agent"` in `query()` mode |
@@ -2034,4 +2034,4 @@ for await (const msg of response) {
 
 ---
 
-**Last verified**: 2026-05-28 | **SDK version**: 0.3.153
+**Last verified**: 2026-05-29 | **SDK version**: 0.3.156

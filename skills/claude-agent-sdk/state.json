@@ -4,7 +4,7 @@
       {
         "manager": "npm",
         "name": "@anthropic-ai/claude-agent-sdk",
-        "version": "0.3.153",
+        "version": "0.3.156",
         "engines": {
           "node": ">=18.0.0"
         }
@@ -24,10 +24,10 @@
       {
         "repo": "anthropics/claude-agent-sdk-typescript",
         "latestRelease": {
-          "tag": "v0.3.150",
-          "name": "v0.3.150",
-          "body": "",
-          "publishedAt": "2026-05-23T04:03:49Z"
+          "tag": "v0.3.156",
+          "name": "v0.3.156",
+          "body": "## What's changed\n\n- Updated to parity with Claude Code v2.1.156\n\n## Update\n\n```sh\nnpm install @anthropic-ai/claude-agent-sdk@0.3.156\n# or\nyarn add @anthropic-ai/claude-agent-sdk@0.3.156\n# or\npnpm add @anthropic-ai/claude-agent-sdk@0.3.156\n# or\nbun add @anthropic-ai/claude-agent-sdk@0.3.156\n```",
+          "publishedAt": "2026-05-29T01:42:35Z"
         }
       },
       {
@@ -35,7 +35,7 @@
         "latestRelease": {
           "tag": "v0.2.87",
           "name": "v0.2.87",
-          "body": "",
+          "body": "\n### Internal/Other Changes\n\n- Updated bundled Claude CLI to version 2.1.150\n- Switched CI workflows from static API key to Workload Identity Federation for Claude authentication, using short-lived tokens instead of long-lived secrets (#984)\n\n\n---\n\n**PyPI:** https://pypi.org/project/claude-agent-sdk/0.2.87/\n\n```bash\npip install claude-agent-sdk==0.2.87\n```",
           "publishedAt": "2026-05-23T04:20:30Z"
         }
       }
@@ -47,98 +47,98 @@
   },
   "docs": {
     "indexUrl": "https://code.claude.com/llms.txt",
-    "indexSha256": "6cef2ea29df4b1da6adf5c52e19c16cb140681d1b43f56952cdb92cc064e6ec1",
+    "indexSha256": "a241ee1e0b5e94521677e274345499045d01385949c97d0636a8f2dfeb07d774",
     "pageCount": 30,
     "knownPages": {
       "https://code.claude.com/docs/en/agent-sdk/agent-loop.md": {
-        "lastSeen": "2026-05-28T13:15:29Z"
+        "lastSeen": "2026-05-29T13:15:54Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/claude-code-features.md": {
-        "lastSeen": "2026-05-28T13:15:29Z"
+        "lastSeen": "2026-05-29T13:15:54Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/cost-tracking.md": {
-        "lastSeen": "2026-05-28T13:15:29Z"
+        "lastSeen": "2026-05-29T13:15:54Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/custom-tools.md": {
-        "lastSeen": "2026-05-28T13:15:29Z"
+        "lastSeen": "2026-05-29T13:15:54Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/file-checkpointing.md": {
-        "lastSeen": "2026-05-28T13:15:29Z"
+        "lastSeen": "2026-05-29T13:15:54Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/hooks.md": {
-        "lastSeen": "2026-05-28T13:15:29Z"
+        "lastSeen": "2026-05-29T13:15:54Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/hosting.md": {
-        "lastSeen": "2026-05-28T13:15:29Z"
+        "lastSeen": "2026-05-29T13:15:54Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/mcp.md": {
-        "lastSeen": "2026-05-28T13:15:29Z"
+        "lastSeen": "2026-05-29T13:15:54Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/migration-guide.md": {
-        "lastSeen": "2026-05-28T13:15:29Z"
+        "lastSeen": "2026-05-29T13:15:54Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/modifying-system-prompts.md": {
-        "lastSeen": "2026-05-28T13:15:29Z"
+        "lastSeen": "2026-05-29T13:15:54Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/observability.md": {
-        "lastSeen": "2026-05-28T13:15:29Z"
+        "lastSeen": "2026-05-29T13:15:54Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/overview.md": {
-        "lastSeen": "2026-05-28T13:15:29Z"
+        "lastSeen": "2026-05-29T13:15:54Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/permissions.md": {
-        "lastSeen": "2026-05-28T13:15:29Z"
+        "lastSeen": "2026-05-29T13:15:54Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/plugins.md": {
-        "lastSeen": "2026-05-28T13:15:29Z"
+        "lastSeen": "2026-05-29T13:15:54Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/python.md": {
-        "lastSeen": "2026-05-28T13:15:29Z"
+        "lastSeen": "2026-05-29T13:15:54Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/quickstart.md": {
-        "lastSeen": "2026-05-28T13:15:29Z"
+        "lastSeen": "2026-05-29T13:15:54Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/secure-deployment.md": {
-        "lastSeen": "2026-05-28T13:15:29Z"
+        "lastSeen": "2026-05-29T13:15:54Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/session-storage.md": {
-        "lastSeen": "2026-05-28T13:15:29Z"
+        "lastSeen": "2026-05-29T13:15:54Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/sessions.md": {
-        "lastSeen": "2026-05-28T13:15:29Z"
+        "lastSeen": "2026-05-29T13:15:54Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/skills.md": {
-        "lastSeen": "2026-05-28T13:15:29Z"
+        "lastSeen": "2026-05-29T13:15:54Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/slash-commands.md": {
-        "lastSeen": "2026-05-28T13:15:29Z"
+        "lastSeen": "2026-05-29T13:15:54Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/streaming-output.md": {
-        "lastSeen": "2026-05-28T13:15:29Z"
+        "lastSeen": "2026-05-29T13:15:54Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/streaming-vs-single-mode.md": {
-        "lastSeen": "2026-05-28T13:15:29Z"
+        "lastSeen": "2026-05-29T13:15:54Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/structured-outputs.md": {
-        "lastSeen": "2026-05-28T13:15:29Z"
+        "lastSeen": "2026-05-29T13:15:54Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/subagents.md": {
-        "lastSeen": "2026-05-28T13:15:29Z"
+        "lastSeen": "2026-05-29T13:15:54Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/todo-tracking.md": {
-        "lastSeen": "2026-05-28T13:15:29Z"
+        "lastSeen": "2026-05-29T13:15:54Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/tool-search.md": {
-        "lastSeen": "2026-05-28T13:15:29Z"
+        "lastSeen": "2026-05-29T13:15:54Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/typescript-v2-preview.md": {
-        "lastSeen": "2026-05-28T13:15:29Z"
+        "lastSeen": "2026-05-29T13:15:54Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/typescript.md": {
-        "lastSeen": "2026-05-28T13:15:29Z"
+        "lastSeen": "2026-05-29T13:15:54Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/user-input.md": {
-        "lastSeen": "2026-05-28T13:15:29Z"
+        "lastSeen": "2026-05-29T13:15:54Z"
       }
     }
   },
@@ -149,10 +149,28 @@
       "verdict": "skipped",
       "reason": "Internal CI maintenance — switches issue triage workflow from static API key to Workload Identity Federation; no user-facing bug or workaround.",
       "researchedAt": "2026-05-23T13:30:00Z"
+    },
+    "336": {
+      "title": "Expose `goal_status` attachments as a typed message variant (currently untyped Record<string, unknown>)",
+      "verdict": "skipped",
+      "reason": "Enhancement request — /goal command goal_status attachments typing improvement; not a bug; no workaround needed.",
+      "researchedAt": "2026-05-29T00:00:00Z"
+    },
+    "337": {
+      "title": "Regression: 0.3.152+ emits signature-only empty thinking blocks in successful tool-use turns",
+      "verdict": "added_known_issue",
+      "reason": "Bug-labeled regression on AWS Bedrock with thinking:adaptive. v0.3.150 produced non-empty thinking; v0.3.152+ produces empty signature-only thinking blocks. Workaround: use direct Anthropic provider or filter empty thinking blocks client-side. Added as KI 1 in SKILL-known-issues.md.",
+      "researchedAt": "2026-05-29T00:00:00Z"
+    },
+    "338": {
+      "title": "Partial assistant message leaks through on interrupt — no way to tell it was truncated (stop_reason=null in both interrupted and normal cases)",
+      "verdict": "added_known_issue",
+      "reason": "Bug-labeled issue: stop_reason is null on both interrupted and normal-completed assistant messages, making truncated partials indistinguishable at emit time. Workaround: buffer assistant messages until result arrives, then check terminal_reason. Added as KI 2 in SKILL-known-issues.md.",
+      "researchedAt": "2026-05-29T00:00:00Z"
     }
   },
-  "lastAuditedVersion": "0.3.153",
-  "lastUpdated": "2026-05-28T13:15:29Z",
+  "lastAuditedVersion": "0.3.156",
+  "lastUpdated": "2026-05-29T13:15:54Z",
   "scaffoldComplete": true,
   "lastRunWarnings": [
     "2026-05-19T17:24:39Z: docs_index_changed (hash 065bd6a→ee68ff8e) but no page-level additions, removals, or content diffs were provided in the change report — no surface-file edits made",
@@ -199,7 +217,9 @@
     "2026-05-25T13:20:00Z: Part A: llms.txt index SHA 986d8748 matches MANIFEST (raw curl 57a47c4f differs by +1 byte trailing-newline injection, consistent with prior runs); all 8 spot-checked pages differ by exactly +1 byte (cosmetic); page set unchanged at 30 pages; no substantive schema/API changes; MANIFEST.json refreshed via refresh-docs-snapshot.sh. Part B: change-report.json newBugIssues=[]; no issues above lastScannedIssueNumber=335 in anthropics/claude-agent-sdk-typescript (open issues max #327, all unlabeled). Part C: validate-examples.sh PASS (0/0 schema-bound blocks); 5/5 spot-checked URLs returned HTTP 200; version consistency OK (TS v0.3.150 in SKILL.md/SKILL-typescript.md; PY v0.2.87 in SKILL-python.md/README.md); all 3 SKILL-*.md and 2 rules/*.md files exist; rules globs cover documented patterns.",
     "2026-05-26T13:30:00Z: Part A: llms.txt index SHA 986d8748 matches MANIFEST (raw curl 57a47c4f differs by +1 byte trailing-newline injection, consistent with prior runs); typescript.md grew by +641 bytes — new Options field 'title' (display title for session) added to SKILL-typescript.md Sessions Options table; all other 29 pages verified +1 byte cosmetic only; MANIFEST.json refreshed via refresh-docs-snapshot.sh. Part B: 0 bug-labeled issues above lastScannedIssueNumber=335; highest issue #335 (already documented). Part C: 5/5 spot-checked URLs returned HTTP 200; version consistency OK (TS v0.3.150, PY v0.2.87); title option verified TypeScript-only (not in Python ClaudeAgentOptions); no duplicate facts; cross-references valid (all 3 SKILL-*.md and 2 rules/*.md files exist).",
     "2026-05-28T13:15:29Z: Version bump — TS v0.3.150→v0.3.153 (parity with Claude Code v2.1.153); PY v0.2.87 unchanged; no new API surface changes. docs_index_changed (hash 986d8748→6cef2ea2) — no pages added or removed (30 pages); no surface-file content edits required. Updated SKILL.md, SKILL-typescript.md, README.md, CHANGELOG.md, state.json.",
-    "2026-05-28T14:00:00Z: Part A: llms.txt index normalized SHA 6cef2ea2 matches MANIFEST (no change); all 30/30 pages re-fetched — all SHA256s differ by exactly +1 byte (docs infra trailing-newline injection; cosmetic); page set unchanged at 30 pages; no substantive schema/API changes; no surface-file edits needed. knownPages timestamps updated to 2026-05-28T14:00:00Z. Part B: TypeScript repo has 0 bug-labeled issues (all open items are unlabeled PRs: #327, #305, #285, #229, #223, #194, #68); highest issue is #335 (already researched/skipped); no new bug-labeled issues above lastScannedIssueNumber=335; bugTracker.lastScannedIssueNumber corrected 0→335; top-level lastScannedIssueNumber corrected null→335. Part C: version consistency OK (TS v0.3.153 in SKILL.md/SKILL-typescript.md; PY v0.2.87 in SKILL-python.md/README.md); 5/5 spot-checked URLs returned HTTP 200; all 3 SKILL-*.md and 2 rules/*.md files exist; rules globs (**/*.ts, **/*.tsx, **/*.mts for TS; **/*.py for Python) cover documented patterns; no duplicate facts (permissionMode/EffortLevel/TaskCreate in both surface files are appropriate separate-language API facts); cross-references valid."
+    "2026-05-28T14:00:00Z: Part A: llms.txt index normalized SHA 6cef2ea2 matches MANIFEST (no change); all 30/30 pages re-fetched — all SHA256s differ by exactly +1 byte (docs infra trailing-newline injection; cosmetic); page set unchanged at 30 pages; no substantive schema/API changes; no surface-file edits needed. knownPages timestamps updated to 2026-05-28T14:00:00Z. Part B: TypeScript repo has 0 bug-labeled issues (all open items are unlabeled PRs: #327, #305, #285, #229, #223, #194, #68); highest issue is #335 (already researched/skipped); no new bug-labeled issues above lastScannedIssueNumber=335; bugTracker.lastScannedIssueNumber corrected 0→335; top-level lastScannedIssueNumber corrected null→335. Part C: version consistency OK (TS v0.3.153 in SKILL.md/SKILL-typescript.md; PY v0.2.87 in SKILL-python.md/README.md); 5/5 spot-checked URLs returned HTTP 200; all 3 SKILL-*.md and 2 rules/*.md files exist; rules globs (**/*.ts, **/*.tsx, **/*.mts for TS; **/*.py for Python) cover documented patterns; no duplicate facts (permissionMode/EffortLevel/TaskCreate in both surface files are appropriate separate-language API facts); cross-references valid.",
+    "2026-05-29T13:15:54Z: Version bump — TS v0.3.153→v0.3.156 (parity with Claude Code v2.1.156); PY v0.2.87 unchanged; docs_index_changed (hash 6cef2ea2→a241ee1e); 30 pages unchanged; no new API surface changes. Updated SKILL.md, SKILL-typescript.md, README.md, CHANGELOG.md, state.json.",
+    "2026-05-29T00:00:00Z: Part A: llms.txt raw SHA 9ced8029 (normalized a241ee1e matches MANIFEST — trailing +1 byte confirmed; cosmetic); 30-page set unchanged; typescript.md +1 byte, python.md +1 byte, 10 other pages exact match — all cosmetic trailing-newline injection; no substantive schema/API changes; no surface-file edits needed. Part B: 3 new issues above lastScannedIssueNumber=335 — #336 (enhancement, skipped); #337 (bug: Bedrock thinking-block regression, added as KI 1); #338 (bug: interrupt truncation indistinguishable from normal completion, added as KI 2); bugTracker.lastScannedIssueNumber updated 335→338. Part C: 5/5 spot-checked URLs returned HTTP 200; version consistency OK (TS v0.3.156 in SKILL.md/SKILL-typescript.md; PY v0.2.87 in SKILL-python.md/README.md); SKILL-known-issues.md updated with KI 1 + KI 2; cross-references valid (all 3 SKILL-*.md and 2 rules/*.md files exist); no duplicate facts."
   ],
   "lastScannedIssueNumber": null
 }
