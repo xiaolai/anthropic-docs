@@ -282,6 +282,7 @@ recommendations). Group charters are published under
 
 | Group | Type | Focus | Charter |
 |---|---|---|---|
+| Registry | Working Group | Build and maintain the official MCP Registry — an open catalog and API (`registry.modelcontextprotocol.io`) for publicly available MCP servers. Owns the registry service, `server.json` schema, registry API specification, and sub-registry ecosystem. Coordinates with the Server Card WG on schema alignment. | [`community/registry/charter.md`](https://modelcontextprotocol.io/community/registry/charter.md) |
 | Tool Annotations | Interest Group | Coherent annotation model for safe agentic systems; evaluates existing hints (`readOnlyHint`, `destructiveHint`, `idempotentHint`, `openWorldHint`) and proposed new annotations (trust/sensitivity, model preferences, runtime annotations) | [`community/tool-annotations/charter.md`](https://modelcontextprotocol.io/community/tool-annotations/charter.md) |
 
 Full list: [`community/working-interest-groups.md`](https://modelcontextprotocol.io/community/working-interest-groups.md).
@@ -314,7 +315,7 @@ Key rules:
 *Source pages: `learn/architecture.md`, `learn/versioning.md`,
 `specification/2025-11-25/*` (multi-page subtree),
 `community/sep-guidelines.md`, `community/feature-lifecycle.md`,
-`community/tool-annotations/charter.md`, `seps/*`
+`community/registry/charter.md`, `community/tool-annotations/charter.md`, `seps/*`
 (including `seps/2106-json-schema-2020-12.md`,
 `seps/2164-resource-not-found-error.md`,
 `seps/2322-MRTR.md`,

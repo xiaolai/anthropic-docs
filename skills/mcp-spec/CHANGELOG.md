@@ -3,6 +3,9 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-29
+- Docs index 120→121 pages — upstream added `community/registry/charter.md` (Registry WG charter); 12 issues evaluated, 0 added; @modelcontextprotocol/sdk v1.29.0 / mcp v1.27.1 unchanged; all 11 gates pass
+
 ## 2026-05-28
 - Docs index 121→120 pages — upstream removed `clients.md` (Example Clients overview page); 15 issues evaluated (SEP proposals, dep-bot PRs, announcements), 0 added; @modelcontextprotocol/sdk v1.29.0 / mcp v1.27.1 unchanged
 

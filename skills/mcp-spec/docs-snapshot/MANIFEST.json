@@ -1,9 +1,9 @@
 {
   "indexUrl": "https://modelcontextprotocol.io/llms.txt",
-  "indexSha256": "b07650c29390a970579fb0f583ff4563a04583d5e2bf1a615fbca00f45f16b8d",
-  "indexBytes": 18211,
-  "pageCount": 120,
-  "refreshedAt": "2026-05-28T14:08:20Z",
+  "indexSha256": "5161f8d5e5268bf6573e1bccf97fa858e941382f07462ca93ab49f6541f83c77",
+  "indexBytes": 18340,
+  "pageCount": 121,
+  "refreshedAt": "2026-05-29T14:03:31Z",
   "pages": [
     {
       "path": "community/antitrust.md",
@@ -72,6 +72,12 @@
       "bytes": 6932
     },
     {
+      "path": "community/registry/charter.md",
+      "url": "https://modelcontextprotocol.io/community/registry/charter.md",
+      "sha256": "979a1613ae313e70a1ce219aa0e884cb9ef9890dfd774119b808c87ac37eb0b5",
+      "bytes": 7653
+    },
+    {
       "path": "community/sdk-tiers.md",
       "url": "https://modelcontextprotocol.io/community/sdk-tiers.md",
       "sha256": "f0764c674ebe6f4c23fde67dd6c9d4cf275c8a8be996bc6fb5a25804103287e5",
@@ -98,8 +104,8 @@
     {
       "path": "community/skills-over-mcp/charter.md",
       "url": "https://modelcontextprotocol.io/community/skills-over-mcp/charter.md",
-      "sha256": "91e0c22fdc77fd691f543b561c4a6d860ff40e20e8b6d9e72ac79527cac74041",
-      "bytes": 12149
+      "sha256": "e34e94b5092a511b2bb235fa3678018edea2758be03efdbdbb7d5ab30708f93a",
+      "bytes": 12293
     },
     {
       "path": "community/tool-annotations/charter.md",
@@ -236,8 +242,8 @@
     {
       "path": "extensions/apps/overview.md",
       "url": "https://modelcontextprotocol.io/extensions/apps/overview.md",
-      "sha256": "1aeabc29d6608c66c094f8526ad2d41bf19e646381f7f69997df1326d3edfd6c",
-      "bytes": 12449
+      "sha256": "a05330275b1364b0504630a53693d05fbce51ac3e8c6a69ed7e2665fd33de2a0",
+      "bytes": 12492
     },
     {
       "path": "extensions/auth/enterprise-managed-authorization.md",
@@ -260,8 +266,8 @@
     {
       "path": "extensions/client-matrix.md",
       "url": "https://modelcontextprotocol.io/extensions/client-matrix.md",
-      "sha256": "e70b8812ed0bda758af862b3d00eceb7486c73b5d7c2a4eda219ea592360bb03",
-      "bytes": 5441
+      "sha256": "9879ddbbbc51177c1a54d80923b6b2ef5a74aab1af89f8ebb3be4db1269bfe1c",
+      "bytes": 5685
     },
     {
       "path": "extensions/overview.md",
@@ -488,8 +494,8 @@
     {
       "path": "seps/2322-MRTR.md",
       "url": "https://modelcontextprotocol.io/seps/2322-MRTR.md",
-      "sha256": "4cc6f2ddaad830ea087e6e228619aa41535a75ed3220316e2121e52c07401398",
-      "bytes": 54360
+      "sha256": "ee35bf6280965c510eed0c13ec9c25711e5d151ad7fa63bf2480f247b51f2b1e",
+      "bytes": 54734
     },
     {
       "path": "seps/2468-recommend-issuer-claim-for-auth.md",
@@ -536,8 +542,8 @@
     {
       "path": "seps/2663-tasks-extension.md",
       "url": "https://modelcontextprotocol.io/seps/2663-tasks-extension.md",
-      "sha256": "553c886a2ac30c60607c3702a711235e0fb45bac5330a3a8cd048001da47d2c5",
-      "bytes": 50734
+      "sha256": "e1cfce774a57597baad965a86a37692cfee6006213a377cd4197b4e47f625bae",
+      "bytes": 55113
     },
     {
       "path": "seps/414-request-meta.md",
