@@ -184,8 +184,8 @@ That page is the source of truth for:
 - **Provider-specific credentials:**
   - *Bedrock* — `inferenceBedrockBearerToken` (shared Bedrock API key); `inferenceBedrockProfile` (named AWS CLI profile); `inferenceBedrockSsoStartUrl` + `inferenceBedrockSsoRegion` + `inferenceBedrockSsoAccountId` + `inferenceBedrockSsoRoleName` (in-app IAM Identity Center sign-in, no AWS CLI required; app ≥ 1.6.0; **all four required** — partial config silently ignored); `inferenceBedrockAwsDir` (non-default `~/.aws` path); `inferenceBedrockServiceTier` (`flex` | `priority`; omit for on-demand). Source: [`3p/bedrock.md`](https://claude.com/docs/cowork/3p/bedrock.md), [`3p/bedrock-aws-sign-in.md`](https://claude.com/docs/cowork/3p/bedrock-aws-sign-in.md).
   - *Vertex AI* — `inferenceVertexProjectId` (GCP project ID); `inferenceVertexCredentialsFile` (path to service-account key, `authorized_user`, or Workforce Identity Federation `external_account` JSON); `inferenceVertexOAuthClientId` + `inferenceVertexOAuthClientSecret` (in-app Google sign-in); `inferenceVertexOAuthScopes` (space-separated; default `openid email https://www.googleapis.com/auth/cloud-platform`). **`inferenceCredentialHelper` is not invoked for Vertex** — use file-based credentials or OAuth keys. Source: [`3p/vertex.md`](https://claude.com/docs/cowork/3p/vertex.md).
-  - *Foundry* — `inferenceFoundryResource` (Azure AI Foundry resource name, 2–64 lowercase alphanumeric chars); `inferenceFoundryApiKey` (API key, or use `inferenceCredentialHelper`). Source: [`3p/foundry.md`](https://claude.com/docs/cowork/3p/foundry.md).
-  - *Gateway* — `inferenceGatewayBaseUrl` (gateway base URL, must be HTTPS); `inferenceGatewayApiKey` (API key; use a placeholder if gateway uses network identity and requires no key); `inferenceGatewayAuthScheme` (`bearer` (default) | `x-api-key` | `sso` (legacy alias for `inferenceCredentialKind: "interactive"`)); `inferenceGatewayOidc` (JSON object, required for SSO; **use `inferenceCredentialKind: "interactive"` + `inferenceGatewayOidc` for new deployments** — `inferenceGatewayAuthScheme: "sso"` still works as a legacy alias; fields: `clientId` (required), `issuer` (required — base URL only, without `/.well-known/openid-configuration`), `scopes` (optional, defaults to `openid profile email offline_access`; **required** when `bearerTokenType` is `access_token`), `redirectPort` (optional integer — set for Okta, leave unset for Entra), `bearerTokenType` (`id_token` (default) | `access_token`; use `access_token` for gateways that validate as an OAuth resource server rather than verifying the ID token directly); encoded as a **single JSON string**, not dotted keys; requires app ≥ 1.5.0; full walkthrough at [`3p/gateway-sso.md`](https://claude.com/docs/cowork/3p/gateway-sso.md)). Source: [`3p/gateway.md`](https://claude.com/docs/cowork/3p/gateway.md).
+  - *Foundry* — `inferenceFoundryResource` (Azure AI Foundry resource name, 2–64 lowercase alphanumeric chars); `inferenceFoundryApiKey` (API key, or use `inferenceCredentialHelper`); `inferenceFoundryTenantId` + `inferenceFoundryClientId` (Entra ID directory and client IDs for per-user interactive sign-in via `inferenceCredentialKind: "interactive"`, instead of a shared API key). Source: [`3p/foundry.md`](https://claude.com/docs/cowork/3p/foundry.md).
+  - *Gateway* — `inferenceGatewayBaseUrl` (gateway base URL, must be HTTPS); `inferenceGatewayApiKey` (API key; use a placeholder if gateway uses network identity and requires no key); `inferenceGatewayAuthScheme` (`bearer` (default) | `x-api-key` | `sso` (legacy alias for `inferenceCredentialKind: "interactive"`)); `inferenceGatewayOidc` (JSON object, required for SSO; **use `inferenceCredentialKind: "interactive"` + `inferenceGatewayOidc` for new deployments** — `inferenceGatewayAuthScheme: "sso"` still works as a legacy alias; fields: `clientId` (required), `issuer` (required OR use `authorizationUrl`+`tokenUrl` — base URL only, without `/.well-known/openid-configuration`), `authorizationUrl` + `tokenUrl` (explicit endpoints when the IdP has no discovery document; ignored when `issuer` is set), `scopes` (optional, defaults to `openid profile email offline_access`; **required** when `bearerTokenType` is `access_token`), `redirectPort` (optional integer — set for Okta, leave unset for Entra), `bearerTokenType` (`id_token` (default) | `access_token`; use `access_token` for gateways that validate as an OAuth resource server rather than verifying the ID token directly); encoded as a **single JSON string**, not dotted keys; requires app ≥ 1.5.0; full walkthrough at [`3p/gateway-sso.md`](https://claude.com/docs/cowork/3p/gateway-sso.md)). Source: [`3p/gateway.md`](https://claude.com/docs/cowork/3p/gateway.md).
 - **Model discovery** — `modelDiscoveryEnabled` (boolean, default `true`; set `false`
   to use a fixed list without querying the provider's model-list endpoint); `inferenceModels`
   (JSON array; each entry may be a plain string ID or
@@ -211,7 +211,9 @@ That page is the source of truth for:
   filtering; the configured inference endpoint is always allowed implicitly;
   **when unset, only the inference endpoint is reachable — agents cannot run
   `pip install`, `curl`, or Web Fetch to other hosts**), `isClaudeCodeForDesktopEnabled`
-  (show/hide Code tab, default `true`), `disableDeepLinkRegistration`
+  (show/hide Code tab, default `true`), `coworkTabEnabled` (show/hide Cowork tab,
+  default `true`; at least one of Cowork/Code must remain enabled — if both are
+  `false`, the app re-enables Cowork with a warning), `disableDeepLinkRegistration`
 - **Telemetry toggles** — `disableEssentialTelemetry`, `disableNonessentialTelemetry`,
   `disableNonessentialServices`, `disableAutoUpdates`; `autoUpdaterEnforcementHours`
   (force pending update after N hours, 1–72, default 72)
@@ -222,7 +224,12 @@ That page is the source of truth for:
   dynamic client registration, or an object for pre-registered clients: `clientId`,
   `tenantId`, `scope`, `callbackPort` (default `53280`), `callbackHost`
   (`"127.0.0.1"` default | `"localhost"`); redirect URI is
-  `http://<callbackHost>:<callbackPort>/callback`), `toolPolicy` (map tool name →
+  `http://<callbackHost>:<callbackPort>/callback`; `clientSecret` (for confidential
+  IdPs requiring a client secret, sent only to the token endpoint, never to the
+  MCP server); `clientSecretHelper` (executable printing `{"clientSecret":"..."}`
+  on stdout — overrides `clientSecret`; managed config only); `authorizationServer`
+  (array of issuer URLs pinned when `clientSecret`/`clientSecretHelper` is set,
+  so a compromised MCP server cannot redirect the token exchange)), `toolPolicy` (map tool name →
   `"allow"` | `"ask"` | `"blocked"`); `stdio` transport also takes `command`,
   `args`, `env`); `orgPluginSettings` (per-tool policy for org-plugin servers,
   keyed as `{"mcpServers":{"<name>":{"toolPolicy":{...}}}}`);
@@ -232,7 +239,10 @@ That page is the source of truth for:
   auto-added to sandbox allowlist), `otlpProtocol` (`"http/protobuf"` (default)
   | `"http/json"` | `"grpc"`), `otlpHeaders` (JSON object or `key=value` string),
   `otlpResourceAttributes` (JSON object or `key=value` string of extra resource
-  attributes; built-in keys such as `service.name` are dropped if they collide)
+  attributes; built-in keys such as `service.name` are dropped if they collide),
+  `otlpDesktopLogLevel` (minimum severity for desktop-app own events exported to
+  your collector, separate from session spans; `off` | `error` (default) | `warn`
+  | `info` | `debug`)
 - **Appearance** — `banner` (JSON object: `enabled`, `text` (≤ 200 chars),
   `backgroundColor` (`#RRGGBB`), `textColor` (`#RRGGBB`), `linkUrl` (HTTPS URL))
 - **Token spend caps** — `inferenceMaxTokensPerWindow`, `inferenceTokenWindowHours`
@@ -458,7 +468,7 @@ differ in 3P mode.
 
 | Tool | How it runs | Availability |
 |---|---|---|
-| **Web Search** | Server-side at your inference provider | Vertex AI ✓, Foundry ✓, Bedrock ✗, Gateway (if provider implements `web_search`) |
+| **Web Search** | Server-side at your inference provider | Vertex AI ✓, Foundry ✓, Bedrock ✗, Anthropic API ✓, Gateway (if provider implements `web_search`) |
 | **Web Fetch** | Client-side on user's device | Gated by `coworkEgressAllowedHosts` |
 
 **`coworkEgressAllowedHosts` applies to both the Cowork and Code tabs.**

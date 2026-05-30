@@ -3,85 +3,85 @@
   "indexSha256": "e902363536c9acc513d54af3426bbbed42d810e267688e03faa4bb78006a7ab4",
   "indexBytes": 12253,
   "pageCount": 35,
-  "refreshedAt": "2026-05-29T00:00:00Z",
+  "refreshedAt": "2026-05-30T00:00:00Z",
   "pages": [
     {
       "path": "cowork/3p/bedrock-aws-sign-in.md",
       "url": "https://claude.com/docs/cowork/3p/bedrock-aws-sign-in.md",
-      "sha256": "55ebdff209108b8d920c1b2cabb61c64e33b09458f39954cd132af7755c9393e",
-      "bytes": 11210
+      "sha256": "14b1be48785326929c4110bc59dbb0c1827616fac292b914c8db12cd76d3803e",
+      "bytes": 10930
     },
     {
       "path": "cowork/3p/bedrock.md",
       "url": "https://claude.com/docs/cowork/3p/bedrock.md",
-      "sha256": "9a186ca7b25b76931a64c77a70aaa2e6f10e9045db8cf72523381202a2df0427",
-      "bytes": 17649
+      "sha256": "1b7b51e0d7dcc110eddcd734ab1aa184acadcfeff4d8b16bb7da4d5de92d2b2e",
+      "bytes": 17878
     },
     {
       "path": "cowork/3p/code.md",
       "url": "https://claude.com/docs/cowork/3p/code.md",
-      "sha256": "c2bf517d4412592f9669c030e519a6d1826e8a972625e47d9e46abb1d27191b4",
-      "bytes": 8246
+      "sha256": "d6529ff1a4cb0ed3d615a5b33663286a84a414c3381cfe92a8a0cc1cdf1653dd",
+      "bytes": 9396
     },
     {
       "path": "cowork/3p/configuration.md",
       "url": "https://claude.com/docs/cowork/3p/configuration.md",
-      "sha256": "90ab3b794a191d970fa84289ca053f4011f41181a9dff07d11c1b0cba60280e2",
-      "bytes": 40027
+      "sha256": "0e53520a7bb7e439dc5d964ea812d3a03c3459ed46280bdbd3227d0b33fbf0d6",
+      "bytes": 42517
     },
     {
       "path": "cowork/3p/connectors-m365.md",
       "url": "https://claude.com/docs/cowork/3p/connectors-m365.md",
-      "sha256": "90a0c3464e4488b268da57e6c16459c7ff6e3c5b21d759aff5d307c9e25f29ad",
-      "bytes": 10538
+      "sha256": "7aa8801bddba3f34ccc2b767d9fa54c0f784e6d56c7665128aea0fb46eb3de9b",
+      "bytes": 10558
     },
     {
       "path": "cowork/3p/data-storage.md",
       "url": "https://claude.com/docs/cowork/3p/data-storage.md",
-      "sha256": "b0272651350c033e624aebffbba32c933ffceb043be1843be2d6dae136dac215",
-      "bytes": 8711
+      "sha256": "618733c7c55e6900cf2681c9db03ad330f4b5f71681ee2854c01f7fd5266eb27",
+      "bytes": 9218
     },
     {
       "path": "cowork/3p/extensions.md",
       "url": "https://claude.com/docs/cowork/3p/extensions.md",
-      "sha256": "c3d733f641e99332c2f1029447f5957732db979d74cea15ed0308a4e0a69358c",
-      "bytes": 15737
+      "sha256": "4fbd74b59dbdb6590bdf5e488505c1fe4a1e10c5b6cba7e688e04dc3525841fa",
+      "bytes": 16644
     },
     {
       "path": "cowork/3p/feature-matrix.md",
       "url": "https://claude.com/docs/cowork/3p/feature-matrix.md",
-      "sha256": "1da008109e543ebe8f69df42cd9735be4383537056b01203cdde0430866bccbb",
-      "bytes": 5141
+      "sha256": "05ae59eae15b626d7d55f702927481380c14fac703b751ecb8deba9b79f9c0c9",
+      "bytes": 5174
     },
     {
       "path": "cowork/3p/foundry.md",
       "url": "https://claude.com/docs/cowork/3p/foundry.md",
-      "sha256": "055a4f9199efe9d93c73da0e8795b5870c2e984b376b26ceabfb5b437fd4c5c5",
-      "bytes": 2793
+      "sha256": "d183a376d3efd2b31d334e8f19e1c1b54d3f05ef32eceadfa7ae679add31b85b",
+      "bytes": 3645
     },
     {
       "path": "cowork/3p/gateway-sso.md",
       "url": "https://claude.com/docs/cowork/3p/gateway-sso.md",
-      "sha256": "b68891cbda937d6128a9f2b5bf1d05cf5de127d42bc505f23e476186a2b22b00",
-      "bytes": 13918
+      "sha256": "ec869a66f7c30f334aa4c6f055f3850a715d96ed6f46715bbe50fb2e24eef8cb",
+      "bytes": 15055
     },
     {
       "path": "cowork/3p/gateway.md",
       "url": "https://claude.com/docs/cowork/3p/gateway.md",
-      "sha256": "1c79869c943ffd34571c8bc4591303e57caee08afbdd3fc9df7e21d04d97f562",
-      "bytes": 5525
+      "sha256": "555b8540b628155a4cdbdf3f9566e24fffddaae95260442b36659175a562a0b1",
+      "bytes": 5061
     },
     {
       "path": "cowork/3p/installation.md",
       "url": "https://claude.com/docs/cowork/3p/installation.md",
-      "sha256": "667ff180d09d355536248b3ba57edd871a80bd640c3f84b259741c63c0efc068",
-      "bytes": 16664
+      "sha256": "249463d5ef7c641ff5e31dab18927b1cf3d22bc1e09c19a2110717af2ad26898",
+      "bytes": 17428
     },
     {
       "path": "cowork/3p/legal.md",
       "url": "https://claude.com/docs/cowork/3p/legal.md",
-      "sha256": "b7b15fff9c0a40f3056ae492bc628d6368b409ebf914bc34acf2b02e0159e7d1",
-      "bytes": 3010
+      "sha256": "24bb1fb242d100ac710e21166b0ceabcf0cbfcea1325ea24cf43c994fe93c3d9",
+      "bytes": 3163
     },
     {
       "path": "cowork/3p/local-access.md",
@@ -92,32 +92,32 @@
     {
       "path": "cowork/3p/overview.md",
       "url": "https://claude.com/docs/cowork/3p/overview.md",
-      "sha256": "593f9cae52cfca9714ff90d9f5e22e0b8bf7deee5bc4768827b11e20587813fa",
-      "bytes": 8878
+      "sha256": "cb4d308cf874f41ba71f0600b7e7f1372c181fcc3bdb8b43b1328265ac4976dc",
+      "bytes": 9205
     },
     {
       "path": "cowork/3p/telemetry.md",
       "url": "https://claude.com/docs/cowork/3p/telemetry.md",
-      "sha256": "eac3c645e3647abe0705fda4c8ec0a9d6f1f68a2c74e27a2e59d7df0a5d430a4",
-      "bytes": 13515
+      "sha256": "4b41e715b269f4a2c11bd4aa9603c4f7c9f106805128833ed58b0bbf293f2b5a",
+      "bytes": 14393
     },
     {
       "path": "cowork/3p/vertex-google-sign-in.md",
       "url": "https://claude.com/docs/cowork/3p/vertex-google-sign-in.md",
-      "sha256": "31fdb4d70b114dc371a0e74c2dbe57b3fc53a6366317e75a435bb6f38fa0f90b",
-      "bytes": 9526
+      "sha256": "8ba23a8706cd91af16e76a66641cc8a80f4d7b8286a1fd90f5cc944b1403962f",
+      "bytes": 9923
     },
     {
       "path": "cowork/3p/vertex.md",
       "url": "https://claude.com/docs/cowork/3p/vertex.md",
-      "sha256": "15ee37874408dbbbd85f433339055ae7ff2dc0ad8465895b6ec0b8bbe41c2162",
-      "bytes": 14077
+      "sha256": "62a871f8aaeb86b083e7dde66fd59ff3971a4c360636932cd9ba873a021feef6",
+      "bytes": 15509
     },
     {
       "path": "cowork/3p/web-tools.md",
       "url": "https://claude.com/docs/cowork/3p/web-tools.md",
-      "sha256": "5777964e3d0b80f385cf3b87bbb61c0f557a708c7836f0795a3cab1193db1436",
-      "bytes": 5279
+      "sha256": "a6214c3a182142b8edd5f1e7f198999eedc998f94858303785764d2fa3344050",
+      "bytes": 5374
     },
     {
       "path": "cowork/guide/dispatch.md",
