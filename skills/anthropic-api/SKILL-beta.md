@@ -58,8 +58,9 @@ As of 2026-05-19 (from [`models/list.md`](https://platform.claude.com/docs/en/ap
 | `advisor-tool-2026-03-01` | Advisor server tool |
 | `managed-agents-2026-04-01` | Managed agents (agents / sessions / environments) |
 | `cache-diagnosis-2026-04-07` | Cache diagnostics — per-request cache hit/miss metadata |
+| `mid-conversation-system-2026-04-07` | Mid-conversation system instructions — enables `role: "system"` messages with `mid_conv_system` content blocks in the `messages` array (see [SKILL-messages.md](SKILL-messages.md#mid-conversation-system-instructions)) |
 | `thinking-token-count-2026-05-13` | Estimated token counts on `thinking_delta` streaming frames — adds `estimated_tokens: number \| null` to `BetaThinkingDelta` |
-| `mcp-tunnels-2026-05-19` | MCP Tunnels admin API (`/v1/organizations/tunnels/`) |
+| `mcp-tunnels-2026-05-19` | MCP Tunnels **admin** API (`/v1/organizations/tunnels/`) — required header for all tunnel endpoints; not part of the Messages API `AnthropicBeta` union |
 
 ## Beta resource catalog
 

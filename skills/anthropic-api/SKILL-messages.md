@@ -120,6 +120,7 @@ Schema of a mid-conversation system message:
 }
 ```
 
+Requires beta header: `mid-conversation-system-2026-04-07` (see [`SKILL-beta.md`](SKILL-beta.md#known-beta-feature-strings)).
 Source: [`messages/create.md`](https://platform.claude.com/docs/en/api/messages/create.md) (updated 2026-05-28, SDK v0.100.0).
 
 **Assistant-turn output blocks:**

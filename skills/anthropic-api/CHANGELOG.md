@@ -3,6 +3,9 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-30
+- Research-only run: docs drift — added mid-conversation-system-2026-04-07 to SKILL-beta.md AnthropicBeta table, clarified mcp-tunnels-2026-05-19 as admin-only, added beta-header usage note to SKILL-messages.md; llms.txt SHA unchanged; 0 new bug issues; all 8 quality gates passed (92 turns, 306s, $0.99).
+
 ## 2026-05-27
 - Research-only run: @anthropic-ai/sdk 0.98.0→0.99.0 — fix(streaming): stop_details now carried through message_delta accumulation for refusal responses; updated SKILL-messages.md streaming table; llms.txt SHA unchanged; 0 new bug issues; all 8 quality gates passed (79 turns, 392s, $0.89).
 
