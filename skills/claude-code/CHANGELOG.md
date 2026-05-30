@@ -10,6 +10,16 @@ The newest entry is at the top.
 
 ---
 
+## v2.1.158 — 2026-05-30
+
+Version bump: `@anthropic-ai/claude-code` updated from v2.1.156 to v2.1.158.
+
+- Auto mode is now available on Bedrock, Vertex, and Foundry for Opus 4.7 and Opus 4.8. Opt in by setting `CLAUDE_CODE_ENABLE_AUTO_MODE=1`.
+- Docs index: confirmed removal of `agent-sdk/*` section (30 pages) from upstream index.
+
+## 2026-05-30
+- Sync to CC v2.1.158 — auto mode on Bedrock/Vertex/Foundry for Opus 4.7+4.8 (`CLAUDE_CODE_ENABLE_AUTO_MODE=1`); 30 `agent-sdk/*` pages removed from docs index (page count held at 112); verify passed after 1 mend run (34 checks, 0 failures); all 11 gates pass
+
 ## v2.1.156 — 2026-05-29
 
 Version bump: `@anthropic-ai/claude-code` updated from v2.1.153 to v2.1.156.
