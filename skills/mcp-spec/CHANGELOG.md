@@ -3,6 +3,13 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-30 (run 2)
+*(pending review — see PR auto/2026-05-30-pending-review)* mcp pypi v1.27.2 bump — mending step failed (exit code 1, 2 attempts); verify false-positived on stale `v1.29.0` refs (npm SDK unchanged); all other gates pass; changes pending human review
+
+## 2026-05-30
+- Python SDK `mcp` v1.27.1 → v1.27.2 — patch release adding `subject` and `claims` fields to `AccessToken`, binding transport sessions to the authenticated principal, and scoping experimental Tasks to the session that created them; @modelcontextprotocol/sdk v1.29.0 / spec 2025-11-25 unchanged; state.json updated; all gates pass
+- Routine research pass — docs index SHA unchanged (5161f8d5…, 121 pages); page content changes cosmetic only (documentation index banner added to all pages, no schema/field changes); MANIFEST.json refreshed (all 121 pages re-fetched); 0 new bug issues (change-report.json newBugIssues empty); Part C: drift check PASS, validate-examples PASS, 5 spot-checked URLs HTTP 200, versions consistent (@modelcontextprotocol/sdk v1.29.0 / mcp v1.27.2 / spec 2025-11-25), cross-references valid, rules globs covered; state.json lastSeen timestamps updated
+
 ## 2026-05-29
 - Docs index 120→121 pages — upstream added `community/registry/charter.md` (Registry WG charter); 12 issues evaluated, 0 added; @modelcontextprotocol/sdk v1.29.0 / mcp v1.27.1 unchanged; all 11 gates pass
 
