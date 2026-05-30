@@ -3,6 +3,9 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-30
+- Daily maintenance run — no upstream changes detected; research agent audited 121 pages across 4 surfaces in 72 turns ($1.28), all gates pass
+
 ## 2026-05-29
 - Sync to platform.claude.com docs — added 3 pages (mid-conversation-effort-example, mid-conversation-system-messages under build-with-claude; cloud-sandboxes-reference under managed-agents), removed 1 (cloud-containers); page count 119 → 121; all 11 gates pass
 
