@@ -42,6 +42,7 @@ Commands marked **[Skill]** are bundled skills — prompts handed to Claude that
 | `/context [all]` | Visualize current context usage |
 | `/copy [N]` | Copy last assistant response to clipboard |
 | `/debug [description]` | **[Skill]** Enable debug logging and troubleshoot issues |
+| `/deep-research <question>` | **[Workflow]** Fan out web searches on a question, fetch and cross-check sources, and synthesize a cited report |
 | `/desktop` | Continue the current session in the Claude Code Desktop app. macOS and Windows only. Alias: `/app` |
 | `/diff` | Open interactive diff viewer of uncommitted changes |
 | `/doctor` | Diagnose Claude Code installation and settings |
@@ -110,10 +111,11 @@ Commands marked **[Skill]** are bundled skills — prompts handed to Claude that
 | `/ultraplan <prompt>` | Draft a plan in the cloud and review in browser |
 | `/ultrareview [PR]` | Run deep multi-agent code review in cloud sandbox |
 | `/upgrade` | Open the upgrade page to switch to a higher plan tier |
-| `/usage` | Show session cost and plan usage. Aliases: `/cost`, `/stats` |
+| `/usage` | Show session cost and plan usage, including a per-category breakdown of what is driving your plan limits (skills, subagents, plugins, individual MCP servers). Aliases: `/cost`, `/stats` |
 | `/usage-credits` | Configure usage credits to keep working when you hit a rate limit. Previously `/extra-usage` (old name still works) |
 | `/verify` | **[Skill]** Confirm a code change does what it should by building and running the app, observing the result — not just running tests. Requires v2.1.145+ |
 | `/voice [hold\|tap\|off]` | Toggle voice dictation |
+| `/workflows` | Manage dynamic workflow runs. Workflows are orchestration scripts Claude writes for large tasks and runs across many subagents in the background. See `code.claude.com/docs/en/workflows.md` (research preview) |
 | `/web-setup` | Connect your GitHub account to Claude Code on the web using your local `gh` CLI credentials. `/schedule` prompts for this automatically if GitHub isn't connected |
 
 **MCP prompts** from connected servers appear as `/mcp__<server>__<prompt>` and are dynamically discovered.

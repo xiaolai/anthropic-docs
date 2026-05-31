@@ -77,7 +77,7 @@ Source: `code.claude.com/docs/en/cli-reference.md`.
 | `--effort` | Set effort level: `low`, `medium`, `high`, `xhigh`, `max` | `claude --effort high` |
 | `--exclude-dynamic-system-prompt-sections` | Move per-machine sections to first user message (improves prompt-cache reuse in `-p` scripts) | |
 | `--exec` | Run a shell command as a PTY-backed background job instead of starting a Claude session. Use with `--bg` to launch from the shell | `claude --exec "npm test"` |
-| `--fallback-model` | Auto-fallback model when default is overloaded (print mode + background sessions) | `claude -p --fallback-model sonnet "query"` |
+| `--fallback-model` | Switch to this model for the rest of the session when the primary model is not found, instead of failing every request (v2.1.150+; previously only applied to print mode + background sessions) | `claude -p --fallback-model sonnet "query"` |
 | `--fork-session` | Create new session ID instead of reusing original (use with `--resume`/`--continue`) | |
 | `--from-pr` | Resume sessions linked to a PR. Accepts PR number, GitHub/GitLab/Bitbucket URL | `claude --from-pr 123` |
 | `--ide` | Auto-connect to IDE on startup if exactly one valid IDE is available | |
@@ -156,7 +156,7 @@ Environment variables can also be set in `settings.json` under `env`. See `code.
 | `CLAUDE_CODE_OTEL_HEADERS_HELPER_DEBOUNCE_MS` | Refresh interval for `otelHeadersHelper` script |
 | `CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX` | Prefix for Remote Control auto-generated session names |
 | `CLAUDE_CODE_NO_FLICKER` | Enable fullscreen renderer |
-| `CLAUDE_CODE_USE_POWERSHELL_TOOL` | Enable PowerShell tool |
+| `CLAUDE_CODE_USE_POWERSHELL_TOOL` | Enable PowerShell tool. Enabled by default on Windows for Bedrock, Vertex, and Foundry users (as of v2.1.149); opt out with `CLAUDE_CODE_USE_POWERSHELL_TOOL=0` |
 | `CLAUDE_CODE_DEBUG_LOG_LEVEL` | Minimum log level written to the debug log file: `verbose`, `debug` (default), `info`, `warn`, `error`. Set to `verbose` for high-volume hook-matching diagnostics. Source: `code.claude.com/docs/en/env-vars.md` |
 | `CLAUDE_CODE_DEBUG_LOGS_DIR` | Override the debug log file path (accepts a file path, not a directory). Requires debug mode enabled separately via `--debug` or the `DEBUG` env var; `--debug-file` does both at once. Defaults to `~/.claude/debug/<session-id>.txt`. Source: `code.claude.com/docs/en/env-vars.md` |
 | `CLAUDE_CODE_DISABLE_THINKING` | Force extended thinking off |
@@ -165,7 +165,7 @@ Environment variables can also be set in `settings.json` under `env`. See `code.
 | `CLAUDE_CODE_IDE_SKIP_AUTO_INSTALL` | Skip IDE extension auto-install |
 | `CLAUDE_CODE_AUTO_CONNECT_IDE` | Auto-connect to IDE on startup |
 | `ENABLE_TOOL_SEARCH` | Set to `false` to disable MCP tool search |
-| `CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE` | Set to `1` to pin `/fast` mode to Opus 4.6 instead of the default Opus 4.7 |
+| `CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE` | Set to `1` to pin `/fast` mode to Opus 4.6 instead of the default Opus 4.8. Note: Opus 4.6 fast mode is deprecated as of v2.1.150 |
 | `CLAUDE_CODE_SUBAGENT_MODEL` | Override the model used by subagents in multi-agent sessions. See [Model configuration](https://code.claude.com/docs/en/model-config.md). Source: `code.claude.com/docs/en/env-vars.md` |
 | `CLAUDE_CODE_WORKFLOWS` | Set to `1` to enable the `Workflow` tool for deterministic multi-agent orchestration (off by default; v2.1.158+) |
 | `CLAUDE_CODE_ENABLE_AUTO_MODE` | Set to `1` to enable auto permission mode on Bedrock, Vertex, and Foundry (v2.1.158+). Supported models: Opus 4.7 and Opus 4.8. Has no effect on Anthropic API connections; see the *Auto mode requirements* note under *Permission modes*. |
@@ -202,7 +202,7 @@ Precedence (highest wins): CLI flags > `settings.local.json` > `settings.json` (
 | `dontAsk` | Only pre-approved tools from `permissions.allow` | Never in cycle; `--permission-mode dontAsk` only |
 | `bypassPermissions` | Everything (no safety checks). **Isolated containers/VMs only** | Optional (requires enabling flag) |
 
-**Auto mode requirements (Anthropic API):** Claude Code v2.1.83+, Max/Team/Enterprise/API plan (not Pro), and an eligible model. Model availability depends on plan: Team/Enterprise/API allow Sonnet 4.6, Opus 4.6, or Opus 4.7; Max allows Opus 4.7 only (Haiku and claude-3 models are not supported on any plan). Team/Enterprise require an admin to enable it in Claude Code admin settings.
+**Auto mode requirements (Anthropic API):** Claude Code v2.1.83+, Max/Pro/Team/Enterprise/API plan, and an eligible model. Model availability depends on plan: Team/Enterprise/API allow Sonnet 4.6, Opus 4.6, Opus 4.7, or Opus 4.8; Max and Pro allow Sonnet 4.6, Opus 4.7, and Opus 4.8 (Haiku and claude-3 models are not supported on any plan). Team/Enterprise require an admin to enable it in Claude Code admin settings.
 
 **Auto mode on Bedrock / Vertex / Foundry (v2.1.158+):** Auto mode is now available on Bedrock, Vertex, and Foundry for Opus 4.7 and Opus 4.8. Opt in by setting `CLAUDE_CODE_ENABLE_AUTO_MODE=1`.
 

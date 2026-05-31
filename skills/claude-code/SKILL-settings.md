@@ -132,10 +132,12 @@ Minimal valid `settings.json`:
 | `teammateMode` | string | Agent team display: `"auto"`, `"in-process"`, or `"tmux"` |
 | `terminalProgressBarEnabled` | boolean | Show terminal progress bar in supported terminals (default: `true`) |
 | `tui` | string | Renderer: `"fullscreen"` or `"default"` |
+| `ultracode` | boolean | (Session-only) Turn on ultracode — combines `xhigh` reasoning with automatic workflow orchestration. Set via `/effort ultracode`, `--settings`, or an Agent SDK control request. Not read from `settings.json`. Source: `code.claude.com/docs/en/settings.md` |
 | `useAutoModeDuringPlan` | boolean | Use auto mode semantics in plan mode (default: `true`). Not read from shared project settings |
 | `viewMode` | string | Default transcript view: `"default"`, `"verbose"`, `"focus"` |
 | `voice` | object | Voice dictation: `{ enabled, mode: "hold"|"tap", autoSubmit }` |
 | `voiceEnabled` | boolean | Legacy alias for `voice.enabled` |
+| `workflowKeywordTriggerEnabled` | boolean | Whether the word `workflow` in a prompt triggers a dynamic workflow. Set to `false` to type the word without triggering one. Ultracode, `/workflows`, and saved workflow commands are unaffected. Default: `true`. Appears in `/config` as **Workflow keyword trigger**. Requires v2.1.157+. Source: `code.claude.com/docs/en/settings.md` |
 | `wslInheritsWindowsSettings` | boolean | (Windows managed only) WSL reads Windows policy chain |
 
 ### Global config settings (stored in `~/.claude.json`, not `settings.json`)

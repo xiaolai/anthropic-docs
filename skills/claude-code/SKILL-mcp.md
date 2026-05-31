@@ -182,6 +182,8 @@ claude mcp remove github
 
 `/mcp` shows the tool count per server and flags servers that advertise tools but expose none. Use `/mcp` to authenticate with OAuth 2.0 servers.
 
+> **Pending approval display (v2.1.157+):** When output is piped (non-interactive), `claude mcp list` and `claude mcp get` show unapproved `.mcp.json` servers as **pending approval** instead of auto-approving and connecting them. This matches the interactive behavior where a trust dialog appears.
+
 ## Plugin-provided MCP servers
 
 Plugins can bundle MCP servers in `.mcp.json` at the plugin root or inline in `plugin.json`. Plugin servers start automatically when the plugin is enabled. Run `/reload-plugins` to reconnect after enabling/disabling a plugin mid-session.

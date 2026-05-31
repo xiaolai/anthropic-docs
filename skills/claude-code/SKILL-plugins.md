@@ -44,6 +44,7 @@ A plugin manifest lives at `<plugin-root>/.claude-plugin/plugin.json`. The `.cla
 | `license` | no | SPDX identifier (e.g. `"MIT"`, `"Apache-2.0"`). |
 | `keywords` | no | Array of strings for marketplace search. |
 | `mcpServers` | no | Inline MCP server definitions (alternative to `.mcp.json` at plugin root). |
+| `defaultEnabled` | no | If `false`, the plugin installs without turning on until you explicitly run `claude plugin enable`. Default: `true`. Available for both `plugin.json` and `marketplace.json` entries (v2.1.151+). |
 
 Minimal valid manifest:
 
@@ -95,6 +96,8 @@ claude plugin install my-plugin@my-marketplace
 ```
 
 After enabling/disabling a plugin mid-session, run `/reload-plugins` to connect/disconnect its components.
+
+> **Auto-loading from `.claude/skills` directories (v2.1.150+):** Plugins placed in a `.claude/skills/<name>/` directory (project or user scope) are automatically discovered and loaded — no marketplace install required. Use `claude plugin init <name>` to scaffold a new plugin in the current directory.
 
 > **Plugin preview before install:** The `/plugin` Discover and Browse screens show a plugin's commands, agents, skills, hooks, and MCP/LSP servers before you install it (as of v2.1.158).
 
@@ -183,6 +186,9 @@ Cross-reference: [`SKILL-mcp.md`](SKILL-mcp.md) § *Plugin-provided MCP servers*
 ## CLI commands
 
 ```bash
+# Scaffold a new plugin in the current directory
+claude plugin init my-new-plugin
+
 # Install a plugin
 claude plugin install my-plugin@my-marketplace
 
@@ -193,6 +199,8 @@ claude plugin list
 claude plugin details my-plugin@my-marketplace
 
 # Enable/disable a plugin
+# Note: `disable` refuses when another enabled plugin depends on the target;
+# `enable` force-enables transitive dependencies automatically (v2.1.149+)
 claude plugin enable my-plugin@my-marketplace
 claude plugin disable my-plugin@my-marketplace
 

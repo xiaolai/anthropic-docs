@@ -64,6 +64,16 @@ Each entry uses this structure:
 - **Status:** Open — fix pending (should wrap archive transfer in per-archive try/catch and skip bad archives instead of failing the whole connection).
 - **Source:** [#61963](https://github.com/anthropics/claude-code/issues/61963)
 
+### KI 826 — Terminal scroll jumps to top of history during streaming
+
+- **Affects:** All versions on macOS/Linux using VS Code or Cursor integrated terminals, and some native terminals (e.g. iTerm2 on macOS)
+- **Symptom:** While Claude is streaming a response, the terminal viewport jumps to the top of the scroll-back buffer every time a character is added (to the prompt or to the output). Makes it impossible to read or type during generation.
+- **Reproduction:** Open Claude Code in VS Code, Cursor, or iTerm2 on macOS. Trigger a long response. Observe the terminal scroll position jumping to the top on each new character.
+- **Workaround:** Switch to a native terminal emulator (e.g. Terminal.app, Ghostty, WezTerm, Alacritty) that does not exhibit this behavior. In VS Code/Cursor, switching to the fullscreen renderer (`/tui fullscreen`) may reduce but not eliminate the issue.
+- **Root cause:** An `ED2` (Erase Display) escape sequence inside a DEC 2026 synchronized update block resets `viewportY` — a known upstream xterm.js bug ([xtermjs/xterm.js#5801](https://github.com/xtermjs/xterm.js/issues/5801)) that affects any terminal embedding xterm.js.
+- **Status:** Open — fix must land in xterm.js; Anthropic is tracking.
+- **Source:** [#826](https://github.com/anthropics/claude-code/issues/826)
+
 ## Recently resolved
 
 *None tracked yet. The research agent will surface user-impacting bugs that were fixed in a recent CLI release, so users on older versions know what's worth upgrading for.*

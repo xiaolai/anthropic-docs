@@ -10,6 +10,9 @@ The newest entry is at the top.
 
 ---
 
+## 2026-05-31
+- Docs index +2 pages (112→114, `whats-new/2026-w21.md` and `whats-new/2026-w22.md`); SKILL-settings.md: added `ultracode` and `workflowKeywordTriggerEnabled` settings keys; SKILL-slash-commands.md: added `/deep-research` command; SKILL-known-issues.md: added KI 826 (terminal scroll yank during streaming on VS Code/Cursor/iTerm2); all 11 gates pass
+
 ## v2.1.158 — 2026-05-30
 
 Version bump: `@anthropic-ai/claude-code` updated from v2.1.156 to v2.1.158.

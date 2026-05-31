@@ -1,9 +1,9 @@
 {
   "indexUrl": "https://code.claude.com/llms.txt",
-  "indexSha256": "bbd47141cd00cfc6e751cfec480f3c16de3722cfb2bcab99107f32a7dd719ea8",
-  "indexBytes": 30334,
-  "pageCount": 112,
-  "refreshedAt": "2026-05-30T12:58:59Z",
+  "indexSha256": "ca4a2dac38335a29f3cfee03b877f5dad91ff8a04e8692452f7c37030834059a",
+  "indexBytes": 30884,
+  "pageCount": 114,
+  "refreshedAt": "2026-05-31T13:02:48Z",
   "pages": [
     {
       "path": "en/admin-setup.md",
@@ -654,10 +654,22 @@
       "bytes": 6827
     },
     {
+      "path": "en/whats-new/2026-w21.md",
+      "url": "https://code.claude.com/docs/en/whats-new/2026-w21.md",
+      "sha256": "6c466db83630a610ab9337c8d9d7961e5a04746aafc3dd456ac77429b4ab3b37",
+      "bytes": 3833
+    },
+    {
+      "path": "en/whats-new/2026-w22.md",
+      "url": "https://code.claude.com/docs/en/whats-new/2026-w22.md",
+      "sha256": "40c680b724febdb0101f9823d623c0475d7677a1b031a41908bd70f0874ec6cc",
+      "bytes": 7212
+    },
+    {
       "path": "en/whats-new/index.md",
       "url": "https://code.claude.com/docs/en/whats-new/index.md",
-      "sha256": "f8b5892fd62505249050e7c865f12bbbbd17aebb2ab56d7d539c2f17bffda557",
-      "bytes": 5279
+      "sha256": "70b6ec7f4e1ff1f9311f8448aa3a5a9257ca59166141c9e4a01440a9c70cd813",
+      "bytes": 6469
     },
     {
       "path": "en/workflows.md",
