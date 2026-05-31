@@ -3,6 +3,9 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-31
+*(pending review — see PR auto/2026-05-31-pending-review)* Python SDK `mcp` v1.27.2 (prev v1.27.1): adds `subject` and `claims` fields to `AccessToken`, binds transport sessions to the authenticated principal, scopes experimental tasks to the session that created them; @modelcontextprotocol/sdk v1.29.0 unchanged; verify gate failed after 2 mend runs
+
 ## 2026-05-29
 - Docs index 120→121 pages — upstream added `community/registry/charter.md` (Registry WG charter); 12 issues evaluated, 0 added; @modelcontextprotocol/sdk v1.29.0 / mcp v1.27.1 unchanged; all 11 gates pass
 

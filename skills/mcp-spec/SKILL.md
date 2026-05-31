@@ -27,8 +27,9 @@ user-invocable: true
 |---|---|
 | **Source docs** | [modelcontextprotocol.io](https://modelcontextprotocol.io) |
 | **Spec repo** | [modelcontextprotocol/modelcontextprotocol](https://github.com/modelcontextprotocol/modelcontextprotocol) |
-| **TypeScript SDK** | [`@modelcontextprotocol/sdk`](https://www.npmjs.com/package/@modelcontextprotocol/sdk) |
+| **TypeScript SDK** | [`@modelcontextprotocol/sdk`](https://www.npmjs.com/package/@modelcontextprotocol/sdk) v1.29.0 |
 | **Python SDK** | [`mcp`](https://pypi.org/project/mcp/) |
+| **Version** | v1.29.0 |
 
 > **This skill is auto-updated daily.** A pipeline reads the upstream
 > docs and rewrites the per-surface files below. Section structure is
