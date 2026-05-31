@@ -3,6 +3,9 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-31
+- *(pending review — see PR auto/2026-05-31-pending-review)* Research agent audit (85 turns, $1.46) — check-docs-drift gate failed; proposed surface changes on draft branch pending human review
+
 ## 2026-05-30
 - Daily maintenance run — no upstream changes detected; research agent audited 121 pages across 4 surfaces in 72 turns ($1.28), all gates pass
 

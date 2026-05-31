@@ -1,9 +1,9 @@
 {
   "indexUrl": "https://platform.claude.com/llms.txt",
-  "indexSha256": "fd263af49381f28578ca22056acd038aee92a78b492fedda4e1329e354ca7e7b",
-  "indexBytes": 166863,
+  "indexSha256": "c5e78c04c7945e605b7560934ab1d87dafcd5b1f4e90ddbac461d20f671047e9",
+  "indexBytes": 166864,
   "pageCount": 121,
-  "refreshedAt": "2026-05-30T00:00:00Z",
+  "refreshedAt": "2026-05-31T00:00:00Z",
   "pages": [
     {
       "path": "en/agents-and-tools/agent-skills/best-practices.md",
@@ -596,8 +596,8 @@
     {
       "path": "en/managed-agents/agent-setup.md",
       "url": "https://platform.claude.com/docs/en/managed-agents/agent-setup.md",
-      "sha256": "11190d9d8d464839c2882c94ee562e3574f896b62cc2650168ddc70f7a84c696",
-      "bytes": 14061
+      "sha256": "1f7b711b45d3945e8a2493a75af3fb02271b0eed473b44c7e9b82306665f993a",
+      "bytes": 14451
     },
     {
       "path": "en/managed-agents/cloud-sandboxes-reference.md",
@@ -626,8 +626,8 @@
     {
       "path": "en/managed-agents/events-and-streaming.md",
       "url": "https://platform.claude.com/docs/en/managed-agents/events-and-streaming.md",
-      "sha256": "45e7e984947988e103f15001a1d5afaa6c92ce1b169b35c788cd17e5d4a135ab",
-      "bytes": 56117
+      "sha256": "28dc375b8d449e4cd18862f745f15079aed4cb9c5bb1aa4a89a2c2cc794f2218",
+      "bytes": 56092
     },
     {
       "path": "en/managed-agents/files.md",
@@ -638,8 +638,8 @@
     {
       "path": "en/managed-agents/github.md",
       "url": "https://platform.claude.com/docs/en/managed-agents/github.md",
-      "sha256": "6481d7b16cbc6bc624cec8c8f5f867732175a7ead0f7480774d4bcf6c9bfa1a4",
-      "bytes": 23530
+      "sha256": "3091526e48c464af60c6b7343f3e5f5938ad60d6586f3d80522f5b08b52adaac",
+      "bytes": 23470
     },
     {
       "path": "en/managed-agents/mcp-connector.md",
@@ -650,14 +650,14 @@
     {
       "path": "en/managed-agents/memory.md",
       "url": "https://platform.claude.com/docs/en/managed-agents/memory.md",
-      "sha256": "4a8abcc9bf87cce3a2811a75ce7e417a0baf3c3315bee02c51ba6d7abe9a842d",
-      "bytes": 38725
+      "sha256": "f19c9b0dba986cf2ec005b70d56984f20437c10e16e3cc32ac91a264b2ce081d",
+      "bytes": 40108
     },
     {
       "path": "en/managed-agents/multi-agent.md",
       "url": "https://platform.claude.com/docs/en/managed-agents/multi-agent.md",
-      "sha256": "6b3c1be653ab44fb70619338317fd9290d1220a8380d72ee8330a1c47e63e119",
-      "bytes": 43272
+      "sha256": "fb3e0b10dd0af67188136b1aca9d09d5903f0539556be792bc5221f9aa5e1784",
+      "bytes": 43745
     },
     {
       "path": "en/managed-agents/onboarding.md",
@@ -680,7 +680,7 @@
     {
       "path": "en/managed-agents/quickstart.md",
       "url": "https://platform.claude.com/docs/en/managed-agents/quickstart.md",
-      "sha256": "9378188d0773b95cd72da9bdd267c8f0a4ac6f49f81d860c76534d4cc31e186e",
+      "sha256": "82cf628463b29835a928ceb1390236065197851cbf5acab8f259a235f0a88df3",
       "bytes": 24412
     },
     {

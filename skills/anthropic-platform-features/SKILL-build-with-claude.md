@@ -24,16 +24,22 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
   `temperature` alone for most cases; combine only when you understand
   the interaction.
 - **Extended thinking — model-specific rules:**
-  - **Claude Opus 4.7:** manual `thinking: {type: "enabled", budget_tokens: N}`
-    is **no longer supported** — returns a `400` error. Use
-    `thinking: {type: "adaptive"}` instead (adaptive thinking is the
-    **only** thinking mode on Opus 4.7).
+  - **Claude Opus 4.8 (`claude-opus-4-8`) and Claude Opus 4.7:** manual
+    `thinking: {type: "enabled", budget_tokens: N}` is **not supported**
+    — returns a `400` error. Use `thinking: {type: "adaptive"}` instead.
+    `display` defaults to `"omitted"` on both models.
   - **Claude Opus 4.6 / Sonnet 4.6:** `budget_tokens` is **deprecated**
     (still functional, will be removed in a future release). Switch to
     `thinking: {type: "adaptive"}` with the `effort` parameter.
+    `display` defaults to `"summarized"` on these models.
   - **Claude Mythos Preview:** adaptive thinking is the default;
     `thinking: {type: "disabled"}` is not supported; `display` defaults
     to `"omitted"` — pass `display: "summarized"` to receive summaries.
+  - **`display` field values:** `"summarized"` (default on Opus 4.6,
+    Sonnet 4.6, earlier Claude 4 models) returns summarized thinking
+    text; `"omitted"` (default on Opus 4.8, Opus 4.7, Mythos Preview)
+    returns empty `thinking` field but includes encrypted `signature`
+    for multi-turn continuity — faster time-to-first-token when streaming.
   - **Older models (Sonnet 4.5, Opus 4.5, etc.):** use manual
     `thinking: {type: "enabled", budget_tokens: N}` — adaptive thinking
     is not available.
@@ -179,8 +185,8 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
 
 | Feature | Page | What it does |
 |---|---|---|
-| **Extended thinking** | [`extended-thinking.md`](https://platform.claude.com/docs/en/build-with-claude/extended-thinking.md) | Manual `thinking: {type: "enabled", budget_tokens: N}` — supported on Opus 4.6/Sonnet 4.6 (deprecated) and older models. **NOT supported on Opus 4.7** (400 error). **Interleaved thinking** (Claude 4 models only): enables Claude to think between tool calls. See [`extended-thinking.md#interleaved-thinking`](https://platform.claude.com/docs/en/build-with-claude/extended-thinking#interleaved-thinking) for syntax |
-| **Adaptive thinking** | [`adaptive-thinking.md`](https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking.md) | `thinking: {type: "adaptive"}` — model auto-decides thinking depth. **Only thinking mode on Opus 4.7** (thinking is off by default on Opus 4.7 — must be explicitly enabled via `thinking: {type: "adaptive"}`). Default on Claude Mythos Preview (auto-applies when `thinking` is unset). Recommended for Opus 4.6/Sonnet 4.6. No beta header required |
+| **Extended thinking** | [`extended-thinking.md`](https://platform.claude.com/docs/en/build-with-claude/extended-thinking.md) | Manual `thinking: {type: "enabled", budget_tokens: N}` — supported on Opus 4.6/Sonnet 4.6 (deprecated) and older models. **NOT supported on Opus 4.8 or Opus 4.7** (400 error). **Interleaved thinking** (Claude 4 models only): enables Claude to think between tool calls. See [`extended-thinking.md#interleaved-thinking`](https://platform.claude.com/docs/en/build-with-claude/extended-thinking#interleaved-thinking) for syntax |
+| **Adaptive thinking** | [`adaptive-thinking.md`](https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking.md) | `thinking: {type: "adaptive"}` — model auto-decides thinking depth. **Only thinking mode on Opus 4.8 and Opus 4.7** (must be explicitly enabled). Default on Claude Mythos Preview (auto-applies when `thinking` is unset). Recommended for Opus 4.6/Sonnet 4.6. No beta header required |
 | **Effort** | [`effort.md`](https://platform.claude.com/docs/en/build-with-claude/effort.md) | Controls token spend depth. Levels: `low`, `medium`, `high` (default), `max`, `xhigh` (Opus 4.7 only). No beta header required. Supported on Claude Mythos Preview, Opus 4.7, Opus 4.6, Sonnet 4.6, Opus 4.5. **Schema:** `effort` is nested under `output_config` in the request body: `{"output_config": {"effort": "medium"}}`. `max` is available on Claude Mythos Preview, Opus 4.7, Opus 4.6, and Sonnet 4.6 only (not Opus 4.5) |
 | **Fast mode** | [`fast-mode.md`](https://platform.claude.com/docs/en/build-with-claude/fast-mode.md) | **Beta (research preview, waitlist).** `speed: "fast"` + header `fast-mode-2026-02-01`; up to 2.5× OTPS on Opus 4.6/4.7 at 6× pricing |
 

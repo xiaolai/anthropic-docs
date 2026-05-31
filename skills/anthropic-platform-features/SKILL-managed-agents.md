@@ -45,7 +45,11 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
   agent, never exposed to your agent's prompt context.
 - **Permission policies** gate what each agent may do (which tools,
   which file paths, which network endpoints). Set on the agent
-  definition; enforced server-side. Default-deny.
+  definition; enforced server-side. Default for agent toolset:
+  `always_allow`. Default for MCP toolset: `always_ask` (new MCP
+  tools don't auto-execute without approval). Policy types:
+  `always_allow` and `always_ask` (pauses execution pending
+  your confirmation).
 - **Cloud sandboxes** are the default Anthropic-managed execution environment
   for code-running agents (Ubuntu 22.04 LTS, x86_64, up to 8 GB RAM, up to
   10 GB disk). Pre-installed with Python 3.12+, Node.js 20+, Go 1.22+,
@@ -167,9 +171,14 @@ timestamp (null = queued). Source:
 | **← recv** | `session.status_terminated` | Unrecoverable error |
 | **← recv** | `session.updated` | Field(s) changed; applies next turn |
 | **← recv** | `session.error` | Error; includes `error.retry_status` |
-| **← recv** | `session.thread_*` | Multi-agent thread lifecycle events |
+| **← recv** | `session.thread_created` | Multiagent thread was created |
+| **← recv** | `session.thread_status_running` | Multiagent thread started activity |
+| **← recv** | `session.thread_status_idle` | Multiagent thread finished its turn; includes `stop_reason` |
+| **← recv** | `session.thread_status_terminated` | Multiagent thread was archived or reached terminal error |
 | **← recv** | `span.model_request_start/end` | Inference timing; `_end` includes `model_usage` |
-| **← recv** | `span.outcome_evaluation_*` | Outcome evaluation lifecycle |
+| **← recv** | `span.outcome_evaluation_start` | Outcome evaluation started |
+| **← recv** | `span.outcome_evaluation_ongoing` | Outcome evaluation heartbeat (in-progress) |
+| **← recv** | `span.outcome_evaluation_end` | Outcome evaluation completed |
 
 ## Integrations
 
