@@ -3,6 +3,9 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-05-31
+- Research-only run: no upstream change; llms.txt SHA unchanged (c5e78c04…); compliance/activities.md cosmetic trailing-newline oscillation only; 0 surface files updated; 0 new bug issues; all 8 quality gates passed (61 turns, 206s, $0.70).
+
 ## 2026-05-30
 - Research-only run: docs drift — added mid-conversation-system-2026-04-07 to SKILL-beta.md AnthropicBeta table, clarified mcp-tunnels-2026-05-19 as admin-only, added beta-header usage note to SKILL-messages.md; llms.txt SHA unchanged; 0 new bug issues; all 8 quality gates passed (92 turns, 306s, $0.99).
 

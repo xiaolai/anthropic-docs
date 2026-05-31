@@ -1031,8 +1031,8 @@
     {
       "path": "en/api/compliance/activities.md",
       "url": "https://platform.claude.com/docs/en/api/compliance/activities.md",
-      "sha256": "26aa19c03c521fa55e84226c67a6cff59f1b782ea59ca3cc9ad989ec4db687ab",
-      "bytes": 793879
+      "sha256": "e999a157abde49e6800e25b1ca56c9640c1aaa3ffbb0fea07db446a6a12c24a4",
+      "bytes": 793880
     },
     {
       "path": "en/api/compliance/activities/list.md",
