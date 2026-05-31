@@ -14,7 +14,7 @@
 - [Options](#options) — Core, Tools & Permissions, Models & Output, Sessions, MCP & Agents, Advanced
 - [Query Object Methods](#query-object-methods)
 - [Message Types](#message-types) — All 30 SDKMessage types
-- [Hooks](#hooks) — 22 hook events, matchers, return values, async hooks
+- [Hooks](#hooks) — 23 hook events, matchers, return values, async hooks
 - [Permissions](#permissions) — 5 modes, `canUseTool` callback
 - [MCP Servers](#mcp-servers) — stdio, HTTP, SSE, SDK, claudeai-proxy
 - [Subagents](#subagents) — AgentDefinition, tool enforcement workaround
@@ -133,16 +133,21 @@ Creates type-safe MCP tool definitions with Zod schemas.
 ```typescript
 import { tool } from "@anthropic-ai/claude-agent-sdk";
 
-function tool<Schema extends ZodRawShape>(
+function tool<Schema extends AnyZodRawShape>(
   name: string,
   description: string,
   inputSchema: Schema,
-  handler: (args: z.infer<ZodObject<Schema>>, extra: unknown) => Promise<CallToolResult>,
-  _extras?: { annotations?: ToolAnnotations }
+  handler: (args: InferShape<Schema>, extra: unknown) => Promise<CallToolResult>,
+  extras?: { annotations?: ToolAnnotations }
 ): SdkMcpToolDefinition<Schema>
 ```
 
+`AnyZodRawShape` accepts both **Zod 3** and **Zod 4** schemas (supports dual-version projects).
+`InferShape<Schema>` normalises inference across Zod versions.
+
 Handler returns: `{ content: [{ type: "text", text: "..." }], isError?: boolean }`
+
+Source: https://code.claude.com/docs/en/agent-sdk/typescript.md
 
 ### `createSdkMcpServer()`
 
@@ -787,6 +792,7 @@ Hooks use **callback matchers**: an optional regex `matcher` for tool names and 
 | `SubagentStop` | Subagent completed | Yes | Yes |
 | `PreCompact` | Before context compaction | Yes | Yes |
 | `PostToolBatch` | After a batch of tool calls completes | Yes | No |
+| `MessageDisplay` | Assistant message with text completes (redact/reformat display) | Yes | No |
 | `PermissionRequest` | Permission dialog would show | Yes | Yes |
 | `SessionStart` | Session begins | Yes | No |
 | `SessionEnd` | Session ends | Yes | No |
@@ -935,6 +941,7 @@ Common fields on all hooks: `session_id`, `transcript_path`, `cwd`, `permission_
 | `source` (`'user_settings' \| 'project_settings' \| 'local_settings' \| 'policy_settings' \| 'skills'`), `file_path?` | ConfigChange |
 | `name` | WorktreeCreate (worktree name) |
 | `worktree_path` | WorktreeRemove (path of removed worktree) |
+| `turn_id`, `message_id`, `index` (int), `final` (bool), `delta` (string) | MessageDisplay — text delta for the current assistant message turn |
 
 ---
 

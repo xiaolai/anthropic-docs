@@ -173,7 +173,10 @@ outputFormat: { type: "json_schema",
 Also: do NOT use the deprecated `zod-to-json-schema` package — Zod
 v3.24.1+ / v4+ have built-in `z.toJSONSchema()`.
 
-### `tool()` expects `ZodRawShape`, not `ZodObject`
+### `tool()` expects `AnyZodRawShape` (shape object), not a `ZodObject`
+
+`tool()` accepts both Zod 3 and Zod 4 shape objects (`AnyZodRawShape`).
+Pass `MySchema.shape` or an inline object literal — **not** the `ZodObject` itself.
 
 ```typescript
 import { z } from 'zod';
@@ -185,7 +188,7 @@ const myTool = tool("search", "Search", MySchema, handler);
 // CORRECT — pass `.shape`
 const myTool = tool("search", "Search", MySchema.shape, handler);
 
-// ALSO CORRECT — define shape inline
+// ALSO CORRECT — define shape inline (works with Zod 3 and Zod 4)
 const myTool = tool("search", "Search", { query: z.string() }, handler);
 ```
 

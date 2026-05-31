@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-05-31
+- Docs index hash refreshed (bbd47141→6e6b703a); 30 pages audited; no version bump (TS v0.3.158, PY v0.2.87 unchanged); all 11 gates pass, 21/21 verify checks pass; $2.01 total
+
 ## 2026-05-30 (success run)
 - Sync to CC v2.1.158 — TS v0.3.153→v0.3.158; all 11 gates pass, 27/27 verify checks pass; 1 mending run; $1.40 total
 
