@@ -8,7 +8,7 @@ user-facing **Skills** and **Plugins** surfaces.
 
 Part of the [anthropic-docs](../../README.md) plugin.
 
-**Last updated**: 2026-05-30
+**Last updated**: 2026-05-31
 
 ## Surfaces
 
@@ -35,11 +35,11 @@ SKILL_NAME=claude-connectors npm run update
 
 | Date | Update | Research | Mending | Report | Total | Notes |
 |------|--------|----------|---------|--------|-------|-------|
-| 2026-05-30 | success | research + report (no upstream change) |
+| 2026-05-31 | success | research + report (no upstream change) |
+| 2026-05-30 | — | — | — | — | — | success — no upstream changes, research + report |
 | 2026-05-29 | — | — | — | — | — | success — no upstream changes, research + report |
 | 2026-05-28 | — | — | — | — | — | success — no upstream changes, research + report |
 | 2026-05-27 | — | — | — | — | — | success — no upstream changes, research + report |
 | 2026-05-26 | — | — | — | — | — | success — no upstream changes, research + report |
 | 2026-05-25 | — | — | — | — | — | success — no upstream changes, research + report |
-| 2026-05-24 | — | — | — | — | — | success — no upstream changes, research + report |
 
