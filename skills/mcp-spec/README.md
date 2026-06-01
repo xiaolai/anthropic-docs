@@ -8,7 +8,9 @@ resources, prompts, sampling, roots, completion).
 
 Part of the [anthropic-docs](../../README.md) plugin.
 
-**Last updated**: 2026-05-29
+**Primary package**: `@modelcontextprotocol/sdk` v1.29.0
+
+**Last updated**: 2026-06-01
 
 ## Surfaces
 
@@ -38,11 +40,11 @@ SKILL_NAME=mcp-spec npm run update
 
 | Date | Update | Research | Mending | Report | Total | Notes |
 |------|--------|----------|---------|--------|-------|-------|
+| 2026-06-01 | review | research + report (no upstream change) |
 | 2026-05-29 | success | docs +1/-0 |
 | 2026-05-28 | success | docs +0/-1 |
 | 2026-05-27 | success | docs +2/-0 |
 | 2026-05-26 | success | research + report (no upstream change) |
 | 2026-05-25 | success | research + report (no upstream change) |
 | 2026-05-24 | review | research + report (no upstream change) |
-| 2026-05-23 | review | research + report (no upstream change) |
 
