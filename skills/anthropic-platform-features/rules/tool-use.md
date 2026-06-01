@@ -82,14 +82,15 @@ Placing `cache_control` on the system role's string form is also wrong — conve
 
 ## Rule 4 — Extended thinking: model-specific rules
 
-**Anthropic Claude Opus 4.7:** manual `thinking: {type: "enabled", budget_tokens: N}`
-is **rejected with a 400 error**. Use `thinking: {type: "adaptive"}` instead.
+**Anthropic Claude Opus 4.8 and Claude Opus 4.7:** manual `thinking: {type: "enabled", budget_tokens: N}`
+is **rejected with a 400 error**. Use `thinking: {type: "adaptive"}` instead. Note that
+thinking is **off by default** on these models — you must explicitly set `thinking: {type: "adaptive"}`.
 
 ```python
-# WRONG on claude-opus-4-7 — returns 400
+# WRONG on claude-opus-4-8 or claude-opus-4-7 — returns 400
 thinking={"type": "enabled", "budget_tokens": 10000}
 
-# RIGHT on claude-opus-4-7
+# RIGHT on claude-opus-4-8 or claude-opus-4-7
 thinking={"type": "adaptive"}
 ```
 
@@ -147,7 +148,7 @@ for await (const chunk of stream) { /* ... */ }
 
 ## Rule 7 — Model IDs are family-prefix or dated; don't typo
 
-Valid families today: `claude-opus-4-7`, `claude-sonnet-4-6`,
+Valid families today: `claude-opus-4-8`, `claude-opus-4-7`, `claude-sonnet-4-6`,
 `claude-haiku-4-5-20251001`, `claude-mythos-preview`. The platform
 rejects unknown IDs. Prefer family-only IDs unless reproducibility
 matters; dated IDs pin to a specific snapshot (e.g.,

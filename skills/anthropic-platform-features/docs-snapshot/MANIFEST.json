@@ -3,7 +3,7 @@
   "indexSha256": "c5e78c04c7945e605b7560934ab1d87dafcd5b1f4e90ddbac461d20f671047e9",
   "indexBytes": 166864,
   "pageCount": 121,
-  "refreshedAt": "2026-05-31T00:00:00Z",
+  "refreshedAt": "2026-06-01T00:00:00Z",
   "pages": [
     {
       "path": "en/agents-and-tools/agent-skills/best-practices.md",
@@ -116,8 +116,8 @@
     {
       "path": "en/agents-and-tools/tool-use/computer-use-tool.md",
       "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool.md",
-      "sha256": "29ffacfe39a255db94e0abc6176c1383267fd3fcd2ce9ec402601ece96f9bae2",
-      "bytes": 80391
+      "sha256": "0dce2a27a25db5479dbc2c3be3025923bd33a817a84bc38f0616aea9f84f3e2b",
+      "bytes": 80804
     },
     {
       "path": "en/agents-and-tools/tool-use/define-tools.md",
@@ -242,8 +242,8 @@
     {
       "path": "en/build-with-claude/adaptive-thinking.md",
       "url": "https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking.md",
-      "sha256": "8729f4dcdf65b77a6c64d054d376c5e63a65254a16f4713f233b1b17f9375614",
-      "bytes": 36780
+      "sha256": "df578279b50ca66e564cd560579389b7344720fd894a6e0b7bb88591bdc3b6b2",
+      "bytes": 37440
     },
     {
       "path": "en/build-with-claude/batch-processing.md",

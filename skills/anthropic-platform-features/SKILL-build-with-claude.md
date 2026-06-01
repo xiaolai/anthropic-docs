@@ -102,7 +102,7 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
   `POST /v1/messages/batches`; poll for results. Not for interactive use.
 - **Vision input:** images can be base64-inline or URL-referenced.
   Max ~5 MB per image. Document blocks (PDFs) are handled separately
-  via `type: "document"`. Claude Opus 4.7 supports **high-resolution
+  via `type: "document"`. Claude Opus 4.8 and Claude Opus 4.7 support **high-resolution
   images** (2576px max long edge, ~4784 tokens/image vs ~1568 on other
   models) — no beta header needed, automatic.
   **Per-request image/PDF limit:** a single request may include up to
@@ -186,8 +186,8 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
 | Feature | Page | What it does |
 |---|---|---|
 | **Extended thinking** | [`extended-thinking.md`](https://platform.claude.com/docs/en/build-with-claude/extended-thinking.md) | Manual `thinking: {type: "enabled", budget_tokens: N}` — supported on Opus 4.6/Sonnet 4.6 (deprecated) and older models. **NOT supported on Opus 4.8 or Opus 4.7** (400 error). **Interleaved thinking** (Claude 4 models only): enables Claude to think between tool calls. See [`extended-thinking.md#interleaved-thinking`](https://platform.claude.com/docs/en/build-with-claude/extended-thinking#interleaved-thinking) for syntax |
-| **Adaptive thinking** | [`adaptive-thinking.md`](https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking.md) | `thinking: {type: "adaptive"}` — model auto-decides thinking depth. **Only thinking mode on Opus 4.8 and Opus 4.7** (must be explicitly enabled). Default on Claude Mythos Preview (auto-applies when `thinking` is unset). Recommended for Opus 4.6/Sonnet 4.6. No beta header required |
-| **Effort** | [`effort.md`](https://platform.claude.com/docs/en/build-with-claude/effort.md) | Controls token spend depth. Levels: `low`, `medium`, `high` (default), `max`, `xhigh` (Opus 4.7 only). No beta header required. Supported on Claude Mythos Preview, Opus 4.7, Opus 4.6, Sonnet 4.6, Opus 4.5. **Schema:** `effort` is nested under `output_config` in the request body: `{"output_config": {"effort": "medium"}}`. `max` is available on Claude Mythos Preview, Opus 4.7, Opus 4.6, and Sonnet 4.6 only (not Opus 4.5) |
+| **Adaptive thinking** | [`adaptive-thinking.md`](https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking.md) | `thinking: {type: "adaptive"}` — model auto-decides thinking depth. **Only thinking mode on Opus 4.8 and Opus 4.7** (must be explicitly enabled; thinking is off by default on these models). Default on Claude Mythos Preview (auto-applies when `thinking` is unset). Recommended for Opus 4.6/Sonnet 4.6. No beta header required |
+| **Effort** | [`effort.md`](https://platform.claude.com/docs/en/build-with-claude/effort.md) | Controls token spend depth. Levels: `low`, `medium`, `high` (default), `max`, `xhigh` (Opus 4.8 and Opus 4.7 only). No beta header required. Supported on Claude Mythos Preview, Opus 4.8, Opus 4.7, Opus 4.6, Sonnet 4.6, Opus 4.5. **Schema:** `effort` is nested under `output_config` in the request body: `{"output_config": {"effort": "medium"}}`. `max` is available on Claude Mythos Preview, Opus 4.8, Opus 4.7, Opus 4.6, and Sonnet 4.6 only (not Opus 4.5) |
 | **Fast mode** | [`fast-mode.md`](https://platform.claude.com/docs/en/build-with-claude/fast-mode.md) | **Beta (research preview, waitlist).** `speed: "fast"` + header `fast-mode-2026-02-01`; up to 2.5× OTPS on Opus 4.6/4.7 at 6× pricing |
 
 ## Throughput / cost patterns
@@ -206,7 +206,7 @@ source: https://platform.claude.com/docs/en/build-with-claude/overview.md
 |---|---|
 | [`files.md`](https://platform.claude.com/docs/en/build-with-claude/files.md) | File uploads (Files API) |
 | [`pdf-support.md`](https://platform.claude.com/docs/en/build-with-claude/pdf-support.md) | PDF as input (text + vision modes) |
-| [`vision.md`](https://platform.claude.com/docs/en/build-with-claude/vision.md) | Image input (base64 or URL), max ~5 MB; Opus 4.7 high-res (2576px, ~4784 tok/img); max 600 images or PDF pages per request (100 on 200k-context models) |
+| [`vision.md`](https://platform.claude.com/docs/en/build-with-claude/vision.md) | Image input (base64 or URL), max ~5 MB; Opus 4.8 and Opus 4.7 high-res (2576px, ~4784 tok/img); max 600 images or PDF pages per request (100 on 200k-context models) |
 | [`embeddings.md`](https://platform.claude.com/docs/en/build-with-claude/embeddings.md) | Embeddings models |
 | [`multilingual-support.md`](https://platform.claude.com/docs/en/build-with-claude/multilingual-support.md) | Supported languages, quality notes |
 | [`search-results.md`](https://platform.claude.com/docs/en/build-with-claude/search-results.md) | Web search results as input format |
