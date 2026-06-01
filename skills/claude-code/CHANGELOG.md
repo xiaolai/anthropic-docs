@@ -10,6 +10,15 @@ The newest entry is at the top.
 
 ---
 
+## 2026-06-01
+- Sync to CC v2.1.159 — internal infra improvements (no user-facing changes); SKILL-hooks.md: MessageDisplay output corrected (`displayContent` replaces `text`/`hidden`), added input fields (`turn_id`, `message_id`, `index`, `final`, `delta`), added to no-matcher-support list; verify passed after 1 mend run (34 checks, 0 failures); all 11 gates pass
+
+## v2.1.159 — 2026-06-01
+
+Version bump: `@anthropic-ai/claude-code` updated from v2.1.158 to v2.1.159.
+
+- Internal infrastructure improvements; no user-facing changes.
+
 ## 2026-05-31
 - Docs index +2 pages (112→114, `whats-new/2026-w21.md` and `whats-new/2026-w22.md`); SKILL-settings.md: added `ultracode` and `workflowKeywordTriggerEnabled` settings keys; SKILL-slash-commands.md: added `/deep-research` command; SKILL-known-issues.md: added KI 826 (terminal scroll yank during streaming on VS Code/Cursor/iTerm2); all 11 gates pass
 

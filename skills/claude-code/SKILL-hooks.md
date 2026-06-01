@@ -113,7 +113,7 @@ Per-event: what the matcher filters:
 | `UserPromptExpansion` | Command name |
 | `Elicitation`, `ElicitationResult` | MCP server name |
 | `FileChanged` | Literal filenames to watch (e.g. `.envrc\|.env`) |
-| `UserPromptSubmit`, `PostToolBatch`, `Stop`, `TeammateIdle`, `TaskCreated`, `TaskCompleted`, `WorktreeCreate`, `WorktreeRemove`, `CwdChanged` | No matcher support — always fires |
+| `UserPromptSubmit`, `PostToolBatch`, `Stop`, `TeammateIdle`, `TaskCreated`, `TaskCompleted`, `WorktreeCreate`, `WorktreeRemove`, `CwdChanged`, `MessageDisplay` | No matcher support — always fires |
 
 **MCP tool matching:** MCP tools follow the pattern `mcp__<server>__<tool>`. To match all tools from a server: `mcp__memory__.*` (the `.*` is required — bare `mcp__memory` is treated as an exact string).
 
@@ -579,27 +579,39 @@ Return `{ "retry": true }` (in `hookSpecificOutput`) to tell the model it may re
 
 Source: `code.claude.com/docs/en/hooks.md`
 
-### MessageDisplay output
+### MessageDisplay input and output
 
-Transform or hide assistant message text before it is rendered. Return `hookSpecificOutput` with the modified text or a hide instruction:
+Fires as assistant message text streams to screen. Each batch of newly completed lines triggers one call; a long message produces several calls while a short one may produce only one. In print mode (`-p`) and Agent SDK runs, fires once per message after it completes.
+
+**MessageDisplay input** (in addition to common fields):
+
+| Field | Notes |
+|---|---|
+| `turn_id` | UUID of the current turn |
+| `message_id` | UUID of the assistant message being displayed. Stable across batches of the same message |
+| `index` | Zero-based index of this batch within the message |
+| `final` | `true` on the message's last batch. Each message has exactly one final batch |
+| `delta` | The newly completed lines since the prior batch. In print mode/SDK, the full message text |
+
+**MessageDisplay output** — return `displayContent` to replace what is rendered on screen. The transcript and what Claude sees keep the original text:
 
 <!-- skip-validate -->
 ```json
 {
   "hookSpecificOutput": {
     "hookEventName": "MessageDisplay",
-    "text": "Transformed message text",
-    "hidden": false
+    "displayContent": "Transformed message text"
   }
 }
 ```
 
 | Field | Notes |
 |---|---|
-| `text` | Replacement text to display instead of the original. Omit to display the original unchanged |
-| `hidden` | If `true`, suppresses display of this message entirely |
+| `displayContent` | Text displayed in place of the delta. Omit to display the original unchanged |
 
-Input includes a `text` field with the original assistant message string. Exit code 2 hides the message.
+MessageDisplay has no decision control — hooks cannot block the message or change the transcript. Exit code 2 is not supported.
+
+Source: `code.claude.com/docs/en/hooks.md`.
 
 ### Elicitation output
 

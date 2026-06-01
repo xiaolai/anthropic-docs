@@ -167,8 +167,8 @@ Environment variables can also be set in `settings.json` under `env`. See `code.
 | `ENABLE_TOOL_SEARCH` | Set to `false` to disable MCP tool search |
 | `CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE` | Set to `1` to pin `/fast` mode to Opus 4.6 instead of the default Opus 4.8. Note: Opus 4.6 fast mode is deprecated as of v2.1.150 |
 | `CLAUDE_CODE_SUBAGENT_MODEL` | Override the model used by subagents in multi-agent sessions. See [Model configuration](https://code.claude.com/docs/en/model-config.md). Source: `code.claude.com/docs/en/env-vars.md` |
-| `CLAUDE_CODE_WORKFLOWS` | Set to `1` to enable the `Workflow` tool for deterministic multi-agent orchestration (off by default; v2.1.158+) |
-| `CLAUDE_CODE_ENABLE_AUTO_MODE` | Set to `1` to enable auto permission mode on Bedrock, Vertex, and Foundry (v2.1.158+). Supported models: Opus 4.7 and Opus 4.8. Has no effect on Anthropic API connections; see the *Auto mode requirements* note under *Permission modes*. |
+| `CLAUDE_CODE_WORKFLOWS` | Set to `1` to enable the `Workflow` tool for deterministic multi-agent orchestration (off by default; v2.1.159+) |
+| `CLAUDE_CODE_ENABLE_AUTO_MODE` | Set to `1` to enable auto permission mode on Bedrock, Vertex, and Foundry (v2.1.159+). Supported models: Opus 4.7 and Opus 4.8. Has no effect on Anthropic API connections; see the *Auto mode requirements* note under *Permission modes*. |
 | `CLAUDE_CODE_DISABLE_ALTERNATE_SCREEN` | Set to `1` to disable fullscreen rendering and use the classic main-screen renderer. The conversation stays in the terminal's native scrollback so `Cmd+f` and tmux copy mode work normally. Takes precedence over `CLAUDE_CODE_NO_FLICKER` and the `tui` setting. You can also switch with `/tui default`. Source: `code.claude.com/docs/en/env-vars.md` |
 | `CLAUDE_CODE_PACKAGE_MANAGER_AUTO_UPDATE` | Set to `1` to let Claude Code run your package manager's upgrade command in the background when a new version is available. Applies to Homebrew and WinGet installations. Other package managers continue to show the upgrade command without running it. Source: `code.claude.com/docs/en/env-vars.md` |
 | `CLAUDE_CODE_SESSION_ID` | Set automatically in Bash and PowerShell tool subprocesses and in hook command subprocesses to the current session ID. Matches the `session_id` field in the hook JSON input. Updated on `/clear`. Use to correlate scripts and external tools with the Claude Code session that launched them. Source: `code.claude.com/docs/en/env-vars.md` |
@@ -204,7 +204,7 @@ Precedence (highest wins): CLI flags > `settings.local.json` > `settings.json` (
 
 **Auto mode requirements (Anthropic API):** Claude Code v2.1.83+, Max/Pro/Team/Enterprise/API plan, and an eligible model. Model availability depends on plan: Team/Enterprise/API allow Sonnet 4.6, Opus 4.6, Opus 4.7, or Opus 4.8; Max and Pro allow Sonnet 4.6, Opus 4.7, and Opus 4.8 (Haiku and claude-3 models are not supported on any plan). Team/Enterprise require an admin to enable it in Claude Code admin settings.
 
-**Auto mode on Bedrock / Vertex / Foundry (v2.1.158+):** Auto mode is now available on Bedrock, Vertex, and Foundry for Opus 4.7 and Opus 4.8. Opt in by setting `CLAUDE_CODE_ENABLE_AUTO_MODE=1`.
+**Auto mode on Bedrock / Vertex / Foundry (v2.1.159+):** Auto mode is now available on Bedrock, Vertex, and Foundry for Opus 4.7 and Opus 4.8. Opt in by setting `CLAUDE_CODE_ENABLE_AUTO_MODE=1`.
 
 Source: `code.claude.com/docs/en/permission-modes.md`.
 

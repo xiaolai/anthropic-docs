@@ -99,7 +99,7 @@ After enabling/disabling a plugin mid-session, run `/reload-plugins` to connect/
 
 > **Auto-loading from `.claude/skills` directories (v2.1.150+):** Plugins placed in a `.claude/skills/<name>/` directory (project or user scope) are automatically discovered and loaded — no marketplace install required. Use `claude plugin init <name>` to scaffold a new plugin in the current directory.
 
-> **Plugin preview before install:** The `/plugin` Discover and Browse screens show a plugin's commands, agents, skills, hooks, and MCP/LSP servers before you install it (as of v2.1.158).
+> **Plugin preview before install:** The `/plugin` Discover and Browse screens show a plugin's commands, agents, skills, hooks, and MCP/LSP servers before you install it (as of v2.1.159).
 
 ## Marketplace manifest: `marketplace.json`
 
