@@ -3,6 +3,9 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-06-01
+- Research-only run: no upstream change; llms.txt SHA unchanged; 0 surface files updated; 0 new bug issues; all 8 quality gates passed (39 turns, 137s, $0.58).
+
 ## 2026-05-31
 - Research-only run: no upstream change; llms.txt SHA unchanged (c5e78c04…); compliance/activities.md cosmetic trailing-newline oscillation only; 0 surface files updated; 0 new bug issues; all 8 quality gates passed (61 turns, 206s, $0.70).
 
