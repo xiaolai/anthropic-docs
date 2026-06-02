@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-06-02 (daily run — review)
+- *(pending review — see PR on `auto/2026-06-02-pending-review`)* TS v0.3.159 → v0.3.160; PostToolUse abort-signal fix documented; 3 new known issues added (Bedrock empty thinking blocks, interrupt truncation, iterator no-result); check-diff-size gate failed; 27/27 verify checks pass; $2.31
+
+## 2026-06-02 (v0.3.160 — version bump)
+
+- TypeScript SDK v0.3.159 → v0.3.160; bug fix: aborting during a `PostToolUse` hook now ends the turn with a final `result` message instead of hanging the calling process (abort signals no longer swallowed by hook callbacks)
+- Python SDK v0.2.87 unchanged
+- Version propagated to SKILL.md, SKILL-typescript.md, README.md, state.json
+
 ## 2026-06-01 (daily run — success)
 - Sync to TS v0.3.159 (parity with CC v2.1.159); PY v0.2.87 unchanged; 27/27 verify checks pass; 2 mending runs; $1.22
 
