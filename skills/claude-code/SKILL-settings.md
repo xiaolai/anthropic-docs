@@ -108,7 +108,7 @@ Minimal valid `settings.json`:
 | `parentSettingsBehavior` | string | (Managed only) `"first-wins"` (default) or `"merge"` for embedding host policy (v2.1.133+) |
 | `permissions` | object | Permission rules. See § *`permissions` block* below |
 | `plansDirectory` | string | Where plan files are stored (default: `~/.claude/plans`) |
-| `pluginSuggestionMarketplaces` | array | (Managed only) Allowlist of org marketplace names whose plugins may be suggested to users via context-aware tips (v2.1.159+) |
+| `pluginSuggestionMarketplaces` | array | (Managed only) Allowlist of org marketplace names whose plugins may be suggested to users via context-aware tips (v2.1.160+) |
 | `pluginTrustMessage` | string | (Managed only) Custom message appended to plugin trust warning |
 | `policyHelper` | object | (Managed only) Admin executable for dynamic managed settings (v2.1.136+). Keys: `path` (string, absolute path to helper), `timeoutMs` (number, wait limit before treating run as failed), `refreshIntervalMs` (number, re-run interval; `0` = disable, minimum `60000`) |
 | `preferredNotifChannel` | string | Notification method: `"auto"`, `"terminal_bell"`, `"iterm2"`, `"iterm2_with_bell"`, `"kitty"`, `"ghostty"`, `"notifications_disabled"` |
@@ -125,7 +125,7 @@ Minimal valid `settings.json`:
 | `spinnerTipsOverride` | object | Override spinner tips: `{ tips: [...], excludeDefault: bool }` |
 | `spinnerVerbs` | object | Customize spinner verbs: `{ mode: "replace"|"append", verbs: [...] }` |
 | `sshConfigs` | array | SSH connections for Desktop environment dropdown (managed + user only) |
-| `statusLine` | object | Custom status line command. Scripts receive `COLUMNS` and `LINES` env vars so output can be sized to the terminal width (v2.1.159+). See `code.claude.com/docs/en/statusline.md` |
+| `statusLine` | object | Custom status line command. Scripts receive `COLUMNS` and `LINES` env vars so output can be sized to the terminal width (v2.1.160+). See `code.claude.com/docs/en/statusline.md` |
 | `strictKnownMarketplaces` | array | (Managed only) Marketplace allowlist/lockdown |
 | `strictPluginOnlyCustomization` | boolean \| array | (Managed only) Block skills, agents, hooks, and/or MCP servers from user and project sources; only plugin-provided or managed sources load. `true` locks all four surfaces; an array names which to lock: `"skills"`, `"agents"`, `"hooks"`, `"mcp"`. Requires v2.1.82+. Combine with `strictKnownMarketplaces` to control the full customization supply chain. Source: `code.claude.com/docs/en/settings.md` |
 | `syntaxHighlightingDisabled` | boolean | Disable syntax highlighting |
@@ -137,7 +137,7 @@ Minimal valid `settings.json`:
 | `viewMode` | string | Default transcript view: `"default"`, `"verbose"`, `"focus"` |
 | `voice` | object | Voice dictation: `{ enabled, mode: "hold"|"tap", autoSubmit }` |
 | `voiceEnabled` | boolean | Legacy alias for `voice.enabled` |
-| `workflowKeywordTriggerEnabled` | boolean | Whether the word `workflow` in a prompt triggers a dynamic workflow. Set to `false` to type the word without triggering one. Ultracode, `/workflows`, and saved workflow commands are unaffected. Default: `true`. Appears in `/config` as **Workflow keyword trigger**. Requires v2.1.157+. Source: `code.claude.com/docs/en/settings.md` |
+| `workflowKeywordTriggerEnabled` | boolean | Whether the keyword `ultracode` in a prompt triggers a dynamic workflow (renamed from `workflow` in v2.1.160 — the word "workflow" no longer triggers a run). Set to `false` to type the word without triggering one. The trigger keyword is highlighted in violet in the prompt input. Ultracode, `/workflows`, and saved workflow commands are unaffected. Default: `true`. Appears in `/config` as **Workflow keyword trigger**. Requires v2.1.157+. Source: `code.claude.com/docs/en/settings.md` |
 | `wslInheritsWindowsSettings` | boolean | (Windows managed only) WSL reads Windows policy chain |
 
 ### Global config settings (stored in `~/.claude.json`, not `settings.json`)

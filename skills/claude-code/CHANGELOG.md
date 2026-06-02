@@ -10,6 +10,33 @@ The newest entry is at the top.
 
 ---
 
+## 2026-06-02
+- Sync to CC v2.1.160 — security/permission hardening (shell startup file prompts, acceptEdits build-tool config prompts), ultracode keyword rename (workflow→ultracode trigger), CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE removed, WSL clipboard fix, multiple agents-list and background-session bug fixes; docs index +1 page (114→115, mcp-quickstart.md); SKILL.md, README.md, SKILL-settings.md, SKILL-cli.md updated; all gates pass
+
+## v2.1.160 — 2026-06-02
+
+Version bump: `@anthropic-ai/claude-code` updated from v2.1.159 to v2.1.160.
+
+- Added prompt before writing to shell startup files (`.zshenv`, `.zlogin`, `.bash_login`) and `~/.config/git/`, preventing unintended command execution
+- `acceptEdits` mode now prompts before writing build-tool config files that grant code execution (`.npmrc`, `.yarnrc*`, `bunfig.toml`, `.bazelrc`, `.pre-commit-config.yaml`, `.devcontainer/`, etc.)
+- Single-file `grep`/`egrep`/`fgrep` commands now satisfy the read-before-edit check (no separate Read required)
+- Renamed dynamic-workflow trigger keyword from `workflow` to `ultracode` (typing "workflow" no longer triggers a run; asking in natural language still works; trigger keyword highlighted in violet)
+- Removed `CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE` — now a no-op
+- Removed JetBrains plugin install suggestion from startup
+- Fixed copy-on-select not writing to Windows clipboard on WSL (now uses PowerShell interop instead of OSC 52)
+- Fixed restoring a completed session from `claude agents` dropping chat history and re-running the original prompt
+- Fixed background sessions re-attached after overnight retire losing conversation and re-running the original prompt
+- Fixed `claude --bg` occasionally failing with "socket missing" on cold-starting background daemon
+- Fixed multiple `claude agents` display and input issues (freezing on exit, keyboard unresponsiveness on Windows, terminal sync-output markers, mouse wheel scrolling, CJK IME position)
+- Fixed `file:///C:/...` links being rewritten to a broken path on Windows terminals
+- Fixed voice mode failing with non-ASCII or special characters in project directory or branch name
+- Fixed auto mode unavailability message on third-party providers (Bedrock/Vertex/Foundry) to point to `CLAUDE_CODE_ENABLE_AUTO_MODE`
+- Fixed `/effort ultracode` incorrectly blaming dynamic workflows setting; ultracode no longer offered on unsupported models
+- Fixed model-not-found errors suggesting `--model` when running via SDK
+- Fixed vim mode `p` pasting on wrong line
+- Improved background agent session opening performance; improved auto mode classifier latency; improved background-session teardown (SIGTERM before SIGKILL)
+- Docs index: added `mcp-quickstart.md` (page count 114 → 115)
+
 ## 2026-06-01
 - Sync to CC v2.1.159 — internal infra improvements (no user-facing changes); SKILL-hooks.md: MessageDisplay output corrected (`displayContent` replaces `text`/`hidden`), added input fields (`turn_id`, `message_id`, `index`, `final`, `delta`), added to no-matcher-support list; verify passed after 1 mend run (34 checks, 0 failures); all 11 gates pass
 

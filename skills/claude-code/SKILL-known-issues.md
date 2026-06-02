@@ -48,7 +48,7 @@ Each entry uses this structure:
 
 ### KI 61734 — Sonnet 4.6 context window meter shows 200K instead of 1M
 
-- **Affects:** v2.1.159 (possibly earlier); behaviour may vary by plan
+- **Affects:** v2.1.160 (possibly earlier); behaviour may vary by plan
 - **Symptom:** The status bar context-window meter displays 200K tokens for `claude-sonnet-4-6`. Multiple users report this was 1M in previous versions. Sessions may be actively limited to 200K, not just mis-displayed.
 - **Reproduction:** Start Claude Code with `claude-sonnet-4-6` on a Pro or Max plan and observe the context meter.
 - **Workaround:** Switch to `claude-opus-4-7` which shows and uses the 1M context window on eligible plans. For API/Team plans, using `--model claude-sonnet-4-6` via CLI may restore 1M. Plan-specific context limits: Max plan caps Sonnet at 200K but gives Opus 4.7 the 1M window; API/Team plans allow 1M on Sonnet 4.6. Check `claude.ai/settings` → Plan for your tier's limits.

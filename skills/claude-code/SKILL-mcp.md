@@ -167,7 +167,7 @@ Cross-reference: [`SKILL-hooks.md`](SKILL-hooks.md) § *Matcher syntax*.
 ## Management commands
 
 ```bash
-# List configured servers
+# List configured servers (shows status for each)
 claude mcp list
 
 # Get details for a server
@@ -176,11 +176,26 @@ claude mcp get github
 # Remove a server
 claude mcp remove github
 
+# Reset project-scoped server approvals (re-triggers trust dialog on next session)
+claude mcp reset-project-choices
+
 # From inside a session
 /mcp
 ```
 
-`/mcp` shows the tool count per server and flags servers that advertise tools but expose none. Use `/mcp` to authenticate with OAuth 2.0 servers.
+`/mcp` shows the tool count per server and flags servers that advertise tools but expose none. Use `/mcp` to authenticate with OAuth 2.0 servers, or to reconnect/re-authenticate without leaving the session.
+
+### `claude mcp list` status codes
+
+| Status | Meaning |
+|---|---|
+| `✓ Connected` | Ready to use |
+| `! Needs authentication` | Reachable but requires browser sign-in or `--header` token |
+| `✗ Failed to connect` | Server didn't respond; check the URL/command |
+| `✗ Connection error` | Connection attempt threw an error; run the stdio command directly to diagnose |
+| `⏸ Pending approval` | Project-scoped server not yet approved; use `/mcp` to approve |
+
+Source: `code.claude.com/docs/en/mcp-quickstart.md`.
 
 > **Pending approval display (v2.1.157+):** When output is piped (non-interactive), `claude mcp list` and `claude mcp get` show unapproved `.mcp.json` servers as **pending approval** instead of auto-approving and connecting them. This matches the interactive behavior where a trust dialog appears.
 
@@ -263,6 +278,7 @@ See [`rules/mcp.md`](rules/mcp.md). Key pitfalls:
 - HTTP/SSE servers require explicit `"type": "http"` or `"type": "sse"` plus a `url`
 - `env` values must be **strings** (`"PORT": "3000"`, not `"PORT": 3000`)
 - The server name `workspace` is reserved and will be skipped
+- **Wrong config file paths:** Claude Code reads `~/.claude.json` (user-scope) and `<project>/.mcp.json` (project-scope). Paths like `~/.claude/mcp.json`, `~/.claude/config/mcp.json`, or `%APPDATA%\Claude\mcp.json` are **not** read. Source: `code.claude.com/docs/en/mcp-quickstart.md`.
 
 ---
 
