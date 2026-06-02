@@ -3,7 +3,7 @@
   "indexSha256": "e902363536c9acc513d54af3426bbbed42d810e267688e03faa4bb78006a7ab4",
   "indexBytes": 12253,
   "pageCount": 35,
-  "refreshedAt": "2026-06-01T00:00:00Z",
+  "refreshedAt": "2026-06-02T00:00:00Z",
   "pages": [
     {
       "path": "cowork/3p/bedrock-aws-sign-in.md",
@@ -74,8 +74,8 @@
     {
       "path": "cowork/3p/installation.md",
       "url": "https://claude.com/docs/cowork/3p/installation.md",
-      "sha256": "249463d5ef7c641ff5e31dab18927b1cf3d22bc1e09c19a2110717af2ad26898",
-      "bytes": 17428
+      "sha256": "23696a7003c5dab7e70d26dca5beffeebaefb35373362f22ac1f15b5c0d2f525",
+      "bytes": 18892
     },
     {
       "path": "cowork/3p/legal.md",

@@ -15,120 +15,121 @@
     "pageCount": 35,
     "knownPages": {
       "https://claude.com/docs/cowork/3p/bedrock-aws-sign-in.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/cowork/3p/bedrock.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/cowork/3p/code.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/cowork/3p/configuration.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/cowork/3p/connectors-m365.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/cowork/3p/data-storage.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/cowork/3p/extensions.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/cowork/3p/feature-matrix.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/cowork/3p/foundry.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/cowork/3p/gateway-sso.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/cowork/3p/gateway.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/cowork/3p/installation.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/cowork/3p/legal.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/cowork/3p/local-access.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/cowork/3p/overview.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/cowork/3p/telemetry.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/cowork/3p/vertex-google-sign-in.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/cowork/3p/vertex.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/cowork/3p/web-tools.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/cowork/guide/dispatch.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/cowork/guide/plugins.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/cowork/guide/projects.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/cowork/monitoring.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/cowork/overview.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/office-agents/overview.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/office-agents/connectors-and-skills.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/office-agents/dictation.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/office-agents/enterprise-readiness.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/office-agents/excel.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/office-agents/fsi-plugins.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/office-agents/outlook.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/office-agents/powerpoint.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/office-agents/third-party-platforms.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/office-agents/word.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/office-agents/work-across-apps.md": {
-        "lastSeen": "2026-06-01T14:48:40Z"
+        "lastSeen": "2026-06-02T14:09:29Z"
       }
     }
   },
   "trackedIssues": {},
   "researchedIssues": {},
   "lastAuditedVersion": "none",
-  "lastUpdated": "2026-06-01T14:48:40Z",
+  "lastUpdated": "2026-06-02T14:09:29Z",
   "scaffoldComplete": true,
   "lastRunWarnings": [
     "rules/mdm-config.md appliesTo globs do not cover *.reg files (Windows registry policy). Consider adding **/cowork*.reg for completeness. Minor — pre-existing gap. 2026-05-19T09:00:00Z",
-    "check-docs-drift.sh false positive at 2026-05-21T12:00:00Z: script does not honor docsPathFilter so it reports 35 connectors/skills/plugins pages as added upstream — those are out-of-scope for this skill and were never tracked. Also sha256 method mismatch (printf vs sha256sum of file) causes MANIFEST hash to differ from script-computed hash. No actual cowork/ or office-agents/ page changes. Pipeline-level limitation."
+    "check-docs-drift.sh false positive at 2026-05-21T12:00:00Z: script does not honor docsPathFilter so it reports 35 connectors/skills/plugins pages as added upstream — those are out-of-scope for this skill and were never tracked. Also sha256 method mismatch (printf vs sha256sum of file) causes MANIFEST hash to differ from script-computed hash. No actual cowork/ or office-agents/ page changes. Pipeline-level limitation.",
+    "Part C url-check 2026-06-02T00:00:00Z: readiness-check download URLs (claude.ai/api/desktop/.../cowork-readiness-check/latest/redirect) return HTTP 403 for unauthenticated curl — expected, these are authenticated download endpoints for signed-in users. URLs are correct as sourced from installation.md."
   ],
   "lastScannedIssueNumber": null
 }

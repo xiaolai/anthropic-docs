@@ -121,6 +121,20 @@ profiles per geography so each user population points at an in-region
 endpoint (Vertex AI and Bedrock both offer Claude models in EU, UK,
 APJ, and other sovereign regions).
 
+**Device readiness check.** Before installing Claude Desktop you can
+confirm that a device supports Cowork without any sign-in:
+
+| Platform | Download |
+|---|---|
+| macOS | [Cowork readiness check for macOS](https://claude.ai/api/desktop/darwin/universal/cowork-readiness-check/latest/redirect) |
+| Windows (arm64) | [Cowork readiness check for Windows arm64](https://claude.ai/api/desktop/win32/arm64/cowork-readiness-check/latest/redirect) |
+| Windows (x64) | [Cowork readiness check for Windows x64](https://claude.ai/api/desktop/win32/x64/cowork-readiness-check/latest/redirect) |
+
+Open the downloaded program to run the check. If it reports **This
+computer is ready for Cowork**, the device can run Cowork. Run the
+check on a representative device of each hardware model before
+fleet-wide rollout.
+
 **End-user / evaluation install (no MDM).** For pilots or per-user
 evaluation, users can configure 3P mode locally without an MDM profile:
 
@@ -139,9 +153,26 @@ evaluation, users can configure 3P mode locally without an MDM profile:
 | macOS | `/Library/Managed Preferences/<user>/com.anthropic.claudefordesktop.plist` (per-user); `/Library/Managed Preferences/com.anthropic.claudefordesktop.plist` (machine) | `~/Library/Application Support/Claude-3p/configLibrary/` |
 | Windows | `HKLM\SOFTWARE\Policies\Claude` (machine); `HKCU\SOFTWARE\Policies\Claude` (user) | `%LOCALAPPDATA%\Claude-3p\configLibrary\` |
 
-When any MDM-managed source is present, it wins and locally authored values are ignored. On Windows, `HKLM` wins over `HKCU` where both keys are present.
+When any MDM-managed source is present, it wins and locally authored values are ignored. On Windows, `HKLM` wins over `HKCU` where both keys are present. On macOS, if a key appears in both the per-user and machine managed profiles, the per-user value wins.
+
+**MDM export formats.** From the in-app configuration window, click **Export** to generate:
+
+| Format | Platform | Use with |
+|---|---|---|
+| `.mobileconfig` | macOS | Jamf, Kandji, Mosyle, Workspace ONE, or any Apple MDM |
+| `.reg` | Windows | Group Policy (import into a GPO), Intune (custom ADMX or script) |
+| `.zip` (ADMX template) | Windows | Schema-only template for Intune or Group Policy; enter values in the management console |
+| `.plist` (Profile Manifest) | macOS | Schema-only template for Jamf, ProfileCreator, or similar macOS tools |
+
+**Multiple named configurations.** The configuration window can hold
+multiple saved configurations. Use the picker in the top-right corner
+to **New configuration**, **Duplicate**, **Rename**, **Delete**, or
+**Reveal in Finder**. The **Apply locally** and **Export** actions each
+act on the currently selected configuration.
 
 **Diagnostic:** On any configured device, go to **Help → Troubleshooting → Copy Managed Configuration Report** to get a summary of which keys were detected, where they were read from (managed vs. local), and whether credentials validated. Secret values are redacted.
+
+Application logs: macOS `~/Library/Logs/Claude-3p/main.log`; Windows `%LOCALAPPDATA%\Claude-3p\Logs\main.log`. (Standard non-3P installs use `Claude-3p` → `Claude` in the path.)
 
 **Endpoint security / EDR allowlist.** Binary-authorization tools (Santa, CrowdStrike Falcon, Defender ASR) may block the Cowork agent helper. Allowlist by signing identity — not path — so rules survive version updates:
 

@@ -7,7 +7,7 @@ enterprise SSO, telemetry, M365 connector, policy controls) and
 
 Part of the [anthropic-docs](../../README.md) plugin.
 
-**Last updated**: 2026-06-01
+**Last updated**: 2026-06-02
 
 ## Surfaces
 
@@ -31,11 +31,11 @@ SKILL_NAME=claude-cowork npm run update
 
 | Date | Update | Research | Mending | Report | Total | Notes |
 |------|--------|----------|---------|--------|-------|-------|
-| 2026-06-01 | review | research + report (no upstream change) |
+| 2026-06-02 | review | research + report (no upstream change) |
+| 2026-06-01 | — | — | — | — | — | review — research + report (no upstream change) |
 | 2026-05-31 | — | — | — | — | — | review — research + report (no upstream change) |
 | 2026-05-30 | — | — | — | — | — | review — research + report (no upstream change) |
 | 2026-05-29 | — | — | — | — | — | review — research + report (no upstream change) |
 | 2026-05-28 | — | — | — | — | — | review — research + report (no upstream change) |
 | 2026-05-27 | — | — | — | — | — | review — research + report (no upstream change) |
-| 2026-05-26 | — | — | — | — | — | review — research + report (no upstream change) |
 
