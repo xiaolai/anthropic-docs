@@ -16,7 +16,7 @@ source: https://www.anthropic.com/news
 > most recent items from [https://www.anthropic.com/news](https://www.anthropic.com/news). For the full
 > body of any item, WebFetch its URL — that's the design.
 
-**Last refreshed**: 2026-06-01
+**Last refreshed**: 2026-06-02
 
 | # | Date | Category | Title | Link |
 |---|---|---|---|---|
@@ -25,14 +25,14 @@ source: https://www.anthropic.com/news
 | 3 | 2026-04-07 | Announcements | **Project Glasswing** | [open](https://www.anthropic.com/glasswing) |
 | 4 | 2026-03-18 |  | **What 81,000 people want from AI** | [open](https://www.anthropic.com/81k-interviews) |
 | 5 | 2026-02-04 | Announcements | **Claude is a space to think** | [open](https://www.anthropic.com/news/claude-is-a-space-to-think) |
-| 6 | 2026-05-28 | Announcements | **Anthropic raises $65B in Series H funding at $965B post-money valuation** | [open](https://www.anthropic.com/news/series-h) |
-| 7 | 2026-05-27 | Announcements | **Anthropic opens Milan office to support Italian enterprise, research, and developers** | [open](https://www.anthropic.com/news/milan-office-opening) |
-| 8 | 2026-05-26 | Announcements | **Anthropic appoints KiYoung Choi as Representative Director of Korea ahead of Seoul office opening** | [open](https://www.anthropic.com/news/kiyoung-choi-representative-director-anthropic-korea) |
-| 9 | 2026-05-25 | Announcements | **Anthropic co-founder Chris Olah’s remarks on Pope Leo XIV’s encyclical "Magnifica humanitas"** | [open](https://www.anthropic.com/news/chris-olah-pope-leo-encyclical) |
-| 10 | 2026-05-19 | Announcements | **Widening the conversation on frontier AI** | [open](https://www.anthropic.com/news/widening-conversation-ai) |
-| 11 | 2026-05-19 | Announcements | **KPMG integrates Claude across its core business and workforce of more than 276,000 in strategic alliance** | [open](https://www.anthropic.com/news/anthropic-kpmg) |
-| 12 | 2026-05-18 | Announcements | **Anthropic acquires Stainless** | [open](https://www.anthropic.com/news/anthropic-acquires-stainless) |
-| 13 | 2026-05-14 | Announcements | **PwC is deploying Claude to build technology, execute deals, and reinvent enterprise functions for clients** | [open](https://www.anthropic.com/news/pwc-expanded-partnership) |
+| 6 | 2026-06-02 | Announcements | **Expanding Project Glasswing** | [open](https://www.anthropic.com/news/expanding-project-glasswing) |
+| 7 | 2026-06-01 | Announcements | **Anthropic confidentially submits draft S-1 to the SEC** | [open](https://www.anthropic.com/news/confidential-draft-s1-sec) |
+| 8 | 2026-05-28 | Announcements | **Anthropic raises $65B in Series H funding at $965B post-money valuation** | [open](https://www.anthropic.com/news/series-h) |
+| 9 | 2026-05-27 | Announcements | **Anthropic opens Milan office to support Italian enterprise, research, and developers** | [open](https://www.anthropic.com/news/milan-office-opening) |
+| 10 | 2026-05-26 | Announcements | **Anthropic appoints KiYoung Choi as Representative Director of Korea ahead of Seoul office opening** | [open](https://www.anthropic.com/news/kiyoung-choi-representative-director-anthropic-korea) |
+| 11 | 2026-05-25 | Announcements | **Anthropic co-founder Chris Olah’s remarks on Pope Leo XIV’s encyclical "Magnifica humanitas"** | [open](https://www.anthropic.com/news/chris-olah-pope-leo-encyclical) |
+| 12 | 2026-05-19 | Announcements | **Widening the conversation on frontier AI** | [open](https://www.anthropic.com/news/widening-conversation-ai) |
+| 13 | 2026-05-19 | Announcements | **KPMG integrates Claude across its core business and workforce of more than 276,000 in strategic alliance** | [open](https://www.anthropic.com/news/anthropic-kpmg) |
 
 ## How to use this digest
 
