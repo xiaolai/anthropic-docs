@@ -3,6 +3,9 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-06-02
+- Docs drift: External Keys (CMEK) Admin API added — 7 new pages under `api/admin/external_keys/`; SKILL-admin.md updated with endpoint table, ExternalKey object fields, and provider_config variants (AWS/GCP/Azure); llms.txt index grew from 225 to 232 pages; all 8 quality gates passed (43 turns, 201s, $0.63).
+
 ## 2026-06-01
 - Research-only run: no upstream change; llms.txt SHA unchanged; 0 surface files updated; 0 new bug issues; all 8 quality gates passed (39 turns, 137s, $0.58).
 

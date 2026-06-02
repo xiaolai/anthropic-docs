@@ -1,9 +1,9 @@
 {
   "indexUrl": "https://platform.claude.com/llms.txt",
-  "indexSha256": "c5e78c04c7945e605b7560934ab1d87dafcd5b1f4e90ddbac461d20f671047e9",
+  "indexSha256": "07bb3482047f71c239322bc26e13eb8b6f1d108df37227b6aa33e1d3e93fa866",
   "indexBytes": 166612,
   "pageCount": 225,
-  "refreshedAt": "2026-05-30T00:00:00Z",
+  "refreshedAt": "2026-06-02T13:05:00Z",
   "pages": [
     {
       "path": "en/api/admin.md",
@@ -1357,6 +1357,41 @@
       "url": "https://platform.claude.com/docs/en/api/models/retrieve.md",
       "sha256": "c07b6e7001fafbd9c10a5041a72ebc5d82bb2e266dfb9837ba26131d52b6b976",
       "bytes": 5979
+    },
+    {
+      "url": "https://platform.claude.com/docs/en/api/admin/external_keys.md",
+      "sha256": "8e495748e0787a2c39cccd1867eb828efa525db89be720896cf3b66c04e547d1",
+      "fetchedAt": "2026-06-02T13:05:00Z"
+    },
+    {
+      "url": "https://platform.claude.com/docs/en/api/admin/external_keys/create.md",
+      "sha256": "34ff24feb4add842f6ae16189e5e01f229102515941af5271db8d9f24cc5d1f9",
+      "fetchedAt": "2026-06-02T13:05:00Z"
+    },
+    {
+      "url": "https://platform.claude.com/docs/en/api/admin/external_keys/delete.md",
+      "sha256": "ee5c4f05083701a415539c5c5c45284123cdb820c927d8141d59272a90d88e9d",
+      "fetchedAt": "2026-06-02T13:05:00Z"
+    },
+    {
+      "url": "https://platform.claude.com/docs/en/api/admin/external_keys/list.md",
+      "sha256": "228444c9b08ec840a2b4b0c33b270b6d6f07636bee84a4f5f6405d813a24c0fb",
+      "fetchedAt": "2026-06-02T13:05:00Z"
+    },
+    {
+      "url": "https://platform.claude.com/docs/en/api/admin/external_keys/retrieve.md",
+      "sha256": "f57f7bc8fc50d7578fcf1f3c23b170c00ac19008c5d2c77f1cdd48aee13c86f9",
+      "fetchedAt": "2026-06-02T13:05:00Z"
+    },
+    {
+      "url": "https://platform.claude.com/docs/en/api/admin/external_keys/update.md",
+      "sha256": "d583b001e5e15aa2c72ec44bcc917365b0bbfd92a783f00909ee166f5b881a52",
+      "fetchedAt": "2026-06-02T13:05:00Z"
+    },
+    {
+      "url": "https://platform.claude.com/docs/en/api/admin/external_keys/validate.md",
+      "sha256": "01f43da20eb6cf58f2037c0835514f3d2d0fb4d694786ee95f91357635ef55b0",
+      "fetchedAt": "2026-06-02T13:05:00Z"
     }
   ]
 }

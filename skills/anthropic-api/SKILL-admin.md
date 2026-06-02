@@ -216,6 +216,42 @@ Key facts:
 
 Source: [`admin/mcp_tunnels.md`](https://platform.claude.com/docs/en/api/admin/mcp_tunnels.md) (added 2026-05-19).
 
+## External Keys (CMEK)
+
+External key configs let you bring your own KMS key (AWS, GCP, or Azure) for
+at-rest encryption via Customer-Managed Encryption Keys. Configs are
+org-scoped; workspaces reference a config by ID. Source:
+[`admin/external_keys.md`](https://platform.claude.com/docs/en/api/admin/external_keys.md)
+(added 2026-06-02).
+
+| Endpoint | Page | Purpose |
+|---|---|---|
+| `POST /v1/organizations/external_keys` | [`create.md`](https://platform.claude.com/docs/en/api/admin/external_keys/create.md) | Create a new external key config |
+| `GET /v1/organizations/external_keys` | [`list.md`](https://platform.claude.com/docs/en/api/admin/external_keys/list.md) | List external key configs (cursor pagination) |
+| `GET /v1/organizations/external_keys/{id}` | [`retrieve.md`](https://platform.claude.com/docs/en/api/admin/external_keys/retrieve.md) | Retrieve a single config |
+| `POST /v1/organizations/external_keys/{id}` | [`update.md`](https://platform.claude.com/docs/en/api/admin/external_keys/update.md) | Update `display_name`; `geo`/`provider_config` immutable once referenced by a workspace |
+| `DELETE /v1/organizations/external_keys/{id}` | [`delete.md`](https://platform.claude.com/docs/en/api/admin/external_keys/delete.md) | Delete config (rejected if any workspace references it) |
+| `POST /v1/organizations/external_keys/{id}/validate` | [`validate.md`](https://platform.claude.com/docs/en/api/admin/external_keys/validate.md) | Encrypt/decrypt KMS roundtrip (30s timeout); HTTP 200 always — check `status` field |
+
+**`ExternalKey` response object fields:** `id`, `created_at`, `display_name`,
+`geo`, `provider_config`, `type: "external_key"`, `updated_at`.
+
+**`provider_config` variants:**
+
+| Variant | Required fields | Optional |
+|---|---|---|
+| `type: "aws"` | `kms_arn` (full ARN), `role_arn` (IAM role ARN) | `region` (derived from `kms_arn` if omitted) |
+| `type: "gcp"` | `key_name` (full Cloud KMS resource name) | — |
+| `type: "azure"` | `key_name`, `tenant_id`, `vault_uri` | `client_id` (omit for Anthropic multi-tenant app) |
+
+**Key constraints:**
+- `geo` — only `"us"` is supported; selects the regional encrypt/decrypt validator.
+- `provider_config` and `geo` become **immutable** once any workspace references
+  the config (existing encrypted data requires the original key identity).
+- `DELETE` is **rejected** if any workspace still references the config.
+- `validate` returns `ExternalKeyValidateResponse { error, status, type }`:
+  `status` is `"success"` or `"failure"` (not HTTP status); always HTTP 200.
+
 ---
 
-*Source pages: 48 under `platform.claude.com/docs/en/api/admin/`.*
+*Source pages: 55 under `platform.claude.com/docs/en/api/admin/`.*
