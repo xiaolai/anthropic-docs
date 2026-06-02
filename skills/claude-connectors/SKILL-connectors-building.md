@@ -173,6 +173,45 @@ The lazy pattern is recommended: surface as much value as possible
 before forcing the user through OAuth. Users who never invoke a
 protected tool never need to authenticate.
 
+### OAuth discovery caching
+
+Claude caches the discovery documents (protected resource metadata +
+authorization-server metadata) **globally, keyed by URL**, with a
+staleness window of **~5 minutes** by default. All Claude users
+connecting to the same server URL share a single cache entry; staging
+and production URLs cache independently. The refresh is lazy and
+best-effort: after changing `scopes_supported` or any other discovery
+field, the new value is picked up by the first authorization that
+re-runs discovery once the staleness window elapses. If a refresh fails,
+the stale entry is served and retried on a later request.
+
+Source: [`lazy-authentication.md — OAuth discovery caching`](https://claude.com/docs/connectors/building/lazy-authentication.md#oauth-discovery-caching)
+
+### Step-up authorization — scope selection
+
+When a bearer token is valid but lacks a required scope, return
+`403 Forbidden` with `WWW-Authenticate: Bearer error="insufficient_scope", scope="<required-scopes>"`.
+Claude prompts for re-consent and retries the call.
+
+**Which scopes Claude requests on re-authorization:** Claude unions the
+`scope` in your `403` challenge with the discovery-time scope (the
+`scope` parameter from the initial `401` `WWW-Authenticate`, or the
+protected resource metadata's `scopes_supported`). Scopes acquired in
+earlier step-ups are **not** reliably carried forward — include all
+still-needed scopes in the `403` `scope` value, not just the single
+missing one.
+
+If the `403` carries `error="insufficient_scope"` but **omits `scope`**,
+Claude still runs step-up using discovery-time `WWW-Authenticate` scope →
+PRM `scopes_supported` → AS metadata `scopes_supported`.
+
+The `scope` from a `403` is cached **per user, per server** for up to
+**15 minutes** and consumed by the next re-authorization. Combined with
+the ~5 min discovery cache, a newly added scope propagates to step-up
+within ~5 minutes of updating your discovery metadata.
+
+Source: [`lazy-authentication.md — Step-up authorization`](https://claude.com/docs/connectors/building/lazy-authentication.md#step-up-authorization)
+
 ## Directory vs custom
 
 [`directory-vs-custom.md`](https://claude.com/docs/connectors/building/directory-vs-custom.md)

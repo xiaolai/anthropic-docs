@@ -3,7 +3,7 @@
   "indexSha256": "84b7d4e7bcfe2b16ec93d8935e1ef5b700a087c2c2071f43755c9b0c1ef5afd0",
   "indexBytes": 12252,
   "pageCount": 34,
-  "refreshedAt": "2026-06-01T00:00:00Z",
+  "refreshedAt": "2026-06-02T00:00:00Z",
   "pages": [
     {
       "path": "connectors/building/after-publishing.md",
@@ -32,8 +32,8 @@
     {
       "path": "connectors/building/lazy-authentication.md",
       "url": "https://claude.com/docs/connectors/building/lazy-authentication.md",
-      "sha256": "a522aa2c12e2aef022540b7d4240f2b148fb9d2dd71711fa1c2cea0e03e577cc",
-      "bytes": 12321
+      "sha256": "be8ea0dc7219923b541c2a6b26aa9046cb35c8a7505cb40a5bd3eef3254abc05",
+      "bytes": 15671
     },
     {
       "path": "connectors/building/mcp-apps/cross-compatibility.md",

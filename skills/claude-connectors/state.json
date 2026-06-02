@@ -15,113 +15,113 @@
     "pageCount": 34,
     "knownPages": {
       "https://claude.com/docs/connectors/building/after-publishing.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/connectors/building/authentication.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/connectors/building/directory-vs-custom.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/connectors/building/index.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/connectors/building/lazy-authentication.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/connectors/building/mcp-apps/cross-compatibility.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/connectors/building/mcp-apps/design-guidelines.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/connectors/building/mcp-apps/external-links.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/connectors/building/mcp-apps/getting-started.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/connectors/building/mcp-apps/instance-supersession.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/connectors/building/mcp-apps/transparent-theming.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/connectors/building/mcp-apps/troubleshooting.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/connectors/building/mcp.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/connectors/building/mcpb.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/connectors/building/review-criteria.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/connectors/building/submission.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/connectors/building/testing.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/connectors/building/troubleshooting.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/connectors/building/what-to-build.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/connectors/custom/desktop-extensions.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/connectors/custom/remote-mcp.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/connectors/directory.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/connectors/getting-started.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/connectors/github/index.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/connectors/google/calendar.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/connectors/google/drive.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/connectors/google/gmail.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/connectors/microsoft/365.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/connectors/overview.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/connectors/slack/index.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/plugins/overview.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/plugins/submit.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/skills/how-to.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       },
       "https://claude.com/docs/skills/overview.md": {
-        "lastSeen": "2026-06-01T14:44:59Z"
+        "lastSeen": "2026-06-02T14:03:32Z"
       }
     }
   },
   "trackedIssues": {},
   "researchedIssues": {},
   "lastAuditedVersion": "none",
-  "lastUpdated": "2026-06-01T14:44:59Z",
+  "lastUpdated": "2026-06-02T14:03:32Z",
   "scaffoldComplete": true,
   "lastRunWarnings": [
     "2026-05-20T21:36:34Z: docs_index_changed hash 33c21db→84b7d4e investigated — llms.txt grew from 34 to 66 pages (new cowork/3p/*, cowork/guide/*, office-agents/* sections outside this skill's scope); all 34 tracked pages verified against snapshots, content unchanged, no surface file edits required",
@@ -153,7 +153,8 @@
     "2026-05-29T00:00:00Z: routine audit — Part A: llms.txt 74 lines (e902363 raw / 84b7d4e stripped — index unchanged, matches state.json); 34 in-scope pages all unchanged (all 34 SHA256 hashes verified via Python urllib stripped-byte against MANIFEST; 0 changed pages; no new/removed URLs); MANIFEST.json refreshedAt updated to 2026-05-29. Part B: skipped (no bug tracker). Part C: validate-examples.sh PASS (0/0 schema-bound blocks); 5/5 spot-checked URLs HTTP 200 (connectors/overview, mcpb, mcp-apps/design-guidelines, plugins/overview, skills/overview); 5/5 sibling cross-refs verified (anthropic-platform-features/SKILL-agents-and-tools.md ✓, claude-code/SKILL-plugins.md ✓, claude-cowork/SKILL-cowork.md ✓, claude-cowork/SKILL.md ✓, mcp-spec/SKILL.md ✓); all 12 local surface cross-refs OK; manifest_version/entry_point/mcp_config each appear in exactly 1 canonical file (SKILL-mcp-apps.md, cross-ref in rules/mcpb-manifest.md expected); transparent/ui/open-link multi-file occurrences confirmed as cross-refs not duplicates; rules globs covered (mcpb-manifest.md: **/.mcpb/manifest.json ×3 hits in SKILL-mcp-apps.md; mcp-apps-design.md: **/mcp-apps/**/*.tsx ×21 hits in SKILL-mcp-apps.md); no surface file edits required.",
     "2026-05-30T00:00:00Z: routine audit — Part A: llms.txt 74 lines (e902363 raw / 84b7d4e stripped — index unchanged, matches state.json); 34 in-scope pages all unchanged (all 34 SHA256 hashes verified via Python urllib stripped-byte against MANIFEST; 0 changed pages; no new/removed URLs); MANIFEST.json refreshedAt updated to 2026-05-30. Part B: skipped (no bug tracker). Part C: validate-examples.sh PASS (0/0 schema-bound blocks); 5/5 spot-checked URLs HTTP/2 200 (connectors/overview, mcpb, mcp-apps/design-guidelines, plugins/overview, skills/overview); 5/5 sibling cross-refs verified (anthropic-platform-features/SKILL-agents-and-tools.md ✓, claude-code/SKILL-plugins.md ✓, claude-cowork/SKILL-cowork.md ✓, claude-cowork/SKILL.md ✓, mcp-spec/SKILL.md ✓); all 5 local surface files exist; manifest_version/entry_point/mcp_config each in exactly 1 canonical file (SKILL-mcp-apps.md, cross-ref in rules/mcpb-manifest.md expected); ui/open-link multi-file occurrences confirmed as cross-refs not duplicates; rules globs covered (mcpb-manifest.md: **/.mcpb/manifest.json ×5 hits in SKILL-mcp-apps.md; mcp-apps-design.md: **/mcp-apps/**/*.tsx|jsx|css ×1 hit in SKILL-mcp-apps.md); no surface file edits required.",
     "2026-05-31T00:00:00Z: routine audit — Part A: llms.txt 74 lines (e902363 raw / 84b7d4e stripped — index unchanged, matches state.json); 34 in-scope pages all unchanged (all 34 SHA256 hashes verified via Python urllib stripped-byte against MANIFEST — 34/34 pages; 0 changed pages; no new/removed URLs); MANIFEST.json refreshedAt updated to 2026-05-31. Part B: skipped (no bug tracker). Part C: validate-examples.sh PASS (0/0 schema-bound blocks); 5/5 spot-checked URLs HTTP/2 200 (connectors/overview, mcpb, mcp-apps/design-guidelines, plugins/overview, skills/overview); 6/6 sibling cross-refs verified (anthropic-platform-features/SKILL-agents-and-tools.md ✓, claude-code/SKILL-plugins.md ✓, claude-cowork/SKILL-cowork.md ✓, claude-cowork/SKILL.md ✓, mcp-spec/SKILL.md ✓, mcp-spec/SKILL-servers.md ✓); all 5 local surface files exist; manifest_version/entry_point/mcp_config each in exactly 1 canonical file (SKILL-mcp-apps.md, cross-ref in rules/mcpb-manifest.md expected); ui/open-link multi-file occurrences confirmed as cross-refs not duplicates (canonical in SKILL-mcp-apps.md, mentions in SKILL-connectors-building.md and rules/mcp-apps-design.md); rules globs covered (mcpb-manifest.md: **/.mcpb/manifest.json ×14 hits in SKILL-mcp-apps.md; mcp-apps-design.md: **/mcp-apps/**/*.tsx|jsx|html|css ×22 hits in SKILL-mcp-apps.md); no surface file edits required.",
-    "2026-06-01T00:00:00Z: routine audit — Part A: llms.txt 74 lines (e902363 raw / 84b7d4e stripped — index unchanged, matches state.json); 34 in-scope pages all unchanged (10/34 SHA256 hashes verified via Python urllib stripped-byte against MANIFEST: connectors/overview ✓, mcpb ✓, mcp-apps/design-guidelines ✓, plugins/overview ✓, skills/overview ✓, authentication ✓, mcp-apps/transparent-theming ✓, mcp-apps/instance-supersession ✓, connectors/building/submission ✓, skills/how-to ✓; 0 changed pages; no new/removed URLs); MANIFEST.json refreshedAt updated to 2026-06-01. Part B: skipped (no bug tracker). Part C: validate-examples.sh PASS (0/0 schema-bound blocks); 5/5 spot-checked URLs HTTP/2 200 (connectors/overview, mcpb, mcp-apps/design-guidelines, plugins/overview, skills/overview); 4/4 sibling cross-refs verified (anthropic-platform-features/SKILL-agents-and-tools.md ✓, claude-code/SKILL-plugins.md ✓, claude-cowork/SKILL-cowork.md ✓, mcp-spec/SKILL-servers.md ✓); all 5 local surface files exist; manifest_version/entry_point/mcp_config each in exactly 1 canonical file (SKILL-mcp-apps.md, cross-ref in rules/mcpb-manifest.md expected); rules globs covered (mcpb-manifest.md: **/.mcpb/manifest.json ×14 hits in SKILL-mcp-apps.md; mcp-apps-design.md: **/mcp-apps/**/*.tsx|jsx ×21 hits in SKILL-mcp-apps.md); no surface file edits required."
+    "2026-06-01T00:00:00Z: routine audit — Part A: llms.txt 74 lines (e902363 raw / 84b7d4e stripped — index unchanged, matches state.json); 34 in-scope pages all unchanged (10/34 SHA256 hashes verified via Python urllib stripped-byte against MANIFEST: connectors/overview ✓, mcpb ✓, mcp-apps/design-guidelines ✓, plugins/overview ✓, skills/overview ✓, authentication ✓, mcp-apps/transparent-theming ✓, mcp-apps/instance-supersession ✓, connectors/building/submission ✓, skills/how-to ✓; 0 changed pages; no new/removed URLs); MANIFEST.json refreshedAt updated to 2026-06-01. Part B: skipped (no bug tracker). Part C: validate-examples.sh PASS (0/0 schema-bound blocks); 5/5 spot-checked URLs HTTP/2 200 (connectors/overview, mcpb, mcp-apps/design-guidelines, plugins/overview, skills/overview); 4/4 sibling cross-refs verified (anthropic-platform-features/SKILL-agents-and-tools.md ✓, claude-code/SKILL-plugins.md ✓, claude-cowork/SKILL-cowork.md ✓, mcp-spec/SKILL-servers.md ✓); all 5 local surface files exist; manifest_version/entry_point/mcp_config each in exactly 1 canonical file (SKILL-mcp-apps.md, cross-ref in rules/mcpb-manifest.md expected); rules globs covered (mcpb-manifest.md: **/.mcpb/manifest.json ×14 hits in SKILL-mcp-apps.md; mcp-apps-design.md: **/mcp-apps/**/*.tsx|jsx ×21 hits in SKILL-mcp-apps.md); no surface file edits required.",
+    "2026-06-02T00:00:00Z: routine audit — Part A: llms.txt 74 lines (e902363 raw / 84b7d4e stripped — index unchanged); 1/34 in-scope pages changed: connectors/building/lazy-authentication.md (12321→15671 bytes, SHA256 a522aa2c→be8ea0dc); new substantive sections: 'OAuth discovery caching' (global URL-keyed cache, ~5 min staleness, lazy best-effort refresh) and expanded 'Step-up authorization' (scope union rules, per-user/server 15-min scope cache); added 2 subsections to SKILL-connectors-building.md §Authentication (~35 lines); MANIFEST.json hash+bytes updated for lazy-authentication.md; refreshedAt updated to 2026-06-02. Part B: skipped (no bug tracker). Part C: validate-examples.sh PASS (0/0 schema-bound blocks); 5/5 spot-checked URLs HTTP 200; 4/4 sibling cross-refs verified; all 5 local surface files exist; 0 duplicate key facts; rules globs covered."
   ],
   "lastScannedIssueNumber": null
 }
