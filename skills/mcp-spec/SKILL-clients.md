@@ -296,6 +296,7 @@ page tracks which clients implement which official extensions (declared via
 | MCPJam | ✓ | | |
 | ChatGPT | ✓ | | |
 | Cursor | ✓ | | |
+| Archestra.AI | ✓ | | ✓ |
 
 Extension identifiers: MCP Apps = `io.modelcontextprotocol/ui`,
 OAuth Client Credentials = `io.modelcontextprotocol/oauth-client-credentials`,
@@ -313,7 +314,7 @@ The MCP client registry lists applications that support MCP. Notable entries:
 - Gemini CLI (Google) — terminal agent; supports Prompts, Tools, Instructions, DCR.
 - VS Code (via GitHub Copilot extension).
 - Cline, Zed (with Discovery support), Cursor, Windsurf, other editor integrations.
-- Third-party IDE / agent platforms including Archestra (enterprise AI platform, supports CIMD, Enterprise-Managed Authorization).
+- Third-party IDE / agent platforms including [Archestra.AI](https://www.archestra.ai/) (enterprise AI platform, supports MCP Apps, CIMD, Enterprise-Managed Authorization).
 
 The list grows constantly — consult [modelcontextprotocol.io](https://modelcontextprotocol.io)
 for the current state.
