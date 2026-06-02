@@ -170,6 +170,7 @@ host fingerprint, connection timing/byte-volume, and the
 | Page | Topic |
 |---|---|
 | [`mcp-tunnels/overview.md`](https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/overview.md) | What MCP Tunnels is, how it works, network requirements |
+| [`mcp-tunnels/concepts.md`](https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/concepts.md) | Canonical terminology: tunnel stack, proxy, cloudflared, setup component, inner TLS; programmatic vs manual credential modes; connection vs request direction |
 | [`mcp-tunnels/quickstart.md`](https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/quickstart.md) | Shortest path to a working tunnel (Docker Compose + sample server) |
 | [`mcp-tunnels/deploy-helm.md`](https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/deploy-helm.md) | Install on a Kubernetes cluster via the Anthropic Helm chart |
 | [`mcp-tunnels/deploy-compose.md`](https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/deploy-compose.md) | Install on a VM via Docker Compose |
@@ -318,5 +319,5 @@ For long-running server tool operations the API may return `stop_reason: "pause_
 
 ---
 
-*Source pages: 39 under `platform.claude.com/docs/en/agents-and-tools/`
+*Source pages: 40 under `platform.claude.com/docs/en/agents-and-tools/`
 (agent-skills/* + mcp-connector + mcp-tunnels/* + remote-mcp-servers + tool-use/*).*

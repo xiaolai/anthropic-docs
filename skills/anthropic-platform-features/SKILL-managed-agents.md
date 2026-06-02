@@ -91,6 +91,15 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
 - **Webhooks for async results.** Long-running Dreams notify
   completion via webhook (configure per agent). Don't poll — the
   webhook is cheaper and faster.
+- **Session CRUD.** Beyond start/send, sessions support retrieve
+  (`GET /v1/sessions/{id}`), list (`GET /v1/sessions?agent_id=...`),
+  update (patch `agent.tools` / `agent.mcp_servers` mid-session — full
+  replacement semantics, session must be `idle`), archive (`POST
+  /v1/sessions/{id}/archive` — preserves history, blocks new events),
+  and delete (`DELETE /v1/sessions/{id}` — permanent; does not affect
+  files, memory stores, vaults, or agents). A `running` session must
+  be interrupted before it can be archived or deleted. Source:
+  [`session-operations.md`](https://platform.claude.com/docs/en/managed-agents/session-operations.md).
 
 ## Foundation
 
@@ -101,6 +110,7 @@ source: https://platform.claude.com/docs/en/managed-agents/overview.md
 | [`quickstart.md`](https://platform.claude.com/docs/en/managed-agents/quickstart.md) | First-agent walkthrough |
 | [`agent-setup.md`](https://platform.claude.com/docs/en/managed-agents/agent-setup.md) | Agent configuration |
 | [`define-outcomes.md`](https://platform.claude.com/docs/en/managed-agents/define-outcomes.md) | How to define what success means |
+| [`reference.md`](https://platform.claude.com/docs/en/managed-agents/reference.md) | Consolidated reference: event types, self-hosted worker CLI flags, supported MCP server types, rate limits, branding guidelines |
 
 ## Agent capabilities
 
@@ -141,7 +151,8 @@ agent's `tools` array. All tools are enabled by default; disable individual tool
 | [`cloud-sandboxes-reference.md`](https://platform.claude.com/docs/en/managed-agents/cloud-sandboxes-reference.md) | Pre-installed languages, databases, utilities, and sandbox specs (Ubuntu 22.04, up to 8 GB RAM / 10 GB disk, network off by default) |
 | [`self-hosted-sandboxes.md`](https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes.md) | Run sessions in your own infrastructure (environment worker pattern) |
 | [`self-hosted-sandboxes-security.md`](https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes-security.md) | Shared responsibility model for self-hosted sandbox environments |
-| [`sessions.md`](https://platform.claude.com/docs/en/managed-agents/sessions.md) | Session lifecycle |
+| [`sessions.md`](https://platform.claude.com/docs/en/managed-agents/sessions.md) | Session lifecycle — create a session, send events, stream responses |
+| [`session-operations.md`](https://platform.claude.com/docs/en/managed-agents/session-operations.md) | Session CRUD: retrieve, list, update (mid-session agent config), archive, delete |
 | [`permission-policies.md`](https://platform.claude.com/docs/en/managed-agents/permission-policies.md) | What each agent may do |
 
 ## Events quick-reference
@@ -201,11 +212,24 @@ timestamp (null = queued). Source:
 |---|---|
 | [`dreams.md`](https://platform.claude.com/docs/en/managed-agents/dreams.md) | "Dreams" — long-running agent jobs that execute over hours/days |
 
+## Branding guidelines
+
+When referencing Claude Managed Agents in a product integration:
+
+| Allowed | Not permitted |
+|---|---|
+| "Claude Agent" (preferred for dropdown menus) | "Claude Code" or "Claude Code Agent" |
+| "Claude" (when within a menu already labeled "Agents") | "Claude Cowork" or "Claude Cowork Agent" |
+| "{YourAgentName} Powered by Claude" | Claude Code-branded ASCII art or elements mimicking Claude Code |
+
+Your product should maintain its own branding and not appear to be any other Anthropic product.
+Source: [`reference.md`](https://platform.claude.com/docs/en/managed-agents/reference.md).
+
 ## Page index
 
-22 source pages under
+24 source pages under
 [`https://platform.claude.com/docs/en/managed-agents/`](https://platform.claude.com/docs/en/managed-agents/).
 
 ---
 
-*Source pages: 22 under `platform.claude.com/docs/en/managed-agents/`.*
+*Source pages: 24 under `platform.claude.com/docs/en/managed-agents/`.*

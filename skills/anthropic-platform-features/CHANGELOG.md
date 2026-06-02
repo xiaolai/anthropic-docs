@@ -3,6 +3,9 @@
 All notable changes to this skill. The shared pipeline appends a
 machine-generated entry on every successful daily run.
 
+## 2026-06-02
+- Sync to platform.claude.com docs — added 7 pages (mcp-tunnels/concepts under agents-and-tools; cmek, cmek-aws-kms, cmek-azure-key-vault, cmek-google-cloud-kms under manage-claude; reference, session-operations under managed-agents); page count 121 → 128; all 11 gates pass
+
 ## 2026-06-01
 - *(pending review — see PR auto/2026-06-01-pending-review)* Research agent audit (110 turns, $1.89) — check-docs-drift gate failed; proposed surface changes on draft branch pending human review
 

@@ -17,8 +17,10 @@ description: |
   prompt caching strategy at the platform level, citations, deploying
   via Bedrock or Vertex, embeddings models, fast-mode behavior,
   context editing strategies, WIF setup, billing / cost reports,
-  identity & SSO setup, the Managed Agents product, or self-hosted
-  sandboxes (running agent sessions in your own infrastructure).
+  identity & SSO setup, customer-managed encryption keys (CMEK via
+  AWS KMS / Google Cloud KMS / Azure Key Vault), the Managed Agents
+  product, or self-hosted sandboxes (running agent sessions in your
+  own infrastructure).
 
   Skip: raw POST /v1/messages requests (use anthropic-api), Claude
   Code CLI (use claude-code), Claude Agent SDK (use claude-agent-sdk),
@@ -42,7 +44,7 @@ user-invocable: true
 |---|---|
 | [`SKILL-agents-and-tools.md`](SKILL-agents-and-tools.md) | Agent Skills format spec, MCP connector, MCP Tunnels (private-network MCP servers), remote MCP servers, tool use (computer use, code execution, bash, define-your-own tools), tool_choice |
 | [`SKILL-build-with-claude.md`](SKILL-build-with-claude.md) | extended thinking, message batches, prompt caching, citations, Amazon Bedrock, Google Vertex, embeddings, fast mode, context editing, vision; also platform foundation (`intro`, `get-started`) and guardrails / streaming-refusals from `test-and-evaluate/` |
-| [`SKILL-manage-claude.md`](SKILL-manage-claude.md) | workload identity federation (WIF), billing & usage, organizations & workspaces operations, identity & SSO |
+| [`SKILL-manage-claude.md`](SKILL-manage-claude.md) | workload identity federation (WIF), billing & usage, organizations & workspaces operations, identity & SSO, customer-managed encryption keys (CMEK) |
 | [`SKILL-managed-agents.md`](SKILL-managed-agents.md) | Managed Agents product — agent definitions, deployment, lifecycle, monitoring, self-hosted sandboxes |
 
 ---
