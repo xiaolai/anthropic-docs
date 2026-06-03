@@ -17,7 +17,7 @@ source: https://www.anthropic.com/research
 > most recent items from [https://www.anthropic.com/research](https://www.anthropic.com/research). For the full
 > body of any item, WebFetch its URL — that's the design.
 
-**Last refreshed**: 2026-06-02
+**Last refreshed**: 2026-06-03
 
 | # | Date | Category | Title | Link |
 |---|---|---|---|---|
@@ -33,7 +33,6 @@ source: https://www.anthropic.com/research
 | 10 | 2026-05-07 | Policy | **Focus areas for The Anthropic Institute** | [open](https://www.anthropic.com/research/anthropic-institute-agenda) |
 | 11 | 2026-04-30 | Societal Impacts | **How people ask Claude for personal guidance** | [open](https://www.anthropic.com/research/claude-personal-guidance) |
 | 12 | 2026-04-29 | Science | **Evaluating Claude’s bioinformatics research capabilities with BioMysteryBench** | [open](https://www.anthropic.com/research/Evaluating-Claude-For-Bioinformatics-With-BioMysteryBench) |
-| 13 | 2026-04-22 | Economic Research | **Announcing the Anthropic Economic Index Survey** | [open](https://www.anthropic.com/research/economic-index-survey-announcement) |
 
 ## How to use this digest
 
