@@ -8,7 +8,7 @@ user-facing **Skills** and **Plugins** surfaces.
 
 Part of the [anthropic-docs](../../README.md) plugin.
 
-**Last updated**: 2026-06-02
+**Last updated**: 2026-06-06
 
 ## Surfaces
 
