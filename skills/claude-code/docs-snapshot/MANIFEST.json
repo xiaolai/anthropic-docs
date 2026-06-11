@@ -1,39 +1,45 @@
 {
   "indexUrl": "https://code.claude.com/llms.txt",
-  "indexSha256": "cb0731c535a8b0197075ad0483391f70e7080fcf9a3e8ac3d180aeefccf16ab9",
-  "indexBytes": 31053,
-  "pageCount": 115,
-  "refreshedAt": "2026-06-02T00:00:00Z",
+  "indexSha256": "dae1babcefe78009b1c5c6858f76b6fe7450c200b149553a1db0441f37425f34",
+  "indexBytes": 31295,
+  "pageCount": 116,
+  "refreshedAt": "2026-06-11T13:11:26Z",
   "pages": [
     {
       "path": "en/admin-setup.md",
       "url": "https://code.claude.com/docs/en/admin-setup.md",
-      "sha256": "5af5d5b845a61b574c4eb479e2c4a27f92609533e7840d87c41f54c853099be8",
-      "bytes": 17638
+      "sha256": "26aeb5662a4b59ef06c72dada2c39b3f1dc6409660152d4f4b134ad15c991179",
+      "bytes": 18267
+    },
+    {
+      "path": "en/advisor.md",
+      "url": "https://code.claude.com/docs/en/advisor.md",
+      "sha256": "e817172cb636a654f7026984c0bddd9a3a5aecc716e92bd3dba0ce4d80d141a1",
+      "bytes": 12765
     },
     {
       "path": "en/agent-teams.md",
       "url": "https://code.claude.com/docs/en/agent-teams.md",
-      "sha256": "ecfa7a4046dfc9e3a4dd14de9c94524a57b364eef48be30642d4603f7fe2604d",
-      "bytes": 26944
+      "sha256": "2b121ef89238876d3c881467994dca7e4264b301e8cbef661890bf87644854af",
+      "bytes": 27301
     },
     {
       "path": "en/agent-view.md",
       "url": "https://code.claude.com/docs/en/agent-view.md",
-      "sha256": "717d86b3a5ea8b7c3bfb18d0c8aae425d0f8eed57e9fe71e95eefe101288a771",
-      "bytes": 50652
+      "sha256": "806710d4901d5f726744b6bfb2846c396e6dfd22e39eb4b7e8494a484470e8bb",
+      "bytes": 56370
     },
     {
       "path": "en/agents.md",
       "url": "https://code.claude.com/docs/en/agents.md",
-      "sha256": "e0cd7daa1616d48ef70df9ba88ff6a4ba291747d2bacd5cbedbf0ac97f14cf94",
-      "bytes": 7603
+      "sha256": "9234c5f8c8616afdedfd2540ba277422f681a086ccec62bb64009a326c63d061",
+      "bytes": 7495
     },
     {
       "path": "en/amazon-bedrock.md",
       "url": "https://code.claude.com/docs/en/amazon-bedrock.md",
-      "sha256": "ffa4e0d65b5194e8cd56229cbf7cd07094f9950803a059aaccbb849e7a02a73f",
-      "bytes": 26491
+      "sha256": "7a5a57003f4e49739749c35fa079381843d331ad9cfc5e0f161b127ab660e0b5",
+      "bytes": 23773
     },
     {
       "path": "en/analytics.md",
@@ -44,14 +50,14 @@
     {
       "path": "en/authentication.md",
       "url": "https://code.claude.com/docs/en/authentication.md",
-      "sha256": "85f62400684b4b3aa5aba8fd5e2a2ac94e7fa44121749c4a8f01708b2e31e4d3",
-      "bytes": 10861
+      "sha256": "01c70e7394ae0c2d24925e2e108369f872372e0bb63694433e4622e269eaeee4",
+      "bytes": 10860
     },
     {
       "path": "en/auto-mode-config.md",
       "url": "https://code.claude.com/docs/en/auto-mode-config.md",
-      "sha256": "dcff53a290e4c61175503d435b6e440731115277ced9beb3344a045383e4c7f8",
-      "bytes": 13313
+      "sha256": "5509b7b8b65bc51d91c99a5cea991dcb82440195af0a3aaf55b7fcb4c739d0dd",
+      "bytes": 13547
     },
     {
       "path": "en/best-practices.md",
@@ -68,20 +74,20 @@
     {
       "path": "en/changelog.md",
       "url": "https://code.claude.com/docs/en/changelog.md",
-      "sha256": "6b45d223f07905d3b921f429e10186f1f3c2a3de1998cd0c18692c30fb06ad78",
-      "bytes": 373544
+      "sha256": "2b828b28c6f17c67cc978235d21aaa588ddd59e443d86104631f94f62fd80e13",
+      "bytes": 396697
     },
     {
       "path": "en/channels-reference.md",
       "url": "https://code.claude.com/docs/en/channels-reference.md",
-      "sha256": "bb6f9d2fa22775b40b5c92699734ab9e2c0080f925a69f62a8d356bc6b428b5b",
-      "bytes": 44874
+      "sha256": "d482e973830859441131c5e6be401db4414bbc72bc18c240f29379c3cbcb79f0",
+      "bytes": 45488
     },
     {
       "path": "en/channels.md",
       "url": "https://code.claude.com/docs/en/channels.md",
-      "sha256": "29cda37373d0b25a3fcab21bab01b474ba3e5d025fb41b681af9a731f8f76590",
-      "bytes": 22287
+      "sha256": "327b0736d7ae3a4fd37da1b11ad7fcddf074fa2b7d4e5a45f56696e0fae9f0bd",
+      "bytes": 22308
     },
     {
       "path": "en/checkpointing.md",
@@ -92,32 +98,32 @@
     {
       "path": "en/chrome.md",
       "url": "https://code.claude.com/docs/en/chrome.md",
-      "sha256": "68be00faabe8df1203e06d04ba37ca30ee352365fcfacc32adf5b81e4fe34a58",
-      "bytes": 11510
+      "sha256": "d75e6fd0caa9e0e1029748a026736fdb0b0029180a9b4cff8f91fe25ba6f8dd2",
+      "bytes": 11507
     },
     {
       "path": "en/claude-code-on-the-web.md",
       "url": "https://code.claude.com/docs/en/claude-code-on-the-web.md",
-      "sha256": "fd103781161ce2c7cbefafa6d0e98420aad0fc0c80ad4cebf0213dac58ad67f0",
-      "bytes": 51372
+      "sha256": "b33c9bd7b66989840a9365405c0fe815ba3e68d0f219bb8cc8beb9dd7eae2344",
+      "bytes": 52299
     },
     {
       "path": "en/claude-directory.md",
       "url": "https://code.claude.com/docs/en/claude-directory.md",
-      "sha256": "b0900d3136fedffe527a15e4405b514b3906a142037b6e79a8f61fcc4ef6f93b",
-      "bytes": 83576
+      "sha256": "69b2044fbfad4d445987109ce1b87fab1ce1e886ce38cfed78f67046324fb1a8",
+      "bytes": 20242
     },
     {
       "path": "en/claude-platform-on-aws.md",
       "url": "https://code.claude.com/docs/en/claude-platform-on-aws.md",
-      "sha256": "2de86fdfef7cb5b36843fcf41777d6a1ec755555d26d257f9ffc1ceefb281e95",
-      "bytes": 16554
+      "sha256": "5ada6ca43f7f3f0c4488e454fbdab3c9f4cd2b94eff50b6174e42277bedfc8e2",
+      "bytes": 10118
     },
     {
       "path": "en/cli-reference.md",
       "url": "https://code.claude.com/docs/en/cli-reference.md",
-      "sha256": "2a3d8645caaa41b16f76d7a23ee39365a2270993f58d31f64bb6c08533fcb5ad",
-      "bytes": 60920
+      "sha256": "d8f9d0c85302e3d753411669e53838628e1c50c3801a1d310adfddbf4f4ac6da",
+      "bytes": 96023
     },
     {
       "path": "en/code-review.md",
@@ -128,8 +134,8 @@
     {
       "path": "en/commands.md",
       "url": "https://code.claude.com/docs/en/commands.md",
-      "sha256": "7d6157f21f37a55d4f15176e5e81081694b9522521961c2f6f018c6257deb34a",
-      "bytes": 81763
+      "sha256": "a24c4f889b9191dbffa83bfda9aeabf01ff0db567e342435bc374c6d3ac7e959",
+      "bytes": 84162
     },
     {
       "path": "en/common-workflows.md",
@@ -140,8 +146,8 @@
     {
       "path": "en/communications-kit.md",
       "url": "https://code.claude.com/docs/en/communications-kit.md",
-      "sha256": "90b4bea82bc0815cd2159918970714a25ad533831e56f3ccca934237240e573f",
-      "bytes": 23046
+      "sha256": "cf8863dabe26a67471b7105ed5ebc7a8b760b088de1daf412e2f488a55afe71e",
+      "bytes": 23893
     },
     {
       "path": "en/computer-use.md",
@@ -152,38 +158,38 @@
     {
       "path": "en/context-window.md",
       "url": "https://code.claude.com/docs/en/context-window.md",
-      "sha256": "ac299d3403ab2b320b88e82208e896bebf162e96b84b0c3423f9e011961ba782",
-      "bytes": 55905
+      "sha256": "add0fedc8fc013c12c2feabd6db7160a6034a1bfe53fc627eb6eef30e6c9ae0c",
+      "bytes": 6115
     },
     {
       "path": "en/costs.md",
       "url": "https://code.claude.com/docs/en/costs.md",
-      "sha256": "74ec87113c7f6bb90999ffa0b0e8f8c42fa515a26ec92c5f91877da31f1a1f06",
-      "bytes": 14816
+      "sha256": "b28cf115c1547c9ca50018fe88577db904edf6130625958dae050d6839033187",
+      "bytes": 15094
     },
     {
       "path": "en/data-usage.md",
       "url": "https://code.claude.com/docs/en/data-usage.md",
-      "sha256": "db2f65553a1537c2ff65417f199ffbd54d9fbf1de7008c317bc56cb42d0d3d75",
-      "bytes": 16274
+      "sha256": "ccd798cf68e6cefd80be0e7c9624ccd44bf0571f7e268956c8e915483ec38f46",
+      "bytes": 16484
     },
     {
       "path": "en/debug-your-config.md",
       "url": "https://code.claude.com/docs/en/debug-your-config.md",
-      "sha256": "e07c8d614a9d4ebe7234f6a0aca13b558a9c43e09c5369bfc28ec6e278908525",
-      "bytes": 17660
+      "sha256": "8173372b8aa94863556ba4ddd8b780e055c7dca077f09cf04666868e35fa0494",
+      "bytes": 18230
     },
     {
       "path": "en/deep-links.md",
       "url": "https://code.claude.com/docs/en/deep-links.md",
-      "sha256": "c0b78a36dd46c295f6c72d0510304cb6eb9ec3f2baeb097624389a48afc2fa12",
-      "bytes": 13653
+      "sha256": "e97671dd4879acf9e7efbe5f3d48117812813ae12df6642b9fdb9c8533801ea7",
+      "bytes": 13656
     },
     {
       "path": "en/desktop-quickstart.md",
       "url": "https://code.claude.com/docs/en/desktop-quickstart.md",
-      "sha256": "ba051ebd77f9d7859fa9e3968dba4941cf2a9436b519dacef9f048b94f642cf2",
-      "bytes": 10306
+      "sha256": "fc833f7e0a463de8f5bfb14460b9ea0e03c1b5007a344b34738d529993e6b24d",
+      "bytes": 10302
     },
     {
       "path": "en/desktop-scheduled-tasks.md",
@@ -194,8 +200,8 @@
     {
       "path": "en/desktop.md",
       "url": "https://code.claude.com/docs/en/desktop.md",
-      "sha256": "c75c587367bc294a893180caccc43ca76a81c4ac0b44561c5f22bb46d91fed1a",
-      "bytes": 68491
+      "sha256": "e85e12f9be21062b59f563bf692147dc481e53ac561b527409cb929c0f1c577b",
+      "bytes": 72332
     },
     {
       "path": "en/devcontainer.md",
@@ -206,26 +212,26 @@
     {
       "path": "en/discover-plugins.md",
       "url": "https://code.claude.com/docs/en/discover-plugins.md",
-      "sha256": "a0eec868a24f6c185f85349c56ed6e11e417ca0b80b0db35da4a8f14172d3bbd",
-      "bytes": 22355
+      "sha256": "1e178ec2a9003ec51bc5ac1379aeca1932eadda8ceddfc38bacd5c62952164bf",
+      "bytes": 23009
     },
     {
       "path": "en/env-vars.md",
       "url": "https://code.claude.com/docs/en/env-vars.md",
-      "sha256": "3f5aaf7f0ccbc009de54d119774bfadb3f3ba485a1fa561e31894002e17d4169",
-      "bytes": 180370
+      "sha256": "704131fe31855739284ba92c1837c28dd3db452c0947a751f42c8c7ff47bc6a6",
+      "bytes": 242828
     },
     {
       "path": "en/errors.md",
       "url": "https://code.claude.com/docs/en/errors.md",
-      "sha256": "38094836ca3299ceb423e6306cff6909604417d23a7bb854fd22322f6018b657",
-      "bytes": 44931
+      "sha256": "ffcd80f0f3b5c23e12e56c4bc6d2c41a70a5753337d894585cf6809cbcc70f4a",
+      "bytes": 49390
     },
     {
       "path": "en/fast-mode.md",
       "url": "https://code.claude.com/docs/en/fast-mode.md",
-      "sha256": "68acbbd684c11f184d09da56fd64f4ccdfb3038aeea6910f3c6108dca5367953",
-      "bytes": 9341
+      "sha256": "874fa1a198da52ea8af4e628f931ae6eb93b7482d4cfa69d780f45224e7f3122",
+      "bytes": 9464
     },
     {
       "path": "en/features-overview.md",
@@ -236,32 +242,32 @@
     {
       "path": "en/fullscreen.md",
       "url": "https://code.claude.com/docs/en/fullscreen.md",
-      "sha256": "4490d9db2efc4c9a000fd816194f3dcb08e583e4a5b2a528284feb3441c1e628",
-      "bytes": 16181
+      "sha256": "6c0aaf8cf96f4b18199ec399329609a1eec7496e1ef7a447d53635f26ff9cd21",
+      "bytes": 17186
     },
     {
       "path": "en/github-actions.md",
       "url": "https://code.claude.com/docs/en/github-actions.md",
-      "sha256": "a703a3f630066370843d7c880f6392cd3b2dc5ea05f2465973aa7ccf730feae9",
-      "bytes": 29191
+      "sha256": "e1eb9d3571e0da29fca84845a56bf126b8c6b3067196da57e313b8659f7cd605",
+      "bytes": 28985
     },
     {
       "path": "en/github-enterprise-server.md",
       "url": "https://code.claude.com/docs/en/github-enterprise-server.md",
-      "sha256": "dc0ab055ab0b7bd3be3b1f3a143cb7cf4c3b5366f2ffe75b78f26d89dc5b1af0",
-      "bytes": 11896
+      "sha256": "c0d06f73d45f7ef5cf3abe25e18bc27c171460fa70a6b41445b63550a8aa5b0b",
+      "bytes": 11895
     },
     {
       "path": "en/gitlab-ci-cd.md",
       "url": "https://code.claude.com/docs/en/gitlab-ci-cd.md",
-      "sha256": "202298a997c6302dfe2d751cef1052161f899457f15b4c762bf0850dcaf41387",
-      "bytes": 17889
+      "sha256": "41421586c73b5a9a1a3174be896316d7d9093c66551de5ad843b31fde3407e0a",
+      "bytes": 17892
     },
     {
       "path": "en/glossary.md",
       "url": "https://code.claude.com/docs/en/glossary.md",
-      "sha256": "e0b523c411a8892453fc3b33f5ea4aa2bfe73deba4473d9ff2cddb40a6123e51",
-      "bytes": 19848
+      "sha256": "2f9e7ccf96f988bec99f36338ef18f4f6e58069dea93737d86bc614cf373d9a6",
+      "bytes": 19900
     },
     {
       "path": "en/goal.md",
@@ -272,38 +278,38 @@
     {
       "path": "en/google-vertex-ai.md",
       "url": "https://code.claude.com/docs/en/google-vertex-ai.md",
-      "sha256": "f9ff3724ecd5021e30f04541f7ef542d11f1b3944a0d0b4520d342071a7caf32",
-      "bytes": 16601
+      "sha256": "b7ec57c3b4737722b12fc3c504bbfdcb2a1f4d226b686c1e262883f44e8d5f10",
+      "bytes": 13758
     },
     {
       "path": "en/headless.md",
       "url": "https://code.claude.com/docs/en/headless.md",
-      "sha256": "d2c3bd66ebe005ebc2750761d749b75cc2c5cc898cf625300a3d75258125b0a2",
-      "bytes": 17723
+      "sha256": "1036704d1a62f3576867275660b757e2a5002b2191dde49e3cd4ddd4c30315e0",
+      "bytes": 18446
     },
     {
       "path": "en/hooks-guide.md",
       "url": "https://code.claude.com/docs/en/hooks-guide.md",
-      "sha256": "7c9c5c8d673808350096d8eb5d7c1c1c1c6738934b0c2e59fa3f33c146a7ca4f",
-      "bytes": 56444
+      "sha256": "611740bc5dbe3498d9cc23ccd1499379f8e6b0f947b3bf340736e26f5ad0a863",
+      "bytes": 57929
     },
     {
       "path": "en/hooks.md",
       "url": "https://code.claude.com/docs/en/hooks.md",
-      "sha256": "a15b8b6a271f3c7f00a3bc6015ba770855d2bba0177a64dce5db6b75fc46b9f8",
-      "bytes": 206135
+      "sha256": "507531f57f4858ae8bef2d0c5f9383bb3f97ed7704ea444753a7b4941056179d",
+      "bytes": 211252
     },
     {
       "path": "en/how-claude-code-works.md",
       "url": "https://code.claude.com/docs/en/how-claude-code-works.md",
-      "sha256": "27e3156dbb9ea070beb808533f914c4902414873713f90aaf4e36388bd88a6ad",
-      "bytes": 19014
+      "sha256": "468613c6aa383dd728c02966b00ca5df6b272ca8842755bb32da00aee6f5e4f3",
+      "bytes": 19074
     },
     {
       "path": "en/interactive-mode.md",
       "url": "https://code.claude.com/docs/en/interactive-mode.md",
-      "sha256": "b232497e315662c40d71fbe6724a60207059d5b5509d5228104780c93ca3b795",
-      "bytes": 35807
+      "sha256": "cfb11bbf5f863558159c8b0f6112ca478a9638bd8f1de9571ab9876bd0a6013b",
+      "bytes": 36471
     },
     {
       "path": "en/jetbrains.md",
@@ -314,14 +320,14 @@
     {
       "path": "en/keybindings.md",
       "url": "https://code.claude.com/docs/en/keybindings.md",
-      "sha256": "cc476a01d07434f28d49b7af04372e7e3098c3d103f22663072b55e31eb1fac4",
-      "bytes": 26629
+      "sha256": "7217502f2e41ea4d66faf89725b19c10a5c5bf6cc17b2fe705bcf6fc058adecd",
+      "bytes": 27019
     },
     {
       "path": "en/large-codebases.md",
       "url": "https://code.claude.com/docs/en/large-codebases.md",
-      "sha256": "2ecf85158ef46d1e657be5e0ecc98aaeb3f7b947d355627508241a17db0273cf",
-      "bytes": 32977
+      "sha256": "3c544dd1cbe489a0aa99390758a5247c29e6ac2f90884be0d78bf0ccb954fe64",
+      "bytes": 33056
     },
     {
       "path": "en/legal-and-compliance.md",
@@ -332,8 +338,8 @@
     {
       "path": "en/llm-gateway.md",
       "url": "https://code.claude.com/docs/en/llm-gateway.md",
-      "sha256": "a9308d4eee6f8b492711bf913c5e2752b8490b216c25d2596592bede38e641fe",
-      "bytes": 9715
+      "sha256": "ce1ea0440dd3b4ff7a85ec2a64d6598834a7fe9a6c4d3a99f62c31520c88c470",
+      "bytes": 10151
     },
     {
       "path": "en/managed-mcp.md",
@@ -350,32 +356,32 @@
     {
       "path": "en/mcp.md",
       "url": "https://code.claude.com/docs/en/mcp.md",
-      "sha256": "4526e368b997d74ffeef8804e9ec7d989a470f06a030f937bca4102140c096c4",
-      "bytes": 49337
+      "sha256": "2fa44963f40cef91bc0b521fb2411cc9c822fc1727dae291e6b3c5704902b6da",
+      "bytes": 50615
     },
     {
       "path": "en/memory.md",
       "url": "https://code.claude.com/docs/en/memory.md",
-      "sha256": "b9b01203769c3bba66b6cd2bd082bd9ac5283b099989cd43f44f7e5e6330bc75",
-      "bytes": 29879
+      "sha256": "20964d9061d1308e05674efb1d035d7ebe7bd04fea8a2124499e6ca31cd8c7c1",
+      "bytes": 29900
     },
     {
       "path": "en/microsoft-foundry.md",
       "url": "https://code.claude.com/docs/en/microsoft-foundry.md",
-      "sha256": "3bc8571029ee51d6d125aa79b040ff591a60f0d2245123f6d1c2ae274991a8ae",
-      "bytes": 8746
+      "sha256": "00969c1d7a0e3a5d1d9336f94347ffd875e4e82824da945138ac357f3410a391",
+      "bytes": 5905
     },
     {
       "path": "en/model-config.md",
       "url": "https://code.claude.com/docs/en/model-config.md",
-      "sha256": "1432fffcacc5d7d7d44eb9b41553f57ccd3900de2c4db7d8a895143c8d7a0a91",
-      "bytes": 33966
+      "sha256": "04e35f7ccc5ece0b18165b0fe8411403954194fabd472cb6706417eb86a4d653",
+      "bytes": 43503
     },
     {
       "path": "en/monitoring-usage.md",
       "url": "https://code.claude.com/docs/en/monitoring-usage.md",
-      "sha256": "9ca17d2b254a47995579635a71fb7fdcb0231a485ed5a24ca1e32d758d08fbb5",
-      "bytes": 88499
+      "sha256": "53026e58b609a5bcc919271ee9d97fa08498e8e6478bfb83933d77d213cd4cb9",
+      "bytes": 96620
     },
     {
       "path": "en/network-config.md",
@@ -392,26 +398,26 @@
     {
       "path": "en/overview.md",
       "url": "https://code.claude.com/docs/en/overview.md",
-      "sha256": "b53c3ed2752a3f597d2c74788728682e14b4b0457c81986ca30dda794887ee5a",
-      "bytes": 15122
+      "sha256": "5569e709be99299104c425956fbcab5149e0fb95f2fba2afdb5ccc2579eb9251",
+      "bytes": 15167
     },
     {
       "path": "en/permission-modes.md",
       "url": "https://code.claude.com/docs/en/permission-modes.md",
-      "sha256": "ba750e82b205c34f758cf4baab927d3f64665389429f228902d0859d378c67fc",
-      "bytes": 21643
+      "sha256": "c42b07debc7161a0a7f703c9d47690bae01ba67d1e6744e53f39e785de6ab622",
+      "bytes": 25908
     },
     {
       "path": "en/permissions.md",
       "url": "https://code.claude.com/docs/en/permissions.md",
-      "sha256": "1d1e18b9822526112b3d1054d7de40ede5316e0ab95e26ac8df0645b7a9d300b",
-      "bytes": 34180
+      "sha256": "f6ba02564f32945726220faa6da4dbe661e9b60abec801439b65d33dd09b670c",
+      "bytes": 37539
     },
     {
       "path": "en/platforms.md",
       "url": "https://code.claude.com/docs/en/platforms.md",
-      "sha256": "d26434034a491dca628229979b439867558322390ee409186b7b410f5cc22421",
-      "bytes": 10656
+      "sha256": "b80e3f345bb192c5c2e4762fbd4d0941bcf21760906b3ad8ba70463bcb84d1d7",
+      "bytes": 10765
     },
     {
       "path": "en/plugin-dependencies.md",
@@ -422,50 +428,50 @@
     {
       "path": "en/plugin-hints.md",
       "url": "https://code.claude.com/docs/en/plugin-hints.md",
-      "sha256": "dcdeb7bd93d2e9a333f0ebf91daabb070f13aae787a45f0c179d1fbc6afd45cc",
+      "sha256": "88fe7f11f942433c281ebe5bcbfe416b05c1c62b5602c4ff3a506ffd6eaefed0",
       "bytes": 8067
     },
     {
       "path": "en/plugin-marketplaces.md",
       "url": "https://code.claude.com/docs/en/plugin-marketplaces.md",
-      "sha256": "8ffcb0070b69e71ed193c182d99c6a06ccbfb2d1ee6ce151ef34456b373b55bd",
-      "bytes": 59949
+      "sha256": "d5a136f347d42b453d07c9d81d11504abea3afec535f35eb4aef0346fab6f82f",
+      "bytes": 60566
     },
     {
       "path": "en/plugins-reference.md",
       "url": "https://code.claude.com/docs/en/plugins-reference.md",
-      "sha256": "3f82f7a767b58fcc7c3f582f02c0d45b9ff39483cd98757f552e14ded2fb5cda",
-      "bytes": 76698
+      "sha256": "d7d23781a449138195b70fbfab37b59521dddbcb7dd9aaf68446d2da00eccb17",
+      "bytes": 78643
     },
     {
       "path": "en/plugins.md",
       "url": "https://code.claude.com/docs/en/plugins.md",
-      "sha256": "922e1e1b47d56d6e290df902bed8c6d00227f13f0fb94c9de9c059f4ea397ec1",
-      "bytes": 24280
+      "sha256": "5569fb4aa90f9369e3c44929dc2034e171f3151451a37ec2524d22d131dcc9b0",
+      "bytes": 25156
     },
     {
       "path": "en/prompt-caching.md",
       "url": "https://code.claude.com/docs/en/prompt-caching.md",
-      "sha256": "cd4b982b79e53da67c113f80e92f9b349a9cdd4af36199ea49daa294c6cc5c17",
-      "bytes": 25329
+      "sha256": "0793330fa0c107bc0850383560750024cb60f7c400d7343ab3008fde0c825122",
+      "bytes": 27584
     },
     {
       "path": "en/prompt-library.md",
       "url": "https://code.claude.com/docs/en/prompt-library.md",
-      "sha256": "351782cec07fabba06714f76da6e9db4ac325cc0c982fc15b8625f2e0a131f67",
-      "bytes": 55958
+      "sha256": "a4e8e38642d1295c746b0ff71fe3af1f806e95bcbb6d3fb12b143094f06ff28b",
+      "bytes": 4324
     },
     {
       "path": "en/quickstart.md",
       "url": "https://code.claude.com/docs/en/quickstart.md",
-      "sha256": "dc8e365715bc1a2554de9ac312bbf76d9384bf37965209e0e8e596fb5bef548a",
-      "bytes": 11409
+      "sha256": "dc34dcccb5b333de057d670d995969c03c6e7e48cb46da38d4eab97510a3599b",
+      "bytes": 11399
     },
     {
       "path": "en/remote-control.md",
       "url": "https://code.claude.com/docs/en/remote-control.md",
-      "sha256": "b7a08757223895f91dc82729e762b1c2fea6d08a06a8459ea05c96edd2761905",
-      "bytes": 23873
+      "sha256": "3a95d1bd68010ca5302159d1b1e9c21700df7464df196350b64ab732c33a0b90",
+      "bytes": 25015
     },
     {
       "path": "en/routines.md",
@@ -476,14 +482,14 @@
     {
       "path": "en/sandbox-environments.md",
       "url": "https://code.claude.com/docs/en/sandbox-environments.md",
-      "sha256": "eea05467aaffad4e6a6d784d06f3ebda0117acb856f9bf1504696f729ef16a67",
-      "bytes": 15665
+      "sha256": "b6ae397c1a889e3826aee72d097ec2b5022675172b9ccc8b42f03351f78a608c",
+      "bytes": 15724
     },
     {
       "path": "en/sandboxing.md",
       "url": "https://code.claude.com/docs/en/sandboxing.md",
-      "sha256": "77bdeca165b341a3ddcf5a40350d4709f20ed455fcc8aca46293e837e6f52126",
-      "bytes": 31696
+      "sha256": "8c60a46e3b5a59dae9343a6713ced8a1fdae5ec79f3e55ea3c853d2a8a1f7687",
+      "bytes": 32828
     },
     {
       "path": "en/scheduled-tasks.md",
@@ -500,38 +506,38 @@
     {
       "path": "en/security.md",
       "url": "https://code.claude.com/docs/en/security.md",
-      "sha256": "51a2daea63321c37d309138411b0a495f6372d07ccfb202e22196486c9ff0aee",
-      "bytes": 10531
+      "sha256": "25c8ad74752bbac5e490472e7dc504214f51622486a9b659c253938ce7b33e10",
+      "bytes": 10661
     },
     {
       "path": "en/server-managed-settings.md",
       "url": "https://code.claude.com/docs/en/server-managed-settings.md",
-      "sha256": "db1385bd6802288b1e46f7e60601dff2e6608c4d1d91aa84d1293504a55f0d00",
-      "bytes": 14709
+      "sha256": "37580e54ed7ef4987319b360d879988ffb216113e5e3330843c36a8613d82211",
+      "bytes": 15930
     },
     {
       "path": "en/sessions.md",
       "url": "https://code.claude.com/docs/en/sessions.md",
-      "sha256": "f3341099c90dd3986164f9991cf1f1bf4a2d3ad1df96ab5c57f979b3fec32fdf",
-      "bytes": 11166
+      "sha256": "e7a6c460a5bbfc8ce2579fb2599dfce582cc22a71fe13873cfc8856f1f6485a0",
+      "bytes": 11358
     },
     {
       "path": "en/settings.md",
       "url": "https://code.claude.com/docs/en/settings.md",
-      "sha256": "3a10b6e027df6cda47d89876dc2e6aadbe8e056726343a9cd22fbd2e10b3ab8b",
-      "bytes": 135314
+      "sha256": "5b530c292f90b6998a2852caaaa7f2e9e81f12377bfc712c0ed689069baf6284",
+      "bytes": 167217
     },
     {
       "path": "en/setup.md",
       "url": "https://code.claude.com/docs/en/setup.md",
-      "sha256": "f2907ce9f03ec4de3010c159986d8f46be8fe58faa0719e610baa067855b39d8",
-      "bytes": 25437
+      "sha256": "64c3e733228a3c59eee642aa34c326af63c4076cc870fb1f5bb63c96a4553c60",
+      "bytes": 26888
     },
     {
       "path": "en/skills.md",
       "url": "https://code.claude.com/docs/en/skills.md",
-      "sha256": "045f4dd93ee1b0004c56cdd44076527b4d7c7f3d7381184d9fd9dde4e272e273",
-      "bytes": 52888
+      "sha256": "3c4b93efde3a53b578c65d81951da333a41a4e40865390142458fbe6cf2daa54",
+      "bytes": 53537
     },
     {
       "path": "en/slack.md",
@@ -548,50 +554,50 @@
     {
       "path": "en/sub-agents.md",
       "url": "https://code.claude.com/docs/en/sub-agents.md",
-      "sha256": "a3696b10370360bd2bfbdd45578f2fb9cdd2602e2bc97ca382ed512814b9f2e6",
-      "bytes": 64851
+      "sha256": "d5d045ef99acdfb3ee2a46d3eb28755e5505f36a643152eaeffa3bbeb5954003",
+      "bytes": 66097
     },
     {
       "path": "en/terminal-config.md",
       "url": "https://code.claude.com/docs/en/terminal-config.md",
-      "sha256": "9f7e15efb2ced26c72a3df25c2b20a78e4b31b44df8a78a5e3dd5f0885d2c275",
-      "bytes": 20224
+      "sha256": "1a17a8bd1de5c64e3b0bce7e1b0e671e904936cc671df98ae43589fadedfe697",
+      "bytes": 20234
     },
     {
       "path": "en/third-party-integrations.md",
       "url": "https://code.claude.com/docs/en/third-party-integrations.md",
-      "sha256": "d22dd76b568cecc5d11de67fe1e51766c6855fc6501067d4f4ac13d6096ae20e",
-      "bytes": 14926
+      "sha256": "908459cc7609765e2e84610c5e707c987a38b7dc26226f9f99c1e8e0666511d8",
+      "bytes": 12108
     },
     {
       "path": "en/tools-reference.md",
       "url": "https://code.claude.com/docs/en/tools-reference.md",
-      "sha256": "276e63ddcda091eb3a486b88675c1daf1385712338cfe39b3a854981ba48ed59",
-      "bytes": 48545
+      "sha256": "7ef934a0f7d53c00d9ac7243a117b2e43cc02a1460d220e5074a6cf21056137a",
+      "bytes": 49366
     },
     {
       "path": "en/troubleshoot-install.md",
       "url": "https://code.claude.com/docs/en/troubleshoot-install.md",
-      "sha256": "7537c404fc3847e8e16557ff094d262b726f9bdd95033dbb3a1d90be2e13f3ba",
-      "bytes": 41519
+      "sha256": "18e77da15b09e7c4810a34b0be88dc7872c3c0019dc92748060ec8597491aaf1",
+      "bytes": 42598
     },
     {
       "path": "en/troubleshooting.md",
       "url": "https://code.claude.com/docs/en/troubleshooting.md",
-      "sha256": "9f0c490fb9095c3dde9472d8d63ff15d0184485ac53f8260a02dda2a479eae53",
-      "bytes": 7164
+      "sha256": "b2c1056277c4108dbebe64f246efe26e6ac9685d18e0ea30ba905d4bd15a3c46",
+      "bytes": 7990
     },
     {
       "path": "en/ultraplan.md",
       "url": "https://code.claude.com/docs/en/ultraplan.md",
-      "sha256": "913ef8d170d8840d8ded4780dd06379ec65e828e323d13600fd360163b145704",
-      "bytes": 6177
+      "sha256": "bd08f70bc6e5537d0fd5bf540aebffb40cba2bf9c3d6535c9833f8210810bcc0",
+      "bytes": 6176
     },
     {
       "path": "en/ultrareview.md",
       "url": "https://code.claude.com/docs/en/ultrareview.md",
-      "sha256": "9553d0e9a18fbccbf8e1b7f32ecb79ed7d0bbc83d63bd7b276226010f8be6cc5",
-      "bytes": 8902
+      "sha256": "97ec80e23c32fcbaa98931428d108a4a3da53cb2c074abd13446ca0b93ccc144",
+      "bytes": 8899
     },
     {
       "path": "en/voice-dictation.md",
@@ -602,14 +608,14 @@
     {
       "path": "en/vs-code.md",
       "url": "https://code.claude.com/docs/en/vs-code.md",
-      "sha256": "52d84ebf759be14b0113adf276041102d68e0b23cff9b1b2731d3a42dd6ca67c",
-      "bytes": 40931
+      "sha256": "238e5ddcdcf92e9659209a0267bb577e197f709e2685f7f77c561750f82f38d8",
+      "bytes": 41285
     },
     {
       "path": "en/web-quickstart.md",
       "url": "https://code.claude.com/docs/en/web-quickstart.md",
-      "sha256": "096795638b53611484e22696f736aa0c7d903588a6e00e0e1c1214e133ba1714",
-      "bytes": 18806
+      "sha256": "ffa4fb4a220e855172f2bcdcd885cccaa1c0396c013d6dda4273f5842d1699c8",
+      "bytes": 18789
     },
     {
       "path": "en/whats-new/2026-w13.md",
@@ -644,32 +650,32 @@
     {
       "path": "en/whats-new/2026-w18.md",
       "url": "https://code.claude.com/docs/en/whats-new/2026-w18.md",
-      "sha256": "8207b8c63ae2a8534a5caaf2d776483fa95bc095287d00fa772b49c62a5296c7",
+      "sha256": "8db34e2304566820ba87cbdd4e124c5b92b786a498105c0f1a389da4b5b111cf",
       "bytes": 6639
     },
     {
       "path": "en/whats-new/2026-w19.md",
       "url": "https://code.claude.com/docs/en/whats-new/2026-w19.md",
-      "sha256": "bddf36d3d9f8bf1b8ceba71b3579e32cf24eb2f5c15eceed736531c75345aaa9",
-      "bytes": 4588
+      "sha256": "d9569e27d086b85d76b3c9e0c7dce81a46960cc7e50cc03907075d75b62bb12e",
+      "bytes": 4603
     },
     {
       "path": "en/whats-new/2026-w20.md",
       "url": "https://code.claude.com/docs/en/whats-new/2026-w20.md",
-      "sha256": "af0c0fb88a815e23b824fd8195d5c8850bd8ffca03c2aa0cec710da52a98dd8f",
-      "bytes": 6827
+      "sha256": "a81e92c4634d0ab609e9c609754325de67b8dafb2fc9c8ef549ad4090f9c1691",
+      "bytes": 6852
     },
     {
       "path": "en/whats-new/2026-w21.md",
       "url": "https://code.claude.com/docs/en/whats-new/2026-w21.md",
-      "sha256": "6c466db83630a610ab9337c8d9d7961e5a04746aafc3dd456ac77429b4ab3b37",
-      "bytes": 3833
+      "sha256": "59dd24d6988039969cfc373b39b2a8c3b0bc7f289a05768d936c26eb401be23c",
+      "bytes": 3853
     },
     {
       "path": "en/whats-new/2026-w22.md",
       "url": "https://code.claude.com/docs/en/whats-new/2026-w22.md",
-      "sha256": "40c680b724febdb0101f9823d623c0475d7677a1b031a41908bd70f0874ec6cc",
-      "bytes": 7212
+      "sha256": "d5fd63fb1431badb4f71df3d37a0cae96ed6aee56d2a10ec2c5125ff13043f73",
+      "bytes": 7230
     },
     {
       "path": "en/whats-new/index.md",
@@ -680,20 +686,20 @@
     {
       "path": "en/workflows.md",
       "url": "https://code.claude.com/docs/en/workflows.md",
-      "sha256": "5845e505e933f3c76f2e9003deb25f3db018fbc0a9999d009009403b573c4568",
-      "bytes": 20074
+      "sha256": "485a5921b1ab2f854ab226d4498bbefc9b286214817c6f3ce1ff5d82df0f7044",
+      "bytes": 20332
     },
     {
       "path": "en/worktrees.md",
       "url": "https://code.claude.com/docs/en/worktrees.md",
-      "sha256": "726ad6e3048aeeaaf7af0210c517b92d17efc7b9fc3e075000eb1274ccf10638",
-      "bytes": 9462
+      "sha256": "aab1b17e40c1c63f54b1d2fbe17c120ecc04dc8d0433ff77ca37a76de041b176",
+      "bytes": 9873
     },
     {
       "path": "en/zero-data-retention.md",
       "url": "https://code.claude.com/docs/en/zero-data-retention.md",
-      "sha256": "364fd054b72f1c04a5d4f22d83d57b46836d761352363ee349f376f480af7686",
-      "bytes": 6354
+      "sha256": "c9d510bdbeba9823bdcf2c1da0889cdcef3b4ad41dff2db7a9a70faae1c05299",
+      "bytes": 7749
     }
   ]
 }
