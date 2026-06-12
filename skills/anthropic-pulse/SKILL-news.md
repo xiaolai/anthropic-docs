@@ -16,7 +16,7 @@ source: https://www.anthropic.com/news
 > most recent items from [https://www.anthropic.com/news](https://www.anthropic.com/news). For the full
 > body of any item, WebFetch its URL — that's the design.
 
-**Last refreshed**: 2026-06-11
+**Last refreshed**: 2026-06-12
 
 | # | Date | Category | Title | Link |
 |---|---|---|---|---|
@@ -24,13 +24,13 @@ source: https://www.anthropic.com/news
 | 2 | 2026-06-11 | Announcements | **Introducing Claude Corps** | [open](https://www.anthropic.com/news/claude-corps) |
 | 3 | 2026-06-02 | Announcements | **Expanding Project Glasswing** | [open](https://www.anthropic.com/news/expanding-project-glasswing) |
 | 4 | 2026-05-25 | Announcements | **Anthropic co-founder Chris Olah’s remarks on Pope Leo XIV’s encyclical "Magnifica humanitas"** | [open](https://www.anthropic.com/news/chris-olah-pope-leo-encyclical) |
-| 5 | 2026-06-03 | Announcements | **Introducing the Services Track and Partner Hub of the Claude Partner Network** | [open](https://www.anthropic.com/news/services-track-partner-hub) |
-| 6 | 2026-06-03 | Policy | **What we learned mapping a year’s worth of AI-enabled cyber threats** | [open](https://www.anthropic.com/news/AI-enabled-cyber-threats-mitre-attack) |
-| 7 | 2026-06-01 | Announcements | **Anthropic confidentially submits draft S-1 to the SEC** | [open](https://www.anthropic.com/news/confidential-draft-s1-sec) |
-| 8 | 2026-05-28 | Announcements | **Anthropic raises $65B in Series H funding at $965B post-money valuation** | [open](https://www.anthropic.com/news/series-h) |
-| 9 | 2026-05-28 | Product | **Introducing Claude Opus 4.8** | [open](https://www.anthropic.com/news/claude-opus-4-8) |
-| 10 | 2026-05-27 | Announcements | **Anthropic opens Milan office to support Italian enterprise, research, and developers** | [open](https://www.anthropic.com/news/milan-office-opening) |
-| 11 | 2026-05-26 | Announcements | **Anthropic appoints KiYoung Choi as Representative Director of Korea ahead of Seoul office opening** | [open](https://www.anthropic.com/news/kiyoung-choi-representative-director-anthropic-korea) |
+| 5 | 2026-06-11 | Announcements | **DXC will integrate Claude into the systems banks, airlines, and other regulated industries rely on** | [open](https://www.anthropic.com/news/dxc-anthropic-alliance) |
+| 6 | 2026-06-03 | Announcements | **Introducing the Services Track and Partner Hub of the Claude Partner Network** | [open](https://www.anthropic.com/news/services-track-partner-hub) |
+| 7 | 2026-06-03 | Policy | **What we learned mapping a year’s worth of AI-enabled cyber threats** | [open](https://www.anthropic.com/news/AI-enabled-cyber-threats-mitre-attack) |
+| 8 | 2026-06-01 | Announcements | **Anthropic confidentially submits draft S-1 to the SEC** | [open](https://www.anthropic.com/news/confidential-draft-s1-sec) |
+| 9 | 2026-05-28 | Announcements | **Anthropic raises $65B in Series H funding at $965B post-money valuation** | [open](https://www.anthropic.com/news/series-h) |
+| 10 | 2026-05-28 | Product | **Introducing Claude Opus 4.8** | [open](https://www.anthropic.com/news/claude-opus-4-8) |
+| 11 | 2026-05-27 | Announcements | **Anthropic opens Milan office to support Italian enterprise, research, and developers** | [open](https://www.anthropic.com/news/milan-office-opening) |
 
 ## How to use this digest
 
