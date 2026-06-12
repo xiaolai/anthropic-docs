@@ -1,21 +1,21 @@
 {
   "indexUrl": "https://claude.com/docs/llms.txt",
-  "indexSha256": "84b7d4e7bcfe2b16ec93d8935e1ef5b700a087c2c2071f43755c9b0c1ef5afd0",
-  "indexBytes": 12252,
-  "pageCount": 34,
-  "refreshedAt": "2026-06-02T00:00:00Z",
+  "indexSha256": "5dfd4d43dff01c3c56bf225921e93dda3b6217bb5f9014497cb23d1214e5433f",
+  "indexBytes": 13154,
+  "pageCount": 35,
+  "refreshedAt": "2026-06-12T13:04:23Z",
   "pages": [
     {
       "path": "connectors/building/after-publishing.md",
       "url": "https://claude.com/docs/connectors/building/after-publishing.md",
-      "sha256": "b3410a56b39570bc7426011cd79d07ef3131f5e046d4ea9ab8cab8253ecf3fda",
-      "bytes": 1441
+      "sha256": "9985cadf1766c3a86877f4978d7260f6fba16e01bee0d744dfd9fd90a522fb2b",
+      "bytes": 1577
     },
     {
       "path": "connectors/building/authentication.md",
       "url": "https://claude.com/docs/connectors/building/authentication.md",
-      "sha256": "f5789e75da09907888e962c249fdcb85c92faf2e4efb2dd6a923fdad9a1730ee",
-      "bytes": 14195
+      "sha256": "03d363413b838c6a6d7d50f7a3bbc4fba20fd2e1011e6ed58982dbc350d88acf",
+      "bytes": 14899
     },
     {
       "path": "connectors/building/directory-vs-custom.md",
@@ -36,6 +36,12 @@
       "bytes": 15671
     },
     {
+      "path": "connectors/building/managing-your-listing.md",
+      "url": "https://claude.com/docs/connectors/building/managing-your-listing.md",
+      "sha256": "4a9208e851d01e00c2678b767a63229556a2bd7216320d7ed661117e7d26e22c",
+      "bytes": 4868
+    },
+    {
       "path": "connectors/building/mcp-apps/cross-compatibility.md",
       "url": "https://claude.com/docs/connectors/building/mcp-apps/cross-compatibility.md",
       "sha256": "60dd680520102a9d2a6d8aaca7e76aceb0d0d0152c9a04da704550bec45275ae",
@@ -44,8 +50,8 @@
     {
       "path": "connectors/building/mcp-apps/design-guidelines.md",
       "url": "https://claude.com/docs/connectors/building/mcp-apps/design-guidelines.md",
-      "sha256": "748410cf25617f5400f6ae2d98e25897557cae8690003a5908bb52d039832b80",
-      "bytes": 23294
+      "sha256": "c620ecfdaba8186a545ad010c7fe6fe105b288afb4619fed31aa9951436c6cd7",
+      "bytes": 25685
     },
     {
       "path": "connectors/building/mcp-apps/external-links.md",
@@ -98,20 +104,20 @@
     {
       "path": "connectors/building/submission.md",
       "url": "https://claude.com/docs/connectors/building/submission.md",
-      "sha256": "0cdf7823fda1f199f4eb45b0736453f57c06ef735192ccdf764313f89da849ee",
-      "bytes": 7636
+      "sha256": "3486f55ac36fc986f2428057e2e92747dbd9bcd06b0edaeb50d6acb782cadbfd",
+      "bytes": 11158
     },
     {
       "path": "connectors/building/testing.md",
       "url": "https://claude.com/docs/connectors/building/testing.md",
-      "sha256": "a248c92260f586bf37846bcf7b2a71d2df81503c3bd60502c764234de4b73540",
-      "bytes": 3557
+      "sha256": "7927b3fa8970918e1dd53086abb24b6aaac05bfd31e2b9ede4b3ce88e793c2d1",
+      "bytes": 3664
     },
     {
       "path": "connectors/building/troubleshooting.md",
       "url": "https://claude.com/docs/connectors/building/troubleshooting.md",
-      "sha256": "7030cbfa996d470b6d3d77f1a1eb1d2425c10448c30397733f039a79d2e14dd2",
-      "bytes": 13632
+      "sha256": "751c756c772a6caf2b684a19aecba3f477581394a158ac9c3d042af1c32f2dcf",
+      "bytes": 14000
     },
     {
       "path": "connectors/building/what-to-build.md",
@@ -134,8 +140,8 @@
     {
       "path": "connectors/directory.md",
       "url": "https://claude.com/docs/connectors/directory.md",
-      "sha256": "9952f8bfc06b6b8164a4358f52ca7bf38a5c9af6a63062c5b992bce008aca593",
-      "bytes": 2399
+      "sha256": "b9329b3e972d3e08bc293dd0830bff644293ac591e4b2e2431ef4c32d2018054",
+      "bytes": 3859
     },
     {
       "path": "connectors/getting-started.md",
@@ -194,8 +200,8 @@
     {
       "path": "plugins/submit.md",
       "url": "https://claude.com/docs/plugins/submit.md",
-      "sha256": "8dc134ef868eaebe0f167c9378f6f8c38df35216a1519ff4a47d38e6b356c197",
-      "bytes": 6509
+      "sha256": "af36a1705a9472fecb3f07fe36c574bb7951b92b477405a3b613852a3b483f97",
+      "bytes": 6981
     },
     {
       "path": "skills/how-to.md",
