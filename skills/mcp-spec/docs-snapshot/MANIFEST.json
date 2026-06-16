@@ -1,9 +1,9 @@
 {
   "indexUrl": "https://modelcontextprotocol.io/llms.txt",
-  "indexSha256": "5161f8d5e5268bf6573e1bccf97fa858e941382f07462ca93ab49f6541f83c77",
+  "indexSha256": "92374ee8b03befbb5d72752ca37977e3f3ff974f8a2481e5c5f245ddf1f67b63",
   "indexBytes": 18340,
   "pageCount": 121,
-  "refreshedAt": "2026-05-29T14:03:31Z",
+  "refreshedAt": "2026-06-02T14:30:00Z",
   "pages": [
     {
       "path": "community/antitrust.md",
@@ -110,8 +110,8 @@
     {
       "path": "community/tool-annotations/charter.md",
       "url": "https://modelcontextprotocol.io/community/tool-annotations/charter.md",
-      "sha256": "9a31c6d58e99393f9ffe9072d208dfadc6170588a725745b86cbe23c08dc8d1a",
-      "bytes": 6919
+      "sha256": "4b772cf0a7349bbdd7ea220d0f0675ee24226a23f79e85b6f71f009cc4d541d2",
+      "bytes": 7462
     },
     {
       "path": "community/triggers-events/charter.md",
@@ -482,8 +482,8 @@
     {
       "path": "seps/2243-http-standardization.md",
       "url": "https://modelcontextprotocol.io/seps/2243-http-standardization.md",
-      "sha256": "921a31899f32addc48c18a1602b4934b4a8667b65805e5fa83d08ba406f1fd7c",
-      "bytes": 43646
+      "sha256": "d59d2c797124a7d4d328913c76d5e33396e02bf62cdac445e9ad0239250a199d",
+      "bytes": 45799
     },
     {
       "path": "seps/2260-Require-Server-requests-to-be-associated-with-Client-requests.md",
