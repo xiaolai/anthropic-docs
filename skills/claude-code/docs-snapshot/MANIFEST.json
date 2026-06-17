@@ -3,7 +3,7 @@
   "indexSha256": "cb0731c535a8b0197075ad0483391f70e7080fcf9a3e8ac3d180aeefccf16ab9",
   "indexBytes": 31053,
   "pageCount": 115,
-  "refreshedAt": "2026-06-02T00:00:00Z",
+  "refreshedAt": "2026-06-03T13:29:28Z",
   "pages": [
     {
       "path": "en/admin-setup.md",
@@ -20,8 +20,8 @@
     {
       "path": "en/agent-view.md",
       "url": "https://code.claude.com/docs/en/agent-view.md",
-      "sha256": "717d86b3a5ea8b7c3bfb18d0c8aae425d0f8eed57e9fe71e95eefe101288a771",
-      "bytes": 50652
+      "sha256": "d030e1e72ddab90f5f07339103c26518676e6d925541ca993c8351b7e90df869",
+      "bytes": 51002
     },
     {
       "path": "en/agents.md",
@@ -50,8 +50,8 @@
     {
       "path": "en/auto-mode-config.md",
       "url": "https://code.claude.com/docs/en/auto-mode-config.md",
-      "sha256": "dcff53a290e4c61175503d435b6e440731115277ced9beb3344a045383e4c7f8",
-      "bytes": 13313
+      "sha256": "ed3ed9af41d18e960ab8fa71c7515a8ff9db3d74aab0b9af18ae9e7a9e893de9",
+      "bytes": 13452
     },
     {
       "path": "en/best-practices.md",
@@ -68,8 +68,8 @@
     {
       "path": "en/changelog.md",
       "url": "https://code.claude.com/docs/en/changelog.md",
-      "sha256": "6b45d223f07905d3b921f429e10186f1f3c2a3de1998cd0c18692c30fb06ad78",
-      "bytes": 373544
+      "sha256": "7ad425cbccec596ccc9bfbc7d59ad90bb86ea5e31f47dd5b522437428041c3b9",
+      "bytes": 376636
     },
     {
       "path": "en/channels-reference.md",
@@ -98,8 +98,8 @@
     {
       "path": "en/claude-code-on-the-web.md",
       "url": "https://code.claude.com/docs/en/claude-code-on-the-web.md",
-      "sha256": "fd103781161ce2c7cbefafa6d0e98420aad0fc0c80ad4cebf0213dac58ad67f0",
-      "bytes": 51372
+      "sha256": "4e2ad65426d75b25ef28d203d757a7948eb6370a112d2db9d0615d97fec14b40",
+      "bytes": 51580
     },
     {
       "path": "en/claude-directory.md",
@@ -128,7 +128,7 @@
     {
       "path": "en/commands.md",
       "url": "https://code.claude.com/docs/en/commands.md",
-      "sha256": "7d6157f21f37a55d4f15176e5e81081694b9522521961c2f6f018c6257deb34a",
+      "sha256": "fa3b6f39a99e79e806910cdc02253fa5ea639072364578f0920c77f538f065b0",
       "bytes": 81763
     },
     {
@@ -194,8 +194,8 @@
     {
       "path": "en/desktop.md",
       "url": "https://code.claude.com/docs/en/desktop.md",
-      "sha256": "c75c587367bc294a893180caccc43ca76a81c4ac0b44561c5f22bb46d91fed1a",
-      "bytes": 68491
+      "sha256": "c7343631052348dbb21264ed0feec9c362d8deb7033cf4212f09691252c1fd64",
+      "bytes": 68712
     },
     {
       "path": "en/devcontainer.md",
@@ -212,20 +212,20 @@
     {
       "path": "en/env-vars.md",
       "url": "https://code.claude.com/docs/en/env-vars.md",
-      "sha256": "3f5aaf7f0ccbc009de54d119774bfadb3f3ba485a1fa561e31894002e17d4169",
-      "bytes": 180370
+      "sha256": "41c969ed2a02178bde3e778bbc2a47d1c56959e9557a3497b7686d0ad471870c",
+      "bytes": 181068
     },
     {
       "path": "en/errors.md",
       "url": "https://code.claude.com/docs/en/errors.md",
-      "sha256": "38094836ca3299ceb423e6306cff6909604417d23a7bb854fd22322f6018b657",
-      "bytes": 44931
+      "sha256": "d0bdc9371af71e239e2f7c1bfc8b6011f180b1e5f0cfbef049798191d90631a6",
+      "bytes": 45570
     },
     {
       "path": "en/fast-mode.md",
       "url": "https://code.claude.com/docs/en/fast-mode.md",
-      "sha256": "68acbbd684c11f184d09da56fd64f4ccdfb3038aeea6910f3c6108dca5367953",
-      "bytes": 9341
+      "sha256": "1c544ab50698031b3fdb82b5c931b31e16ffa2adbb29d5e33152e17f1560c61b",
+      "bytes": 9196
     },
     {
       "path": "en/features-overview.md",
@@ -236,8 +236,8 @@
     {
       "path": "en/fullscreen.md",
       "url": "https://code.claude.com/docs/en/fullscreen.md",
-      "sha256": "4490d9db2efc4c9a000fd816194f3dcb08e583e4a5b2a528284feb3441c1e628",
-      "bytes": 16181
+      "sha256": "366d5f391c864a84a471761009944c6d80e2d24a062e63943cf585bd42985144",
+      "bytes": 16528
     },
     {
       "path": "en/github-actions.md",
@@ -260,8 +260,8 @@
     {
       "path": "en/glossary.md",
       "url": "https://code.claude.com/docs/en/glossary.md",
-      "sha256": "e0b523c411a8892453fc3b33f5ea4aa2bfe73deba4473d9ff2cddb40a6123e51",
-      "bytes": 19848
+      "sha256": "e93ae03b60de1a2504ae64138a87242db3a34f3aa0bf7ae8327cafd56481ad5e",
+      "bytes": 19804
     },
     {
       "path": "en/goal.md",
@@ -302,8 +302,8 @@
     {
       "path": "en/interactive-mode.md",
       "url": "https://code.claude.com/docs/en/interactive-mode.md",
-      "sha256": "b232497e315662c40d71fbe6724a60207059d5b5509d5228104780c93ca3b795",
-      "bytes": 35807
+      "sha256": "58a1a362f88767b5a4e93dc85a798fae458659ed644500089c26e20678edd881",
+      "bytes": 35812
     },
     {
       "path": "en/jetbrains.md",
@@ -398,14 +398,14 @@
     {
       "path": "en/permission-modes.md",
       "url": "https://code.claude.com/docs/en/permission-modes.md",
-      "sha256": "ba750e82b205c34f758cf4baab927d3f64665389429f228902d0859d378c67fc",
-      "bytes": 21643
+      "sha256": "35460817d328755ba16f9d1cfde4ffc982c961c4d19242209c6b79761da3de36",
+      "bytes": 24080
     },
     {
       "path": "en/permissions.md",
       "url": "https://code.claude.com/docs/en/permissions.md",
-      "sha256": "1d1e18b9822526112b3d1054d7de40ede5316e0ab95e26ac8df0645b7a9d300b",
-      "bytes": 34180
+      "sha256": "792c162b3c589971882a976c0a1db18a3de950e033edd2e17f2e10d98b0b9a08",
+      "bytes": 34229
     },
     {
       "path": "en/platforms.md",
@@ -518,7 +518,7 @@
     {
       "path": "en/settings.md",
       "url": "https://code.claude.com/docs/en/settings.md",
-      "sha256": "3a10b6e027df6cda47d89876dc2e6aadbe8e056726343a9cd22fbd2e10b3ab8b",
+      "sha256": "750d31b7e8c377bea5edb597d615600d5d2cb60c11b8dd50fa11ff9138db2c53",
       "bytes": 135314
     },
     {
@@ -548,14 +548,14 @@
     {
       "path": "en/sub-agents.md",
       "url": "https://code.claude.com/docs/en/sub-agents.md",
-      "sha256": "a3696b10370360bd2bfbdd45578f2fb9cdd2602e2bc97ca382ed512814b9f2e6",
-      "bytes": 64851
+      "sha256": "19dd49b767f89155d69be1599d96d0e79b1f677f89b91b6fa72a6894595462cb",
+      "bytes": 64900
     },
     {
       "path": "en/terminal-config.md",
       "url": "https://code.claude.com/docs/en/terminal-config.md",
-      "sha256": "9f7e15efb2ced26c72a3df25c2b20a78e4b31b44df8a78a5e3dd5f0885d2c275",
-      "bytes": 20224
+      "sha256": "1a17a8bd1de5c64e3b0bce7e1b0e671e904936cc671df98ae43589fadedfe697",
+      "bytes": 20234
     },
     {
       "path": "en/third-party-integrations.md",
@@ -566,8 +566,8 @@
     {
       "path": "en/tools-reference.md",
       "url": "https://code.claude.com/docs/en/tools-reference.md",
-      "sha256": "276e63ddcda091eb3a486b88675c1daf1385712338cfe39b3a854981ba48ed59",
-      "bytes": 48545
+      "sha256": "eb8c00a0113b8b343211b7d3948cae23d9c657f6de9056802b36dc5f31a7c9f7",
+      "bytes": 48768
     },
     {
       "path": "en/troubleshoot-install.md",
@@ -602,8 +602,8 @@
     {
       "path": "en/vs-code.md",
       "url": "https://code.claude.com/docs/en/vs-code.md",
-      "sha256": "52d84ebf759be14b0113adf276041102d68e0b23cff9b1b2731d3a42dd6ca67c",
-      "bytes": 40931
+      "sha256": "b57f8f0e46a2500d554b6495b25f0a0de3a74e7f378b1c20b26e6e291e022393",
+      "bytes": 40936
     },
     {
       "path": "en/web-quickstart.md",
@@ -668,8 +668,8 @@
     {
       "path": "en/whats-new/2026-w22.md",
       "url": "https://code.claude.com/docs/en/whats-new/2026-w22.md",
-      "sha256": "40c680b724febdb0101f9823d623c0475d7677a1b031a41908bd70f0874ec6cc",
-      "bytes": 7212
+      "sha256": "73b0883a5448409b9f55eeef9d1238be8aa79a4c0f8bf158e190e6d63ec906d9",
+      "bytes": 7205
     },
     {
       "path": "en/whats-new/index.md",
@@ -680,8 +680,8 @@
     {
       "path": "en/workflows.md",
       "url": "https://code.claude.com/docs/en/workflows.md",
-      "sha256": "5845e505e933f3c76f2e9003deb25f3db018fbc0a9999d009009403b573c4568",
-      "bytes": 20074
+      "sha256": "a34c0533d0804e6bb1f747d8aa34f85e152db93181eb633c31e92940e85df100",
+      "bytes": 20362
     },
     {
       "path": "en/worktrees.md",
