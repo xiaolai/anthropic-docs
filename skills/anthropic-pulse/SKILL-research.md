@@ -17,7 +17,7 @@ source: https://www.anthropic.com/research
 > most recent items from [https://www.anthropic.com/research](https://www.anthropic.com/research). For the full
 > body of any item, WebFetch its URL — that's the design.
 
-**Last refreshed**: 2026-06-16
+**Last refreshed**: 2026-06-17
 
 | # | Date | Category | Title | Link |
 |---|---|---|---|---|
@@ -26,13 +26,13 @@ source: https://www.anthropic.com/research
 | 3 | 2026-04-24 | Research | **Project Deal** | [open](https://www.anthropic.com/features/project-deal) |
 | 4 | 2026-03-18 | Societal Impacts | **What 81,000 people want from AI** | [open](https://www.anthropic.com/81k-interviews) |
 | 5 | 2025-12-18 | Policy | **Project Vend: Phase two** | [open](https://www.anthropic.com/research/project-vend-2) |
-| 6 | 2026-06-08 | Science | **Paving the way for agents in biology** | [open](https://www.anthropic.com/research/agents-in-biology) |
-| 7 | 2026-06-05 | Science | **Making Claude a chemist** | [open](https://www.anthropic.com/research/making-claude-a-chemist) |
-| 8 | 2026-05-27 | Economic Research | **Coding agents in the social sciences** | [open](https://www.anthropic.com/research/coding-agents-social-sciences) |
-| 9 | 2026-05-22 | Announcements | **Project Glasswing: An initial update** | [open](https://www.anthropic.com/research/glasswing-initial-update) |
-| 10 | 2026-05-14 | Policy | **2028: Two scenarios for global AI leadership** | [open](https://www.anthropic.com/research/2028-ai-leadership) |
-| 11 | 2026-05-07 | Alignment | **Donating our open-source alignment tool** | [open](https://www.anthropic.com/research/donating-open-source-petri) |
-| 12 | 2026-05-07 | Policy | **Focus areas for The Anthropic Institute** | [open](https://www.anthropic.com/research/anthropic-institute-agenda) |
+| 6 | 2026-06-16 | Economic Research | **Agentic coding and persistent returns to expertise** | [open](https://www.anthropic.com/research/claude-code-expertise) |
+| 7 | 2026-06-08 | Science | **Paving the way for agents in biology** | [open](https://www.anthropic.com/research/agents-in-biology) |
+| 8 | 2026-06-05 | Science | **Making Claude a chemist** | [open](https://www.anthropic.com/research/making-claude-a-chemist) |
+| 9 | 2026-05-27 | Economic Research | **Coding agents in the social sciences** | [open](https://www.anthropic.com/research/coding-agents-social-sciences) |
+| 10 | 2026-05-22 | Announcements | **Project Glasswing: An initial update** | [open](https://www.anthropic.com/research/glasswing-initial-update) |
+| 11 | 2026-05-14 | Policy | **2028: Two scenarios for global AI leadership** | [open](https://www.anthropic.com/research/2028-ai-leadership) |
+| 12 | 2026-05-07 | Alignment | **Donating our open-source alignment tool** | [open](https://www.anthropic.com/research/donating-open-source-petri) |
 
 ## How to use this digest
 
