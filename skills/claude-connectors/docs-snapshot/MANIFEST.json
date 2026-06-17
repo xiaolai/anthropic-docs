@@ -1,9 +1,9 @@
 {
   "indexUrl": "https://claude.com/docs/llms.txt",
-  "indexSha256": "84b7d4e7bcfe2b16ec93d8935e1ef5b700a087c2c2071f43755c9b0c1ef5afd0",
-  "indexBytes": 12252,
+  "indexSha256": "18708e7c76805ab65538239dd3d03190af15de36ce68f456559d43d24c6db0e4",
+  "indexBytes": 12431,
   "pageCount": 34,
-  "refreshedAt": "2026-06-02T00:00:00Z",
+  "refreshedAt": "2026-06-04T12:58:41Z",
   "pages": [
     {
       "path": "connectors/building/after-publishing.md",
@@ -44,8 +44,8 @@
     {
       "path": "connectors/building/mcp-apps/design-guidelines.md",
       "url": "https://claude.com/docs/connectors/building/mcp-apps/design-guidelines.md",
-      "sha256": "748410cf25617f5400f6ae2d98e25897557cae8690003a5908bb52d039832b80",
-      "bytes": 23294
+      "sha256": "c620ecfdaba8186a545ad010c7fe6fe105b288afb4619fed31aa9951436c6cd7",
+      "bytes": 25685
     },
     {
       "path": "connectors/building/mcp-apps/external-links.md",
