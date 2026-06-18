@@ -16,7 +16,7 @@ source: https://www.anthropic.com/news
 > most recent items from [https://www.anthropic.com/news](https://www.anthropic.com/news). For the full
 > body of any item, WebFetch its URL — that's the design.
 
-**Last refreshed**: 2026-06-17
+**Last refreshed**: 2026-06-18
 
 | # | Date | Category | Title | Link |
 |---|---|---|---|---|
@@ -25,13 +25,13 @@ source: https://www.anthropic.com/news
 | 3 | 2026-06-02 | Announcements | **Expanding Project Glasswing** | [open](https://www.anthropic.com/news/expanding-project-glasswing) |
 | 4 | 2026-05-28 | Product | **Introducing Claude Opus 4.8** | [open](https://www.anthropic.com/news/claude-opus-4-8) |
 | 5 | 2026-05-25 | Announcements | **Anthropic co-founder Chris Olah’s remarks on Pope Leo XIV’s encyclical "Magnifica humanitas"** | [open](https://www.anthropic.com/news/chris-olah-pope-leo-encyclical) |
-| 6 | 2026-06-12 | Announcements | **Results from the first Anthropic Public Record** | [open](https://www.anthropic.com/news/anthropic-public-record) |
-| 7 | 2026-06-12 | Announcements | **TCS and Anthropic partner to bring Claude to regulated industries** | [open](https://www.anthropic.com/news/tcs-anthropic-partnership) |
-| 8 | 2026-06-11 | Announcements | **DXC will integrate Claude into the systems banks, airlines, and other regulated industries rely on** | [open](https://www.anthropic.com/news/dxc-anthropic-alliance) |
-| 9 | 2026-06-09 | Announcements | **Claude Fable 5 and Claude Mythos 5** | [open](https://www.anthropic.com/news/claude-fable-5-mythos-5) |
-| 10 | 2026-06-03 | Announcements | **Introducing the Services Track and Partner Hub of the Claude Partner Network** | [open](https://www.anthropic.com/news/services-track-partner-hub) |
-| 11 | 2026-06-03 | Policy | **What we learned mapping a year’s worth of AI-enabled cyber threats** | [open](https://www.anthropic.com/news/AI-enabled-cyber-threats-mitre-attack) |
-| 12 | 2026-06-01 | Announcements | **Anthropic confidentially submits draft S-1 to the SEC** | [open](https://www.anthropic.com/news/confidential-draft-s1-sec) |
+| 6 | 2026-06-17 | Announcements | **Anthropic opens Seoul office and announces new partnerships across the Korean AI ecosystem** | [open](https://www.anthropic.com/news/seoul-office-partnerships-korean-ai-ecosystem) |
+| 7 | 2026-06-12 | Announcements | **Results from the first Anthropic Public Record** | [open](https://www.anthropic.com/news/anthropic-public-record) |
+| 8 | 2026-06-12 | Announcements | **TCS and Anthropic partner to bring Claude to regulated industries** | [open](https://www.anthropic.com/news/tcs-anthropic-partnership) |
+| 9 | 2026-06-11 | Announcements | **DXC will integrate Claude into the systems banks, airlines, and other regulated industries rely on** | [open](https://www.anthropic.com/news/dxc-anthropic-alliance) |
+| 10 | 2026-06-09 | Announcements | **Claude Fable 5 and Claude Mythos 5** | [open](https://www.anthropic.com/news/claude-fable-5-mythos-5) |
+| 11 | 2026-06-03 | Announcements | **Introducing the Services Track and Partner Hub of the Claude Partner Network** | [open](https://www.anthropic.com/news/services-track-partner-hub) |
+| 12 | 2026-06-03 | Policy | **What we learned mapping a year’s worth of AI-enabled cyber threats** | [open](https://www.anthropic.com/news/AI-enabled-cyber-threats-mitre-attack) |
 
 ## How to use this digest
 
