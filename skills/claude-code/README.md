@@ -15,7 +15,7 @@ names, flags, env vars) flow in.
 
 <!-- The two stamps below are auto-filled by the pipeline. -->
 **Claude Code version**: v2.1.160
-**Last updated**: 2026-06-02
+**Last updated**: 2026-06-20
 **Pipeline status**: see [`reports/`](reports/) for per-run records.
 
 ## What it does
