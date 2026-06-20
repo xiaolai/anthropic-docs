@@ -4,7 +4,7 @@
       {
         "manager": "npm",
         "name": "@anthropic-ai/claude-agent-sdk",
-        "version": "0.3.159",
+        "version": "0.3.160",
         "engines": {
           "node": ">=18.0.0"
         }
@@ -24,10 +24,10 @@
       {
         "repo": "anthropics/claude-agent-sdk-typescript",
         "latestRelease": {
-          "tag": "v0.3.159",
-          "name": "v0.3.159",
-          "body": "## What's changed\n\n- Updated to parity with Claude Code v2.1.159\n\n## Update\n\n```sh\nnpm install @anthropic-ai/claude-agent-sdk@0.3.159\n# or\nyarn add @anthropic-ai/claude-agent-sdk@0.3.159\n# or\npnpm add @anthropic-ai/claude-agent-sdk@0.3.159\n# or\nbun add @anthropic-ai/claude-agent-sdk@0.3.159\n```",
-          "publishedAt": "2026-05-31T19:42:46Z"
+          "tag": "v0.3.160",
+          "name": "v0.3.160",
+          "body": "## What's changed\n\n- Fixed SDK hook callbacks swallowing abort signals: aborting during a PostToolUse hook now ends the turn with a final `result` message instead of hanging the calling process\n\n## Update\n\n```sh\nnpm install @anthropic-ai/claude-agent-sdk@0.3.160\n# or\nyarn add @anthropic-ai/claude-agent-sdk@0.3.160\n# or\npnpm add @anthropic-ai/claude-agent-sdk@0.3.160\n# or\nbun add @anthropic-ai/claude-agent-sdk@0.3.160\n```",
+          "publishedAt": "2026-06-02T02:10:21Z"
         }
       },
       {
@@ -47,98 +47,98 @@
   },
   "docs": {
     "indexUrl": "https://code.claude.com/llms.txt",
-    "indexSha256": "6e6b703a25a1988b884c8ddf256d8e40b748c8c31680a918381e347a3745a0f9",
+    "indexSha256": "cb0731c535a8b0197075ad0483391f70e7080fcf9a3e8ac3d180aeefccf16ab9",
     "pageCount": 30,
     "knownPages": {
       "https://code.claude.com/docs/en/agent-sdk/agent-loop.md": {
-        "lastSeen": "2026-06-01T14:03:42Z"
+        "lastSeen": "2026-06-02T13:22:53Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/claude-code-features.md": {
-        "lastSeen": "2026-06-01T14:03:42Z"
+        "lastSeen": "2026-06-02T13:22:53Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/cost-tracking.md": {
-        "lastSeen": "2026-06-01T14:03:42Z"
+        "lastSeen": "2026-06-02T13:22:53Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/custom-tools.md": {
-        "lastSeen": "2026-06-01T14:03:42Z"
+        "lastSeen": "2026-06-02T13:22:53Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/file-checkpointing.md": {
-        "lastSeen": "2026-06-01T14:03:42Z"
+        "lastSeen": "2026-06-02T13:22:53Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/hooks.md": {
-        "lastSeen": "2026-06-01T14:03:42Z"
+        "lastSeen": "2026-06-02T13:22:53Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/hosting.md": {
-        "lastSeen": "2026-06-01T14:03:42Z"
+        "lastSeen": "2026-06-02T13:22:53Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/mcp.md": {
-        "lastSeen": "2026-06-01T14:03:42Z"
+        "lastSeen": "2026-06-02T13:22:53Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/migration-guide.md": {
-        "lastSeen": "2026-06-01T14:03:42Z"
+        "lastSeen": "2026-06-02T13:22:53Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/modifying-system-prompts.md": {
-        "lastSeen": "2026-06-01T14:03:42Z"
+        "lastSeen": "2026-06-02T13:22:53Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/observability.md": {
-        "lastSeen": "2026-06-01T14:03:42Z"
+        "lastSeen": "2026-06-02T13:22:53Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/overview.md": {
-        "lastSeen": "2026-06-01T14:03:42Z"
+        "lastSeen": "2026-06-02T13:22:53Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/permissions.md": {
-        "lastSeen": "2026-06-01T14:03:42Z"
+        "lastSeen": "2026-06-02T13:22:53Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/plugins.md": {
-        "lastSeen": "2026-06-01T14:03:42Z"
+        "lastSeen": "2026-06-02T13:22:53Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/python.md": {
-        "lastSeen": "2026-06-01T14:03:42Z"
+        "lastSeen": "2026-06-02T13:22:53Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/quickstart.md": {
-        "lastSeen": "2026-06-01T14:03:42Z"
+        "lastSeen": "2026-06-02T13:22:53Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/secure-deployment.md": {
-        "lastSeen": "2026-06-01T14:03:42Z"
+        "lastSeen": "2026-06-02T13:22:53Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/session-storage.md": {
-        "lastSeen": "2026-06-01T14:03:42Z"
+        "lastSeen": "2026-06-02T13:22:53Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/sessions.md": {
-        "lastSeen": "2026-06-01T14:03:42Z"
+        "lastSeen": "2026-06-02T13:22:53Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/skills.md": {
-        "lastSeen": "2026-06-01T14:03:42Z"
+        "lastSeen": "2026-06-02T13:22:53Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/slash-commands.md": {
-        "lastSeen": "2026-06-01T14:03:42Z"
+        "lastSeen": "2026-06-02T13:22:53Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/streaming-output.md": {
-        "lastSeen": "2026-06-01T14:03:42Z"
+        "lastSeen": "2026-06-02T13:22:53Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/streaming-vs-single-mode.md": {
-        "lastSeen": "2026-06-01T14:03:42Z"
+        "lastSeen": "2026-06-02T13:22:53Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/structured-outputs.md": {
-        "lastSeen": "2026-06-01T14:03:42Z"
+        "lastSeen": "2026-06-02T13:22:53Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/subagents.md": {
-        "lastSeen": "2026-06-01T14:03:42Z"
+        "lastSeen": "2026-06-02T13:22:53Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/todo-tracking.md": {
-        "lastSeen": "2026-06-01T14:03:42Z"
+        "lastSeen": "2026-06-02T13:22:53Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/tool-search.md": {
-        "lastSeen": "2026-06-01T14:03:42Z"
+        "lastSeen": "2026-06-02T13:22:53Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/typescript-v2-preview.md": {
-        "lastSeen": "2026-06-01T14:03:42Z"
+        "lastSeen": "2026-06-02T13:22:53Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/typescript.md": {
-        "lastSeen": "2026-06-01T14:03:42Z"
+        "lastSeen": "2026-06-02T13:22:53Z"
       },
       "https://code.claude.com/docs/en/agent-sdk/user-input.md": {
-        "lastSeen": "2026-06-01T14:03:42Z"
+        "lastSeen": "2026-06-02T13:22:53Z"
       }
     }
   },
@@ -149,10 +149,46 @@
       "verdict": "skipped",
       "reason": "Internal CI maintenance — switches issue triage workflow from static API key to Workload Identity Federation; no user-facing bug or workaround.",
       "researchedAt": "2026-05-23T13:30:00Z"
+    },
+    "336": {
+      "title": "Expose `goal_status` attachments as a typed message variant (currently untyped Record<string, unknown>)",
+      "verdict": "skipped",
+      "reason": "Enhancement request — labeled 'enhancement', not a bug; asks for a new typed message variant.",
+      "researchedAt": "2026-06-02T15:00:00Z"
+    },
+    "337": {
+      "title": "Regression: 0.3.152+ emits signature-only empty thinking blocks in successful tool-use turns",
+      "verdict": "added_known_issue",
+      "reason": "Added as KI 1 in SKILL-known-issues.md — AWS Bedrock regression in v0.3.152+ emitting thinking blocks with empty thinking string; workaround: filter blocks where block.thinking.trim() is empty.",
+      "researchedAt": "2026-06-02T15:00:00Z"
+    },
+    "338": {
+      "title": "Partial assistant message leaks through on interrupt — no way to tell it was truncated (stop_reason=null in both interrupted and normal cases)",
+      "verdict": "added_known_issue",
+      "reason": "Added as KI 2 in SKILL-known-issues.md — interrupt() emits truncated SDKAssistantMessage indistinguishable from normal completion; workaround: check result.terminal_reason === 'aborted_streaming' retroactively.",
+      "researchedAt": "2026-06-02T15:00:00Z"
+    },
+    "339": {
+      "title": "query() iterator ends without `result` event after subagent + end_turn",
+      "verdict": "added_known_issue",
+      "reason": "Added as KI 3 in SKILL-known-issues.md — iterator closes without SDKResultMessage when Agent tool used + main agent produces content after subagent + AsyncIterable has no buffered messages; workaround: defensive fallback or avoid Agent tool.",
+      "researchedAt": "2026-06-02T15:00:00Z"
+    },
+    "340": {
+      "title": "Minor Documentation Issue",
+      "verdict": "skipped",
+      "reason": "Documentation issue, not a user-facing SDK bug.",
+      "researchedAt": "2026-06-02T15:00:00Z"
+    },
+    "341": {
+      "title": "examples: MongoDB SessionStore reference adapter",
+      "verdict": "skipped",
+      "reason": "Community example contribution PR, not a bug report.",
+      "researchedAt": "2026-06-02T15:00:00Z"
     }
   },
-  "lastAuditedVersion": "0.3.159",
-  "lastUpdated": "2026-06-01T14:03:42Z",
+  "lastAuditedVersion": "0.3.160",
+  "lastUpdated": "2026-06-02T13:22:53Z",
   "scaffoldComplete": true,
   "lastRunWarnings": [
     "2026-05-19T17:24:39Z: docs_index_changed (hash 065bd6a→ee68ff8e) but no page-level additions, removals, or content diffs were provided in the change report — no surface-file edits made",
@@ -203,7 +239,9 @@
     "2026-05-30T12:35:39Z: Version bump — TS v0.3.153→v0.3.158 (parity with Claude Code v2.1.158); PY v0.2.87 unchanged; docs index hash updated (6cef2ea2→bbd47141) — no pages added or removed (30 pages); no new API surface changes. Updated SKILL.md, SKILL-typescript.md, README.md, CHANGELOG.md, state.json.",
     "2026-05-30T12:41:07Z: Part A: llms.txt index SHA bbd47141 matches MANIFEST (raw curl d1b3be0e differs by +1 byte trailing-newline injection, consistent with prior runs); all 30/30 agent-sdk pages re-fetched — every page exactly +1 byte (cosmetic trailing-newline injection by docs infra; sanitized SHAs identical to MANIFEST); page set unchanged at 30 pages; no substantive schema/API changes; no surface-file edits needed. MANIFEST.json refreshed via refresh-docs-snapshot.sh (refreshedAt updated to 2026-05-30T12:41:07Z). Part B: change-report.json newBugIssues=[]; TypeScript repo has 0 bug-labeled issues; highest known issue #335 (already documented, verdict: skipped). bugTracker.lastScannedIssueNumber corrected 0→335; lastScannedIssueNumber corrected null→335. Part C: validate-examples.sh PASS (0/0 schema-bound blocks); 5/5 spot-checked URLs returned HTTP 200 (typescript.md, python.md, hooks.md, sessions.md, observability.md); version consistency OK (TS v0.3.158 in SKILL.md/SKILL-typescript.md/README.md; PY v0.2.87 in SKILL-python.md/README.md); no duplicate facts (permissionMode/EffortLevel/TaskCreate in both surface files are appropriate separate-language API facts); cross-references valid (all 3 SKILL-*.md and 2 rules/*.md files exist); rules globs (**/*.ts, **/*.tsx, **/*.mts for TS; **/*.py for Python) cover documented patterns.",
     "2026-05-31T12:37:41Z: Part A: llms.txt index SHA changed (bbd47141→6e6b703a); 5/30 key pages spot-checked (typescript.md, python.md, hooks.md, overview.md, sessions.md) — every page exactly +1 byte vs MANIFEST (consistent docs infra trailing-newline injection; cosmetic); page set unchanged at 30 pages; no substantive schema/API changes; no surface-file edits needed. MANIFEST.json already refreshed by pipeline (refreshedAt 2026-05-31T12:37:54Z). Part B: change-report.json newBugIssues=[]; issueStateChanges=[]; no new bug-labeled issues. Part C: version unchanged (TS v0.3.158, PY v0.2.87); no surface-file edits required; indexSha256 updated bbd47141→6e6b703a; knownPages timestamps updated to 2026-05-31T12:37:41Z.",
-    "2026-06-01T14:03:42Z: Version bump — TS v0.3.158→v0.3.159 (parity with Claude Code v2.1.159); PY v0.2.87 unchanged; no new API surface changes. Updated SKILL.md, SKILL-typescript.md, README.md, CHANGELOG.md, state.json."
+    "2026-06-01T14:03:42Z: Version bump — TS v0.3.158→v0.3.159 (parity with Claude Code v2.1.159); PY v0.2.87 unchanged; no new API surface changes. Updated SKILL.md, SKILL-typescript.md, README.md, CHANGELOG.md, state.json.",
+    "2026-06-02T13:22:53Z: Version bump — TS v0.3.159→v0.3.160 (bug fix: PostToolUse abort signal handling — aborting during a PostToolUse hook now ends the turn with a final result message instead of hanging); PY v0.2.87 unchanged; docs_index_changed (hash 6e6b703a→cb0731c5, 30 pages, no additions/removals). Updated SKILL.md, SKILL-typescript.md, README.md, CHANGELOG.md, state.json.",
+    "2026-06-02T15:00:00Z: Part A: llms.txt index SHA changed (cb0731c5→c497eedc, +1 byte trailing-newline injection; cosmetic); all 30 agent-sdk pages re-fetched — all SHA256s match MANIFEST after normalization; no substantive schema/API changes; SKILL-typescript.md changelog heading updated v0.3.159→v0.3.160 and v0.3.160 entry added. MANIFEST.json refreshed with new indexSha256/indexBytes. Part B: 6 new issues above lastScannedIssueNumber=335: #336 (skipped: enhancement request), #337 (added_known_issue: KI 1 — Bedrock empty thinking blocks regression v0.3.152+), #338 (added_known_issue: KI 2 — truncated assistant message on interrupt, no discriminator), #339 (added_known_issue: KI 3 — missing result event after subagent+end_turn), #340 (skipped: documentation issue), #341 (skipped: example PR). SKILL-known-issues.md updated with KI 1–3. bugTracker.lastScannedIssueNumber updated 0→341; lastScannedIssueNumber updated null→341. Part C: 5/5 spot-checked URLs returned HTTP 200; version consistency OK (TS v0.3.160 in SKILL.md/SKILL-typescript.md/README.md; PY v0.2.87 in SKILL-python.md/README.md); no duplicate facts (KI 1-3 in SKILL-known-issues.md only); cross-references valid (all 3 SKILL-*.md and 2 rules/*.md files exist); rules globs cover documented patterns."
   ],
   "lastScannedIssueNumber": null
 }
