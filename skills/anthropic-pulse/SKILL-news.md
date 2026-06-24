@@ -16,15 +16,15 @@ source: https://www.anthropic.com/news
 > most recent items from [https://www.anthropic.com/news](https://www.anthropic.com/news). For the full
 > body of any item, WebFetch its URL — that's the design.
 
-**Last refreshed**: 2026-06-23
+**Last refreshed**: 2026-06-24
 
 | # | Date | Category | Title | Link |
 |---|---|---|---|---|
 | 1 | 2026-06-12 | Announcements | **Statement on the US government directive to suspend access to Fable 5 and Mythos 5** | [open](https://www.anthropic.com/news/fable-mythos-access) |
-| 2 | 2026-06-11 | Announcements | **Introducing Claude Corps** | [open](https://www.anthropic.com/news/claude-corps) |
-| 3 | 2026-06-02 | Announcements | **Expanding Project Glasswing** | [open](https://www.anthropic.com/news/expanding-project-glasswing) |
-| 4 | 2026-05-28 | Product | **Introducing Claude Opus 4.8** | [open](https://www.anthropic.com/news/claude-opus-4-8) |
-| 5 | 2026-05-25 | Announcements | **Anthropic co-founder Chris Olah’s remarks on Pope Leo XIV’s encyclical "Magnifica humanitas"** | [open](https://www.anthropic.com/news/chris-olah-pope-leo-encyclical) |
+| 2 | 2026-06-23 | Product | **Introducing Claude Tag** | [open](https://www.anthropic.com/news/introducing-claude-tag) |
+| 3 | 2026-06-11 | Announcements | **Introducing Claude Corps** | [open](https://www.anthropic.com/news/claude-corps) |
+| 4 | 2026-06-02 | Announcements | **Expanding Project Glasswing** | [open](https://www.anthropic.com/news/expanding-project-glasswing) |
+| 5 | 2026-05-28 | Product | **Introducing Claude Opus 4.8** | [open](https://www.anthropic.com/news/claude-opus-4-8) |
 | 6 | 2026-06-17 | Announcements | **Anthropic opens Seoul office and announces new partnerships across the Korean AI ecosystem** | [open](https://www.anthropic.com/news/seoul-office-partnerships-korean-ai-ecosystem) |
 | 7 | 2026-06-12 | Announcements | **Results from the first Anthropic Public Record** | [open](https://www.anthropic.com/news/anthropic-public-record) |
 | 8 | 2026-06-12 | Announcements | **TCS and Anthropic partner to bring Claude to regulated industries** | [open](https://www.anthropic.com/news/tcs-anthropic-partnership) |
