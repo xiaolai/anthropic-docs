@@ -7,7 +7,7 @@ enterprise SSO, telemetry, M365 connector, policy controls) and
 
 Part of the [anthropic-docs](../../README.md) plugin.
 
-**Last updated**: 2026-06-02
+**Last updated**: 2026-06-26
 
 ## Surfaces
 
