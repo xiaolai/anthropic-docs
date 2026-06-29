@@ -17,17 +17,17 @@ source: https://www.anthropic.com/research
 > most recent items from [https://www.anthropic.com/research](https://www.anthropic.com/research). For the full
 > body of any item, WebFetch its URL — that's the design.
 
-**Last refreshed**: 2026-06-28
+**Last refreshed**: 2026-06-29
 
 | # | Date | Category | Title | Link |
 |---|---|---|---|---|
 | 1 | 2026-05-07 | Interpretability | **Natural Language Autoencoders: Turning Claude’s thoughts into text** | [open](https://www.anthropic.com/research/natural-language-autoencoders) |
-| 2 | 2026-06-16 | Economic Research | **Agentic coding and persistent returns to expertise** | [open](https://www.anthropic.com/research/claude-code-expertise) |
+| 2 | 2026-06-26 | Economic Research | **Anthropic Economic Index report: Cadences** | [open](https://www.anthropic.com/research/economic-index-june-2026-report) |
 | 3 | 2026-05-08 | Alignment | **Teaching Claude why** | [open](https://www.anthropic.com/research/teaching-claude-why) |
 | 4 | 2026-04-24 | Research | **Project Deal** | [open](https://www.anthropic.com/features/project-deal) |
 | 5 | 2026-03-18 | Societal Impacts | **What 81,000 people want from AI** | [open](https://www.anthropic.com/81k-interviews) |
-| 6 | 2026-06-26 | Economic Research | **Anthropic Economic Index report: Cadences** | [open](https://www.anthropic.com/research/economic-index-june-2026-report) |
-| 7 | 2026-06-18 | Frontier Red Team | **Project Fetch: Phase two** | [open](https://www.anthropic.com/research/project-fetch-phase-two) |
+| 6 | 2026-06-18 | Frontier Red Team | **Project Fetch: Phase two** | [open](https://www.anthropic.com/research/project-fetch-phase-two) |
+| 7 | 2026-06-16 | Economic Research | **Agentic coding and persistent returns to expertise** | [open](https://www.anthropic.com/research/claude-code-expertise) |
 | 8 | 2026-06-08 | Science | **Paving the way for agents in biology** | [open](https://www.anthropic.com/research/agents-in-biology) |
 | 9 | 2026-06-08 | Frontier Red Team | **Measuring LLMs’ impact on N-day exploits** | [open](https://www.anthropic.com/research/n-days) |
 | 10 | 2026-06-05 | Science | **Making Claude a chemist** | [open](https://www.anthropic.com/research/making-claude-a-chemist) |

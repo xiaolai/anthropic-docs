@@ -16,7 +16,7 @@ source: https://www.anthropic.com/news
 > most recent items from [https://www.anthropic.com/news](https://www.anthropic.com/news). For the full
 > body of any item, WebFetch its URL — that's the design.
 
-**Last refreshed**: 2026-06-28
+**Last refreshed**: 2026-06-29
 
 | # | Date | Category | Title | Link |
 |---|---|---|---|---|
