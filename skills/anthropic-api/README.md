@@ -3,7 +3,7 @@
 Auto-updated reference skill for the **Anthropic Messages API** and
 adjacent surfaces (admin, compliance, beta, models).
 
-**Last updated**: 2026-06-02
+**Last updated**: 2026-06-30
 
 Part of the [anthropic-docs](../../README.md) plugin.
 
