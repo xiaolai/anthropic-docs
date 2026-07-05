@@ -8,7 +8,7 @@ resources, prompts, sampling, roots, completion).
 
 Part of the [anthropic-docs](../../README.md) plugin.
 
-**Last updated**: 2026-05-29
+**Last updated**: 2026-07-05
 
 ## Surfaces
 
