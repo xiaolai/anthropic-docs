@@ -11,8 +11,8 @@
   },
   "docs": {
     "indexUrl": "https://claude.com/docs/llms.txt",
-    "indexSha256": "84b7d4e7bcfe2b16ec93d8935e1ef5b700a087c2c2071f43755c9b0c1ef5afd0",
-    "pageCount": 35,
+    "indexSha256": "238c1d4ef9a5cfa20ca8d2e59dae0f0e8d7c2a6d96f7d1d38f6037179b8089a9",
+    "pageCount": 17,
     "knownPages": {
       "https://claude.com/docs/cowork/3p/bedrock-aws-sign-in.md": {
         "lastSeen": "2026-06-02T14:09:29Z"
@@ -72,59 +72,62 @@
         "lastSeen": "2026-06-02T14:09:29Z"
       },
       "https://claude.com/docs/cowork/guide/dispatch.md": {
-        "lastSeen": "2026-06-02T14:09:29Z"
+        "lastSeen": "2026-07-07T14:06:43Z"
       },
       "https://claude.com/docs/cowork/guide/plugins.md": {
-        "lastSeen": "2026-06-02T14:09:29Z"
+        "lastSeen": "2026-07-07T14:06:43Z"
       },
       "https://claude.com/docs/cowork/guide/projects.md": {
-        "lastSeen": "2026-06-02T14:09:29Z"
+        "lastSeen": "2026-07-07T14:06:43Z"
       },
       "https://claude.com/docs/cowork/monitoring.md": {
-        "lastSeen": "2026-06-02T14:09:29Z"
+        "lastSeen": "2026-07-07T14:06:43Z"
       },
       "https://claude.com/docs/cowork/overview.md": {
-        "lastSeen": "2026-06-02T14:09:29Z"
+        "lastSeen": "2026-07-07T14:06:43Z"
       },
       "https://claude.com/docs/office-agents/overview.md": {
-        "lastSeen": "2026-06-02T14:09:29Z"
+        "lastSeen": "2026-07-07T14:06:43Z"
       },
       "https://claude.com/docs/office-agents/connectors-and-skills.md": {
-        "lastSeen": "2026-06-02T14:09:29Z"
+        "lastSeen": "2026-07-07T14:06:43Z"
       },
       "https://claude.com/docs/office-agents/dictation.md": {
-        "lastSeen": "2026-06-02T14:09:29Z"
+        "lastSeen": "2026-07-07T14:06:43Z"
       },
       "https://claude.com/docs/office-agents/enterprise-readiness.md": {
-        "lastSeen": "2026-06-02T14:09:29Z"
+        "lastSeen": "2026-07-07T14:06:43Z"
       },
       "https://claude.com/docs/office-agents/excel.md": {
-        "lastSeen": "2026-06-02T14:09:29Z"
+        "lastSeen": "2026-07-07T14:06:43Z"
       },
       "https://claude.com/docs/office-agents/fsi-plugins.md": {
-        "lastSeen": "2026-06-02T14:09:29Z"
+        "lastSeen": "2026-07-07T14:06:43Z"
       },
       "https://claude.com/docs/office-agents/outlook.md": {
-        "lastSeen": "2026-06-02T14:09:29Z"
+        "lastSeen": "2026-07-07T14:06:43Z"
       },
       "https://claude.com/docs/office-agents/powerpoint.md": {
-        "lastSeen": "2026-06-02T14:09:29Z"
+        "lastSeen": "2026-07-07T14:06:43Z"
       },
       "https://claude.com/docs/office-agents/third-party-platforms.md": {
-        "lastSeen": "2026-06-02T14:09:29Z"
+        "lastSeen": "2026-07-07T14:06:43Z"
       },
       "https://claude.com/docs/office-agents/word.md": {
-        "lastSeen": "2026-06-02T14:09:29Z"
+        "lastSeen": "2026-07-07T14:06:43Z"
       },
       "https://claude.com/docs/office-agents/work-across-apps.md": {
-        "lastSeen": "2026-06-02T14:09:29Z"
+        "lastSeen": "2026-07-07T14:06:43Z"
+      },
+      "https://claude.com/docs/cowork/changelog.md": {
+        "lastSeen": "2026-07-07T14:06:43Z"
       }
     }
   },
   "trackedIssues": {},
   "researchedIssues": {},
   "lastAuditedVersion": "none",
-  "lastUpdated": "2026-06-02T14:09:29Z",
+  "lastUpdated": "2026-07-07T14:06:43Z",
   "scaffoldComplete": true,
   "lastRunWarnings": [
     "rules/mdm-config.md appliesTo globs do not cover *.reg files (Windows registry policy). Consider adding **/cowork*.reg for completeness. Minor — pre-existing gap. 2026-05-19T09:00:00Z",
