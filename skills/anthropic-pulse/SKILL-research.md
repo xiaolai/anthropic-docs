@@ -17,11 +17,11 @@ source: https://www.anthropic.com/research
 > most recent items from [https://www.anthropic.com/research](https://www.anthropic.com/research). For the full
 > body of any item, WebFetch its URL — that's the design.
 
-**Last refreshed**: 2026-07-06
+**Last refreshed**: 2026-07-07
 
 | # | Date | Category | Title | Link |
 |---|---|---|---|---|
-| 1 | 2026-05-07 | Interpretability | **Natural Language Autoencoders: Turning Claude’s thoughts into text** | [open](https://www.anthropic.com/research/natural-language-autoencoders) |
+| 1 | 2026-07-06 | Interpretability | **A global workspace in language models** | [open](https://www.anthropic.com/research/global-workspace) |
 | 2 | 2026-06-26 | Economic Research | **Anthropic Economic Index report: Cadences** | [open](https://www.anthropic.com/research/economic-index-june-2026-report) |
 | 3 | 2026-05-08 | Alignment | **Teaching Claude why** | [open](https://www.anthropic.com/research/teaching-claude-why) |
 | 4 | 2026-04-24 | Research | **Project Deal** | [open](https://www.anthropic.com/features/project-deal) |
@@ -33,7 +33,6 @@ source: https://www.anthropic.com/research
 | 10 | 2026-06-05 | Science | **Making Claude a chemist** | [open](https://www.anthropic.com/research/making-claude-a-chemist) |
 | 11 | 2026-06-03 | Frontier Red Team | **Mapping AI-enabled cyber threats: Insights from the LLM ATT&CK Navigator** | [open](https://www.anthropic.com/research/attack-navigator) |
 | 12 | 2026-05-27 | Economic Research | **Coding agents in the social sciences** | [open](https://www.anthropic.com/research/coding-agents-social-sciences) |
-| 13 | 2026-05-22 | Announcements | **Project Glasswing: An initial update** | [open](https://www.anthropic.com/research/glasswing-initial-update) |
 
 ## How to use this digest
 
