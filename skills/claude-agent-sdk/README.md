@@ -8,7 +8,7 @@
 > This skill is the always-current API reference Claude reads at
 > intent-match time; the courses + tutorials build the mental model.
 
-**Last updated**: 2026-06-01
+**Last updated**: 2026-07-07
 
 Auto-updated reference skill for the **Claude Agent SDK** — Anthropic's libraries for building autonomous AI agents that wrap the Claude Code CLI runtime. Covers both [TypeScript](https://github.com/anthropics/claude-agent-sdk-typescript) (`@anthropic-ai/claude-agent-sdk` on npm) and [Python](https://github.com/anthropics/claude-agent-sdk-python) (`claude-agent-sdk` on PyPI).
 
