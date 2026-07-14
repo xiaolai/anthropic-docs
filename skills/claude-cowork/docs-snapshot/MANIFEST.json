@@ -1,219 +1,111 @@
 {
   "indexUrl": "https://claude.com/docs/llms.txt",
-  "indexSha256": "e902363536c9acc513d54af3426bbbed42d810e267688e03faa4bb78006a7ab4",
-  "indexBytes": 12253,
-  "pageCount": 35,
-  "refreshedAt": "2026-06-02T00:00:00Z",
+  "indexSha256": "46d57e91823a560a30468cd6fbe012e64b424a24c370dd180388bde7ad960d42",
+  "indexBytes": 40797,
+  "pageCount": 17,
+  "refreshedAt": "2026-07-14T13:05:43Z",
   "pages": [
     {
-      "path": "cowork/3p/bedrock-aws-sign-in.md",
-      "url": "https://claude.com/docs/cowork/3p/bedrock-aws-sign-in.md",
-      "sha256": "14b1be48785326929c4110bc59dbb0c1827616fac292b914c8db12cd76d3803e",
-      "bytes": 10930
-    },
-    {
-      "path": "cowork/3p/bedrock.md",
-      "url": "https://claude.com/docs/cowork/3p/bedrock.md",
-      "sha256": "1b7b51e0d7dcc110eddcd734ab1aa184acadcfeff4d8b16bb7da4d5de92d2b2e",
-      "bytes": 17878
-    },
-    {
-      "path": "cowork/3p/code.md",
-      "url": "https://claude.com/docs/cowork/3p/code.md",
-      "sha256": "d6529ff1a4cb0ed3d615a5b33663286a84a414c3381cfe92a8a0cc1cdf1653dd",
-      "bytes": 9396
-    },
-    {
-      "path": "cowork/3p/configuration.md",
-      "url": "https://claude.com/docs/cowork/3p/configuration.md",
-      "sha256": "0e53520a7bb7e439dc5d964ea812d3a03c3459ed46280bdbd3227d0b33fbf0d6",
-      "bytes": 42517
-    },
-    {
-      "path": "cowork/3p/connectors-m365.md",
-      "url": "https://claude.com/docs/cowork/3p/connectors-m365.md",
-      "sha256": "7aa8801bddba3f34ccc2b767d9fa54c0f784e6d56c7665128aea0fb46eb3de9b",
-      "bytes": 10558
-    },
-    {
-      "path": "cowork/3p/data-storage.md",
-      "url": "https://claude.com/docs/cowork/3p/data-storage.md",
-      "sha256": "618733c7c55e6900cf2681c9db03ad330f4b5f71681ee2854c01f7fd5266eb27",
-      "bytes": 9218
-    },
-    {
-      "path": "cowork/3p/extensions.md",
-      "url": "https://claude.com/docs/cowork/3p/extensions.md",
-      "sha256": "4fbd74b59dbdb6590bdf5e488505c1fe4a1e10c5b6cba7e688e04dc3525841fa",
-      "bytes": 16644
-    },
-    {
-      "path": "cowork/3p/feature-matrix.md",
-      "url": "https://claude.com/docs/cowork/3p/feature-matrix.md",
-      "sha256": "05ae59eae15b626d7d55f702927481380c14fac703b751ecb8deba9b79f9c0c9",
-      "bytes": 5174
-    },
-    {
-      "path": "cowork/3p/foundry.md",
-      "url": "https://claude.com/docs/cowork/3p/foundry.md",
-      "sha256": "d183a376d3efd2b31d334e8f19e1c1b54d3f05ef32eceadfa7ae679add31b85b",
-      "bytes": 3645
-    },
-    {
-      "path": "cowork/3p/gateway-sso.md",
-      "url": "https://claude.com/docs/cowork/3p/gateway-sso.md",
-      "sha256": "ec869a66f7c30f334aa4c6f055f3850a715d96ed6f46715bbe50fb2e24eef8cb",
-      "bytes": 15055
-    },
-    {
-      "path": "cowork/3p/gateway.md",
-      "url": "https://claude.com/docs/cowork/3p/gateway.md",
-      "sha256": "555b8540b628155a4cdbdf3f9566e24fffddaae95260442b36659175a562a0b1",
-      "bytes": 5061
-    },
-    {
-      "path": "cowork/3p/installation.md",
-      "url": "https://claude.com/docs/cowork/3p/installation.md",
-      "sha256": "23696a7003c5dab7e70d26dca5beffeebaefb35373362f22ac1f15b5c0d2f525",
-      "bytes": 18892
-    },
-    {
-      "path": "cowork/3p/legal.md",
-      "url": "https://claude.com/docs/cowork/3p/legal.md",
-      "sha256": "24bb1fb242d100ac710e21166b0ceabcf0cbfcea1325ea24cf43c994fe93c3d9",
-      "bytes": 3163
-    },
-    {
-      "path": "cowork/3p/local-access.md",
-      "url": "https://claude.com/docs/cowork/3p/local-access.md",
-      "sha256": "46d74f3e71a227081afb0bee0640dbe21747ab0c987c797c8f20f5e825f02f46",
-      "bytes": 3129
-    },
-    {
-      "path": "cowork/3p/overview.md",
-      "url": "https://claude.com/docs/cowork/3p/overview.md",
-      "sha256": "cb4d308cf874f41ba71f0600b7e7f1372c181fcc3bdb8b43b1328265ac4976dc",
-      "bytes": 9205
-    },
-    {
-      "path": "cowork/3p/telemetry.md",
-      "url": "https://claude.com/docs/cowork/3p/telemetry.md",
-      "sha256": "4b41e715b269f4a2c11bd4aa9603c4f7c9f106805128833ed58b0bbf293f2b5a",
-      "bytes": 14393
-    },
-    {
-      "path": "cowork/3p/vertex-google-sign-in.md",
-      "url": "https://claude.com/docs/cowork/3p/vertex-google-sign-in.md",
-      "sha256": "8ba23a8706cd91af16e76a66641cc8a80f4d7b8286a1fd90f5cc944b1403962f",
-      "bytes": 9923
-    },
-    {
-      "path": "cowork/3p/vertex.md",
-      "url": "https://claude.com/docs/cowork/3p/vertex.md",
-      "sha256": "62a871f8aaeb86b083e7dde66fd59ff3971a4c360636932cd9ba873a021feef6",
-      "bytes": 15509
-    },
-    {
-      "path": "cowork/3p/web-tools.md",
-      "url": "https://claude.com/docs/cowork/3p/web-tools.md",
-      "sha256": "a6214c3a182142b8edd5f1e7f198999eedc998f94858303785764d2fa3344050",
-      "bytes": 5374
+      "path": "cowork/changelog.md",
+      "url": "https://claude.com/docs/cowork/changelog.md",
+      "sha256": "1684340033a7b6a88518e6faa0145001717d73cd679fb0ce5593d675fe46d808",
+      "bytes": 35923
     },
     {
       "path": "cowork/guide/dispatch.md",
       "url": "https://claude.com/docs/cowork/guide/dispatch.md",
-      "sha256": "56c4a48baa0709efd5d7a7d9bc7bbfe5f3b1065ed74c9da289b2a5675623b154",
-      "bytes": 4993
+      "sha256": "b5222d69fd71ac36c5e7b85f268fdccb6242a908679192d2dee39d3d95221db8",
+      "bytes": 4992
     },
     {
       "path": "cowork/guide/plugins.md",
       "url": "https://claude.com/docs/cowork/guide/plugins.md",
-      "sha256": "9a0a1731ba17a64ad7852f5552238add4faed91450405cee07970edb9f3f27fc",
-      "bytes": 4528
+      "sha256": "0db112c55d50ae0ea5b529f0848bce8d4831e8b1fc2a51bfec52322a0535b490",
+      "bytes": 4699
     },
     {
       "path": "cowork/guide/projects.md",
       "url": "https://claude.com/docs/cowork/guide/projects.md",
-      "sha256": "9867b5f9834be8f25bd5adffe1dd7447c720415d5a010089a1b204b19ce5aa36",
-      "bytes": 4603
+      "sha256": "1573012307ec94e622ba6cf1584a8abdb49822a96bdfe01adf375d62fd0fea58",
+      "bytes": 4602
     },
     {
       "path": "cowork/monitoring.md",
       "url": "https://claude.com/docs/cowork/monitoring.md",
-      "sha256": "073dd502f00b12cfaf9af0fc1c35a569ffed9437f281c28d8240f4aa96725cab",
-      "bytes": 13348
+      "sha256": "0819809429dbbc928e8a80ac216d2c7884688d7f92cc053623940fd398438ac7",
+      "bytes": 15829
     },
     {
       "path": "cowork/overview.md",
       "url": "https://claude.com/docs/cowork/overview.md",
-      "sha256": "e4a17872975b768700b66f4314c2159cf13aec54ca1df2b8778e617ac8c44cd7",
-      "bytes": 1903
+      "sha256": "0e592a3448ccfb454919ef3099189865b2354caf753ab2c534a179f520b3b1c1",
+      "bytes": 1902
     },
     {
       "path": "office-agents/connectors-and-skills.md",
       "url": "https://claude.com/docs/office-agents/connectors-and-skills.md",
-      "sha256": "41c632edbcdc3ca53b42306c7f9009d05d0c03199ab762d30cbc07ed31a51027",
-      "bytes": 2421
+      "sha256": "aab588e19494e53da9cef6fa35e5ca8aa3abedeffb98c917bf971de68e465fb4",
+      "bytes": 2420
     },
     {
       "path": "office-agents/dictation.md",
       "url": "https://claude.com/docs/office-agents/dictation.md",
-      "sha256": "2dbdb4aac4a5eac332acbc534f6c1a0ecd88a99b879f9ba276c8afd3b97dff4c",
-      "bytes": 2543
+      "sha256": "6e0836c97d3dd91bc323ed1056309e56f54eef055f43410561a97a63dc1cdf8e",
+      "bytes": 2542
     },
     {
       "path": "office-agents/enterprise-readiness.md",
       "url": "https://claude.com/docs/office-agents/enterprise-readiness.md",
-      "sha256": "c39e7f5ce588325c3b97b318525ac42acf7e4aa83643241b7bd4a2baaf008be3",
-      "bytes": 4288
+      "sha256": "9edb25dd86acbfc2bd91ccc93ed850ff2712d08aba16ad1e526aa2504e9df4c2",
+      "bytes": 4287
     },
     {
       "path": "office-agents/excel.md",
       "url": "https://claude.com/docs/office-agents/excel.md",
-      "sha256": "cf4e04eaa2d32783394822f48a62c1fe206fb5b5a9815f43c4b1e7f77e4b5d67",
-      "bytes": 9290
+      "sha256": "2af0a4c0b2642ae45b2e7fc5ec2470c3795b6aa296dd9a0ee518030d68b14ce3",
+      "bytes": 9289
     },
     {
       "path": "office-agents/fsi-plugins.md",
       "url": "https://claude.com/docs/office-agents/fsi-plugins.md",
-      "sha256": "20d648b32832fa1daf8ed2f7ba863e31804f8d8f53f18259ed6a0f918928f851",
-      "bytes": 5765
+      "sha256": "498576a683587431956942312d62f81e05cb0fffcec754f3f7e246153f75669f",
+      "bytes": 5764
     },
     {
       "path": "office-agents/outlook.md",
       "url": "https://claude.com/docs/office-agents/outlook.md",
-      "sha256": "4584808eabdb48a028da6bb5c38522751673eb8090889fab2fa96f95dd050a1c",
-      "bytes": 17213
+      "sha256": "e375a0b25f4ac4d3a35914869fbc2a467b384fdbb81604aab43de8cf49966324",
+      "bytes": 18405
     },
     {
       "path": "office-agents/overview.md",
       "url": "https://claude.com/docs/office-agents/overview.md",
-      "sha256": "3ea8070b6afba5b823efa454ff342bc1e880475019536fe321939360115775ed",
-      "bytes": 2125
+      "sha256": "48f29300bd37ad31b4cdf1f557eeec1a789cff4264238bb7706de1fa1d418fa7",
+      "bytes": 2124
     },
     {
       "path": "office-agents/powerpoint.md",
       "url": "https://claude.com/docs/office-agents/powerpoint.md",
-      "sha256": "64c529d8ac803f2dcd7876f0aa439ea35126d503f5c1e86284368410233096db",
-      "bytes": 11503
+      "sha256": "6800f04a2229ef815ae3438d4ae8a5e986b126d423aaa7afb25d0554f7f4e263",
+      "bytes": 11502
     },
     {
       "path": "office-agents/third-party-platforms.md",
       "url": "https://claude.com/docs/office-agents/third-party-platforms.md",
-      "sha256": "1719369b38caf102c18a7e293af4bca6055725ac890af345c9e97dc7b09f3eee",
-      "bytes": 43740
+      "sha256": "91c1c09412d26344af7378ae06d849ce3b2ae7669ef95bc4d5a0b6691570cd69",
+      "bytes": 43739
     },
     {
       "path": "office-agents/word.md",
       "url": "https://claude.com/docs/office-agents/word.md",
-      "sha256": "7dfb1dddd25c0a7016acc25918f5afec68fb87d5d0b7e126270c1b4b595779c3",
-      "bytes": 14406
+      "sha256": "74925de8277ddf48f78fa264255f40938999b2848284a4d5c0a80cd85b9e8a6b",
+      "bytes": 14405
     },
     {
       "path": "office-agents/work-across-apps.md",
       "url": "https://claude.com/docs/office-agents/work-across-apps.md",
-      "sha256": "274abfb1c827cac2e1ce5dd9aae8d44ffe851f12c870e0eebb961f480414ac9c",
-      "bytes": 5765
+      "sha256": "30ea5e487b7457da9f3a92c20bf63bf35404b3980721414c9304a93e5e428a1b",
+      "bytes": 5764
     }
   ]
 }
