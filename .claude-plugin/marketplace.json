@@ -1,0 +1,16 @@
+{
+  "name": "anthropic-docs",
+  "owner": {
+    "name": "xiaolai"
+  },
+  "description": "Auto-updated multi-skill reference for the Anthropic doc ecosystem (Claude Code, Agent SDK, API, platform features, connectors, Cowork, MCP, and news digests).",
+  "plugins": [
+    {
+      "name": "anthropic-docs",
+      "source": {
+        "source": "github",
+        "repo": "xiaolai/anthropic-docs"
+      }
+    }
+  ]
+}

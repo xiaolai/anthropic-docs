@@ -38,10 +38,12 @@ mistakes at edit time.
 ## Install
 
 ```bash
-/plugin install xiaolai/anthropic-docs
+/plugin marketplace add xiaolai/anthropic-docs
+/plugin install anthropic-docs@anthropic-docs
+/reload-plugins
 ```
 
-(or clone the repo and `/plugin install .` from your local copy)
+(or, to try it locally without installing: clone the repo and run `claude --plugin-dir .` from inside it — session-only, not persistent)
 
 ## Skills
 

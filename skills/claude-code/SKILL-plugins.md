@@ -109,7 +109,7 @@ A marketplace is a collection of plugins. The `marketplace.json` file at the mar
 ```json
 {
   "name": "my-marketplace",
-  "owner": "acme-corp",
+  "owner": { "name": "acme-corp" },
   "plugins": [
     {
       "name": "code-formatter",
