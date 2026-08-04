@@ -16,7 +16,7 @@ source: https://www.anthropic.com/news
 > most recent items from [https://www.anthropic.com/news](https://www.anthropic.com/news). For the full
 > body of any item, WebFetch its URL — that's the design.
 
-**Last refreshed**: 2026-08-03
+**Last refreshed**: 2026-08-04
 
 | # | Date | Category | Title | Link |
 |---|---|---|---|---|
@@ -24,7 +24,7 @@ source: https://www.anthropic.com/news
 | 2 | 2026-07-09 | Announcements | **Inviting hard questions** | [open](https://www.anthropic.com/news/hard-questions) |
 | 3 | 2026-06-30 | Announcements | **Redeploying Fable 5** | [open](https://www.anthropic.com/news/redeploying-fable-5) |
 | 4 | 2026-06-30 | Product | **Introducing Claude Sonnet 5** | [open](https://www.anthropic.com/news/claude-sonnet-5) |
-| 5 | 2026-07-30 | Frontier Red Team | **Investigating three real-world incidents in our cybersecurity evaluations** | [open](https://www.anthropic.com/news/investigating-incidents-cybersecurity-evals) |
+| 5 | 2026-07-30 |  | **Investigating three real-world incidents in our cybersecurity evaluations** | [open](https://www.anthropic.com/news/investigating-incidents-cybersecurity-evals) |
 | 6 | 2026-07-27 | Announcements | **Our position on open-weights models** | [open](https://www.anthropic.com/news/position-open-weights-models) |
 | 7 | 2026-07-27 | Announcements | **Cognizant and Anthropic expand their partnership to bring Claude to enterprise clients** | [open](https://www.anthropic.com/news/cognizant-anthropic) |
 | 8 | 2026-07-22 | Economic Research | **A research agenda for the Economic Futures Research Fund** | [open](https://www.anthropic.com/news/economic-futures-research-fund-agenda) |
