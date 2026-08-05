@@ -17,7 +17,7 @@ source: https://www.anthropic.com/research
 > most recent items from [https://www.anthropic.com/research](https://www.anthropic.com/research). For the full
 > body of any item, WebFetch its URL — that's the design.
 
-**Last refreshed**: 2026-08-04
+**Last refreshed**: 2026-08-05
 
 | # | Date | Category | Title | Link |
 |---|---|---|---|---|
