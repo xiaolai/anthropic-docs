@@ -16,7 +16,7 @@ source: https://www.anthropic.com/news
 > most recent items from [https://www.anthropic.com/news](https://www.anthropic.com/news). For the full
 > body of any item, WebFetch its URL — that's the design.
 
-**Last refreshed**: 2026-09-02
+**Last refreshed**: 2026-09-04
 
 | # | Date | Category | Title | Link |
 |---|---|---|---|---|
@@ -29,7 +29,7 @@ source: https://www.anthropic.com/news
 | 7 | 2026-08-25 | Announcements | **Funding better evaluations of AI’s impact on wellbeing** | [open](https://www.anthropic.com/news/wellbeing-research-grants) |
 | 8 | 2026-08-07 | Product | **Improving Fable 5’s biology safeguards** | [open](https://www.anthropic.com/news/improving-fable-5-s-biology-safeguards) |
 | 9 | 2026-08-04 | Announcements | **Mariano-Florentino (Tino) Cuéllar to join Anthropic as Chief Global Affairs Officer** | [open](https://www.anthropic.com/news/tino-cuellar) |
-| 10 | 2026-07-30 |  | **Investigating three real-world incidents in our cybersecurity evaluations** | [open](https://www.anthropic.com/news/investigating-incidents-cybersecurity-evals) |
+| 10 | 2026-07-30 | Announcements | **Investigating three real-world incidents in our cybersecurity evaluations** | [open](https://www.anthropic.com/news/investigating-incidents-cybersecurity-evals) |
 | 11 | 2026-07-27 | Announcements | **Our position on open-weights models** | [open](https://www.anthropic.com/news/position-open-weights-models) |
 
 ## How to use this digest
