@@ -17,7 +17,7 @@ source: https://www.anthropic.com/research
 > most recent items from [https://www.anthropic.com/research](https://www.anthropic.com/research). For the full
 > body of any item, WebFetch its URL — that's the design.
 
-**Last refreshed**: 2026-09-04
+**Last refreshed**: 2026-09-05
 
 | # | Date | Category | Title | Link |
 |---|---|---|---|---|
@@ -26,13 +26,13 @@ source: https://www.anthropic.com/research
 | 3 | 2026-08-12 | Economics | **Reviewing the evidence on worker retraining programs** | [open](https://www.anthropic.com/research/reviewing-the-evidence-on-worker-retraining-programs) |
 | 4 | 2026-07-06 | Interpretability | **A global workspace in language models** | [open](https://www.anthropic.com/research/global-workspace) |
 | 5 | 2026-05-08 | Alignment | **Teaching Claude why** | [open](https://www.anthropic.com/research/teaching-claude-why) |
-| 6 | 2026-08-28 | Alignment | **Automated researchers can reliably mitigate alignment failures** | [open](https://www.anthropic.com/research/automated-researchers-mitigate-alignment-failures) |
-| 7 | 2026-08-26 | Societal Impacts | **Enabling independent research on how people use Claude** | [open](https://www.anthropic.com/research/enabling-independent-research) |
-| 8 | 2026-08-13 | Frontier Red Team | **Patterns and problems in emerging multiagent systems** | [open](https://www.anthropic.com/research/multiagent-systems) |
-| 9 | 2026-07-28 | Frontier Red Team | **Discovering cryptographic weaknesses with Claude** | [open](https://www.anthropic.com/research/discovering-cryptographic-weaknesses) |
-| 10 | 2026-07-24 | Frontier Red Team | **Project Pilot: Can AI control a drone?** | [open](https://www.anthropic.com/research/project-pilot) |
-| 11 | 2026-07-14 | Economics | **How Canada uses Claude: Findings from the Anthropic Economic Index** | [open](https://www.anthropic.com/research/how-canada-uses-claude) |
-| 12 | 2026-07-13 | Societal Impacts | **Claude’s values across models and languages** | [open](https://www.anthropic.com/research/claude-values-models-languages) |
+| 6 | 2026-09-04 | Science | **Formalizing Fermat’s Last Theorem** | [open](https://www.anthropic.com/research/formalizing-fermats-last-theorem) |
+| 7 | 2026-08-28 | Alignment | **Automated researchers can reliably mitigate alignment failures** | [open](https://www.anthropic.com/research/automated-researchers-mitigate-alignment-failures) |
+| 8 | 2026-08-26 | Societal Impacts | **Enabling independent research on how people use Claude** | [open](https://www.anthropic.com/research/enabling-independent-research) |
+| 9 | 2026-08-13 | Frontier Red Team | **Patterns and problems in emerging multiagent systems** | [open](https://www.anthropic.com/research/multiagent-systems) |
+| 10 | 2026-07-28 | Frontier Red Team | **Discovering cryptographic weaknesses with Claude** | [open](https://www.anthropic.com/research/discovering-cryptographic-weaknesses) |
+| 11 | 2026-07-24 | Frontier Red Team | **Project Pilot: Can AI control a drone?** | [open](https://www.anthropic.com/research/project-pilot) |
+| 12 | 2026-07-14 | Economics | **How Canada uses Claude: Findings from the Anthropic Economic Index** | [open](https://www.anthropic.com/research/how-canada-uses-claude) |
 
 ## How to use this digest
 
