@@ -17,20 +17,20 @@ source: https://www.anthropic.com/research
 > most recent items from [https://www.anthropic.com/research](https://www.anthropic.com/research). For the full
 > body of any item, WebFetch its URL — that's the design.
 
-**Last refreshed**: 2026-09-10
+**Last refreshed**: 2026-09-11
 
 | # | Date | Category | Title | Link |
 |---|---|---|---|---|
-| 1 | 2026-09-04 | Science | **Formalizing Fermat’s Last Theorem** | [open](https://www.anthropic.com/research/formalizing-fermats-last-theorem) |
-| 2 | 2026-08-10 | Science | **Learning more about Claude’s mathematical capabilities** | [open](https://www.anthropic.com/research/riemann-zeta) |
-| 3 | 2026-08-18 | Science | **How Claude is accelerating protein design and analytical chemistry** | [open](https://www.anthropic.com/research/Claude-accelerates-protein-design) |
-| 4 | 2026-08-12 | Economics | **Reviewing the evidence on worker retraining programs** | [open](https://www.anthropic.com/research/reviewing-the-evidence-on-worker-retraining-programs) |
-| 5 | 2026-09-09 | Alignment | **An alignment assessment of recent cybersecurity incidents** | [open](https://www.anthropic.com/research/alignment-assessment-cybersecurity-incidents) |
+| 1 | 2026-09-09 | Alignment | **An alignment assessment of recent cybersecurity incidents** | [open](https://www.anthropic.com/research/alignment-assessment-cybersecurity-incidents) |
+| 2 | 2026-09-04 | Science | **Formalizing Fermat’s Last Theorem** | [open](https://www.anthropic.com/research/formalizing-fermats-last-theorem) |
+| 3 | 2026-08-10 | Science | **Learning more about Claude’s mathematical capabilities** | [open](https://www.anthropic.com/research/riemann-zeta) |
+| 4 | 2026-08-18 | Science | **How Claude is accelerating protein design and analytical chemistry** | [open](https://www.anthropic.com/research/Claude-accelerates-protein-design) |
+| 5 | 2026-09-10 | Frontier Red Team | **Measuring tactical intelligence targeting and conventional weapons capabilities of AI models** | [open](https://www.anthropic.com/research/intelligence-targeting-conventional-weapons-capabilities) |
 | 6 | 2026-08-28 | Alignment | **Automated researchers can reliably mitigate alignment failures** | [open](https://www.anthropic.com/research/automated-researchers-mitigate-alignment-failures) |
 | 7 | 2026-08-26 | Societal Impacts | **Enabling independent research on how people use Claude** | [open](https://www.anthropic.com/research/enabling-independent-research) |
 | 8 | 2026-08-13 | Frontier Red Team | **Patterns and problems in emerging multiagent systems** | [open](https://www.anthropic.com/research/multiagent-systems) |
-| 9 | 2026-07-28 | Frontier Red Team | **Discovering cryptographic weaknesses with Claude** | [open](https://www.anthropic.com/research/discovering-cryptographic-weaknesses) |
-| 10 | 2026-07-24 | Frontier Red Team | **Project Pilot: Can AI control a drone?** | [open](https://www.anthropic.com/research/project-pilot) |
+| 9 | 2026-08-12 | Economics | **Reviewing the evidence on worker retraining programs** | [open](https://www.anthropic.com/research/reviewing-the-evidence-on-worker-retraining-programs) |
+| 10 | 2026-07-28 | Frontier Red Team | **Discovering cryptographic weaknesses with Claude** | [open](https://www.anthropic.com/research/discovering-cryptographic-weaknesses) |
 
 ## How to use this digest
 
