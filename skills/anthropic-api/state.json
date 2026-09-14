@@ -13,7 +13,7 @@
   },
   "lastAuditedVersion": null,
   "lastUpdated": null,
-  "scaffoldComplete": true,
+  "scaffoldComplete": false,
   "lastScannedIssueNumber": null,
   "lastRunWarnings": [
     "2026-05-20T00:00:00Z: Part A: no doc changes detected (llms.txt SHA matches MANIFEST; compliance.md 1-byte cosmetic diff, no schema changes). Part B: no new bug issues (change-report.json empty; 0 open bug-labeled issues). Part C: all checks passed.",
