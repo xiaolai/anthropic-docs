@@ -17,7 +17,7 @@ source: https://www.anthropic.com/research
 > most recent items from [https://www.anthropic.com/research](https://www.anthropic.com/research). For the full
 > body of any item, WebFetch its URL — that's the design.
 
-**Last refreshed**: 2026-09-17
+**Last refreshed**: 2026-09-18
 
 | # | Date | Category | Title | Link |
 |---|---|---|---|---|
@@ -25,12 +25,12 @@ source: https://www.anthropic.com/research
 | 2 | 2026-09-04 | Science | **Formalizing Fermat’s Last Theorem** | [open](https://www.anthropic.com/research/formalizing-fermats-last-theorem) |
 | 3 | 2026-08-10 | Science | **Learning more about Claude’s mathematical capabilities** | [open](https://www.anthropic.com/research/riemann-zeta) |
 | 4 | 2026-08-18 | Science | **How Claude is accelerating protein design and analytical chemistry** | [open](https://www.anthropic.com/research/Claude-accelerates-protein-design) |
-| 5 | 2026-09-10 | Frontier Red Team | **Measuring tactical intelligence targeting and conventional weapons capabilities of AI models** | [open](https://www.anthropic.com/research/intelligence-targeting-conventional-weapons-capabilities) |
-| 6 | 2026-08-28 | Alignment | **Automated researchers can reliably mitigate alignment failures** | [open](https://www.anthropic.com/research/automated-researchers-mitigate-alignment-failures) |
-| 7 | 2026-08-26 | Societal Impacts | **Enabling independent research on how people use Claude** | [open](https://www.anthropic.com/research/enabling-independent-research) |
-| 8 | 2026-08-13 | Frontier Red Team | **Patterns and problems in emerging multiagent systems** | [open](https://www.anthropic.com/research/multiagent-systems) |
-| 9 | 2026-08-12 | Economics | **Reviewing the evidence on worker retraining programs** | [open](https://www.anthropic.com/research/reviewing-the-evidence-on-worker-retraining-programs) |
-| 10 | 2026-07-28 | Frontier Red Team | **Discovering cryptographic weaknesses with Claude** | [open](https://www.anthropic.com/research/discovering-cryptographic-weaknesses) |
+| 5 | 2026-09-17 | Science | **How Claude is uplifting biomolecular modeling** | [open](https://www.anthropic.com/research/claude-uplifts-biomolecular-modeling) |
+| 6 | 2026-09-10 | Frontier Red Team | **Measuring tactical intelligence targeting and conventional weapons capabilities of AI models** | [open](https://www.anthropic.com/research/intelligence-targeting-conventional-weapons-capabilities) |
+| 7 | 2026-08-28 | Alignment | **Automated researchers can reliably mitigate alignment failures** | [open](https://www.anthropic.com/research/automated-researchers-mitigate-alignment-failures) |
+| 8 | 2026-08-26 | Societal Impacts | **Enabling independent research on how people use Claude** | [open](https://www.anthropic.com/research/enabling-independent-research) |
+| 9 | 2026-08-13 | Frontier Red Team | **Patterns and problems in emerging multiagent systems** | [open](https://www.anthropic.com/research/multiagent-systems) |
+| 10 | 2026-08-12 | Economics | **Reviewing the evidence on worker retraining programs** | [open](https://www.anthropic.com/research/reviewing-the-evidence-on-worker-retraining-programs) |
 
 ## How to use this digest
 
