@@ -4,9 +4,9 @@
       {
         "manager": "npm",
         "name": "@anthropic-ai/claude-code",
-        "version": "2.1.160",
+        "version": "2.1.282",
         "engines": {
-          "node": ">=18.0.0"
+          "node": ">=22.0.0"
         }
       }
     ]
@@ -16,10 +16,10 @@
       {
         "repo": "anthropics/claude-code",
         "latestRelease": {
-          "tag": "v2.1.160",
-          "name": "v2.1.160",
-          "body": "## What's changed\n\n- Added a prompt before writing to shell startup files (`.zshenv`, `.zlogin`, `.bash_login`) and `~/.config/git/`, which could otherwise lead to unintended command execution\n- `acceptEdits` mode now prompts before writing build-tool config files that grant code execution (`.npmrc`, `.yarnrc*`, `bunfig.toml`, `.bazelrc`, `.pre-commit-config.yaml`, `.devcontainer/`, etc.)\n- Edit no longer requires a separate Read after viewing a file with `grep`: single-file `grep`/`egrep`/`fgrep` commands now satisfy the read-before-edit check\n- Fixed copy-on-select not writing to the Windows clipboard on WSL — now uses PowerShell interop instead of OSC 52, which terminals like MobaXterm don't support\n- Fixed restoring a completed session from `claude agents` dropping chat history and re-running the original prompt\n- Fixed background sessions re-attached after overnight retire losing their conversation and re-running the original prompt\n- Fixed `claude --bg` occasionally failing with \"socket missing\" when the background daemon was cold-starting on a loaded machine\n- Fixed an issue on Windows where the directory a background session was started in could not be deleted after `claude rm` until the background daemon exited\n- Fixed background agents that resumed work being shown under Completed in the agents list\n- Fixed `claude agents` freezing for several seconds when returning to the session list due to the auto-updater re-checking on every exit\n- Fixed Esc, arrow keys, and typing becoming unresponsive on Windows when attached to a background session or in the agent view while the host is under heavy CPU load\n- Fixed background agents emitting terminal sync-output markers to terminals that don't support them (Apple Terminal, tmux), causing render artifacts when entering a running agent\n- Fixed mouse wheel scrolling prompt history instead of the transcript right after opening a session from the agents list\n- Fixed CJK IME composition appearing at the bottom-left of the screen instead of at the input caret in the `claude agents` view\n- Fixed valid `file:///C:/...` links being rewritten to a broken path on Windows terminals with hyperlink support\n- Fixed voice mode failing to connect when the project directory or branch name contains non-ASCII or special characters\n- Fixed the auto mode unavailability message on third-party providers (Bedrock/Vertex/Foundry) to point to the `CLAUDE_CODE_ENABLE_AUTO_MODE` opt-in instead of incorrectly blaming the model\n- Fixed `/effort ultracode` incorrectly blaming the dynamic workflows setting when the model cannot run xhigh; ultracode is no longer offered on models that do not support it\n- Fixed model-not-found errors suggesting `--model` when running via the SDK or other hosts where the CLI flag doesn't apply\n- Fixed Claude's past replies disappearing from scrollback when resuming a brief mode session with brief mode turned off\n- Fixed vim mode `p` pasting on the line below instead of at the cursor when the register was yanked with `v$`\n- Improved performance of opening recently-inactive background agent sessions in `claude agents`\n- Improved auto mode classifier latency by reducing reasoning on routine actions, lowering the chance of \"could not evaluate this action\" blocks\n- Improved background-session teardown (`claude rm`/`stop`, idle reap) to send SIGTERM to running shell subprocesses before SIGKILL, so cleanup handlers run\n- Removed `CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE`; the environment variable is now a no-op\n- Removed the JetBrains plugin install suggestion from startup\n- Renamed the dynamic-workflow trigger keyword from `workflow` to `ultracode`. The word \"workflow\" no longer triggers a run; asking for one in your own words still works. The trigger keyword is highlighted in violet in the prompt input",
-          "publishedAt": "2026-06-02T02:10:25Z"
+          "tag": "v2.1.282",
+          "name": "v2.1.282",
+          "body": "## What's changed\n\n- Added a `maxProseWidth` setting that caps the width of Claude's prose in wide terminals while tables and code blocks keep the full width\n- Added a startup notice, and `/status` and `claude doctor` entries, listing telemetry variables in a project's settings files that were ignored or that turned telemetry off\n- Added the `allowClaudeInChromeWithManagedMcp` managed setting to let `claude --chrome` run alongside an exclusive `managed-mcp.json`; the error shown when Chrome is blocked now names it\n- Added `store.readiness_grace_seconds` to the Claude apps gateway so `/readyz` can stay ready through a short Postgres outage such as a database failover\n- Added a scrollbar to the `/feedback` drafts list in fullscreen mode; it appears while the mouse is over the list\n- Fixed every request failing with a 400 error in conversations whose history holds web search results the API cannot decrypt (for example, from a turn answered through a third-party gateway)\n- Fixed more cases of continued or resumed sessions (`--continue`, `--resume`) re-sending earlier messages in a changed form, which could make the API drop Claude's earlier reasoning\n- Fixed earlier extended thinking being dropped when `/model`, `/rename`, `/artifacts` or another immediate slash command was used while Claude was working\n- Fixed continued or resumed conversations losing earlier extended thinking when relaunched with a `--tools` list that leaves out a built-in tool offered earlier in the conversation\n- Fixed sessions failing on every turn with an \"Invalid `data` in `redacted_thinking` block\" API error; Claude Code now drops the conversation's thinking blocks and retries once\n- Fixed compaction failing when the summarization request is refused; it now retries on a fallback model\n- Fixed a failed turn (\"Effort 'xhigh' isn't available with thinking turned off\") after a safety-related model switch in sessions with thinking off and effort above high\n- Fixed an unanswered Fable usage-credits prompt switching models in SDK-hosted sessions such as Claude Desktop; the turn now ends instead, and Remote Control clients now see the model-switch notice\n- Fixed `/model` with a full Fable model id stopping at an API error instead of opening the usage-credits prompt when the plan needs usage credits that aren't turned on yet\n- Fixed requests failing for up to a minute with an \"another Claude Code process is refreshing it\" login error after that other process was closed or killed mid-refresh\n- Fixed sessions started while another Claude Code window was refreshing the sign-in (common with several VS Code windows) not retrying their organization policy fetch\n- Fixed CLAUDE.md and rules being read at startup through a repository symlink reaching macOS's `/Network` via `..` or a `/.vol`-style kernel path, or a rules link to macOS's `/home` being listed\n- Fixed Bash permission rules with a mid-pattern `:*` being skipped in settings files while `--allowedTools` honored them; they now work from every source, with a startup warning on how they match\n- Fixed a command approved on a restored permission prompt running twice when a remote session's worker restarted\n- Fixed managed settings ignoring a mistyped value for boolean lock keys such as `disableClaudeAiConnectors` or `allowManagedPermissionRulesOnly`; the lock now applies and startup names the key\n- Fixed managed `permissions`, `autoMode`, `worktree` and `attribution` settings being ignored entirely when one nested value was invalid; the rest of the block now still applies\n- Fixed repository, user and `--add-dir` skills, commands and skills-directory plugin manifests pre-approving their own tools via `allowed-tools` under managed `allowManagedPermissionRulesOnly`\n- Fixed safeguard block messages on Amazon Bedrock and Bedrock Mantle not showing a request ID; block messages now also show the message ID\n- Vertex AI: Fixed web search not being offered for models Claude Code doesn't recognize yet, such as newly released ones\n- Fixed Bash and PowerShell hiding a full disk quota behind \"Exit code 1\" and leaving large output files in temp\n- Fixed tool input validation errors naming only an unknown, missing or mistyped parameter when other parameters in the same call were also invalid; those are now listed too\n- Fixed pasted multi-line text being submitted line by line after the terminal's bracketed paste mode was reset mid-session\n- Fixed the prompt's example text flashing and disappearing at startup in projects with a `SessionStart` hook\n- Fixed a blank screen flashing before the first frame when starting in fullscreen mode\n- Fixed garbled, misplaced rows in the non-fullscreen renderer after the screen got shorter while still taller than the terminal, e.g. deleting a prompt line while a shell command streams output\n- Fixed a stale character left in the last column of a diff when a redrawn line's CJK character or emoji wrapped to the next row\n- Fixed the cursor landing before the end of a prompt recalled from history when the prompt contains a tab\n- Fixed the send-now hint showing ctrl+enter on terminals that send it as a newline (Windows Terminal before 1.25); it now shows ctrl+x ctrl+s there\n- Fixed `claude remote-control --debug` failing with \"Unknown argument: --debug\", although Remote Control's own eligibility error says to run with `--debug`\n- Fixed `/install-github-app` saying \"cancelled\" and then still pushing the branch and saving the API key secret; leaving now stops the remaining steps and reports what was already done\n- Fixed /feedback, /bug and /share on Bedrock, Vertex and other third-party providers still saving the report file after you cancelled during the save\n- Fixed plugin uninstall reporting success and deleting the plugin's saved options when its settings file still enabled it or could not be read; it now stops and names the file\n- Fixed plugin uninstall deleting a plugin's saved options and secrets when the list of installed plugins could not be read after the removal; they are now kept and the uninstall says so\n- Fixed a key typed right after `/` in `/skills` moving the skill list instead of reaching the search box\n- Fixed the terminal cursor jumping from the `/skills` search box to the skill list while typing, which could hide the caret and put IME input in the wrong place\n- Fixed lists with a scrollbar, such as `/skills` and `/mcp`, being two columns narrower outside fullscreen mode, where the scrollbar can never appear\n- Fixed the agent panel footer wrapping onto two lines with long rebound keys, and its \"Esc to collapse\" hint ignoring a rebound collapse key\n- Fixed a doubled ` · ` separator in the `/tasks` dialog footer when the stop-all-agents shortcut is unbound in `keybindings.json`\n- Fixed artifact publishes failing when Claude gave the version a label longer than 60 characters; the label is now shortened\n- Fixed screen-reader mode, quoted lists and very long lists dropping the blank lines at the top of a code block that opens a list item, directly or inside a quote\n- Fixed PDF page-read error messages: paths with accented or non-Latin characters now appear readably, and a folder named like \"password\" or \"invalid\" can no longer make the error name the wrong cause\n- Fixed vim mode `>>` indenting empty lines, `r` with a count longer than the line changing text, `2J` joining one line too many, and a count on the last line (`2dd`, `2>>`) shifting or deleting it\n- Fixed vim mode cursor placement: after `dd`, `dj`, `dG` or a whole-line `p`/`P` it lands on the first non-blank, `yy` no longer moves it, and Esc after an emoji no longer leaves it inside the emoji\n- Fixed vim mode ignoring a count typed before `.` when repeating `x`, `s`, `p`, `d` or `c`, and whole-line `p`/`P`, `o`, `O`, `J`, `>>` and `<<` acting on the wrong line when a line above wraps\n- Fixed vim mode leaving the cursor past the end of a prompt recalled from history or pulled back from the queue in normal mode, so `x` did nothing\n- Improved the time to resum\n…[truncated by defang_for_llm]",
+          "publishedAt": "2026-09-24T18:38:05Z"
         }
       }
     ],
@@ -30,206 +30,206 @@
   },
   "docs": {
     "indexUrl": "https://code.claude.com/llms.txt",
-    "indexSha256": "cb0731c535a8b0197075ad0483391f70e7080fcf9a3e8ac3d180aeefccf16ab9",
-    "pageCount": 115,
+    "indexSha256": "94a61c5ff7d3a9fbfb30a1240c67be9d62913b783e37c270d83859da3022dcac",
+    "pageCount": 189,
     "knownPages": {
       "https://code.claude.com/docs/en/admin-setup.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/agent-teams.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/agent-view.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/agents.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/amazon-bedrock.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/analytics.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/authentication.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/auto-mode-config.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/best-practices.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/champion-kit.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/changelog.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/channels-reference.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/channels.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/checkpointing.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/chrome.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/claude-code-on-the-web.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/claude-directory.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/claude-platform-on-aws.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/cli-reference.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/code-review.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/commands.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/common-workflows.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/communications-kit.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/computer-use.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/context-window.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/costs.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/data-usage.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/debug-your-config.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/deep-links.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/desktop-quickstart.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/desktop-scheduled-tasks.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/desktop.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/devcontainer.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/discover-plugins.md": {
         "lastSeen": "2026-06-02T13:43:31Z"
       },
       "https://code.claude.com/docs/en/env-vars.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/errors.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/fast-mode.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/features-overview.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/fullscreen.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/github-actions.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/github-enterprise-server.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/gitlab-ci-cd.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/glossary.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/goal.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/google-vertex-ai.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/headless.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/hooks-guide.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/hooks.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/how-claude-code-works.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/interactive-mode.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/jetbrains.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/keybindings.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/legal-and-compliance.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/llm-gateway.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/mcp.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/managed-mcp.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/memory.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/microsoft-foundry.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/model-config.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/monitoring-usage.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/network-config.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/output-styles.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/overview.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/permission-modes.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/permissions.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/platforms.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/plugin-dependencies.md": {
         "lastSeen": "2026-06-02T13:43:31Z"
@@ -244,139 +244,382 @@
         "lastSeen": "2026-06-02T13:43:31Z"
       },
       "https://code.claude.com/docs/en/quickstart.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/remote-control.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/routines.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/sandboxing.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/scheduled-tasks.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/security.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/server-managed-settings.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/settings.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/setup.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/skills.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/slack.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/statusline.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/sub-agents.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/terminal-config.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/third-party-integrations.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/tools-reference.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/troubleshoot-install.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/troubleshooting.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/ultraplan.md": {
         "lastSeen": "2026-06-02T13:43:31Z"
       },
       "https://code.claude.com/docs/en/ultrareview.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/voice-dictation.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/vs-code.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/web-quickstart.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/whats-new/2026-w13.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/whats-new/2026-w14.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/whats-new/2026-w15.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/whats-new/2026-w16.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/whats-new/2026-w17.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/whats-new/2026-w18.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/whats-new/2026-w19.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/whats-new/index.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/worktrees.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/zero-data-retention.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/whats-new/2026-w20.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/whats-new/2026-w21.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/whats-new/2026-w22.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/prompt-caching.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/plugin-hints.md": {
         "lastSeen": "2026-06-02T13:43:31Z"
       },
       "https://code.claude.com/docs/en/prompt-library.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/sessions.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/sandbox-environments.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/workflows.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/large-codebases.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/security-guidance.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
       },
       "https://code.claude.com/docs/en/mcp-quickstart.md": {
-        "lastSeen": "2026-06-02T13:43:31Z"
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/_llms/cn.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/_llms/de.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/_llms/es.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/_llms/fr.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/_llms/id.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/_llms/it.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/_llms/jp.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/_llms/ko.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/_llms/pt-br.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/_llms/ru.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/_llms/zh-hant.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/accessibility.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/advisor.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/artifacts.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/claude-apps-gateway-config.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/claude-apps-gateway-deploy.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/claude-apps-gateway-on-aws.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/claude-apps-gateway-on-gcp.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/claude-apps-gateway-spend-limits.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/claude-apps-gateway.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/claude-projects.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/claude-security.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/claude-tag.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/cloud-environments.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/corporate-launcher.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/cross-session-messaging.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/desktop-ios-simulator.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/desktop-linux.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/desktop-wsl.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/feature-availability.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/gateways.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/github-actions-cloud-providers.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/llm-gateway-connect.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/llm-gateway-protocol.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/llm-gateway-rollout.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/managed-settings.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/mobile.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/plugin-evals.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/plugins/anthropic-marketplaces.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/plugins/cli-hints.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/plugins/cli-reference.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/plugins/code-intelligence.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/plugins/components.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/plugins/create-marketplace.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/plugins/create.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/plugins/dependencies.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/plugins/host-marketplace.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/plugins/install.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/plugins/loading.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/plugins/manifest-reference.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/plugins/marketplace-reference.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/plugins/measure.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/plugins/org.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/plugins/overview.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/plugins/publish.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/plugins/relevance.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/plugins/security.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/plugins/troubleshooting.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/self-hosted-environments-configuration.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/self-hosted-environments-deploy.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/self-hosted-environments-identity.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/self-hosted-environments-quickstart.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/self-hosted-environments-reference.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/self-hosted-environments-testing.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/self-hosted-environments.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/settings-example.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/settings-reference.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/whats-new/2026-w23.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/whats-new/2026-w24.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/whats-new/2026-w25.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/whats-new/2026-w26.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/whats-new/2026-w27.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/whats-new/2026-w28.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/whats-new/2026-w29.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/whats-new/2026-w30.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/whats-new/2026-w32.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/whats-new/2026-w33.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/whats-new/2026-w34.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/whats-new/2026-w35.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/whats-new/2026-w36.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
+      },
+      "https://code.claude.com/docs/en/whats-new/2026-w37.md": {
+        "lastSeen": "2026-09-25T12:05:10Z"
       }
     },
     "lastUpdated": "2026-05-31T00:00:00Z"
@@ -726,8 +969,8 @@
       "researchedAt": "2026-06-02T00:00:00Z"
     }
   },
-  "lastAuditedVersion": "2.1.160",
-  "lastUpdated": "2026-06-02T13:43:31Z",
+  "lastAuditedVersion": "2.1.282",
+  "lastUpdated": "2026-09-25T12:05:10Z",
   "scaffoldComplete": true,
   "lastRunWarnings": [
     "2026-06-01T14:35:00Z: docs index SHA inconsistency detected — llms.txt returns ca4a2dac (144 pages, with agent-sdk) or 6e6b703a (114 pages, without) depending on CDN node. MANIFEST updated to ca4a2dac; drift check may fail if CDN node serves old version. All 30 new pages are agent-sdk/ which are excluded by path filter. No substantive change to tracked non-agent-sdk content."
