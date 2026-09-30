@@ -161,7 +161,7 @@ extract_items() {
       # Strip nested HTML + decode common entities
       $title =~ s{<[^>]+>}{ }g;
       $title =~ s{&amp;}{&}g;
-      $title =~ s{&#x27;|&#39;|&rsquo;|&lsquo;}{\x{2019}}g;   # → ’
+      $title =~ s{&#x27;|&#39;|&rsquo;|&lsquo;}{\x{2019}}g;   # → U+2019 right single quote
       $title =~ s{&quot;|&ldquo;|&rdquo;}{"}g;
       $title =~ s{&nbsp;}{ }g;
       $title =~ s{&hellip;}{...}g;

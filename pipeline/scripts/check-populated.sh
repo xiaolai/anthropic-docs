@@ -53,7 +53,7 @@ fi
 echo "POST-SCAFFOLD mode. Checking for residual stub markers in skill '$SKILL_NAME' ..."
 echo ""
 
-cd "$ROOT"
+cd "$ROOT" || exit 2
 
 # Targets come from the skill's config.json — surfaces + rules.
 # Use while-read (bash 3.2-safe, no mapfile).

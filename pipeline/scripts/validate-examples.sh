@@ -42,7 +42,7 @@ fi
 
 # Make context available to the inline node script via env.
 export SKILL_NAME SKILL_ROOT REPO_ROOT
-cd "$REPO_ROOT"
+cd "$REPO_ROOT" || exit 2
 
 exec node -e '
 const fs = require("fs");

@@ -225,16 +225,14 @@ for json_file in \
 done
 
 # Pipeline agent JSON
-for json_file in \
-    "$REPO_ROOT/pipeline/agent/package.json"; do
-  if [[ -f "$json_file" ]]; then
-    if jq empty "$json_file" 2>/dev/null; then
-      pass "pipeline/agent/package.json" "Valid JSON"
-    else
-      fail "pipeline/agent/package.json" "Invalid JSON"
-    fi
+json_file="$REPO_ROOT/pipeline/agent/package.json"
+if [[ -f "$json_file" ]]; then
+  if jq empty "$json_file" 2>/dev/null; then
+    pass "pipeline/agent/package.json" "Valid JSON"
+  else
+    fail "pipeline/agent/package.json" "Invalid JSON"
   fi
-done
+fi
 
 # Validate every JSON file under skills/$SKILL_NAME/templates/
 if [[ -d "$SKILL_ROOT/templates" ]]; then
