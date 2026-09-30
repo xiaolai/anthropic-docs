@@ -8,6 +8,18 @@ Newest entry on top.
 
 ---
 
+## Unreleased — daily pipeline outage fixes
+
+The daily pipeline had failed every run since 2026-06-03. Every agent skill crashed with `401` from Claude Code because the `CLAUDE_CODE_OAUTH_TOKEN` secret was no longer valid. That token has to be replaced by hand. From 2026-09-25, `claude-code` also stopped at the snapshot refresh. The pipeline changes:
+
+- **Auth is checked first.** A `Verify Claude authentication` step makes one tiny `claude -p` call and fails the job by name when the token is rejected. When it fails, the report agent and the commit/draft-PR step are skipped, so an auth outage no longer opens a draft PR per skill per day. Skills that run no agents (`anthropic-pulse`) skip the check.
+- **Refresh sorts each page into fetched, skipped or failed.** A page that returns `404`/`410`, or that redirects off the docs host (`code.claude.com/docs/en/claude-tag.md` now points to `claude.com`), is skipped with a `WARN` and recorded in `MANIFEST.json` under `skippedPages`. A network error, `401`/`403`/`429` or `5xx` still aborts the refresh. So does skipping more than `MAX_SKIPPED_PCT` (default 10%) of the pages. Covered by `pipeline/scripts/tests/refresh-docs-snapshot.test.ts`, which now runs in `npm test`.
+- **Setup runs before monitor and refresh.** Before, a failed refresh skipped the `npm ci` steps. The `always()` gates then failed with `ajv not installed` and `tsx: not found`, which buried the real error.
+- **`pipeline/agent/package-lock.json` lists every platform package.** It now has all the `claude-agent-sdk` and `esbuild` platform packages, so `npm ci` works on macOS with npm 11 and installs the linux-x64 SDK binary without help. The CI workaround `npm install --no-save …-linux-x64` is gone. An assertion that fails the job if that binary is missing replaces it.
+- **`monitor.sh` reads packages without an `engines` field.** For such a package (`@anthropic-ai/sdk`), `npm view … --json` returns a bare string, and monitor used to record an empty version. It also no longer errors on a state file without `trackedIssues`.
+
+---
+
 ## 2026-09-30 — v1.0.1: shorter router descriptions
 
 Every enabled skill's description is listed to Claude in every session, inside a 30,000-character budget shared with all other plugins. The eight router descriptions were 725 to over 800 characters each; they are now under 500. The detail they carried moved, unchanged, into a `## When to use` section of each router. Each router also gains a `## Examples` section: one question it answers, and one it hands to a sibling skill.

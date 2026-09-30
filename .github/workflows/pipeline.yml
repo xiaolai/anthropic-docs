@@ -72,7 +72,7 @@ jobs:
           MATRIX=$(printf '%s\n' "$SKILLS" | jq -R . | jq -s -c '{skill: .}')
           echo "matrix=$MATRIX" >> "$GITHUB_OUTPUT"
           echo "Discovered skills:"
-          printf '  %s\n' $SKILLS
+          printf '%s\n' "$SKILLS" | sed 's/^/  /'
 
   # ---------------------------------------------------------------------
   # Per-skill pipeline. The body mirrors the old single-skill workflow
@@ -109,7 +109,88 @@ jobs:
             '{skill: $skill, startedAt: $started, steps: []}' > "$PIPELINE_LOG"
 
       # ---------------------------------------------------------------
-      # 1. Monitor — zero LLM cost
+      # 1. Setup — installs first, before anything that can fail (auth,
+      # monitor, refresh). The gates below run under always(); a failed
+      # step ahead of the installs would skip them, and every gate would
+      # then fail for want of ajv/tsx, burying the real error under
+      # cascading ones.
+      # ---------------------------------------------------------------
+      - name: Install Claude Code (pinned)
+        run: npm install -g "@anthropic-ai/claude-code@${CLAUDE_CODE_CLI_VERSION}"
+
+      - name: Install pipeline/agent deps (npm ci)
+        working-directory: pipeline/agent
+        run: |
+          npm ci
+          # SDK v0.3.x ships its CLI as a platform-specific native binary
+          # via optionalDependencies. The agents run the global `claude`
+          # installed above (lib/cliPath.ts); the SDK binary is their
+          # fallback. package-lock.json must list every platform package,
+          # or `npm ci` on linux-x64 silently installs none (a lock written
+          # on one machine can end up with only that machine's entry).
+          # Assert it, so an incomplete lock fails here, by name.
+          test -f node_modules/@anthropic-ai/claude-agent-sdk-linux-x64/package.json || {
+            echo "::error::npm ci did not install @anthropic-ai/claude-agent-sdk-linux-x64. Regenerate pipeline/agent/package-lock.json without a node_modules present: rm -rf node_modules && npm install --package-lock-only"
+            exit 1
+          }
+
+      - name: Install root verification deps (npm ci)
+        run: npm ci
+
+      - name: Detect auth method
+        id: auth
+        env:
+          HAS_OAUTH: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN != '' }}
+          HAS_API_KEY: ${{ secrets.ANTHROPIC_API_KEY != '' }}
+        run: |
+          METHOD="unknown"
+          if [ "$HAS_OAUTH" = "true" ]; then
+            mkdir -p ~/.claude
+            echo '{"hasCompletedOnboarding":true}' > ~/.claude.json
+            METHOD="oauth"
+          elif [ "$HAS_API_KEY" = "true" ]; then
+            METHOD="api_key"
+          else
+            echo "ERROR: No authentication configured." >&2
+            jq --arg s "auth" --arg r "error" --arg e "No authentication" \
+              '.steps += [{"step":$s,"result":$r,"error":$e}]' \
+              "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
+            exit 1
+          fi
+          echo "method=$METHOD" >> "$GITHUB_OUTPUT"
+          jq --arg s "auth" --arg r "success" --arg m "$METHOD" \
+            '.steps += [{"step":$s,"result":$r,"method":$m}]' \
+            "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
+
+      # Detect auth only proves a secret is set, not that it works. An
+      # expired or revoked CLAUDE_CODE_OAUTH_TOKEN otherwise surfaces as
+      # every agent crashing with 401 and a draft PR per skill per day
+      # (the Jun-Sep 2026 outage). One tiny call fails the job here, by
+      # name, before any agent runs or anything is committed. Skills that
+      # run no agents (anthropic-pulse) don't need the token and skip it.
+      - name: Verify Claude authentication
+        id: auth_verify
+        env:
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+        run: |
+          USES_AGENTS=$(jq -r '.pipelineOverrides // {} | [.skipUpdateAgent, .skipResearchAgent, .skipReportAgent] | map(. == true) | all | not' "skills/$SKILL_NAME/config.json")
+          if [ "$USES_AGENTS" != "true" ]; then
+            echo "$SKILL_NAME runs no agents — no auth check needed."
+            exit 0
+          fi
+          cd "$RUNNER_TEMP"
+          if ! OUT=$(timeout 120 claude -p 'Reply with the single word ok.' --max-turns 1 2>&1); then
+            echo "$OUT" | tail -5
+            echo "::error::Claude Code could not authenticate. If the output above shows a 401, CLAUDE_CODE_OAUTH_TOKEN is expired or revoked: run 'claude setup-token' and update the repository secret."
+            jq --arg s "auth-verify" --arg r "error" --arg e "claude -p failed" \
+              '.steps += [{"step":$s,"result":$r,"error":$e}]' \
+              "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
+            exit 1
+          fi
+          echo "Claude authentication OK."
+
+      # ---------------------------------------------------------------
+      # 2. Monitor — zero LLM cost
       # ---------------------------------------------------------------
       - name: Run change monitor (${{ matrix.skill }})
         id: monitor
@@ -117,19 +198,20 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           START=$(date +%s)
-          bash pipeline/agent/monitor.sh && echo "changes=false" >> "$GITHUB_OUTPUT" || {
-            exit_code=$?
-            if [ "$exit_code" -eq 1 ]; then
-              echo "changes=true" >> "$GITHUB_OUTPUT"
-            else
-              ELAPSED=$(( $(date +%s) - START ))
-              jq --arg s "monitor" --arg r "error" --arg d "${ELAPSED}s" \
-                --arg e "Monitor exited $exit_code" \
-                '.steps += [{"step":$s,"result":$r,"duration":$d,"error":$e}]' \
-                "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
-              exit $exit_code
-            fi
-          }
+          exit_code=0
+          bash pipeline/agent/monitor.sh || exit_code=$?
+          if [ "$exit_code" -eq 0 ]; then
+            echo "changes=false" >> "$GITHUB_OUTPUT"
+          elif [ "$exit_code" -eq 1 ]; then
+            echo "changes=true" >> "$GITHUB_OUTPUT"
+          else
+            ELAPSED=$(( $(date +%s) - START ))
+            jq --arg s "monitor" --arg r "error" --arg d "${ELAPSED}s" \
+              --arg e "Monitor exited $exit_code" \
+              '.steps += [{"step":$s,"result":$r,"duration":$d,"error":$e}]' \
+              "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
+            exit "$exit_code"
+          fi
           ELAPSED=$(( $(date +%s) - START ))
           if [ -f /tmp/change-report.json ] && [ "$(jq '.changes | length' /tmp/change-report.json)" -gt 0 ]; then
             CHANGES="true"
@@ -141,7 +223,7 @@ jobs:
             "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
 
       # ---------------------------------------------------------------
-      # 1b. Refresh docs-snapshot — ephemeral, only when needed
+      # 2b. Refresh docs-snapshot — ephemeral, only when needed
       # ---------------------------------------------------------------
       # Page trees are gitignored; only MANIFEST.json is committed.
       # The agents and validate-examples PASS 2 need the pages on disk,
@@ -171,52 +253,6 @@ jobs:
           jq --arg s "refresh" --arg r "success" --arg d "${ELAPSED}s" \
             '.steps += [{"step":$s,"result":$r,"duration":$d}]' \
             "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
-
-      # ---------------------------------------------------------------
-      # 2. Setup
-      # ---------------------------------------------------------------
-      - name: Install Claude Code (pinned)
-        run: npm install -g "@anthropic-ai/claude-code@${CLAUDE_CODE_CLI_VERSION}"
-
-      - name: Detect auth method
-        id: auth
-        env:
-          HAS_OAUTH: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN != '' }}
-          HAS_API_KEY: ${{ secrets.ANTHROPIC_API_KEY != '' }}
-        run: |
-          METHOD="unknown"
-          if [ "$HAS_OAUTH" = "true" ]; then
-            mkdir -p ~/.claude
-            echo '{"hasCompletedOnboarding":true}' > ~/.claude.json
-            METHOD="oauth"
-          elif [ "$HAS_API_KEY" = "true" ]; then
-            METHOD="api_key"
-          else
-            echo "ERROR: No authentication configured." >&2
-            jq --arg s "auth" --arg r "error" --arg e "No authentication" \
-              '.steps += [{"step":$s,"result":$r,"error":$e}]' \
-              "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
-            exit 1
-          fi
-          echo "method=$METHOD" >> "$GITHUB_OUTPUT"
-          jq --arg s "auth" --arg r "success" --arg m "$METHOD" \
-            '.steps += [{"step":$s,"result":$r,"method":$m}]' \
-            "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
-
-      - name: Install pipeline/agent deps (npm ci)
-        working-directory: pipeline/agent
-        run: |
-          npm ci
-          # SDK v0.3.x ships its CLI as a platform-specific native binary
-          # via optionalDependencies. The package-lock.json on the maintainer's
-          # mac only writes a separate install entry for darwin-arm64, so
-          # `npm ci` on linux-x64 skips the binary. Force-install it here.
-          # Version mirrors the @anthropic-ai/claude-agent-sdk pin in
-          # pipeline/agent/package.json.
-          npm install --no-save @anthropic-ai/claude-agent-sdk-linux-x64@0.3.143
-
-      - name: Install root verification deps (npm ci)
-        run: npm ci
 
       # ---------------------------------------------------------------
       # 3. Update agent — only on version change
@@ -251,7 +287,7 @@ jobs:
               --arg c "$EXIT_CODE" --argjson e "$LAST_LINES" \
               '.steps += [{"step":$s,"result":$r,"duration":$d,"exitCode":($c|tonumber),"lastOutput":$e}]' \
               "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
-            exit $EXIT_CODE
+            exit "$EXIT_CODE"
           fi
 
       # ---------------------------------------------------------------
@@ -287,7 +323,7 @@ jobs:
               --arg c "$EXIT_CODE" --argjson e "$LAST_LINES" \
               '.steps += [{"step":$s,"result":$r,"duration":$d,"exitCode":($c|tonumber),"lastOutput":$e}]' \
               "$PIPELINE_LOG" > /tmp/pl.tmp && mv /tmp/pl.tmp "$PIPELINE_LOG"
-            exit $EXIT_CODE
+            exit "$EXIT_CODE"
           fi
 
       # ---------------------------------------------------------------
@@ -303,7 +339,7 @@ jobs:
         run: |
           START=$(date +%s)
           MEND_ATTEMPTS=0
-          for attempt in $(seq 0 $MAX_MEND_RETRIES); do
+          for attempt in $(seq 0 "$MAX_MEND_RETRIES"); do
             echo ""
             echo "=== Verification attempt $((attempt + 1)) of $((MAX_MEND_RETRIES + 1)) ==="
             if bash verify.sh; then
@@ -459,7 +495,7 @@ jobs:
         run: |
           STATE="skills/$SKILL_NAME/state.json"
           STUB_COUNT=$(grep -lE '\*Populated by the research agent\*' \
-            skills/$SKILL_NAME/SKILL*.md skills/$SKILL_NAME/rules/*.md 2>/dev/null | wc -l | tr -d ' ')
+            "skills/$SKILL_NAME"/SKILL*.md "skills/$SKILL_NAME"/rules/*.md 2>/dev/null | wc -l | tr -d ' ')
           CURRENT=$(jq -r '.scaffoldComplete // false' "$STATE")
           echo "Residual stub files: $STUB_COUNT   scaffoldComplete: $CURRENT"
           if [ "$STUB_COUNT" = "0" ] && [ "$CURRENT" = "false" ]; then
@@ -526,7 +562,7 @@ jobs:
 
       - name: Run report agent
         id: report
-        if: always()
+        if: always() && steps.auth_verify.outcome != 'failure'
         continue-on-error: true
         working-directory: pipeline/agent
         env:
@@ -584,7 +620,9 @@ jobs:
       # 8. Commit + push per-skill (or draft PR on gate failure)
       # ---------------------------------------------------------------
       - name: Commit and push (${{ matrix.skill }}) or open draft PR
-        if: always()
+        # Nothing an unauthenticated run produces is worth a commit or a
+        # draft PR; the failed auth step already fails the job.
+        if: always() && steps.auth_verify.outcome != 'failure'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
