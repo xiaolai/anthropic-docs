@@ -142,6 +142,10 @@ elif [[ -n "$NPM_PACKAGES" ]]; then
       echo "  WARN: npm view '$pkg' failed — skipping" >&2
       continue
     }
+    # `npm view <pkg> version engines --json` prints an object only when
+    # both fields exist; for a package without `engines` (e.g.
+    # @anthropic-ai/sdk) it prints the bare version string.
+    npm_json=$(echo "$npm_json" | jq 'if type == "string" then {version: .} else . end')
     new_ver=$(echo "$npm_json" | jq -r '.version // "0.0.0"')
     new_eng=$(echo "$npm_json" | jq -c '.engines // {}')
     echo "  → $new_ver"
@@ -255,7 +259,7 @@ new_bugs="[]"
 
 if [[ -n "$BUG_TRACKER_REPO" ]] && command -v gh &>/dev/null; then
   echo "Checking tracked issues in $BUG_TRACKER_REPO ..."
-  tracked_numbers=$(echo "$state_json" | jq -r '.trackedIssues | keys[]?')
+  tracked_numbers=$(echo "$state_json" | jq -r '(.trackedIssues // {}) | keys[]')
   for num in $tracked_numbers; do
     old_state=$(echo "$state_json" | jq -r ".trackedIssues[\"$num\"].state")
     new_state=$(gh api "repos/$BUG_TRACKER_REPO/issues/$num" --jq '.state' 2>/dev/null) || {
@@ -363,9 +367,9 @@ done < <(echo "$fresh_repos" | jq -c '.[]?')
 old_docs_hash=$(echo "$state_json" | jq -r '.docs.indexSha256 // ""')
 old_page_count=$(echo "$state_json" | jq -r '.docs.pageCount // 0')
 if [[ -n "$DOCS_INDEX_URL" && -n "$old_docs_hash" && "$old_docs_hash" != "$new_docs_hash" ]]; then
-  old_pages_json=$(echo "$state_json" | jq -r '.docs.knownPages | keys[]?' | sort -u)
-  added_urls=$(comm -13 <(echo "$old_pages_json") <(echo "$new_page_urls") | head -50)
-  removed_urls=$(comm -23 <(echo "$old_pages_json") <(echo "$new_page_urls") | head -50)
+  old_pages_json=$(echo "$state_json" | jq -r '(.docs.knownPages // {}) | keys[]' | sort -u)
+  added_urls=$(comm -13 <(echo "$old_pages_json") <(echo "$new_page_urls") | sed -n "1,50p")
+  removed_urls=$(comm -23 <(echo "$old_pages_json") <(echo "$new_page_urls") | sed -n "1,50p")
   changes=$(echo "$changes" | jq \
     --arg oldhash "$old_docs_hash" --arg newhash "$new_docs_hash" \
     --argjson oldcount "$old_page_count" --argjson newcount "$new_page_count" \
