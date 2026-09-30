@@ -4,13 +4,29 @@
 # docs-snapshot/code.claude.com/, plus docs-snapshot/MANIFEST.json with
 # per-page sha256 and fetched-at timestamps.
 #
-# Run this manually when you bump the snapshot pin (see README "For
-# maintainers"). It is NOT run by the daily pipeline — the snapshot is a
-# committed, version-pinned baseline; daily pipeline gates check for drift
-# (scripts/check-docs-drift.sh) and fail loud rather than auto-refresh
-# (auto-refresh would defeat the point of a version-pinned baseline).
+# The daily pipeline runs this whenever monitor.sh sees an upstream change
+# (page trees are gitignored; only MANIFEST.json is committed). It can also
+# be run by hand.
 #
-# Exit 0 on success. Exit 1 on fetch failure or sanitisation error.
+# Each page listed in llms.txt ends in one of three outcomes:
+#   fetched  2xx on the docs host — sanitised, written, hashed.
+#   skipped  the page is not ours to snapshot, and that is not an error:
+#              - HTTP 404/410: listed in llms.txt but gone upstream;
+#              - redirected off the docs host (e.g. code.claude.com/docs/
+#                en/claude-tag.md → claude.com/docs/claude-tag/…): the
+#                index entry is a pointer to another site's docs, whose
+#                content this snapshot never stores.
+#            Skipped pages are printed as WARN and recorded in
+#            MANIFEST.json under `skippedPages`.
+#   failed   anything else — a network/transport error, 401/403/429, 5xx,
+#            or an unresolved redirect. A failure means we don't know the
+#            page's content, so the snapshot is incomplete: exit 1.
+# Skips are also bounded: when more than MAX_SKIPPED_PCT (default 10) of
+# the pages are skipped, the cause is almost certainly systemic (a host
+# migration, a blanket 404) rather than a few retired pages: exit 1.
+#
+# Exit 0 on success. Exit 1 on fetch failure, too many skips, or a
+# sanitisation error.
 
 set -uo pipefail
 
@@ -144,10 +160,43 @@ if [[ -d "$SNAPSHOT_DIR" ]]; then
 fi
 mkdir -p "$SNAPSHOT_DIR"
 
+# host_of URL — the lowercased host part of an absolute URL.
+host_of() {
+  printf '%s' "$1" | awk -F[/:] '{print tolower($4)}'
+}
+DOCS_HOST_LC=$(host_of "$DOCS_INDEX_URL")
+
+# classify_fetch CURL_EXIT HTTP_CODE FINAL_URL — print the outcome as
+# "fetched", "failed", or "skipped<TAB><reason>" (contract in the header).
+# Off-host is checked first: content on another host is never stored, so
+# even a transport error on the off-host hop can't make the snapshot
+# incomplete. On the docs host, only a 2xx or a 404/410 is acceptable.
+classify_fetch() {
+  local curl_exit="$1" http_code="$2" final_url="$3"
+  if [[ -n "$final_url" && "$(host_of "$final_url")" != "$DOCS_HOST_LC" ]]; then
+    printf 'skipped\tredirected off-host\n'; return
+  fi
+  if [[ "$curl_exit" != "0" ]]; then
+    echo failed; return
+  fi
+  case "$http_code" in
+    2??) echo fetched ;;
+    404|410) printf 'skipped\tgone upstream\n' ;;
+    *) echo failed ;;
+  esac
+}
+
+MAX_SKIPPED_PCT="${MAX_SKIPPED_PCT:-10}"
+
 # Fetch each page, sanitise, write to snapshot
 fetched=0
 failed=0
+skipped=0
 manifest_entries="[]"
+skipped_entries="[]"
+body_file=$(mktemp)
+err_file=$(mktemp)
+trap 'rm -f "$body_file" "$err_file"' EXIT
 
 while IFS= read -r url; do
   [[ -z "$url" ]] && continue
@@ -159,13 +208,37 @@ while IFS= read -r url; do
   rel="${url#https://$DOCS_HOST/}"
   rel="${rel#docs/}"
   target="$SNAPSHOT_DIR/$rel"
-  mkdir -p "$(dirname "$target")"
 
-  body=$(curl -sfL "${CURL_OPTS[@]}" "$url" 2>/dev/null) || {
-    echo "  FAIL $rel"
-    failed=$((failed + 1))
-    continue
-  }
+  # No -f: the HTTP status is what tells a retired page (404/410) from a
+  # failure. --retry still retries timeouts, 408, 429 and 5xx, and -w
+  # reports the status and final URL even when curl itself fails.
+  meta=$(curl -sSL "${CURL_OPTS[@]}" -o "$body_file" \
+           -w '%{http_code}\t%{url_effective}' "$url" 2>"$err_file")
+  curl_exit=$?
+  http_code="${meta%%$'\t'*}"
+  final_url="${meta#*$'\t'}"
+  outcome=$(classify_fetch "$curl_exit" "$http_code" "$final_url")
+
+  case "$outcome" in
+    skipped*)
+      reason="${outcome#skipped$'\t'}"
+      echo "  WARN skip $rel ($reason: HTTP $http_code, final URL $final_url)"
+      skipped=$((skipped + 1))
+      skipped_entries=$(echo "$skipped_entries" | jq \
+        --arg rel "$rel" --arg url "$url" --arg reason "$reason" \
+        --arg status "$http_code" --arg final "$final_url" \
+        '. + [{path: $rel, url: $url, reason: $reason, httpStatus: $status, finalUrl: $final}]')
+      continue
+      ;;
+    failed)
+      echo "  FAIL $rel (curl exit $curl_exit, HTTP $http_code, final URL $final_url) $(head -c 200 "$err_file")"
+      failed=$((failed + 1))
+      continue
+      ;;
+  esac
+
+  mkdir -p "$(dirname "$target")"
+  body=$(cat "$body_file")
   sanitised=$(defang_for_llm "$body")
   printf '%s' "$sanitised" > "$target"
 
@@ -185,11 +258,19 @@ while IFS= read -r url; do
 done <<<"$URLS"
 
 echo ""
-echo "Fetched: $fetched   Failed: $failed"
+echo "Fetched: $fetched   Skipped: $skipped   Failed: $failed"
 
 if (( failed > 0 )); then
   echo "ERROR: $failed page fetches failed — snapshot is incomplete; aborting." >&2
   echo "Re-run after addressing network errors. Partial snapshot left on disk for debugging." >&2
+  exit 1
+fi
+# A few retired or moved pages are normal; a large share is not.
+if (( skipped * 100 > URL_COUNT * MAX_SKIPPED_PCT )); then
+  echo "ERROR: $skipped of $URL_COUNT pages were skipped (limit ${MAX_SKIPPED_PCT}%)." >&2
+  echo "       That many 404s or off-host redirects points at a systemic change" >&2
+  echo "       (host migration, index format change), not retired pages; aborting." >&2
+  echo "       Set MAX_SKIPPED_PCT higher only after confirming the skips are genuine." >&2
   exit 1
 fi
 
@@ -199,6 +280,7 @@ jq -n \
   --arg indexSha "$INDEX_SHA" \
   --argjson indexBytes "$(printf '%s' "$INDEX_BODY" | wc -c | tr -d ' ')" \
   --argjson pages "$manifest_entries" \
+  --argjson skippedPages "$skipped_entries" \
   --arg refreshedAt "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
   --argjson pageCount "$fetched" \
   '{
@@ -207,14 +289,15 @@ jq -n \
     indexBytes: $indexBytes,
     pageCount: $pageCount,
     refreshedAt: $refreshedAt,
-    pages: $pages
+    pages: $pages,
+    skippedPages: $skippedPages
   }' > "$MANIFEST"
 
 echo ""
 echo "Snapshot written:"
 echo "  pages dir:  $SNAPSHOT_DIR/"
 echo "  manifest:   $MANIFEST"
-echo "  page count: $fetched"
+echo "  page count: $fetched (skipped: $skipped)"
 echo "  index sha:  ${INDEX_SHA:0:16}…"
 echo ""
 echo "Next steps:"

@@ -39,7 +39,6 @@ SKILL_NAME="${SKILL_NAME:-claude-code}"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 ROOT="$REPO_ROOT/skills/$SKILL_NAME"
 MANIFEST="$ROOT/docs-snapshot/MANIFEST.json"
-SNAPSHOT_DIR="$ROOT/docs-snapshot"
 STATE_FILE="$ROOT/state.json"
 # Index URL comes from the skill's config.json so each skill targets its
 # own upstream. CLI/env can override for local testing.
@@ -167,10 +166,12 @@ echo ""
 
 # Always print added/removed pages when there's a delta, even if going to
 # pass via deep mode, so a maintainer can see what's happening.
-SNAPSHOT_URLS=$(jq -r '.pages[].url' "$MANIFEST" | sort -u)
+# Pages the refresh deliberately skipped (404/410, off-host redirect) are
+# known to the snapshot, so they are not reported as "added upstream".
+SNAPSHOT_URLS=$(jq -r '.pages[].url, (.skippedPages // [])[].url' "$MANIFEST" | sort -u)
 LIVE_URLS=$(printf '%s' "$LIVE_BODY" | grep -oE "${DOCS_HOST_ESC}/docs/[^)]+\.md|${DOCS_HOST_ESC}/[^)]+\.md" | sort -u)
-ADDED=$(comm -13 <(printf '%s\n' "$SNAPSHOT_URLS") <(printf '%s\n' "$LIVE_URLS") | head -20)
-REMOVED=$(comm -23 <(printf '%s\n' "$SNAPSHOT_URLS") <(printf '%s\n' "$LIVE_URLS") | head -20)
+ADDED=$(comm -13 <(printf '%s\n' "$SNAPSHOT_URLS") <(printf '%s\n' "$LIVE_URLS") | sed -n "1,20p")
+REMOVED=$(comm -23 <(printf '%s\n' "$SNAPSHOT_URLS") <(printf '%s\n' "$LIVE_URLS") | sed -n "1,20p")
 if [[ -n "$ADDED" || -n "$REMOVED" ]]; then
   [[ -n "$ADDED" ]] && { echo "  Pages added upstream:"; printf '    %s\n' $ADDED; }
   [[ -n "$REMOVED" ]] && { echo "  Pages removed upstream:"; printf '    %s\n' $REMOVED; }
