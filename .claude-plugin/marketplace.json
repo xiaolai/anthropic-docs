@@ -1,0 +1,35 @@
+{
+  "name": "xiaolai",
+  "owner": {
+    "name": "xiaolai"
+  },
+  "metadata": {
+    "description": "anthropic-docs - Anthropic and MCP documentation reference skills for Claude Code, by xiaolai (archived)"
+  },
+  "plugins": [
+    {
+      "name": "anthropic-docs",
+      "source": {
+        "source": "github",
+        "repo": "xiaolai/anthropic-docs"
+      },
+      "description": "Auto-updated multi-skill reference for the whole Anthropic doc ecosystem. 8 skills covering claude-code, claude-agent-sdk, anthropic-api, anthropic-platform-features, claude-connectors, claude-cowork, mcp-spec, and anthropic-pulse (news + research digests). Pipeline refreshes daily.",
+      "version": "1.0.1",
+      "author": {
+        "name": "xiaolai"
+      },
+      "repository": "https://github.com/xiaolai/anthropic-docs",
+      "license": "MIT",
+      "keywords": [
+        "anthropic",
+        "claude",
+        "claude-code",
+        "agent-sdk",
+        "mcp",
+        "skills",
+        "auto-updated"
+      ],
+      "category": "developer-tools"
+    }
+  ]
+}

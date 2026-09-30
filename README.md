@@ -1,5 +1,9 @@
 # anthropic-docs
 
+> **Archived (2026-09-30).** This repository is read-only and its daily refresh no longer runs, so the
+> reference skills reflect the Anthropic and MCP documentation as of June 2026. For current information, read the
+> official docs directly.
+
 [![Validated by NLPM](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/xiaolai/anthropic-docs/main/nlpm-badge.json)](https://github.com/xiaolai/anthropic-docs/blob/main/nlpm-badge.json)
 
 A self-updating **Claude Code plugin** bundling 8 skills that mirror the
@@ -38,10 +42,11 @@ mistakes at edit time.
 ## Install
 
 ```bash
-/plugin install xiaolai/anthropic-docs
+/plugin marketplace add xiaolai/claude-plugin-marketplace
+/plugin install anthropic-docs@xiaolai
 ```
 
-(or clone the repo and `/plugin install .` from your local copy)
+(or, to try it without installing: clone the repo and run `claude --plugin-dir .` from inside it; that lasts one session)
 
 ## Skills
 
