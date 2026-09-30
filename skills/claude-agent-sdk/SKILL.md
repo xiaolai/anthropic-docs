@@ -1,34 +1,14 @@
 ---
 name: claude-agent-sdk
 description: |
-  Router skill for the Claude Agent SDK — Anthropic's libraries for
-  building autonomous AI agents that wrap the Claude Code CLI runtime.
-  Ships in TypeScript (`@anthropic-ai/claude-agent-sdk` on npm) and
-  Python (`claude-agent-sdk` on PyPI). Covers `query()` / `ClaudeSDKClient`,
-  hooks (PreToolUse / PostToolUse / Stop / etc.), subagents, MCP
-  servers (stdio / HTTP / SSE / SDK in-process), permission modes,
-  the sandbox (Docker / Kubernetes), structured outputs (JSON Schema
-  validation), session capture / resume / fork, and session storage
-  adapters (`SessionStore`, `InMemorySessionStore`, S3/Redis/Postgres).
-
-  Use when the user asks about: importing `@anthropic-ai/claude-agent-sdk`
-  in TypeScript or `from claude_agent_sdk import ...` in Python, writing
-  an agent that uses `query()` or `ClaudeSDKClient`, registering hooks
-  via the SDK (`hooks: { PreToolUse: [...] }` / `hooks={"PreToolUse": [...]}`),
-  defining MCP servers in SDK options, configuring `permissionMode` /
-  `permission_mode`, building subagents with `AgentDefinition`, enabling
-  structured outputs, running agents in a Docker/K8s sandbox, capturing
-  and resuming sessions, mirroring session transcripts to external storage
-  (S3, Redis, Postgres) via `SessionStore`, or troubleshooting SDK-specific
-  errors (the
-  SDK wraps Claude Code, so its errors differ from raw Messages API
-  errors).
-
-  Skip: questions about the Claude Code CLI itself such as `.claude/
-  settings.json` or `.mcp.json` files (use claude-code), the Anthropic
-  Messages API directly without the SDK (use anthropic-api), the MCP
-  protocol spec itself (use mcp-spec), or Anthropic's hosted Managed
-  Agents product (use anthropic-platform-features).
+  Claude Agent SDK (TS @anthropic-ai/claude-agent-sdk, Python
+  claude_agent_sdk), wrapping Claude Code. Use for
+  query()/ClaudeSDKClient, SDK hooks, subagents (AgentDefinition), SDK MCP
+  servers, permissionMode/permission_mode, structured outputs, Docker/K8s
+  sandbox, sessions (resume, fork, SessionStore to S3/Redis/Postgres), SDK
+  errors. Skip: Claude Code CLI config (use claude-code), Messages API
+  (use anthropic-api), MCP spec (use mcp-spec), hosted Managed Agents (use
+  anthropic-platform-features).
 user-invocable: true
 ---
 
@@ -41,6 +21,37 @@ user-invocable: true
 | **Docs** | [TypeScript SDK](https://platform.claude.com/docs/en/agent-sdk/typescript) | [Python SDK](https://platform.claude.com/docs/en/agent-sdk/python) |
 | **Repo** | [claude-agent-sdk-typescript](https://github.com/anthropics/claude-agent-sdk-typescript) | [claude-agent-sdk-python](https://github.com/anthropics/claude-agent-sdk-python) |
 | **Full reference** | [SKILL-typescript.md](SKILL-typescript.md) | [SKILL-python.md](SKILL-python.md) |
+
+## When to use
+
+Router skill for the Claude Agent SDK — Anthropic's libraries for
+building autonomous AI agents that wrap the Claude Code CLI runtime.
+Ships in TypeScript (`@anthropic-ai/claude-agent-sdk` on npm) and
+Python (`claude-agent-sdk` on PyPI). Covers `query()` / `ClaudeSDKClient`,
+hooks (PreToolUse / PostToolUse / Stop / etc.), subagents, MCP
+servers (stdio / HTTP / SSE / SDK in-process), permission modes,
+the sandbox (Docker / Kubernetes), structured outputs (JSON Schema
+validation), session capture / resume / fork, and session storage
+adapters (`SessionStore`, `InMemorySessionStore`, S3/Redis/Postgres).
+
+Use when the user asks about: importing `@anthropic-ai/claude-agent-sdk`
+in TypeScript or `from claude_agent_sdk import ...` in Python, writing
+an agent that uses `query()` or `ClaudeSDKClient`, registering hooks
+via the SDK (`hooks: { PreToolUse: [...] }` / `hooks={"PreToolUse": [...]}`),
+defining MCP servers in SDK options, configuring `permissionMode` /
+`permission_mode`, building subagents with `AgentDefinition`, enabling
+structured outputs, running agents in a Docker/K8s sandbox, capturing
+and resuming sessions, mirroring session transcripts to external storage
+(S3, Redis, Postgres) via `SessionStore`, or troubleshooting SDK-specific
+errors (the
+SDK wraps Claude Code, so its errors differ from raw Messages API
+errors).
+
+Skip: questions about the Claude Code CLI itself such as `.claude/
+settings.json` or `.mcp.json` files (use claude-code), the Anthropic
+Messages API directly without the SDK (use anthropic-api), the MCP
+protocol spec itself (use mcp-spec), or Anthropic's hosted Managed
+Agents product (use anthropic-platform-features).
 
 ## When you detect the user's language
 
@@ -79,3 +90,17 @@ Both SDKs wrap the Claude Code CLI and share these concepts:
 
 For API details, code examples, options tables, and known issues,
 read the language-specific reference file.
+
+## Examples
+
+<example>
+Context: A developer is building an agent in TypeScript.
+user: "How do I resume a session with query() and store transcripts in Postgres?"
+assistant: Uses claude-agent-sdk and reads the TypeScript reference for session resume and SessionStore.
+</example>
+
+<example>
+Context: A developer asks about CLI settings.
+user: "Where does Claude Code read settings.local.json from?"
+assistant: Routes to claude-code instead; that is CLI configuration, not the SDK.
+</example>

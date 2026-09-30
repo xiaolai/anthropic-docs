@@ -1,24 +1,14 @@
 ---
 name: claude-code
 description: |
-  Router skill for Claude Code (the CLI tool itself). Contains intent
-  hints and a dispatch table that maps a user's question to the
-  surface-specific deep-reference file Claude should Read next.
-
-  Use when the user asks about Claude Code internals: editing
-  .claude/settings.json or settings.local.json, authoring or debugging
-  hooks (PreToolUse, PostToolUse, Stop, SubagentStop, Notification,
-  UserPromptSubmit, PreCompact, SessionStart, SessionEnd, etc.),
-  writing slash commands or agents, configuring MCP servers in
-  .mcp.json, building plugins or marketplaces, setting ANTHROPIC_* /
-  CLAUDE_* env vars, troubleshooting permission modes, understanding
-  the ~/.claude/ directory layout, or asking "what does <feature> in
-  Claude Code do".
-
-  Skip: questions about the Anthropic Messages API (use anthropic-api),
-  the Claude Agent SDK (use claude-agent-sdk), the MCP protocol spec
-  (use mcp-spec), or general shell / git / programming topics not
-  specific to Claude Code internals.
+  Claude Code (the CLI) reference. Use for .claude/settings.json /
+  settings.local.json, hooks (PreToolUse, PostToolUse, Stop, SubagentStop,
+  SessionStart, etc.), slash commands, agents, MCP servers in .mcp.json,
+  plugins and marketplaces, ANTHROPIC_* / CLAUDE_* env vars, permission
+  modes, the ~/.claude/ layout, or "what does <feature> in Claude Code
+  do". Skip: Messages API (use anthropic-api), Agent SDK (use
+  claude-agent-sdk), MCP spec (use mcp-spec), general
+  shell/git/programming.
 user-invocable: true
 ---
 
@@ -34,6 +24,27 @@ user-invocable: true
 > **This skill is auto-updated daily.** A matrix pipeline reads
 > the upstream docs and rewrites the per-surface files below. Section
 > structure is stable; content drifts to track upstream.
+
+## When to use
+
+Router skill for Claude Code (the CLI tool itself). Contains intent
+hints and a dispatch table that maps a user's question to the
+surface-specific deep-reference file Claude should Read next.
+
+Use when the user asks about Claude Code internals: editing
+.claude/settings.json or settings.local.json, authoring or debugging
+hooks (PreToolUse, PostToolUse, Stop, SubagentStop, Notification,
+UserPromptSubmit, PreCompact, SessionStart, SessionEnd, etc.),
+writing slash commands or agents, configuring MCP servers in
+.mcp.json, building plugins or marketplaces, setting ANTHROPIC_* /
+CLAUDE_* env vars, troubleshooting permission modes, understanding
+the ~/.claude/ directory layout, or asking "what does <feature> in
+Claude Code do".
+
+Skip: questions about the Anthropic Messages API (use anthropic-api),
+the Claude Agent SDK (use claude-agent-sdk), the MCP protocol spec
+(use mcp-spec), or general shell / git / programming topics not
+specific to Claude Code internals.
 
 ## Dispatch table
 
@@ -70,6 +81,20 @@ Path-scoped correction rules live in `rules/`:
 | `rules/plugins.md` | `**/.claude-plugin/plugin.json`, `**/marketplace.json` |
 | `rules/hooks.md` | `**/.claude/hooks/**` |
 | `rules/skills-agents-commands.md` | `**/.claude/skills/**/SKILL.md`, `**/.claude/agents/**`, `**/.claude/commands/**` |
+
+## Examples
+
+<example>
+Context: A developer is writing a hook.
+user: "What JSON does a PreToolUse hook receive, and how does it deny a tool call?"
+assistant: Uses claude-code and reads the hooks surface for the input schema and the deny decision.
+</example>
+
+<example>
+Context: A developer is writing an MCP server from scratch.
+user: "How does the initialize handshake negotiate capabilities?"
+assistant: Routes to mcp-spec instead; the protocol itself is outside Claude Code.
+</example>
 
 ---
 

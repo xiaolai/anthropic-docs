@@ -1,20 +1,14 @@
 ---
 name: anthropic-pulse
 description: |
-  Router skill for Anthropic's news + research feeds — auto-refreshed
-  daily from anthropic.com/news and anthropic.com/research.
-
-  Use when the user asks about TIME-SENSITIVE Anthropic content: model
+  Anthropic news + research digest, refreshed daily from
+  anthropic.com/news + /research. Use for TIME-SENSITIVE questions: model
   launches ("did Claude X just release?"), product announcements,
-  partnership news, region launches, new research papers, recent
-  policy positions, or "what's new from Anthropic?" / "what did
-  Anthropic just announce?" / "any recent research on X?"
-
-  Skip: deep technical reference (use the other 7 skills — claude-code,
-  anthropic-api, etc.); historical news older than ~30 items (link out
-  to anthropic.com instead); detailed paper content (the digest carries
-  title + summary + URL — Claude WebFetches the paper for depth on
-  demand).
+  partnerships, region launches, research papers, recent policy, "what's
+  new from Anthropic?", "what did Anthropic just announce?", "any recent
+  research on X?". Skip: deep technical reference (use the other 7
+  skills), news older than ~30 items (link to anthropic.com), full paper
+  text (WebFetch the URL).
 user-invocable: true
 ---
 
@@ -32,6 +26,23 @@ user-invocable: true
 > rewrites the surface files below. Unlike the other 7 skills, this
 > one has no docs-snapshot (the upstream is HTML, not markdown), no
 > LLM agents (deterministic render), and no token cost per run.
+
+## When to use
+
+Router skill for Anthropic's news + research feeds — auto-refreshed
+daily from anthropic.com/news and anthropic.com/research.
+
+Use when the user asks about TIME-SENSITIVE Anthropic content: model
+launches ("did Claude X just release?"), product announcements,
+partnership news, region launches, new research papers, recent
+policy positions, or "what's new from Anthropic?" / "what did
+Anthropic just announce?" / "any recent research on X?"
+
+Skip: deep technical reference (use the other 7 skills — claude-code,
+anthropic-api, etc.); historical news older than ~30 items (link out
+to anthropic.com instead); detailed paper content (the digest carries
+title + summary + URL — Claude WebFetches the paper for depth on
+demand).
 
 ## Dispatch table
 
@@ -51,6 +62,20 @@ user-invocable: true
 - **Not a deep reference.** Each digest entry is just title + date + URL + summary. For the body of a news post or a paper, WebFetch the linked URL — that's the design.
 - **Not historical archive.** Only the latest ~20 items per feed. Older items live at anthropic.com; the freshness budget is "what changed recently."
 - **Not Anthropic-internal docs.** This is the public-facing news + research feed. For product docs use the other 7 skills.
+
+## Examples
+
+<example>
+Context: The user asks about a recent announcement.
+user: "Did Anthropic release a new model this week?"
+assistant: Uses anthropic-pulse and checks the latest news items before answering.
+</example>
+
+<example>
+Context: The user asks a stable technical question.
+user: "What fields does a tool_result block have?"
+assistant: Routes to anthropic-api instead; news is the wrong source for reference material.
+</example>
 
 ---
 

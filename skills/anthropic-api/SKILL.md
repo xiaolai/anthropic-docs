@@ -1,24 +1,14 @@
 ---
 name: anthropic-api
 description: |
-  Router skill for the Anthropic Messages API and adjacent surfaces
-  (admin endpoints, compliance, beta features, models catalog) hosted
-  under platform.claude.com/docs/en/api/.
-
-  Use when the user asks about: POST /v1/messages, tool_use / tool_result
-  blocks, count_tokens, message batches, streaming responses, prompt
-  caching, prompt cache TTL / breakpoints, system prompts, anthropic-beta
-  headers, the admin API (organizations / workspaces / API keys /
-  invites), compliance endpoints (data residency, audit logs, retention),
-  beta-only features behind a beta header, or the models catalog
-  (model IDs, deprecation dates, context window sizes).
-
-  Skip: questions about Claude Code (use claude-code skill), the
-  Claude Agent SDK (use claude-agent-sdk), platform features beyond
-  the raw API such as Agent Skills format or tool-use guides (use
-  anthropic-platform-features), MCP connector docs (claude-connectors),
-  or per-language auto-generated SDK reference (use anthropic-sdk's
-  TypeScript / Python types directly via your IDE).
+  Anthropic Messages API reference. Use for POST /v1/messages,
+  tool_use/tool_result, count_tokens, batches, streaming, prompt caching
+  (TTL, breakpoints), anthropic-beta headers, admin API (API keys,
+  workspaces), compliance (residency, audit logs), model
+  IDs/deprecations/context windows. Skip: Claude Code (use claude-code),
+  Agent SDK (use claude-agent-sdk), Agent Skills/tool guides (use
+  anthropic-platform-features), MCP connectors (use claude-connectors),
+  per-language SDK types (use your IDE).
 user-invocable: true
 ---
 
@@ -34,6 +24,27 @@ user-invocable: true
 > **This skill is auto-updated daily.** A pipeline reads the upstream
 > docs and rewrites the per-surface files below. Section structure is
 > stable; content drifts to track upstream.
+
+## When to use
+
+Router skill for the Anthropic Messages API and adjacent surfaces
+(admin endpoints, compliance, beta features, models catalog) hosted
+under platform.claude.com/docs/en/api/.
+
+Use when the user asks about: POST /v1/messages, tool_use / tool_result
+blocks, count_tokens, message batches, streaming responses, prompt
+caching, prompt cache TTL / breakpoints, system prompts, anthropic-beta
+headers, the admin API (organizations / workspaces / API keys /
+invites), compliance endpoints (data residency, audit logs, retention),
+beta-only features behind a beta header, or the models catalog
+(model IDs, deprecation dates, context window sizes).
+
+Skip: questions about Claude Code (use claude-code skill), the
+Claude Agent SDK (use claude-agent-sdk), platform features beyond
+the raw API such as Agent Skills format or tool-use guides (use
+anthropic-platform-features), MCP connector docs (claude-connectors),
+or per-language auto-generated SDK reference (use anthropic-sdk's
+TypeScript / Python types directly via your IDE).
 
 ## Dispatch table
 
@@ -57,6 +68,20 @@ user-invocable: true
 | Rule file | Triggers on edits to |
 |---|---|
 | `rules/messages-api.md` | code calling `client.messages.create`, `POST /v1/messages`, or constructing `tool_use` / `tool_result` content blocks |
+
+## Examples
+
+<example>
+Context: A developer is adding prompt caching to their Messages API calls.
+user: "Where do I put cache_control breakpoints, and how long does the cache live?"
+assistant: Uses anthropic-api and reads SKILL-messages.md for cache_control breakpoint placement and TTL options.
+</example>
+
+<example>
+Context: A developer asks about a Claude Code setting.
+user: "How do I stop Claude Code from asking permission for every Bash command?"
+assistant: Routes to claude-code instead; permission modes are CLI configuration, not the Messages API.
+</example>
 
 ---
 

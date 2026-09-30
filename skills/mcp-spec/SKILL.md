@@ -1,23 +1,14 @@
 ---
 name: mcp-spec
 description: |
-  Router skill for the Model Context Protocol (MCP) open spec, covering
-  the protocol itself (JSON-RPC framing, capabilities, lifecycle), the
-  client and server roles, the transport layers (stdio / streamable
-  HTTP / SSE), and the core primitives (tools, resources, prompts,
-  sampling, roots, completion).
-
-  Use when the user asks about: writing an MCP server (in any language),
-  writing an MCP client, the JSON-RPC protocol framing, the
-  initialize handshake, capability negotiation, the stdio transport,
-  the streamable HTTP transport, the SSE transport, defining a tool /
-  resource / prompt, sampling, roots, or completion. Includes the
-  TypeScript SDK (`@modelcontextprotocol/sdk`) and Python SDK (`mcp`).
-
-  Skip: Anthropic's hosted MCP connector (use
-  anthropic-platform-features), the user-facing Claude Connectors
-  directory (use claude-connectors), Claude Code's `.mcp.json` config
-  (use claude-code → SKILL-mcp).
+  Model Context Protocol (MCP) open spec. Use for writing an MCP server or
+  client (any language; TypeScript @modelcontextprotocol/sdk, Python mcp),
+  JSON-RPC framing, initialize handshake, capability negotiation,
+  stdio/streamable HTTP/SSE transports, defining tools/resources/prompts,
+  sampling, roots, completion. Skip: Anthropic's hosted MCP connector (use
+  anthropic-platform-features), Claude Connectors directory (use
+  claude-connectors), Claude Code's .mcp.json (use claude-code →
+  SKILL-mcp).
 user-invocable: true
 ---
 
@@ -34,6 +25,26 @@ user-invocable: true
 > docs and rewrites the per-surface files below. Section structure is
 > stable; content drifts to track upstream.
 
+## When to use
+
+Router skill for the Model Context Protocol (MCP) open spec, covering
+the protocol itself (JSON-RPC framing, capabilities, lifecycle), the
+client and server roles, the transport layers (stdio / streamable
+HTTP / SSE), and the core primitives (tools, resources, prompts,
+sampling, roots, completion).
+
+Use when the user asks about: writing an MCP server (in any language),
+writing an MCP client, the JSON-RPC protocol framing, the
+initialize handshake, capability negotiation, the stdio transport,
+the streamable HTTP transport, the SSE transport, defining a tool /
+resource / prompt, sampling, roots, or completion. Includes the
+TypeScript SDK (`@modelcontextprotocol/sdk`) and Python SDK (`mcp`).
+
+Skip: Anthropic's hosted MCP connector (use
+anthropic-platform-features), the user-facing Claude Connectors
+directory (use claude-connectors), Claude Code's `.mcp.json` config
+(use claude-code → SKILL-mcp).
+
 ## Dispatch table
 
 | Surface file | Read when the user asks about… |
@@ -43,6 +54,20 @@ user-invocable: true
 | [`SKILL-servers.md`](SKILL-servers.md) | implementing an MCP server in TypeScript or Python, server-side capability advertisement, server lifecycle |
 | [`SKILL-transport.md`](SKILL-transport.md) | stdio transport, streamable HTTP transport, SSE transport (legacy), choosing a transport |
 | [`SKILL-tools-resources-prompts.md`](SKILL-tools-resources-prompts.md) | defining tools (input schema, output schema), defining resources (URI templates, MIME types), defining prompts, sampling, roots, completion |
+
+## Examples
+
+<example>
+Context: A developer is building an MCP server in Python.
+user: "How do I expose a resource and notify clients when it changes?"
+assistant: Uses mcp-spec and reads the resources surface for list, read and change notifications.
+</example>
+
+<example>
+Context: A developer configures a server for Claude Code.
+user: "Where do I add my server so Claude Code loads it?"
+assistant: Routes to claude-code instead; .mcp.json is Claude Code configuration.
+</example>
 
 ---
 
