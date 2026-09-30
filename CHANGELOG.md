@@ -8,6 +8,12 @@ Newest entry on top.
 
 ---
 
+## 2026-09-30 — v1.0.1: shorter router descriptions
+
+Every enabled skill's description is listed to Claude in every session, inside a 30,000-character budget shared with all other plugins. The eight router descriptions were 725 to over 800 characters each; they are now under 500. The detail they carried moved, unchanged, into a `## When to use` section of each router. Each router also gains a `## Examples` section: one question it answers, and one it hands to a sibling skill.
+
+---
+
 ## 2026-05-18 — Repo + plugin renamed to `anthropic-docs`
 
 Renamed the GitHub repo, local directory, plugin manifest, npm package, schema `$id` URLs, workflow `github.repository` guards, and all 39 present-tense self-references from `autoupdated-anthropic-documentation-knowledge` → `anthropic-docs`. The long name was a mouthful in install commands and table rows; the short name reads naturally and matches the marketplace category. GitHub auto-redirects the old URL → new one indefinitely, so external links keep working.
